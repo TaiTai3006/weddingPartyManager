@@ -65,6 +65,7 @@ public class Dashboard extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel1.setPreferredSize(new java.awt.Dimension(1440, 850));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel4.setBackground(new java.awt.Color(251, 247, 244));
@@ -98,7 +99,7 @@ public class Dashboard extends javax.swing.JFrame {
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
-        jPanel4.add(TaiKhoan, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 460, 270, 56));
+        jPanel4.add(TaiKhoan, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 410, 270, 56));
 
         DatTiec.setBackground(new java.awt.Color(251, 247, 244));
         DatTiec.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -128,7 +129,7 @@ public class Dashboard extends javax.swing.JFrame {
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
-        jPanel4.add(DatTiec, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, 270, 56));
+        jPanel4.add(DatTiec, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 270, 56));
 
         TrangChu.setBackground(new java.awt.Color(251, 247, 244));
         TrangChu.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -158,7 +159,7 @@ public class Dashboard extends javax.swing.JFrame {
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
-        jPanel4.add(TrangChu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 270, 56));
+        jPanel4.add(TrangChu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 270, 56));
 
         DanhMuc.setBackground(new java.awt.Color(251, 247, 244));
         DanhMuc.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -188,7 +189,7 @@ public class Dashboard extends javax.swing.JFrame {
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
-        jPanel4.add(DanhMuc, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 280, 270, 56));
+        jPanel4.add(DanhMuc, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 270, 56));
 
         TraCuu.setBackground(new java.awt.Color(251, 247, 244));
         TraCuu.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -218,7 +219,7 @@ public class Dashboard extends javax.swing.JFrame {
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
-        jPanel4.add(TraCuu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 270, 56));
+        jPanel4.add(TraCuu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 170, 270, 56));
 
         ThongKe.setBackground(new java.awt.Color(251, 247, 244));
         ThongKe.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -248,7 +249,7 @@ public class Dashboard extends javax.swing.JFrame {
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
-        jPanel4.add(ThongKe, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 340, 270, 56));
+        jPanel4.add(ThongKe, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 270, 56));
 
         NhanVien.setBackground(new java.awt.Color(251, 247, 244));
         NhanVien.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -278,10 +279,10 @@ public class Dashboard extends javax.swing.JFrame {
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
-        jPanel4.add(NhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 400, 270, 56));
+        jPanel4.add(NhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 270, 56));
 
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Group 65 (1).png"))); // NOI18N
-        jPanel4.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 530, -1, -1));
+        jPanel4.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 460, -1, -1));
 
         DangXuat.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
         DangXuat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Group 1000001511.png"))); // NOI18N
@@ -291,9 +292,9 @@ public class Dashboard extends javax.swing.JFrame {
                 DangXuatMousePressed(evt);
             }
         });
-        jPanel4.add(DangXuat, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 870, -1, -1));
+        jPanel4.add(DangXuat, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 790, -1, -1));
 
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 271, 930));
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 271, 850));
 
         jPanel2.setBackground(new java.awt.Color(251, 247, 244));
 
@@ -305,10 +306,12 @@ public class Dashboard extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGap(0, 50, Short.MAX_VALUE)
         );
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 0, 1170, -1));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 0, 1170, 50));
+
+        jDesktopPane1.setPreferredSize(new java.awt.Dimension(1170, 850));
 
         jSeparator1.setBackground(new java.awt.Color(223, 219, 216));
 
@@ -324,10 +327,10 @@ public class Dashboard extends javax.swing.JFrame {
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDesktopPane1Layout.createSequentialGroup()
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 820, Short.MAX_VALUE))
+                .addGap(0, 790, Short.MAX_VALUE))
         );
 
-        jPanel1.add(jDesktopPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 100, 1170, 830));
+        jPanel1.add(jDesktopPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 50, 1170, 800));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -337,7 +340,7 @@ public class Dashboard extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 933, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
