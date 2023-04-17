@@ -63,8 +63,16 @@ public class StaffList extends javax.swing.JFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Account.png"))); // NOI18N
 
+        jTable1.setBackground(new java.awt.Color(243, 246, 249));
+        jTable1.setForeground(new java.awt.Color(0, 0, 0));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
@@ -74,6 +82,10 @@ public class StaffList extends javax.swing.JFrame {
                 "STT", "Tên tài khoản", "Quyền", "Tùy chọn"
             }
         ));
+        jTable1.setSelectionBackground(new java.awt.Color(246, 198, 158));
+        jTable1.setShowGrid(true);
+        jTable1.setShowHorizontalLines(true);
+        jTable1.setShowVerticalLines(true);
         jScrollPane1.setViewportView(jTable1);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Search_1.png"))); // NOI18N

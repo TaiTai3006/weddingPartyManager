@@ -57,6 +57,7 @@ public class WorkingTimeList extends javax.swing.JFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/schedule.png"))); // NOI18N
 
+        jTable1.setBackground(new java.awt.Color(243, 246, 249));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -68,6 +69,7 @@ public class WorkingTimeList extends javax.swing.JFrame {
                 "STT", "Loại ca", "Giờ bắt đầu", "Giờ kết thúc", "Tùy chọn"
             }
         ));
+        jTable1.setShowGrid(true);
         jScrollPane1.setViewportView(jTable1);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Search_1.png"))); // NOI18N
@@ -108,9 +110,8 @@ public class WorkingTimeList extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(3, 3, 3)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(47, Short.MAX_VALUE))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
