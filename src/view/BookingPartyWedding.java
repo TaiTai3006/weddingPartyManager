@@ -8,12 +8,12 @@ package view;
  *
  * @author macbookpro
  */
-public class StaffList extends javax.swing.JInternalFrame {
+public class BookingPartyWedding extends javax.swing.JInternalFrame {
 
     /**
-     * Creates new form StaffList
+     * Creates new form BookingPartyWedding
      */
-    public StaffList() {
+    public BookingPartyWedding() {
         initComponents();
     }
 

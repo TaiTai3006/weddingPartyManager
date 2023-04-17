@@ -316,7 +316,7 @@ public class Dashboard extends javax.swing.JFrame {
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 0, 1170, 50));
 
-        jDesktopPane1.setPreferredSize(new java.awt.Dimension(1170, 850));
+        jDesktopPane1.setPreferredSize(new java.awt.Dimension(1170, 730));
 
         jSeparator1.setBackground(new java.awt.Color(223, 219, 216));
 
@@ -332,7 +332,7 @@ public class Dashboard extends javax.swing.JFrame {
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDesktopPane1Layout.createSequentialGroup()
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(720, Short.MAX_VALUE))
+                .addContainerGap(719, Short.MAX_VALUE))
         );
 
         jPanel1.add(jDesktopPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 50, 1170, 730));
