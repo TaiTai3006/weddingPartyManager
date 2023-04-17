@@ -103,6 +103,9 @@ public class Dashboard extends javax.swing.JFrame {
 
         DatTiec.setBackground(new java.awt.Color(251, 247, 244));
         DatTiec.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                DatTiecMouseClicked(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 DatTiecMousePressed(evt);
             }
@@ -428,6 +431,10 @@ public class Dashboard extends javax.swing.JFrame {
     private void DangXuatMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DangXuatMousePressed
         // TODO add your handling code here:
     }//GEN-LAST:event_DangXuatMousePressed
+
+    private void DatTiecMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DatTiecMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_DatTiecMouseClicked
 
     /**
      * @param args the command line arguments
