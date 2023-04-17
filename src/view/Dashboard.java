@@ -57,8 +57,8 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         NhanVien = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
         DangXuat = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jSeparator1 = new javax.swing.JSeparator();
@@ -281,20 +281,22 @@ public class Dashboard extends javax.swing.JFrame {
 
         jPanel4.add(NhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 270, 56));
 
-        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Group 65 (1).png"))); // NOI18N
-        jPanel4.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 460, -1, -1));
-
         DangXuat.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
-        DangXuat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Group 1000001511.png"))); // NOI18N
+        DangXuat.setForeground(new java.awt.Color(255, 255, 255));
+        DangXuat.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         DangXuat.setText("Đăng xuất");
+        DangXuat.setToolTipText("");
         DangXuat.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 DangXuatMousePressed(evt);
             }
         });
-        jPanel4.add(DangXuat, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 790, -1, -1));
+        jPanel4.add(DangXuat, new org.netbeans.lib.awtextra.AbsoluteConstraints(48, 680, 150, 50));
 
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 271, 850));
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Bản sao Group 1000001512.png"))); // NOI18N
+        jPanel4.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 480, -1, -1));
+
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 271, 780));
 
         jPanel2.setBackground(new java.awt.Color(251, 247, 244));
 
@@ -327,10 +329,10 @@ public class Dashboard extends javax.swing.JFrame {
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDesktopPane1Layout.createSequentialGroup()
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 790, Short.MAX_VALUE))
+                .addContainerGap(720, Short.MAX_VALUE))
         );
 
-        jPanel1.add(jDesktopPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 50, 1170, 800));
+        jPanel1.add(jDesktopPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 50, 1170, 730));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -340,7 +342,7 @@ public class Dashboard extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 780, Short.MAX_VALUE)
         );
 
         pack();
