@@ -256,6 +256,9 @@ public class Dashboard extends javax.swing.JFrame {
 
         NhanVien.setBackground(new java.awt.Color(251, 247, 244));
         NhanVien.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                NhanVienMouseClicked(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 NhanVienMousePressed(evt);
             }
@@ -316,6 +319,7 @@ public class Dashboard extends javax.swing.JFrame {
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 0, 1170, 50));
 
+        jDesktopPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jDesktopPane1.setPreferredSize(new java.awt.Dimension(1170, 730));
 
         jSeparator1.setBackground(new java.awt.Color(223, 219, 216));
@@ -436,6 +440,13 @@ public class Dashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_DatTiecMouseClicked
 
+    private void NhanVienMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NhanVienMouseClicked
+        StaffList sl = new StaffList();
+        jDesktopPane1.removeAll();
+        jDesktopPane1.add(sl).setVisible(true);
+    }//GEN-LAST:event_NhanVienMouseClicked
+
+    
     /**
      * @param args the command line arguments
      */
