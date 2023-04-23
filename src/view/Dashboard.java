@@ -336,7 +336,7 @@ public class Dashboard extends javax.swing.JFrame {
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDesktopPane1Layout.createSequentialGroup()
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(719, Short.MAX_VALUE))
+                .addContainerGap(723, Short.MAX_VALUE))
         );
 
         jPanel1.add(jDesktopPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 50, 1170, 730));
@@ -437,13 +437,16 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_DangXuatMousePressed
 
     private void DatTiecMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DatTiecMouseClicked
-        // TODO add your handling code here:
+        PartyHallList a = new PartyHallList();
+        jDesktopPane1.removeAll();
+        jDesktopPane1.add(a).setVisible(true);
     }//GEN-LAST:event_DatTiecMouseClicked
 
     private void NhanVienMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NhanVienMouseClicked
         StaffList sl = new StaffList();
         jDesktopPane1.removeAll();
         jDesktopPane1.add(sl).setVisible(true);
+
     }//GEN-LAST:event_NhanVienMouseClicked
 
     
