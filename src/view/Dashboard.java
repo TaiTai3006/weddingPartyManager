@@ -438,6 +438,9 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void DatTiecMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DatTiecMouseClicked
         // TODO add your handling code here:
+       BookingPartyWedding bpw = new BookingPartyWedding();
+        jDesktopPane1.removeAll();
+        jDesktopPane1.add(bpw).setVisible(true);
     }//GEN-LAST:event_DatTiecMouseClicked
 
     private void NhanVienMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NhanVienMouseClicked
