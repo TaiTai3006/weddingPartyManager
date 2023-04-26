@@ -444,7 +444,7 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_DatTiecMouseClicked
 
     private void NhanVienMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NhanVienMouseClicked
-        StaffList sl = new StaffList();
+        DishList sl = new DishList();
         jDesktopPane1.removeAll();
         jDesktopPane1.add(sl).setVisible(true);
 
