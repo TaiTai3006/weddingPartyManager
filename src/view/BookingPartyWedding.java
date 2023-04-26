@@ -152,8 +152,8 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         ui.setNorthPane(null);
         
         Page1.setVisible(false);
-        Page2.setVisible(false);
-        Page3.setVisible(true);
+        Page2.setVisible(true);
+        Page3.setVisible(false);
         Page4.setVisible(false);
         setValueTableMA(String.valueOf(LoaiMonAn.getSelectedItem()));
         setValueTableDV();
@@ -282,6 +282,14 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        FilterFood = new javax.swing.JDialog();
+        SilderFood = new javax.swing.JSlider();
+        jPanel18 = new javax.swing.JPanel();
+        KhoangDonGia = new javax.swing.JLabel();
+        jLabel38 = new javax.swing.JLabel();
+        jPanel21 = new javax.swing.JPanel();
+        jLabel40 = new javax.swing.JLabel();
+        ValueDGMAX = new javax.swing.JLabel();
         Page1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -328,7 +336,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         jPanel5 = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
         jTextField5 = new javax.swing.JTextField();
-        jLabel17 = new javax.swing.JLabel();
+        FilterFoodButton = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         ThucDonTable = new javax.swing.JTable();
@@ -395,6 +403,98 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         jLabel36 = new javax.swing.JLabel();
         jLabel34 = new javax.swing.JLabel();
         jLabel33 = new javax.swing.JLabel();
+
+        FilterFood.setBackground(new java.awt.Color(255, 255, 255));
+        FilterFood.setMinimumSize(new java.awt.Dimension(400, 300));
+
+        SilderFood.setBackground(new java.awt.Color(255, 255, 255));
+        SilderFood.setForeground(new java.awt.Color(99, 122, 48));
+        SilderFood.setMajorTickSpacing(10000);
+        SilderFood.setMaximum(2000000);
+        SilderFood.setValue(2000000);
+        SilderFood.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                SilderFoodStateChanged(evt);
+            }
+        });
+
+        KhoangDonGia.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        KhoangDonGia.setText("0 - 2000000");
+
+        jLabel38.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        jLabel38.setText("Đơn giá món ăn");
+
+        javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
+        jPanel18.setLayout(jPanel18Layout);
+        jPanel18Layout.setHorizontalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel18Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel38)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 170, Short.MAX_VALUE)
+                .addComponent(KhoangDonGia)
+                .addContainerGap())
+        );
+        jPanel18Layout.setVerticalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel18Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel38)
+                    .addComponent(KhoangDonGia))
+                .addContainerGap())
+        );
+
+        jLabel40.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        jLabel40.setText("0");
+
+        ValueDGMAX.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        ValueDGMAX.setText("2000000");
+
+        javax.swing.GroupLayout jPanel21Layout = new javax.swing.GroupLayout(jPanel21);
+        jPanel21.setLayout(jPanel21Layout);
+        jPanel21Layout.setHorizontalGroup(
+            jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel21Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel40)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(ValueDGMAX)
+                .addContainerGap())
+        );
+        jPanel21Layout.setVerticalGroup(
+            jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel21Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel40)
+                    .addComponent(ValueDGMAX))
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout FilterFoodLayout = new javax.swing.GroupLayout(FilterFood.getContentPane());
+        FilterFood.getContentPane().setLayout(FilterFoodLayout);
+        FilterFoodLayout.setHorizontalGroup(
+            FilterFoodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, FilterFoodLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(FilterFoodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(SilderFood, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel18, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel21, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        FilterFoodLayout.setVerticalGroup(
+            FilterFoodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(FilterFoodLayout.createSequentialGroup()
+                .addGap(74, 74, 74)
+                .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(SilderFood, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(120, Short.MAX_VALUE))
+        );
 
         setPreferredSize(new java.awt.Dimension(1170, 730));
 
@@ -785,9 +885,9 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                     .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                 .addComponent(NextPage1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout Page1Layout = new javax.swing.GroupLayout(Page1);
@@ -861,7 +961,12 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/filter.png"))); // NOI18N
+        FilterFoodButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/filter.png"))); // NOI18N
+        FilterFoodButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                FilterFoodButtonMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -873,7 +978,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                 .addGap(28, 28, 28)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel17)
+                .addComponent(FilterFoodButton)
                 .addGap(106, 106, 106))
         );
         jPanel4Layout.setVerticalGroup(
@@ -882,7 +987,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel17))
+                        .addComponent(FilterFoodButton))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -1613,12 +1718,15 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                 .addGap(106, 106, 106)
                 .addGroup(jPanel46Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel46Layout.createSequentialGroup()
+                        .addGroup(jPanel46Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel49, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(688, Short.MAX_VALUE))
+                    .addGroup(jPanel46Layout.createSequentialGroup()
                         .addComponent(BackPage4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(NextPage5, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel49, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(106, 106, 106))
+                        .addComponent(NextPage5, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(105, 105, 105))))
         );
         jPanel46Layout.setVerticalGroup(
             jPanel46Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1760,6 +1868,17 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         setValueTableMA(String.valueOf(LoaiMonAn.getSelectedItem()));
     }//GEN-LAST:event_LoaiMonAnActionPerformed
 
+    private void FilterFoodButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FilterFoodButtonMouseClicked
+        // TODO add your handling code here:
+        FilterFood.setVisible(true);
+    }//GEN-LAST:event_FilterFoodButtonMouseClicked
+
+    private void SilderFoodStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_SilderFoodStateChanged
+        // TODO add your handling code here:
+        KhoangDonGia.setText("0 - "+String.valueOf(SilderFood.getValue()));
+        ValueDGMAX.setText(String.valueOf(SilderFood.getValue()));
+    }//GEN-LAST:event_SilderFoodStateChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackPage2;
@@ -1770,6 +1889,9 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     private javax.swing.JTable DichVuTable;
     private javax.swing.JLabel DonBanToiThieu;
     private javax.swing.JLabel DonGiaBan;
+    private javax.swing.JDialog FilterFood;
+    private javax.swing.JLabel FilterFoodButton;
+    private javax.swing.JLabel KhoangDonGia;
     private javax.swing.JComboBox<String> LoaiMonAn;
     private javax.swing.JButton NextPage1;
     private javax.swing.JButton NextPage2;
@@ -1780,6 +1902,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     private javax.swing.JPanel Page2;
     private javax.swing.JPanel Page3;
     private javax.swing.JPanel Page4;
+    private javax.swing.JSlider SilderFood;
     private javax.swing.JLabel SoLuongBan;
     private javax.swing.JLabel TenChuRe;
     private javax.swing.JLabel TenCoDau;
@@ -1789,6 +1912,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     private javax.swing.JLabel TongTienBan;
     private javax.swing.JLabel TongTienDV;
     private javax.swing.JLabel TongTienHD;
+    private javax.swing.JLabel ValueDGMAX;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
@@ -1803,7 +1927,6 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
@@ -1826,7 +1949,9 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -1841,9 +1966,11 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
+    private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;
+    private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel22;
     private javax.swing.JPanel jPanel24;
     private javax.swing.JPanel jPanel25;

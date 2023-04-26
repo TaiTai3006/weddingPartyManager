@@ -78,7 +78,7 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
-        jLabel7.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Vector.png"))); // NOI18N
         jLabel7.setText("Tài khoản");
 
@@ -89,7 +89,7 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(TaiKhoanLayout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addComponent(jLabel7)
-                .addContainerGap(112, Short.MAX_VALUE))
+                .addContainerGap(111, Short.MAX_VALUE))
         );
         TaiKhoanLayout.setVerticalGroup(
             TaiKhoanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -111,7 +111,7 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/add.png"))); // NOI18N
         jLabel2.setText("Đặt tiệc cưới");
 
@@ -122,14 +122,14 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(DatTiecLayout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addComponent(jLabel2)
-                .addContainerGap(79, Short.MAX_VALUE))
+                .addContainerGap(82, Short.MAX_VALUE))
         );
         DatTiecLayout.setVerticalGroup(
             DatTiecLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(DatTiecLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addComponent(jLabel2)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         jPanel4.add(DatTiec, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 270, 56));
@@ -141,7 +141,7 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/TrangChu.png"))); // NOI18N
         jLabel1.setText("Trang chủ");
 
@@ -159,7 +159,7 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(TrangChuLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addComponent(jLabel1)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         jPanel4.add(TrangChu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 270, 56));
@@ -171,7 +171,7 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/DanhMuc.png"))); // NOI18N
         jLabel4.setText("Danh mục");
 
@@ -182,14 +182,14 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(DanhMucLayout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addComponent(jLabel4)
-                .addContainerGap(107, Short.MAX_VALUE))
+                .addContainerGap(108, Short.MAX_VALUE))
         );
         DanhMucLayout.setVerticalGroup(
             DanhMucLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(DanhMucLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addComponent(jLabel4)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         jPanel4.add(DanhMuc, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 270, 56));
@@ -201,7 +201,7 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/search.png"))); // NOI18N
         jLabel3.setText("Tra cứu tiệc");
 
@@ -212,7 +212,7 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(TraCuuLayout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addComponent(jLabel3)
-                .addContainerGap(88, Short.MAX_VALUE))
+                .addContainerGap(89, Short.MAX_VALUE))
         );
         TraCuuLayout.setVerticalGroup(
             TraCuuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -231,7 +231,7 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
-        jLabel5.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/ThongKe.png"))); // NOI18N
         jLabel5.setText("Thống kê");
 
@@ -249,7 +249,7 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(ThongKeLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addComponent(jLabel5)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         jPanel4.add(ThongKe, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 270, 56));
@@ -264,7 +264,7 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
-        jLabel6.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/NhanVien.png"))); // NOI18N
         jLabel6.setText("Nhân viên");
 
@@ -275,7 +275,7 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(NhanVienLayout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addComponent(jLabel6)
-                .addContainerGap(110, Short.MAX_VALUE))
+                .addContainerGap(109, Short.MAX_VALUE))
         );
         NhanVienLayout.setVerticalGroup(
             NhanVienLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -438,9 +438,9 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void DatTiecMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DatTiecMouseClicked
         // TODO add your handling code here:
-       BookingPartyWedding bpw = new BookingPartyWedding();
-        jDesktopPane1.removeAll();
-        jDesktopPane1.add(bpw).setVisible(true);
+       BookingPartyWedding bookingPartyWedding = new BookingPartyWedding();
+       jDesktopPane1.removeAll();
+       jDesktopPane1.add(bookingPartyWedding).setVisible(true);
     }//GEN-LAST:event_DatTiecMouseClicked
 
     private void NhanVienMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NhanVienMouseClicked
