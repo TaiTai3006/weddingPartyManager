@@ -333,7 +333,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         jLabel12 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        SearchFood = new javax.swing.JTextField();
         FilterFoodButton = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -916,11 +916,17 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
 
         jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Group 9.png"))); // NOI18N
 
-        jTextField5.setBackground(new java.awt.Color(238, 230, 226));
-        jTextField5.setBorder(null);
-        jTextField5.addActionListener(new java.awt.event.ActionListener() {
+        SearchFood.setBackground(new java.awt.Color(238, 230, 226));
+        SearchFood.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        SearchFood.setBorder(null);
+        SearchFood.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField5ActionPerformed(evt);
+                SearchFoodActionPerformed(evt);
+            }
+        });
+        SearchFood.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                SearchFoodPropertyChange(evt);
             }
         });
 
@@ -932,7 +938,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jLabel16)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                .addComponent(SearchFood, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -943,7 +949,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                 .addContainerGap(18, Short.MAX_VALUE))
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField5)
+                .addComponent(SearchFood)
                 .addContainerGap())
         );
 
@@ -1806,9 +1812,9 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         Page2.setVisible(true);
     }//GEN-LAST:event_NextPage1ActionPerformed
 
-    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+    private void SearchFoodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchFoodActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField5ActionPerformed
+    }//GEN-LAST:event_SearchFoodActionPerformed
 
     private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
         // TODO add your handling code here:
@@ -1865,6 +1871,15 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         ValueDGMAX.setText(String.valueOf(SilderFood.getValue()));
     }//GEN-LAST:event_SilderFoodStateChanged
 
+    private void SearchFoodPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_SearchFoodPropertyChange
+        // TODO add your handling code here:
+        System.out.println("view.BookingPartyWedding.SearchFoodPropertyChange()" + SearchFood.getText());
+        if (evt.getSource() == SearchFood && evt.getPropertyName().equals("text")) {
+            // Nếu là của JTextField và thuộc tính là "text" thì in ra giá trị mới của JTextField
+            System.out.println("New text value: " + evt.getNewValue());
+        }
+    }//GEN-LAST:event_SearchFoodPropertyChange
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackPage2;
@@ -1888,6 +1903,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     private javax.swing.JPanel Page2;
     private javax.swing.JPanel Page3;
     private javax.swing.JPanel Page4;
+    private javax.swing.JTextField SearchFood;
     private javax.swing.JSlider SilderFood;
     private javax.swing.JLabel SoLuongBan;
     private javax.swing.JLabel TenChuRe;
@@ -1983,7 +1999,6 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     // End of variables declaration//GEN-END:variables

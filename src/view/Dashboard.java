@@ -166,6 +166,9 @@ public class Dashboard extends javax.swing.JFrame {
 
         DanhMuc.setBackground(new java.awt.Color(251, 247, 244));
         DanhMuc.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                DanhMucMouseClicked(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 DanhMucMousePressed(evt);
             }
@@ -449,6 +452,14 @@ public class Dashboard extends javax.swing.JFrame {
         jDesktopPane1.add(sl).setVisible(true);
 
     }//GEN-LAST:event_NhanVienMouseClicked
+
+    private void DanhMucMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DanhMucMouseClicked
+        // TODO add your handling code here:
+        PartyHallTypeList partyHallTypeList = new PartyHallTypeList();
+        jDesktopPane1.removeAll();
+        jDesktopPane1.add(partyHallTypeList).setVisible(true);
+
+    }//GEN-LAST:event_DanhMucMouseClicked
 
     
     /**

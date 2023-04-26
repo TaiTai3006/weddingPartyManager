@@ -66,7 +66,6 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
 
         jTextField2.setBackground(new java.awt.Color(242, 242, 242));
         jTextField2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jTextField2.setForeground(new java.awt.Color(0, 0, 0));
         jTextField2.setText("PhuocPhan");
 
         jLabel7.setFont(new java.awt.Font("SansSerif", 2, 14)); // NOI18N
@@ -83,7 +82,6 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
 
         jTextField3.setBackground(new java.awt.Color(242, 242, 242));
         jTextField3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jTextField3.setForeground(new java.awt.Color(0, 0, 0));
         jTextField3.setText("7:00:00");
 
         jLabel9.setFont(new java.awt.Font("SansSerif", 2, 14)); // NOI18N
@@ -96,16 +94,13 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
 
         jTextField4.setBackground(new java.awt.Color(242, 242, 242));
         jTextField4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jTextField4.setForeground(new java.awt.Color(0, 0, 0));
         jTextField4.setText("21:00:00");
 
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Clock.png"))); // NOI18N
 
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Clock.png"))); // NOI18N
 
-        jButton2.setBackground(new java.awt.Color(255, 255, 255));
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(0, 0, 0));
         jButton2.setText("Hủy");
 
         jButton3.setBackground(new java.awt.Color(132, 70, 133));
@@ -239,7 +234,6 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
 
         jTextField1.setBackground(new java.awt.Color(238, 230, 226));
         jTextField1.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jTextField1.setForeground(new java.awt.Color(0, 0, 0));
         jTextField1.setText("Tìm kiếm....");
         jTextField1.setBorder(null);
 
@@ -250,7 +244,7 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
+                .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
