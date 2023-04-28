@@ -447,18 +447,17 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_DatTiecMouseClicked
 
     private void NhanVienMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NhanVienMouseClicked
-        DishList sl = new DishList();
+       StaffList staffList = new StaffList();
         jDesktopPane1.removeAll();
-        jDesktopPane1.add(sl).setVisible(true);
+        jDesktopPane1.add(staffList).setVisible(true);
 
     }//GEN-LAST:event_NhanVienMouseClicked
 
     private void DanhMucMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DanhMucMouseClicked
         // TODO add your handling code here:
-        PartyHallTypeList partyHallTypeList = new PartyHallTypeList();
+        ListTable listTable = new ListTable();
         jDesktopPane1.removeAll();
-        jDesktopPane1.add(partyHallTypeList).setVisible(true);
-
+        jDesktopPane1.add(listTable).setVisible(true);
     }//GEN-LAST:event_DanhMucMouseClicked
 
     

@@ -4,6 +4,8 @@
  */
 package view;
 
+import javax.swing.plaf.basic.BasicInternalFrameUI;
+
 
 
 /**
@@ -17,6 +19,9 @@ public class PartyHallList extends javax.swing.JInternalFrame {
      */
     public PartyHallList() {
         initComponents();
+        this.setBorder(javax.swing.BorderFactory.createEmptyBorder(-40, -5, 0, 0));
+        BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
+        ui.setNorthPane(null);
 //        ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource("/img/sảnh_java.jpg"));
 //        Image imgScale = icon.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
 //        ImageIcon scaledIcon = new ImageIcon(imgScale);
@@ -55,11 +60,11 @@ public class PartyHallList extends javax.swing.JInternalFrame {
         jTable1 = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(255, 255, 255));
-        setPreferredSize(new java.awt.Dimension(1172, 751));
+        setPreferredSize(new java.awt.Dimension(1180, 751));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setMinimumSize(new java.awt.Dimension(30, 30));
-        jPanel1.setPreferredSize(new java.awt.Dimension(1160, 715));
+        jPanel1.setPreferredSize(new java.awt.Dimension(1170, 730));
 
         jPanel_HallList_AddHall.setBackground(new java.awt.Color(255, 255, 255));
         jPanel_HallList_AddHall.setPreferredSize(new java.awt.Dimension(1153, 90));
@@ -224,7 +229,7 @@ public class PartyHallList extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel_HallList_AddHall, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 5, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jPanel_Content, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -259,7 +264,7 @@ public class PartyHallList extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 715, Short.MAX_VALUE))
         );
 
         pack();

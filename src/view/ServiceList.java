@@ -4,6 +4,8 @@
  */
 package view;
 
+import javax.swing.plaf.basic.BasicInternalFrameUI;
+
 /**
  *
  * @author macbookpro
@@ -15,6 +17,10 @@ public class ServiceList extends javax.swing.JInternalFrame {
      */
     public ServiceList() {
         initComponents();
+        initComponents();
+        this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
+        ui.setNorthPane(null);
     }
 
     /**
@@ -58,7 +64,6 @@ public class ServiceList extends javax.swing.JInternalFrame {
         jTable1 = new javax.swing.JTable();
 
         service_list_dialog.setLocation(new java.awt.Point(400, 400));
-        service_list_dialog.setPreferredSize(new java.awt.Dimension(400, 300));
 
         jPanel13.setLayout(new java.awt.BorderLayout());
 
@@ -197,6 +202,8 @@ public class ServiceList extends javax.swing.JInternalFrame {
             service_list_dialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
+
+        setPreferredSize(new java.awt.Dimension(1180, 730));
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
 

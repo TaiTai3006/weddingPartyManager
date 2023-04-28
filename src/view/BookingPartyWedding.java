@@ -12,6 +12,8 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
@@ -134,8 +136,8 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     public BookingPartyWedding() {
         arr = new ArrayList<test>();
         arr.add(new test("T001","a","Khai vị", 3000,"", false));
-        arr.add(new test("T002","b","Món chính", 2000,"", false));
-        arr.add(new test("T003","c","Tráng miệng", 1000,"", false));
+        arr.add(new test("T002","bánh xèo","Món chính", 2000,"", false));
+        arr.add(new test("T003","cà phê","Tráng miệng", 1000,"", false));
         arr.add(new test("T004","f","Món chính", 8000,"", false));
         arr.add(new test("T005","h","Tráng miệng", 99000,"", false));
         arr.add(new test("T006","o","Tráng miệng", 8000,"", false));
@@ -290,6 +292,8 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         jPanel21 = new javax.swing.JPanel();
         jLabel40 = new javax.swing.JLabel();
         ValueDGMAX = new javax.swing.JLabel();
+        ExitSearchFood = new javax.swing.JButton();
+        SaveSearchFood = new javax.swing.JButton();
         Page1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -470,16 +474,42 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
+        ExitSearchFood.setBackground(new java.awt.Color(69, 96, 134));
+        ExitSearchFood.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        ExitSearchFood.setForeground(new java.awt.Color(255, 255, 255));
+        ExitSearchFood.setText("Huỷ");
+        ExitSearchFood.setPreferredSize(new java.awt.Dimension(90, 40));
+        ExitSearchFood.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ExitSearchFoodActionPerformed(evt);
+            }
+        });
+
+        SaveSearchFood.setBackground(new java.awt.Color(132, 70, 133));
+        SaveSearchFood.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        SaveSearchFood.setForeground(new java.awt.Color(255, 255, 255));
+        SaveSearchFood.setText("Lưu");
+        SaveSearchFood.setPreferredSize(new java.awt.Dimension(90, 40));
+        SaveSearchFood.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SaveSearchFoodActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout FilterFoodLayout = new javax.swing.GroupLayout(FilterFood.getContentPane());
         FilterFood.getContentPane().setLayout(FilterFoodLayout);
         FilterFoodLayout.setHorizontalGroup(
             FilterFoodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, FilterFoodLayout.createSequentialGroup()
+            .addGroup(FilterFoodLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(FilterFoodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(SilderFood, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel18, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel21, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(FilterFoodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(SilderFood, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(FilterFoodLayout.createSequentialGroup()
+                        .addComponent(ExitSearchFood, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 188, Short.MAX_VALUE)
+                        .addComponent(SaveSearchFood, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         FilterFoodLayout.setVerticalGroup(
@@ -491,7 +521,11 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                 .addComponent(SilderFood, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(120, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
+                .addGroup(FilterFoodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(SaveSearchFood, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ExitSearchFood, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         setPreferredSize(new java.awt.Dimension(1170, 730));
@@ -924,11 +958,6 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                 SearchFoodActionPerformed(evt);
             }
         });
-        SearchFood.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                SearchFoodPropertyChange(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -952,6 +981,23 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                 .addComponent(SearchFood)
                 .addContainerGap())
         );
+
+        SearchFood.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
+                searchFood();
+            }
+            public void removeUpdate(DocumentEvent e) {
+                if(SearchFood.getText().equals("")){
+                    defaultTableModelMA.setRowCount(0);
+                    setValueTableMA(String.valueOf(LoaiMonAn.getSelectedItem()));
+                }else{
+                    searchFood();
+                }
+            }
+            public void insertUpdate(DocumentEvent e) {
+                searchFood();
+            }
+        });
 
         FilterFoodButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/filter.png"))); // NOI18N
         FilterFoodButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1801,7 +1847,16 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+   public void searchFood(){
+   defaultTableModelMA.setRowCount(0);
+   defaultTableModelMA = (DefaultTableModel)ThucDonTable.getModel();
+         int i = 1;
+        for(test x: arr){
+            if(x.loaimon.equals(LoaiMonAn.getSelectedItem())&& (x.maMA.toLowerCase().contains(SearchFood.getText().toLowerCase()) || x.tenmon.toLowerCase().contains(SearchFood.getText().toLowerCase())))
+            defaultTableModelMA.addRow(new Object[]{i++,x.maMA, x.tenmon, x.donGia, x.ghichu, x.chon});
+        }
+    }
+    
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
@@ -1871,14 +1926,23 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         ValueDGMAX.setText(String.valueOf(SilderFood.getValue()));
     }//GEN-LAST:event_SilderFoodStateChanged
 
-    private void SearchFoodPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_SearchFoodPropertyChange
+    private void SaveSearchFoodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveSearchFoodActionPerformed
         // TODO add your handling code here:
-        System.out.println("view.BookingPartyWedding.SearchFoodPropertyChange()" + SearchFood.getText());
-        if (evt.getSource() == SearchFood && evt.getPropertyName().equals("text")) {
-            // Nếu là của JTextField và thuộc tính là "text" thì in ra giá trị mới của JTextField
-            System.out.println("New text value: " + evt.getNewValue());
+         defaultTableModelMA = (DefaultTableModel)ThucDonTable.getModel();
+         int i = 1;
+         System.out.println(SilderFood.getValue());
+        for(test x: arr){
+            if(x.loaimon.equals(LoaiMonAn.getSelectedItem())&& x.donGia<= SilderFood.getValue())
+            defaultTableModelMA.addRow(new Object[]{i++,x.maMA, x.tenmon, x.donGia, x.ghichu, x.chon});
         }
-    }//GEN-LAST:event_SearchFoodPropertyChange
+        FilterFood.setVisible(false);
+
+    }//GEN-LAST:event_SaveSearchFoodActionPerformed
+
+    private void ExitSearchFoodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitSearchFoodActionPerformed
+        // TODO add your handling code here:
+        FilterFood.setVisible(false);
+    }//GEN-LAST:event_ExitSearchFoodActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1890,6 +1954,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     private javax.swing.JTable DichVuTable;
     private javax.swing.JLabel DonBanToiThieu;
     private javax.swing.JLabel DonGiaBan;
+    private javax.swing.JButton ExitSearchFood;
     private javax.swing.JDialog FilterFood;
     private javax.swing.JLabel FilterFoodButton;
     private javax.swing.JLabel KhoangDonGia;
@@ -1903,6 +1968,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     private javax.swing.JPanel Page2;
     private javax.swing.JPanel Page3;
     private javax.swing.JPanel Page4;
+    private javax.swing.JButton SaveSearchFood;
     private javax.swing.JTextField SearchFood;
     private javax.swing.JSlider SilderFood;
     private javax.swing.JLabel SoLuongBan;
