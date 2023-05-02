@@ -19,6 +19,10 @@ public class Dashboard extends javax.swing.JFrame {
     Color DefaultColor, ClickedColor;
     public Dashboard() {
         initComponents();
+        
+        setResizable(false);
+        setLocationRelativeTo(null);
+        
         DefaultColor = new Color(251,247,244);
         ClickedColor = new Color(238,230,226);
         
@@ -29,6 +33,7 @@ public class Dashboard extends javax.swing.JFrame {
         NhanVien.setBackground(DefaultColor);
         TaiKhoan.setBackground(DefaultColor);
         ThongKe.setBackground(DefaultColor);
+        
         
     }
 
@@ -437,6 +442,9 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void DangXuatMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DangXuatMousePressed
         // TODO add your handling code here:
+        Login login = new Login();
+        login.show();
+        dispose();
     }//GEN-LAST:event_DangXuatMousePressed
 
     private void DatTiecMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DatTiecMouseClicked
