@@ -7,6 +7,7 @@
         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[531, 490]"/>
         </Property>
+        <Property name="modal" type="boolean" value="true"/>
       </Properties>
 
       <Layout>
@@ -77,7 +78,7 @@
                           </Group>
                           <Component id="jLabel4" alignment="0" min="-2" pref="171" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="32" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
