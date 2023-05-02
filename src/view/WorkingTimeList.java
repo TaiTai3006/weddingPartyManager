@@ -59,6 +59,7 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
         jTextField1 = new javax.swing.JTextField();
 
         addForm.setMinimumSize(new java.awt.Dimension(531, 490));
+        addForm.setModal(true);
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -152,7 +153,7 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -310,8 +311,8 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
 
     private void btnAddWorkingTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddWorkingTimeActionPerformed
         // TODO add your handling code here:
-        addForm.setVisible(true);
         addForm.setLocationRelativeTo(null);
+        addForm.setVisible(true);
     }//GEN-LAST:event_btnAddWorkingTimeActionPerformed
 
 

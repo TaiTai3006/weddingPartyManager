@@ -59,6 +59,7 @@ public class StaffList extends javax.swing.JInternalFrame {
         txtSearch = new javax.swing.JTextField();
 
         addForm.setMinimumSize(new java.awt.Dimension(453, 383));
+        addForm.setModal(true);
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -92,7 +93,7 @@ public class StaffList extends javax.swing.JInternalFrame {
         rdbtnStaff.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
         rdbtnStaff.setText("Staff");
 
-        btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         btnCancel.setText("Hủy");
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -101,7 +102,7 @@ public class StaffList extends javax.swing.JInternalFrame {
         });
 
         jButton2.setBackground(new java.awt.Color(132, 70, 133));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Thêm ");
 
@@ -329,8 +330,8 @@ public class StaffList extends javax.swing.JInternalFrame {
 
     private void btnThemNVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemNVActionPerformed
         // TODO add your handling code here:
-        addForm.setVisible(true);
         addForm.setLocationRelativeTo(null);
+        addForm.setVisible(true);
     }//GEN-LAST:event_btnThemNVActionPerformed
 
     private void btnThemNVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThemNVMouseClicked
