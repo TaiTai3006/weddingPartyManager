@@ -19,6 +19,10 @@ public class Dashboard extends javax.swing.JFrame {
     Color DefaultColor, ClickedColor;
     public Dashboard() {
         initComponents();
+        
+        setResizable(false);
+        setLocationRelativeTo(null);
+        
         DefaultColor = new Color(251,247,244);
         ClickedColor = new Color(238,230,226);
         
@@ -29,6 +33,7 @@ public class Dashboard extends javax.swing.JFrame {
         NhanVien.setBackground(DefaultColor);
         TaiKhoan.setBackground(DefaultColor);
         ThongKe.setBackground(DefaultColor);
+        
         
     }
 
@@ -437,6 +442,9 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void DangXuatMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DangXuatMousePressed
         // TODO add your handling code here:
+        Login login = new Login();
+        login.show();
+        dispose();
     }//GEN-LAST:event_DangXuatMousePressed
 
     private void DatTiecMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DatTiecMouseClicked
@@ -447,18 +455,17 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_DatTiecMouseClicked
 
     private void NhanVienMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NhanVienMouseClicked
-        DishList sl = new DishList();
+       StaffList staffList = new StaffList();
         jDesktopPane1.removeAll();
-        jDesktopPane1.add(sl).setVisible(true);
+        jDesktopPane1.add(staffList).setVisible(true);
 
     }//GEN-LAST:event_NhanVienMouseClicked
 
     private void DanhMucMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DanhMucMouseClicked
         // TODO add your handling code here:
-        PartyHallTypeList partyHallTypeList = new PartyHallTypeList();
+        ListTable listTable = new ListTable();
         jDesktopPane1.removeAll();
-        jDesktopPane1.add(partyHallTypeList).setVisible(true);
-
+        jDesktopPane1.add(listTable).setVisible(true);
     }//GEN-LAST:event_DanhMucMouseClicked
 
     

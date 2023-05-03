@@ -4,6 +4,7 @@
  */
 package view;
 
+import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -17,6 +18,10 @@ public class DishList extends javax.swing.JInternalFrame {
      */
     public DishList() {
         initComponents();
+        initComponents();
+        this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
+        ui.setNorthPane(null);
         DefaultTableModel defaulttable = new DefaultTableModel();
         table_dish_lish.setModel(defaulttable);
         defaulttable.addColumn("STT");
@@ -70,7 +75,6 @@ public class DishList extends javax.swing.JInternalFrame {
         table_dish_lish = new javax.swing.JTable();
 
         dish_list_dialog.setLocation(new java.awt.Point(300, 300));
-        dish_list_dialog.setPreferredSize(new java.awt.Dimension(400, 400));
 
         jPanel13.setLayout(new java.awt.BorderLayout());
 
@@ -218,6 +222,8 @@ public class DishList extends javax.swing.JInternalFrame {
             dish_list_dialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
+
+        setPreferredSize(new java.awt.Dimension(1180, 730));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
