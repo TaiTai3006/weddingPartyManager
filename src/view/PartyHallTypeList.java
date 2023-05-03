@@ -3,18 +3,77 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package view;
+import java.util.ArrayList;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
  *
  * @author macbookpro
  */
 public class PartyHallTypeList extends javax.swing.JInternalFrame {
+    private DefaultTableModel defaultTableModelHallType;
+    private ArrayList<HallType> arr;
+    
+    public class HallType{
+        private String maLoaiSanh;
+        private String loaiSanh;
+        private long donGiaToiThieu;
+        private boolean chon;
 
+        public HallType(String maLoaiSanh, String loaiSanh, long donGiaToiThieu, boolean chon) {
+            this.loaiSanh = loaiSanh;
+            this.maLoaiSanh = maLoaiSanh;
+            this.donGiaToiThieu = donGiaToiThieu;
+            this.chon = chon;
+        }
+
+        public String getLoaiSanh() {
+            return loaiSanh;
+        }
+
+        public long getDonGiaTT() {
+            return donGiaToiThieu;
+        }
+
+        public boolean isChon() {
+            return chon;
+        }
+
+        public void setLoaiSanh(String loaiSanh) {
+            this.loaiSanh = loaiSanh;
+        }
+
+        public void setDonGiaTT(long donGiaTT) {
+            this.donGiaToiThieu = donGiaTT;
+        }
+
+        public void setChon(boolean chon) {
+            this.chon = chon;
+        }
+    }
     /**
      * Creates new form PartyHallTypeList
      */
     public PartyHallTypeList() {
+        arr = new ArrayList<HallType>();
+        arr.add(new HallType("S001", "A", 3000, false));
+        arr.add(new HallType("S002","B", 5000, false));
+        arr.add(new HallType("S003","C",5000, false));
+        arr.add(new HallType("S004","D", 3000, false));
+        arr.add(new HallType("S005","E", 5000, false));
         initComponents();
+        this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
+        ui.setNorthPane(null);
+        defaultTableModelHallType = (DefaultTableModel)Table_Hall.getModel();
+        int i = 0;
+        for(HallType x: arr){
+            defaultTableModelHallType.addRow(new Object[]{++i, x.loaiSanh, x.donGiaToiThieu,x.chon});
+        }
     }
 
     /**
@@ -47,9 +106,6 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         Table_Hall = new javax.swing.JTable();
-        jPanel4 = new javax.swing.JPanel();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
 
         Add_HallType_List_Dialog.setAlwaysOnTop(true);
 
@@ -121,8 +177,9 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(153, 204, 255));
+        jButton2.setBackground(new java.awt.Color(132, 70, 133));
         jButton2.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Thêm");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -154,9 +211,7 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
                     .addGroup(Add_HallType_List_DialogLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(Add_HallType_List_DialogLayout.createSequentialGroup()
-                        .addGap(0, 0, 0)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         Add_HallType_List_DialogLayout.setVerticalGroup(
@@ -169,11 +224,12 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
                 .addGap(0, 18, Short.MAX_VALUE))
         );
 
+        setBorder(null);
         setPreferredSize(new java.awt.Dimension(1170, 858));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setMinimumSize(new java.awt.Dimension(30, 30));
-        jPanel1.setPreferredSize(new java.awt.Dimension(1158, 822));
+        jPanel1.setPreferredSize(new java.awt.Dimension(1158, 694));
 
         jPanel_HallList_AddHall.setBackground(new java.awt.Color(255, 255, 255));
         jPanel_HallList_AddHall.setPreferredSize(new java.awt.Dimension(1158, 90));
@@ -206,7 +262,7 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
             .addGroup(jPanel_HallList_AddHallLayout.createSequentialGroup()
                 .addGap(100, 100, 100)
                 .addComponent(HallList, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 297, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(Button_AddHall, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(100, 100, 100))
         );
@@ -232,7 +288,6 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
 
         jTextField7.setBackground(new java.awt.Color(238, 230, 226));
         jTextField7.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jTextField7.setText("Tìm kiếm...");
         jTextField7.setBorder(null);
         jTextField7.setMinimumSize(new java.awt.Dimension(1, 20));
         jTextField7.setPreferredSize(new java.awt.Dimension(56, 20));
@@ -302,9 +357,16 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
             Class[] types = new Class [] {
                 java.lang.Long.class, java.lang.String.class, java.lang.Long.class, java.lang.Boolean.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, true
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         Table_Hall.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -317,50 +379,16 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
         Table_Hall.setShowGrid(false);
         jScrollPane1.setViewportView(Table_Hall);
 
-        jButton4.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        jButton4.setText("Sửa");
-
-        jButton5.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        jButton5.setText("Xóa");
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(jButton4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
-                .addComponent(jButton5)
-                .addGap(20, 20, 20))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(19, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
-                    .addComponent(jButton5))
-                .addGap(19, 19, 19))
-        );
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(97, 97, 97))
+            .addComponent(jPanel_Content, javax.swing.GroupLayout.DEFAULT_SIZE, 1427, Short.MAX_VALUE)
+            .addComponent(jPanel_HallList_AddHall, javax.swing.GroupLayout.DEFAULT_SIZE, 1427, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(100, 100, 100)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 958, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPanel_Content, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel_HallList_AddHall, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(100, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -370,27 +398,11 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jPanel_Content, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(104, 104, 104)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(10, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -427,8 +439,6 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
     private javax.swing.JTable Table_Hall;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -436,7 +446,6 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel_Content;
     private javax.swing.JPanel jPanel_HallList_AddHall;
     private javax.swing.JPanel jPanel_SearchContent2;

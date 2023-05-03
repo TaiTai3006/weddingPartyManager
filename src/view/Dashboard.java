@@ -460,7 +460,7 @@ public class Dashboard extends javax.swing.JFrame {
        jDesktopPane1.add(staffList).setVisible(true);
 
 //    PartyHallList staffList = new PartyHallList();
-//    PartyHallTypeList staffList = new PartyHallTypeList();
+////    PartyHallTypeList staffList = new PartyHallTypeList();
 //       jDesktopPane1.removeAll();
 //       jDesktopPane1.add(staffList).setVisible(true);
     }//GEN-LAST:event_NhanVienMouseClicked
