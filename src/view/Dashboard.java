@@ -204,6 +204,9 @@ public class Dashboard extends javax.swing.JFrame {
 
         TraCuu.setBackground(new java.awt.Color(251, 247, 244));
         TraCuu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TraCuuMouseClicked(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 TraCuuMousePressed(evt);
             }
@@ -467,6 +470,13 @@ public class Dashboard extends javax.swing.JFrame {
         jDesktopPane1.removeAll();
         jDesktopPane1.add(listTable).setVisible(true);
     }//GEN-LAST:event_DanhMucMouseClicked
+
+    private void TraCuuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TraCuuMouseClicked
+        // TODO add your handling code here:
+        WeddingPartyLookup lookup = new WeddingPartyLookup();
+        jDesktopPane1.removeAll();
+        jDesktopPane1.add(lookup).setVisible(true);
+    }//GEN-LAST:event_TraCuuMouseClicked
 
     
     /**
