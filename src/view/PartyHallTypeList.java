@@ -4,8 +4,6 @@
  */
 package view;
 
-import javax.swing.plaf.basic.BasicInternalFrameUI;
-
 /**
  *
  * @author macbookpro
@@ -17,10 +15,6 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
      */
     public PartyHallTypeList() {
         initComponents();
-        initComponents();
-        this.setBorder(javax.swing.BorderFactory.createEmptyBorder(-40, -5, 0, 0));
-        BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
-        ui.setNorthPane(null);
     }
 
     /**
@@ -95,7 +89,7 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 189, Short.MAX_VALUE))
+                        .addGap(0, 223, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -136,7 +130,7 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(302, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton2)
@@ -156,20 +150,23 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
         Add_HallType_List_DialogLayout.setHorizontalGroup(
             Add_HallType_List_DialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Add_HallType_List_DialogLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(Add_HallType_List_DialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(Add_HallType_List_DialogLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(Add_HallType_List_DialogLayout.createSequentialGroup()
+                        .addGap(0, 0, 0)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         Add_HallType_List_DialogLayout.setVerticalGroup(
             Add_HallType_List_DialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Add_HallType_List_DialogLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 47, Short.MAX_VALUE))
+                .addGap(0, 18, Short.MAX_VALUE))
         );
 
         setPreferredSize(new java.awt.Dimension(1170, 858));
@@ -412,8 +409,9 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void Button_AddHallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_AddHallActionPerformed
-        Add_HallType_List_Dialog.setSize(500,530);
-        Add_HallType_List_Dialog.setVisible(true);        // TODO add your handling code here:
+        Add_HallType_List_Dialog.setSize(500,370);
+        Add_HallType_List_Dialog.setLocationRelativeTo(null);
+        Add_HallType_List_Dialog.setVisible(true);      // TODO add your handling code here:
     }//GEN-LAST:event_Button_AddHallActionPerformed
 
     private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
