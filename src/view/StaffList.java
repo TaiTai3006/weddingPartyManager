@@ -183,7 +183,7 @@ public class StaffList extends javax.swing.JInternalFrame {
 
         jLabel2.setFont(new java.awt.Font("Arial", 1, 35)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(69, 96, 134));
-        jLabel2.setText("~Danh Sach Nhan Vien~");
+        jLabel2.setText("DANH SÁCH NHÂN VIÊN");
 
         btnThemNV.setBackground(new java.awt.Color(132, 70, 133));
         btnThemNV.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N

@@ -237,7 +237,7 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
         HallList.setFont(new java.awt.Font("Arial", 1, 35)); // NOI18N
         HallList.setForeground(new java.awt.Color(69, 96, 134));
         HallList.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        HallList.setText("~Danh Mục Loại Sảnh~");
+        HallList.setText("DANH SÁCH LOẠI SẢNH");
         HallList.setToolTipText("");
         HallList.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         HallList.setVerifyInputWhenFocusTarget(false);
@@ -261,7 +261,7 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
             jPanel_HallList_AddHallLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_HallList_AddHallLayout.createSequentialGroup()
                 .addGap(100, 100, 100)
-                .addComponent(HallList, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(HallList)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(Button_AddHall, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(100, 100, 100))

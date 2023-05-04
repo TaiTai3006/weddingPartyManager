@@ -318,7 +318,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="86" green="60" red="45" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="~Danh m&#x1ee5;c m&#xf3;n &#x103;n~"/>
+            <Property name="text" type="java.lang.String" value="DANH S&#xc1;CH M&#xd3;N &#x102;N"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="add_btn">

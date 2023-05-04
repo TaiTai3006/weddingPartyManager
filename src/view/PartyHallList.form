@@ -366,7 +366,7 @@
                   <Color blue="86" green="60" red="45" type="rgb"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="2"/>
-                <Property name="text" type="java.lang.String" value="~Danh M&#x1ee5;c S&#x1ea3;nh~"/>
+                <Property name="text" type="java.lang.String" value="DANH S&#xc1;CH S&#x1ea2;NH"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="verifyInputWhenFocusTarget" type="boolean" value="false"/>

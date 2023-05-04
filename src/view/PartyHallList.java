@@ -335,7 +335,7 @@ public class PartyHallList extends javax.swing.JInternalFrame {
         HallList.setFont(new java.awt.Font("Arial", 1, 35)); // NOI18N
         HallList.setForeground(new java.awt.Color(69, 96, 134));
         HallList.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        HallList.setText("~Danh Mục Sảnh~");
+        HallList.setText("DANH SÁCH SẢNH");
         HallList.setToolTipText("");
         HallList.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         HallList.setVerifyInputWhenFocusTarget(false);
