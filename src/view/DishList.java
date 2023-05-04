@@ -4,6 +4,9 @@
  */
 package view;
 
+import java.util.ArrayList;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
 
@@ -12,6 +15,43 @@ import javax.swing.table.DefaultTableModel;
  * @author macbookpro
  */
 public class DishList extends javax.swing.JInternalFrame {
+    class MonAn{
+        String ma;
+        String Ten;
+        String DonGia;
+        String LoaiMon;
+        String TuyChon;
+
+        public MonAn(String ma, String Ten, String DonGia, String LoaiMon, String TuyChon) {
+            this.ma = ma;
+            this.Ten = Ten;
+            this.DonGia = DonGia;
+            this.LoaiMon = LoaiMon;
+            this.TuyChon = TuyChon;
+        }
+        
+        public String getMa() {
+            return ma;
+        }
+
+        public String getTen() {
+            return Ten;
+        }
+
+        public String getDonGia() {
+            return DonGia;
+        }
+
+        public String getLoaiMon() {
+            return LoaiMon;
+        }
+
+        public String getTuyChon() {
+            return TuyChon;
+        }
+        
+        
+    }
 
     /**
      * Creates new form DishList
@@ -22,6 +62,16 @@ public class DishList extends javax.swing.JInternalFrame {
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
         ui.setNorthPane(null);
+        ArrayList<MonAn> items = new ArrayList<>();
+
+        items.add(new MonAn("ma01","goi cuon", "mon chinh", "20000", ""));
+        items.add(new MonAn("ma02","banh bao", "mon chinh", "20000", ""));
+        items.add(new MonAn("ma03","nho", "trang mieng", "20000", ""));
+        items.add(new MonAn("ma04","sup cua", "Khai vi", "20000", ""));
+        items.add(new MonAn("ma05","ga nau nam", "mon chinh", "20000", ""));
+        items.add(new MonAn("ma06","heo quay", "mon chinh", "50000", ""));
+        ArrayList<MonAn> filteredItems = new ArrayList<>(items);
+        System.out.print(filteredItems);
         DefaultTableModel defaulttable = new DefaultTableModel();
         table_dish_lish.setModel(defaulttable);
         defaulttable.addColumn("STT");
@@ -29,8 +79,47 @@ public class DishList extends javax.swing.JInternalFrame {
         defaulttable.addColumn("Loai mon an");
         defaulttable.addColumn("Don gia");
         defaulttable.addColumn("Tuy chon");
-        defaulttable.addRow(new Object[]{"1", "goi cuon", "mon chinh", "20000", ""});
-        defaulttable.addRow(new Object[]{"2", "ot chuong", "mon phu", "2", ""});
+        for(MonAn row : items){
+            defaulttable.addRow(new Object[]{row.getMa(),row.getTen(),row.getLoaiMon(),row.getDonGia(),row.getTuyChon()});
+        }
+            search_field.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                String filterText = search_field.getText().toLowerCase();
+                filteredItems.clear();
+                for (MonAn item : items) {
+                    if (item.getMa().toLowerCase().contains(filterText) || item.getTen().toLowerCase().contains(filterText)) {
+                        filteredItems.add(item);
+                    }
+                }
+                DefaultTableModel model = (DefaultTableModel) table_dish_lish.getModel();
+                model.setRowCount(0);
+                for (MonAn row : filteredItems) {
+                    model.addRow(new Object[]{row.getMa(),row.getTen(),row.getLoaiMon(),row.getDonGia(),row.getTuyChon()});
+                } 
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                String filterText = search_field.getText().toLowerCase();
+                filteredItems.clear();
+                for (MonAn item : items) {
+                    if (item.getMa().toLowerCase().contains(filterText) || item.getTen().toLowerCase().contains(filterText)) {
+                        filteredItems.add(item);
+                    }
+                }
+                DefaultTableModel model = (DefaultTableModel) table_dish_lish.getModel();
+                model.setRowCount(0);
+                for (MonAn row : filteredItems) {
+                    model.addRow(new Object[]{row.getMa(),row.getTen(),row.getLoaiMon(),row.getDonGia(),row.getTuyChon()});
+                }  
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                
+            }
+        });
     }
 
     /**
@@ -249,9 +338,9 @@ public class DishList extends javax.swing.JInternalFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(94, 94, 94)
                 .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 498, Short.MAX_VALUE)
-                .addComponent(add_btn)
-                .addGap(26, 26, 26))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 338, Short.MAX_VALUE)
+                .addComponent(add_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(100, 100, 100))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -259,7 +348,7 @@ public class DishList extends javax.swing.JInternalFrame {
                 .addGap(14, 14, 14)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(add_btn))
+                    .addComponent(add_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(35, Short.MAX_VALUE))
         );
 
@@ -304,14 +393,14 @@ public class DishList extends javax.swing.JInternalFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(search_field, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
+            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
             .addComponent(search_field, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
@@ -321,9 +410,9 @@ public class DishList extends javax.swing.JInternalFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel22)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 692, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 593, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25))
+                .addGap(100, 100, 100))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -331,7 +420,7 @@ public class DishList extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel22))
-                .addContainerGap(106, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jPanel7.add(jPanel1, java.awt.BorderLayout.PAGE_START);
@@ -342,11 +431,11 @@ public class DishList extends javax.swing.JInternalFrame {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 25, Short.MAX_VALUE)
+            .addGap(0, 100, Short.MAX_VALUE)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 317, Short.MAX_VALUE)
+            .addGap(0, 423, Short.MAX_VALUE)
         );
 
         jPanel7.add(jPanel6, java.awt.BorderLayout.LINE_END);
@@ -403,7 +492,7 @@ public class DishList extends javax.swing.JInternalFrame {
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1033, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 958, Short.MAX_VALUE)
                 .addGap(0, 0, 0))
         );
         jPanel9Layout.setVerticalGroup(
