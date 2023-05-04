@@ -274,7 +274,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="100" max="-2" attributes="0"/>
-                      <Component id="HallList" min="-2" pref="401" max="-2" attributes="0"/>
+                      <Component id="HallList" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="Button_AddHall" min="-2" pref="260" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="100" max="-2" attributes="0"/>
@@ -304,7 +304,7 @@
                   <Color blue="86" green="60" red="45" type="rgb"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="2"/>
-                <Property name="text" type="java.lang.String" value="~Danh M&#x1ee5;c Lo&#x1ea1;i S&#x1ea3;nh~"/>
+                <Property name="text" type="java.lang.String" value="DANH S&#xc1;CH LO&#x1ea0;I S&#x1ea2;NH"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="verifyInputWhenFocusTarget" type="boolean" value="false"/>

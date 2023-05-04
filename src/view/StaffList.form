@@ -319,7 +319,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="86" green="60" red="45" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="~Danh Sach Nhan Vien~"/>
+            <Property name="text" type="java.lang.String" value="DANH S&#xc1;CH NH&#xc2;N VI&#xca;N"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="btnThemNV">

@@ -318,7 +318,7 @@ public class DishList extends javax.swing.JInternalFrame {
 
         jLabel12.setFont(new java.awt.Font("Arial", 1, 35)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(69, 96, 134));
-        jLabel12.setText("~Danh mục món ăn~");
+        jLabel12.setText("DANH SÁCH MÓN ĂN");
 
         add_btn.setBackground(new java.awt.Color(132, 70, 133));
         add_btn.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
