@@ -16,13 +16,15 @@ import javax.swing.table.DefaultTableModel;
  */
 public class DishList extends javax.swing.JInternalFrame {
     class MonAn{
+        int stt;
         String ma;
         String Ten;
         String DonGia;
         String LoaiMon;
         String TuyChon;
 
-        public MonAn(String ma, String Ten, String DonGia, String LoaiMon, String TuyChon) {
+        public MonAn(int stt,String ma, String Ten, String DonGia, String LoaiMon, String TuyChon) {
+            this.stt = stt;
             this.ma = ma;
             this.Ten = Ten;
             this.DonGia = DonGia;
@@ -32,6 +34,10 @@ public class DishList extends javax.swing.JInternalFrame {
         
         public String getMa() {
             return ma;
+        }
+
+        public int getStt() {
+            return stt;
         }
 
         public String getTen() {
@@ -64,12 +70,12 @@ public class DishList extends javax.swing.JInternalFrame {
         ui.setNorthPane(null);
         ArrayList<MonAn> items = new ArrayList<>();
 
-        items.add(new MonAn("ma01","goi cuon", "mon chinh", "20000", ""));
-        items.add(new MonAn("ma02","banh bao", "mon chinh", "20000", ""));
-        items.add(new MonAn("ma03","nho", "trang mieng", "20000", ""));
-        items.add(new MonAn("ma04","sup cua", "Khai vi", "20000", ""));
-        items.add(new MonAn("ma05","ga nau nam", "mon chinh", "20000", ""));
-        items.add(new MonAn("ma06","heo quay", "mon chinh", "50000", ""));
+        items.add(new MonAn(1,"ma01","goi cuon", "mon chinh", "20000", ""));
+        items.add(new MonAn(2,"ma02","banh bao", "mon chinh", "20000", ""));
+        items.add(new MonAn(3,"ma03","nho", "trang mieng", "20000", ""));
+        items.add(new MonAn(4,"ma04","sup cua", "Khai vi", "20000", ""));
+        items.add(new MonAn(5,"ma05","ga nau nam", "mon chinh", "20000", ""));
+        items.add(new MonAn(6,"ma06","heo quay", "mon chinh", "50000", ""));
         ArrayList<MonAn> filteredItems = new ArrayList<>(items);
         
         DefaultTableModel defaulttable = new DefaultTableModel();
@@ -79,12 +85,11 @@ public class DishList extends javax.swing.JInternalFrame {
         defaulttable.addColumn("Loai mon an");
         defaulttable.addColumn("Don gia");
         defaulttable.addColumn("Tuy chon");
-        int count = 1;
         for(MonAn row : items){
-            defaulttable.addRow(new Object[]{count++,row.getMa(),row.getTen(),row.getLoaiMon(),row.getDonGia(),row.getTuyChon()});
+            defaulttable.addRow(new Object[]{row.getStt(),row.getMa(),row.getTen(),row.getLoaiMon(),row.getDonGia(),row.getTuyChon()});
         }
             search_field.getDocument().addDocumentListener(new DocumentListener() {
-            int count1 = 1;
+
             @Override
             public void insertUpdate(DocumentEvent e) {
                 String filterText = search_field.getText().toLowerCase();
@@ -97,7 +102,7 @@ public class DishList extends javax.swing.JInternalFrame {
                 DefaultTableModel model = (DefaultTableModel) table_dish_lish.getModel();
                 model.setRowCount(0);
                 for (MonAn row : filteredItems) {
-                    model.addRow(new Object[]{count1++,row.getMa(),row.getTen(),row.getLoaiMon(),row.getDonGia(),row.getTuyChon()});
+                    model.addRow(new Object[]{row.getStt(),row.getMa(),row.getTen(),row.getLoaiMon(),row.getDonGia(),row.getTuyChon()});
                 } 
             }
 
@@ -113,7 +118,7 @@ public class DishList extends javax.swing.JInternalFrame {
                 DefaultTableModel model = (DefaultTableModel) table_dish_lish.getModel();
                 model.setRowCount(0);
                 for (MonAn row : filteredItems) {
-                    model.addRow(new Object[]{count1++,row.getMa(),row.getTen(),row.getLoaiMon(),row.getDonGia(),row.getTuyChon()});
+                    model.addRow(new Object[]{row.getStt(),row.getMa(),row.getTen(),row.getLoaiMon(),row.getDonGia(),row.getTuyChon()});
                 }  
             }
 

@@ -16,12 +16,14 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ServiceList extends javax.swing.JInternalFrame {
     class DichVu{
+        int stt;
         String MaDV;
         String TenDichVu;
         String DonGia;
         String TuyChon;
 
-        public DichVu(String MaDV, String TenDichVu, String DonGia, String TuyChon) {
+        public DichVu(int stt, String MaDV, String TenDichVu, String DonGia, String TuyChon) {
+            this.stt = stt;
             this.MaDV = MaDV;
             this.TenDichVu = TenDichVu;
             this.DonGia = DonGia;
@@ -30,6 +32,10 @@ public class ServiceList extends javax.swing.JInternalFrame {
 
         public String getMaDV() {
             return MaDV;
+        }
+
+        public int getStt() {
+            return stt;
         }
 
         public String getTenDichVu() {
@@ -55,12 +61,12 @@ public class ServiceList extends javax.swing.JInternalFrame {
         BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
         ui.setNorthPane(null);
         ArrayList<DichVu> items = new ArrayList<>();
-        items.add(new DichVu("DV01", "Ca nhac","500000",""));
-        items.add(new DichVu("DV02", "Hoa cuoi","300000",""));
-        items.add(new DichVu("DV03", "Don dep","200000",""));
-        items.add(new DichVu("DV04", "Banh kem","500000",""));
-        items.add(new DichVu("DV05", "San khau","500000",""));
-        items.add(new DichVu("DV06", "Mua lua","500000",""));
+        items.add(new DichVu(1,"DV01", "Ca nhac","500000",""));
+        items.add(new DichVu(2,"DV02", "Hoa cuoi","300000",""));
+        items.add(new DichVu(3,"DV03", "Don dep","200000",""));
+        items.add(new DichVu(4,"DV04", "Banh kem","500000",""));
+        items.add(new DichVu(5,"DV05", "San khau","500000",""));
+        items.add(new DichVu(6,"DV06", "Mua lua","500000",""));
         ArrayList<DichVu> filteredItems = new ArrayList<>(items);
         DefaultTableModel defaulttable = new DefaultTableModel();
         table_service_list.setModel(defaulttable);
@@ -68,13 +74,10 @@ public class ServiceList extends javax.swing.JInternalFrame {
         defaulttable.addColumn("Ma dich vu");
         defaulttable.addColumn("Ten dich vu");
         defaulttable.addColumn("Don gia");
-        defaulttable.addColumn("Tuy chon");
-        int count = 1;
         for(DichVu row : items){
-            defaulttable.addRow(new Object[]{count++, row.getMaDV(),row.getTenDichVu(),row.getDonGia(),row.getTuyChon()});
+            defaulttable.addRow(new Object[]{row.getStt(), row.getMaDV(),row.getTenDichVu(),row.getDonGia(),row.getTuyChon()});
         }
             search_field.getDocument().addDocumentListener(new DocumentListener() {
-            int count1 = 1;
             @Override
             public void insertUpdate(DocumentEvent e) {
                 String filterText = search_field.getText().toLowerCase();
@@ -87,10 +90,9 @@ public class ServiceList extends javax.swing.JInternalFrame {
                 DefaultTableModel model = (DefaultTableModel) table_service_list.getModel();
                 model.setRowCount(0);
                 for (DichVu row : filteredItems) {
-                    model.addRow(new Object[]{count1++, row.getMaDV(),row.getTenDichVu(),row.getDonGia(),row.getTuyChon()});
+                    model.addRow(new Object[]{row.getStt(), row.getMaDV(),row.getTenDichVu(),row.getDonGia(),row.getTuyChon()});
                 } 
             }
-            int count2 = 1;
             @Override
             public void removeUpdate(DocumentEvent e) {
                 String filterText = search_field.getText().toLowerCase();
@@ -103,7 +105,7 @@ public class ServiceList extends javax.swing.JInternalFrame {
                 DefaultTableModel model = (DefaultTableModel) table_service_list.getModel();
                 model.setRowCount(0);
                 for (DichVu row : filteredItems) {
-                    model.addRow(new Object[]{count2++, row.getMaDV(),row.getTenDichVu(),row.getDonGia(),row.getTuyChon()});
+                    model.addRow(new Object[]{row.getStt(), row.getMaDV(),row.getTenDichVu(),row.getDonGia(),row.getTuyChon()});
                 }  
             }
 
