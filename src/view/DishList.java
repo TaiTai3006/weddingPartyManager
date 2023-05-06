@@ -19,16 +19,16 @@ public class DishList extends javax.swing.JInternalFrame {
         int stt;
         String ma;
         String Ten;
-        String DonGia;
         String LoaiMon;
+        String DonGia;
         String TuyChon;
 
         public MonAn(int stt,String ma, String Ten, String DonGia, String LoaiMon, String TuyChon) {
             this.stt = stt;
             this.ma = ma;
             this.Ten = Ten;
-            this.DonGia = DonGia;
             this.LoaiMon = LoaiMon;
+            this.DonGia = DonGia;
             this.TuyChon = TuyChon;
         }
         
@@ -79,11 +79,12 @@ public class DishList extends javax.swing.JInternalFrame {
         ArrayList<MonAn> filteredItems = new ArrayList<>(items);
         
         DefaultTableModel defaulttable = new DefaultTableModel();
-        table_dish_lish.setModel(defaulttable);
+        table_dish_list.setModel(defaulttable);
         defaulttable.addColumn("STT");
-        defaulttable.addColumn("Ten mon an");
-        defaulttable.addColumn("Loai mon an");
-        defaulttable.addColumn("Don gia");
+        defaulttable.addColumn("Mã món ăn");
+        defaulttable.addColumn("Tên món ăn");
+        defaulttable.addColumn("Loại món ăn");
+        defaulttable.addColumn("Đơn giá");
         defaulttable.addColumn("Tuy chon");
         for(MonAn row : items){
             defaulttable.addRow(new Object[]{row.getStt(),row.getMa(),row.getTen(),row.getLoaiMon(),row.getDonGia(),row.getTuyChon()});
@@ -99,7 +100,7 @@ public class DishList extends javax.swing.JInternalFrame {
                         filteredItems.add(item);
                     }
                 }
-                DefaultTableModel model = (DefaultTableModel) table_dish_lish.getModel();
+                DefaultTableModel model = (DefaultTableModel) table_dish_list.getModel();
                 model.setRowCount(0);
                 for (MonAn row : filteredItems) {
                     model.addRow(new Object[]{row.getStt(),row.getMa(),row.getTen(),row.getLoaiMon(),row.getDonGia(),row.getTuyChon()});
@@ -115,7 +116,7 @@ public class DishList extends javax.swing.JInternalFrame {
                         filteredItems.add(item);
                     }
                 }
-                DefaultTableModel model = (DefaultTableModel) table_dish_lish.getModel();
+                DefaultTableModel model = (DefaultTableModel) table_dish_list.getModel();
                 model.setRowCount(0);
                 for (MonAn row : filteredItems) {
                     model.addRow(new Object[]{row.getStt(),row.getMa(),row.getTen(),row.getLoaiMon(),row.getDonGia(),row.getTuyChon()});
@@ -154,26 +155,24 @@ public class DishList extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel12 = new javax.swing.JLabel();
-        add_btn = new javax.swing.JButton();
-        edit_dish_btn = new javax.swing.JButton();
-        delete_dish_btn = new javax.swing.JButton();
-        jPanel5 = new javax.swing.JPanel();
-        jPanel7 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
+        add_dish_btn = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        table_dish_list = new javax.swing.JTable();
+        jPanel4 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel13 = new javax.swing.JLabel();
+        delete_dish_btn = new javax.swing.JButton();
+        edit_dish_btn = new javax.swing.JButton();
+        jPanel35 = new javax.swing.JPanel();
+        jLabel28 = new javax.swing.JLabel();
         search_field = new javax.swing.JTextField();
-        jLabel22 = new javax.swing.JLabel();
-        jPanel6 = new javax.swing.JPanel();
-        jPanel8 = new javax.swing.JPanel();
-        back_button = new javax.swing.JButton();
-        jPanel9 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        table_dish_lish = new javax.swing.JTable();
+        BackPage3 = new javax.swing.JButton();
 
+        dish_list_dialog.setBackground(new java.awt.Color(255, 255, 255));
         dish_list_dialog.setLocation(new java.awt.Point(300, 300));
+        dish_list_dialog.setMinimumSize(new java.awt.Dimension(400, 400));
 
         jPanel13.setLayout(new java.awt.BorderLayout());
 
@@ -324,27 +323,70 @@ public class DishList extends javax.swing.JInternalFrame {
 
         setPreferredSize(new java.awt.Dimension(1180, 730));
 
-        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setPreferredSize(new java.awt.Dimension(1170, 730));
 
-        jLabel12.setFont(new java.awt.Font("Arial", 1, 35)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(69, 96, 134));
-        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel12.setText("DANH SÁCH MÓN ĂN");
-
-        add_btn.setBackground(new java.awt.Color(99, 122, 48));
-        add_btn.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        add_btn.setForeground(new java.awt.Color(255, 255, 255));
-        add_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/plus.png"))); // NOI18N
-        add_btn.addActionListener(new java.awt.event.ActionListener() {
+        add_dish_btn.setBackground(new java.awt.Color(99, 122, 48));
+        add_dish_btn.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
+        add_dish_btn.setForeground(new java.awt.Color(255, 255, 255));
+        add_dish_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/plus.png"))); // NOI18N
+        add_dish_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                add_btnActionPerformed(evt);
+                add_dish_btnActionPerformed(evt);
             }
         });
 
-        edit_dish_btn.setBackground(new java.awt.Color(248, 189, 141));
-        edit_dish_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Edit.png"))); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/MenuFood 1 (1).png"))); // NOI18N
+
+        table_dish_list.setBackground(new java.awt.Color(243, 246, 249));
+        table_dish_list.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "STT", "Mã món ăn", "Tên món ăn", "Loại món ăn", "Đơn giá", "Tùy chọn"
+            }
+        ));
+        table_dish_list.setRowHeight(35);
+        table_dish_list.setShowGrid(true);
+        jScrollPane1.setViewportView(table_dish_list);
+        if (table_dish_list.getColumnModel().getColumnCount() > 0) {
+            table_dish_list.getColumnModel().getColumn(0).setMinWidth(50);
+            table_dish_list.getColumnModel().getColumn(0).setMaxWidth(50);
+        }
+
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 50, Short.MAX_VALUE)
+        );
+
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel13.setFont(new java.awt.Font("Arial", 1, 35)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(69, 96, 134));
+        jLabel13.setText("DANH SÁCH MÓN ĂN");
+        jPanel5.add(jLabel13);
 
         delete_dish_btn.setBackground(new java.awt.Color(132, 70, 133));
+        delete_dish_btn.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
+        delete_dish_btn.setForeground(new java.awt.Color(255, 255, 255));
         delete_dish_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Delete.png"))); // NOI18N
         delete_dish_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -352,59 +394,22 @@ public class DishList extends javax.swing.JInternalFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(100, 853, Short.MAX_VALUE)
-                .addComponent(add_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(delete_dish_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
-                .addComponent(edit_dish_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(100, 100, 100))
-            .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(add_btn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(edit_dish_btn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(delete_dish_btn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
-        );
+        edit_dish_btn.setBackground(new java.awt.Color(248, 189, 141));
+        edit_dish_btn.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
+        edit_dish_btn.setForeground(new java.awt.Color(255, 255, 255));
+        edit_dish_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Edit.png"))); // NOI18N
+        edit_dish_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                edit_dish_btnActionPerformed(evt);
+            }
+        });
 
-        getContentPane().add(jPanel4, java.awt.BorderLayout.PAGE_START);
+        jPanel35.setBackground(new java.awt.Color(238, 230, 226));
+        jPanel35.setPreferredSize(new java.awt.Dimension(260, 50));
 
-        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 520, Short.MAX_VALUE)
-        );
-
-        getContentPane().add(jPanel5, java.awt.BorderLayout.LINE_START);
-
-        jPanel7.setLayout(new java.awt.BorderLayout());
-
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-
-        jPanel3.setBackground(new java.awt.Color(238, 230, 226));
-
-        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Search_1.png"))); // NOI18N
+        jLabel28.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Group 9.png"))); // NOI18N
 
         search_field.setBackground(new java.awt.Color(238, 230, 226));
-        search_field.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         search_field.setBorder(null);
         search_field.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -412,150 +417,101 @@ public class DishList extends javax.swing.JInternalFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanel35Layout = new javax.swing.GroupLayout(jPanel35);
+        jPanel35.setLayout(jPanel35Layout);
+        jPanel35Layout.setHorizontalGroup(
+            jPanel35Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel35Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(search_field, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE))
+                .addComponent(jLabel28)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(search_field, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                .addContainerGap())
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(search_field, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+        jPanel35Layout.setVerticalGroup(
+            jPanel35Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel35Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jLabel28)
+                .addContainerGap(18, Short.MAX_VALUE))
+            .addGroup(jPanel35Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(search_field)
+                .addContainerGap())
         );
 
-        jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/MenuFood 1 (1).png"))); // NOI18N
+        BackPage3.setBackground(new java.awt.Color(69, 96, 134));
+        BackPage3.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        BackPage3.setForeground(new java.awt.Color(255, 255, 255));
+        BackPage3.setText("Quay lại");
+        BackPage3.setPreferredSize(new java.awt.Dimension(90, 40));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel22)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 591, Short.MAX_VALUE)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(102, 102, 102))
+                .addGap(100, 100, 100)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(BackPage3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 970, Short.MAX_VALUE)
+                            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(add_dish_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(delete_dish_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(edit_dish_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jPanel35, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(100, 100, 100))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(8, 8, 8)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(delete_dish_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(add_dish_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(edit_dish_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel35, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(BackPage3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
-        jPanel7.add(jPanel1, java.awt.BorderLayout.PAGE_START);
-
-        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1158, Short.MAX_VALUE)
         );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 341, Short.MAX_VALUE)
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 694, Short.MAX_VALUE)
         );
-
-        jPanel7.add(jPanel6, java.awt.BorderLayout.LINE_END);
-
-        jPanel8.setBackground(new java.awt.Color(255, 255, 255));
-
-        back_button.setBackground(new java.awt.Color(69, 96, 134));
-        back_button.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
-        back_button.setForeground(new java.awt.Color(255, 255, 255));
-        back_button.setText("Quay Lại");
-
-        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
-        jPanel8.setLayout(jPanel8Layout);
-        jPanel8Layout.setHorizontalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
-                .addComponent(back_button, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 958, Short.MAX_VALUE))
-        );
-        jPanel8Layout.setVerticalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
-                .addComponent(back_button, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 65, Short.MAX_VALUE))
-        );
-
-        jPanel7.add(jPanel8, java.awt.BorderLayout.PAGE_END);
-
-        jPanel9.setBackground(new java.awt.Color(255, 255, 255));
-
-        table_dish_lish.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        table_dish_lish.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "STT", "Ten mon an", "Loai mon an", "Don gia", "Tuy chinh"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, true, true
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        table_dish_lish.setRowHeight(30);
-        table_dish_lish.setShowGrid(true);
-        jScrollPane2.setViewportView(table_dish_lish);
-
-        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
-        jPanel9.setLayout(jPanel9Layout);
-        jPanel9Layout.setHorizontalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 958, Short.MAX_VALUE)
-        );
-        jPanel9Layout.setVerticalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel9Layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 15, Short.MAX_VALUE))
-        );
-
-        jPanel7.add(jPanel9, java.awt.BorderLayout.CENTER);
-
-        getContentPane().add(jPanel7, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void add_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_btnActionPerformed
-        // TODO add your handling code here:
-        dish_list_dialog.setSize(400,400);
-        dish_list_dialog.setVisible(true);
-    }//GEN-LAST:event_add_btnActionPerformed
-
-    private void search_fieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_fieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_search_fieldActionPerformed
 
     private void add_dialog_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_dialog_btnActionPerformed
         // TODO add your handling code here:
@@ -570,29 +526,43 @@ public class DishList extends javax.swing.JInternalFrame {
         dish_list_dialog.setVisible(false);
     }//GEN-LAST:event_delete_dialog_btnActionPerformed
 
+    private void add_dish_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_dish_btnActionPerformed
+        // TODO add your handling code here:
+        dish_list_dialog.setLocationRelativeTo(null);
+        dish_list_dialog.setVisible(true);
+    }//GEN-LAST:event_add_dish_btnActionPerformed
+
     private void delete_dish_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delete_dish_btnActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_delete_dish_btnActionPerformed
 
+    private void edit_dish_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edit_dish_btnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_edit_dish_btnActionPerformed
+
+    private void search_fieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_fieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_search_fieldActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton add_btn;
+    private javax.swing.JButton BackPage3;
     private javax.swing.JButton add_dialog_btn;
+    private javax.swing.JButton add_dish_btn;
     private javax.swing.JTextField add_loaimonan_field;
     private javax.swing.JTextField add_monan_field;
-    private javax.swing.JButton back_button;
     private javax.swing.JButton delete_dialog_btn;
     private javax.swing.JButton delete_dish_btn;
     private javax.swing.JDialog dish_list_dialog;
     private javax.swing.JTextField dongia_monan_field;
     private javax.swing.JButton edit_dish_btn;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
@@ -600,15 +570,11 @@ public class DishList extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
-    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel35;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField search_field;
-    private javax.swing.JTable table_dish_lish;
+    private javax.swing.JTable table_dish_list;
     // End of variables declaration//GEN-END:variables
 }
