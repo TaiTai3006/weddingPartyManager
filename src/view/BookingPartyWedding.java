@@ -5,11 +5,9 @@
 package view;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.DefaultCellEditor;
-import javax.swing.DefaultListSelectionModel;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.DocumentEvent;
@@ -33,12 +31,12 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     private DefaultTableModel defaultTableModelDV;
     private ArrayList<test> arr;
     private ArrayList<DichVutest> arrDV = new ArrayList<DichVutest>();
+    
     public class DichVutest{
         private String maDV;
         private String tenDV;
         private int soLuong;
         private double dongia;
-        private String ghichu;
         private boolean chon;
 
         public DichVutest(String maDV, String tenDV, int soLuong, double dongia) {
@@ -46,7 +44,6 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
             this.tenDV = tenDV;
             this.soLuong = soLuong;
             this.dongia = dongia;
-            this.ghichu = "";
             this.chon = false;
         }
 
@@ -60,10 +57,6 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
 
         public void setSoLuong(int soLuong) {
             this.soLuong = soLuong;
-        }
-
-        public void setGhichu(String ghichu) {
-            this.ghichu = ghichu;
         }
 
         public void setChon(boolean chon) {
@@ -204,22 +197,22 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
             }
         };
         
-       TableModelListener tableModelListenerDV = new TableModelListener() {
-            public void tableChanged(TableModelEvent e) {
-            // Xử lý sự kiện thay đổi giá trị bảng ở đây
-            int row = e.getFirstRow();
-            int col = e.getColumn();
-    
-            if(row == 6){
-                setValueChonDV(String.valueOf(ThucDonTable.getValueAt(row, 1)));
-            }else if (row == 5){
-                    setValueGhiChuDV(String.valueOf(ThucDonTable.getValueAt(row, 1)), String.valueOf(ThucDonTable.getValueAt(row, col)));
-                  }
-            }
-        };
+//       TableModelListener tableModelListenerDV = new TableModelListener() {
+//            public void tableChanged(TableModelEvent e) {
+//            // Xử lý sự kiện thay đổi giá trị bảng ở đây
+//            int row = e.getFirstRow();
+//            int col = e.getColumn();
+//    
+//            if(row == 6){
+//                setValueChonDV(String.valueOf(ThucDonTable.getValueAt(row, 1)));
+//            }else if (row == 5){
+//                    setValueGhiChuDV(String.valueOf(ThucDonTable.getValueAt(row, 1)), String.valueOf(ThucDonTable.getValueAt(row, col)));
+//                  }
+//            }
+//        };
         
   
-        DichVuTable.getModel().addTableModelListener(tableModelListenerDV);
+//        DichVuTable.getModel().addTableModelListener(tableModelListenerDV);
         ThucDonTable.getModel().addTableModelListener(tableModelListener);
         DonBanToiThieu.setText("10000");
         
@@ -232,15 +225,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                 x.setChon(!x.chon);
             }
         }
-    }
-    
-    public void setValueGhiChuDV(String MaDV, String ghichu){
-        for(DichVutest x: arrDV){
-            if(x.maDV.equals(MaDV)){
-                x.setGhichu(ghichu);
-            }
-        }
-    }
+    }    
     
     public void setValueChonMA(String maMa) {
         for(test x: arr){
@@ -271,7 +256,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         defaultTableModelDV = (DefaultTableModel) DichVuTable.getModel();
         int i = 1;
         for(DichVutest x: arrDV){
-            defaultTableModelDV.addRow(new Object[]{i++,x.maDV, x.tenDV, x.soLuong, x.dongia, x.ghichu, x.chon});
+            defaultTableModelDV.addRow(new Object[]{i++,x.maDV, x.tenDV, x.soLuong, x.dongia, x.chon});
         }
     }
 
@@ -1365,11 +1350,11 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "STT", "Mã dịch vụ", "Tên dịch vụ", "Số lượng", "Đơn giá", "Ghi chú", "Chọn"
+                "STT", "Mã dịch vụ", "Tên dịch vụ", "Số lượng", "Đơn giá", "Chọn"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -1386,15 +1371,14 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
             DichVuTable.getColumnModel().getColumn(1).setMinWidth(100);
             DichVuTable.getColumnModel().getColumn(1).setPreferredWidth(150);
             DichVuTable.getColumnModel().getColumn(1).setMaxWidth(20);
-            DichVuTable.getColumnModel().getColumn(6).setMinWidth(100);
-            DichVuTable.getColumnModel().getColumn(6).setPreferredWidth(100);
-            DichVuTable.getColumnModel().getColumn(6).setMaxWidth(100);
+            DichVuTable.getColumnModel().getColumn(5).setMinWidth(100);
+            DichVuTable.getColumnModel().getColumn(5).setPreferredWidth(100);
+            DichVuTable.getColumnModel().getColumn(5).setMaxWidth(100);
         }
         DichVuTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
         DichVuTable.getTableHeader().setOpaque(false);
         DichVuTable.getTableHeader().setBackground(new Color(243,246,249));
         DichVuTable.setDefaultEditor(Object.class, null);
-        DichVuTable.getColumnModel().getColumn(5).setCellEditor(editor);
 
         javax.swing.GroupLayout jPanel33Layout = new javax.swing.GroupLayout(jPanel33);
         jPanel33.setLayout(jPanel33Layout);

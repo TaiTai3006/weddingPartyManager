@@ -1776,17 +1776,16 @@
                       <Font name="Arial" size="16" style="0"/>
                     </Property>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="7" rowCount="0">
+                      <Table columnCount="6" rowCount="0">
                         <Column editable="true" title="STT" type="java.lang.Object"/>
                         <Column editable="true" title="M&#xe3; d&#x1ecb;ch v&#x1ee5;" type="java.lang.Object"/>
                         <Column editable="true" title="T&#xea;n d&#x1ecb;ch v&#x1ee5;" type="java.lang.Object"/>
                         <Column editable="true" title="S&#x1ed1; l&#x1b0;&#x1ee3;ng" type="java.lang.Object"/>
                         <Column editable="true" title="&#x110;&#x1a1;n gi&#xe1;" type="java.lang.Object"/>
-                        <Column editable="true" title="Ghi ch&#xfa;" type="java.lang.String"/>
                         <Column editable="true" title="Ch&#x1ecd;n" type="java.lang.Boolean"/>
                       </Table>
                     </Property>
-                    <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor" postCode="DichVuTable.getTableHeader().setFont(new Font(&quot;Arial&quot;, Font.BOLD, 16));&#xa;DichVuTable.getTableHeader().setOpaque(false);&#xa;DichVuTable.getTableHeader().setBackground(new Color(243,246,249));&#xa;DichVuTable.setDefaultEditor(Object.class, null);&#xa;DichVuTable.getColumnModel().getColumn(5).setCellEditor(editor);">
+                    <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor" postCode="DichVuTable.getTableHeader().setFont(new Font(&quot;Arial&quot;, Font.BOLD, 16));&#xa;DichVuTable.getTableHeader().setOpaque(false);&#xa;DichVuTable.getTableHeader().setBackground(new Color(243,246,249));&#xa;DichVuTable.setDefaultEditor(Object.class, null);">
                       <TableColumnModel selectionModel="0">
                         <Column maxWidth="20" minWidth="100" prefWidth="100" resizable="true">
                           <Title/>
@@ -1794,11 +1793,6 @@
                           <Renderer/>
                         </Column>
                         <Column maxWidth="20" minWidth="100" prefWidth="150" resizable="true">
-                          <Title/>
-                          <Editor/>
-                          <Renderer/>
-                        </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
