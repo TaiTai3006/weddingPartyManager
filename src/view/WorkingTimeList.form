@@ -370,13 +370,13 @@
                       <Component id="btnAddWorkingTime" min="-2" pref="45" max="-2" attributes="0"/>
                       <Component id="btnAddWorkingTime2" alignment="0" min="-2" pref="45" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="jPanel35" min="-2" pref="51" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabel2" min="-2" pref="64" max="-2" attributes="0"/>
+                      <Component id="jPanel35" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" pref="396" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" min="-2" pref="384" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="BackPage3" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
