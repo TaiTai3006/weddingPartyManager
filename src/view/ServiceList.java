@@ -76,43 +76,43 @@ public class ServiceList extends javax.swing.JInternalFrame {
         for(DichVu row : items){
             defaulttable.addRow(new Object[]{row.getStt(), row.getMaDV(),row.getTenDichVu(),row.getDonGia(),row.getTuyChon()});
         }
-//            search_field.getDocument().addDocumentListener(new DocumentListener() {
-//            @Override
-//            public void insertUpdate(DocumentEvent e) {
-//                String filterText = search_field.getText().toLowerCase();
-//                filteredItems.clear();
-//                for (DichVu item : items) {
-//                    if (item.getMaDV().toLowerCase().contains(filterText) || item.getTenDichVu().toLowerCase().contains(filterText)) {
-//                        filteredItems.add(item);
-//                    }
-//                }
-//                DefaultTableModel model = (DefaultTableModel) table_service_list.getModel();
-//                model.setRowCount(0);
-//                for (DichVu row : filteredItems) {
-//                    model.addRow(new Object[]{row.getStt(), row.getMaDV(),row.getTenDichVu(),row.getDonGia(),row.getTuyChon()});
-//                } 
-//            }
-//            @Override
-//            public void removeUpdate(DocumentEvent e) {
-//                String filterText = search_field.getText().toLowerCase();
-//                filteredItems.clear();
-//                for (DichVu item : items) {
-//                    if (item.getMaDV().toLowerCase().contains(filterText) || item.getTenDichVu().toLowerCase().contains(filterText)) {
-//                        filteredItems.add(item);
-//                    }
-//                }
-//                DefaultTableModel model = (DefaultTableModel) table_service_list.getModel();
-//                model.setRowCount(0);
-//                for (DichVu row : filteredItems) {
-//                    model.addRow(new Object[]{row.getStt(), row.getMaDV(),row.getTenDichVu(),row.getDonGia(),row.getTuyChon()});
-//                }  
-//            }
-//
-//            @Override
-//            public void changedUpdate(DocumentEvent e) {
-//                
-//            }
-//        });
+            search_service_field.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                String filterText = search_service_field.getText().toLowerCase();
+                filteredItems.clear();
+                for (DichVu item : items) {
+                    if (item.getMaDV().toLowerCase().contains(filterText) || item.getTenDichVu().toLowerCase().contains(filterText)) {
+                        filteredItems.add(item);
+                    }
+                }
+                DefaultTableModel model = (DefaultTableModel) table_service_list.getModel();
+                model.setRowCount(0);
+                for (DichVu row : filteredItems) {
+                    model.addRow(new Object[]{row.getStt(), row.getMaDV(),row.getTenDichVu(),row.getDonGia(),row.getTuyChon()});
+                } 
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                String filterText = search_service_field.getText().toLowerCase();
+                filteredItems.clear();
+                for (DichVu item : items) {
+                    if (item.getMaDV().toLowerCase().contains(filterText) || item.getTenDichVu().toLowerCase().contains(filterText)) {
+                        filteredItems.add(item);
+                    }
+                }
+                DefaultTableModel model = (DefaultTableModel) table_service_list.getModel();
+                model.setRowCount(0);
+                for (DichVu row : filteredItems) {
+                    model.addRow(new Object[]{row.getStt(), row.getMaDV(),row.getTenDichVu(),row.getDonGia(),row.getTuyChon()});
+                }  
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                
+            }
+        });
     }
 
     /**
@@ -147,7 +147,7 @@ public class ServiceList extends javax.swing.JInternalFrame {
         jLabel15 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jPanel31 = new javax.swing.JPanel();
-        search_field7 = new javax.swing.JTextField();
+        search_service_field = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
         add_service_btn = new javax.swing.JButton();
         delete_service_btn = new javax.swing.JButton();
@@ -375,10 +375,10 @@ public class ServiceList extends javax.swing.JInternalFrame {
 
         jPanel31.setBackground(new java.awt.Color(238, 230, 226));
 
-        search_field7.setBackground(new java.awt.Color(238, 230, 226));
-        search_field7.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        search_field7.setBorder(null);
-        search_field7.addActionListener(new java.awt.event.ActionListener() {
+        search_service_field.setBackground(new java.awt.Color(238, 230, 226));
+        search_service_field.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        search_service_field.setBorder(null);
+        search_service_field.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 search_fieldActionPerformed(evt);
             }
@@ -394,11 +394,11 @@ public class ServiceList extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(search_field7, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(search_service_field, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel31Layout.setVerticalGroup(
             jPanel31Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(search_field7, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
+            .addComponent(search_service_field, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
             .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -494,7 +494,7 @@ public class ServiceList extends javax.swing.JInternalFrame {
                     .addComponent(BackPage3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 982, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel34Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel34Layout.createSequentialGroup()
                     .addContainerGap()
@@ -517,6 +517,7 @@ public class ServiceList extends javax.swing.JInternalFrame {
                 .addGroup(jPanel34Layout.createSequentialGroup()
                     .addGap(3, 3, 3)
                     .addComponent(jPanel29, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, 0)
                     .addComponent(jPanel30, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(66, Short.MAX_VALUE)))
         );
@@ -579,61 +580,26 @@ public class ServiceList extends javax.swing.JInternalFrame {
     private javax.swing.JButton delete_service_btn;
     private javax.swing.JButton edit_service_btn;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel11;
-    private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
-    private javax.swing.JPanel jPanel19;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel20;
-    private javax.swing.JPanel jPanel21;
-    private javax.swing.JPanel jPanel22;
-    private javax.swing.JPanel jPanel23;
-    private javax.swing.JPanel jPanel24;
-    private javax.swing.JPanel jPanel25;
-    private javax.swing.JPanel jPanel26;
-    private javax.swing.JPanel jPanel27;
-    private javax.swing.JPanel jPanel28;
     private javax.swing.JPanel jPanel29;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel30;
     private javax.swing.JPanel jPanel31;
     private javax.swing.JPanel jPanel32;
     private javax.swing.JPanel jPanel34;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField search_field;
-    private javax.swing.JTextField search_field1;
-    private javax.swing.JTextField search_field2;
-    private javax.swing.JTextField search_field3;
-    private javax.swing.JTextField search_field4;
-    private javax.swing.JTextField search_field5;
-    private javax.swing.JTextField search_field6;
-    private javax.swing.JTextField search_field7;
+    private javax.swing.JTextField search_service_field;
     private javax.swing.JDialog service_list_dialog;
     private javax.swing.JTable table_service_list;
     // End of variables declaration//GEN-END:variables

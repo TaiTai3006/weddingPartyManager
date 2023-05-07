@@ -294,7 +294,7 @@
                       <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
                       <Component id="jScrollPane1" min="-2" pref="982" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="16" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
@@ -323,6 +323,7 @@
                   <Group type="102" attributes="0">
                       <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
                       <Component id="jPanel29" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                       <Component id="jPanel30" min="-2" max="-2" attributes="0"/>
                       <EmptySpace pref="66" max="32767" attributes="0"/>
                   </Group>
@@ -521,19 +522,19 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jLabel16" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="search_field7" min="-2" pref="233" max="-2" attributes="0"/>
+                          <Component id="search_service_field" min="-2" pref="233" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="search_field7" pref="51" max="32767" attributes="0"/>
+                      <Component id="search_service_field" pref="51" max="32767" attributes="0"/>
                       <Component id="jLabel16" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JTextField" name="search_field7">
+                <Component class="javax.swing.JTextField" name="search_service_field">
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="e2" green="e6" red="ee" type="rgb"/>
