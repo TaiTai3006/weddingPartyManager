@@ -8,10 +8,9 @@ import java.util.ArrayList;
 import model.LoaiSanh;
 import java.sql.Connection;
 import database.JDBCUtil;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.sql.ResultSet;
+import java.sql.PreparedStatement;
+
 /**
  *
  * @author macbookpro
@@ -28,12 +27,17 @@ public class LoaiSanhDAO implements DAOInterface<LoaiSanh>{
         try {
             Connection con = JDBCUtil.getConnection();
             
-            Statement st = con.createStatement();
+            String sql = "INSERT INTO loaisanh (maloaisanh, tenloaisanh, soluongbantoida) VALUES (?, ?, ?)";
             
-            String sql = "INSERT INTO loaisanh (maloaisanh, tenloaisanh, soluongbantoida) VALUES " +
-                    "('"+t.getMaLoaiSanh()+"' , '"+ t.getTenLoaiSanh() + "' , "+ t.getDonGiaBanToiThieu()+")";
+            PreparedStatement st = con.prepareStatement(sql);
             
-            int kq = st.executeUpdate(sql);
+            st.setString(1, t.getMaLoaiSanh());
+            st.setString(2, t.getTenLoaiSanh());
+            st.setInt(3, t.getDonGiaBanToiThieu());
+            
+            System.out.println(st);
+            
+            int kq = st.executeUpdate();
             
             if(kq > 0){
                 System.out.println("Them du lieu thanh cong!");
@@ -54,13 +58,17 @@ public class LoaiSanhDAO implements DAOInterface<LoaiSanh>{
      try {
             Connection con = JDBCUtil.getConnection();
             
-            Statement st = con.createStatement();
-            
             String sql = "UPDATE loaisanh SET " +
-                    "tenloaisanh = '" + t.getTenLoaiSanh() + "', soluongbantoida = " + t.getDonGiaBanToiThieu() + 
-                    " WHERE maloaisanh = '" + t.getMaLoaiSanh()+"\'";
+                    "tenloaisanh =?, soluongbantoida =? " +
+                    "WHERE maloaisanh =?";
             
-            int kq = st.executeUpdate(sql);
+            PreparedStatement st = con.prepareStatement(sql);
+            
+            st.setString(1, t.getTenLoaiSanh());
+            st.setInt(2, t.getDonGiaBanToiThieu());
+            st.setString(3, t.getMaLoaiSanh());
+            
+            int kq = st.executeUpdate();
             
             if(kq > 0){
                 System.out.println("Cap nhat du lieu thanh cong!");
@@ -79,13 +87,16 @@ public class LoaiSanhDAO implements DAOInterface<LoaiSanh>{
     public int Delete(LoaiSanh t) {
     try {
             Connection con = JDBCUtil.getConnection();
-            
-            Statement st = con.createStatement();
+ 
             
             String sql = "DELETE FROM loaisanh " +
-                    "WHERE maloaisanh = '" + t.getMaLoaiSanh()+"\'";
+                    "WHERE maloaisanh = ?";
             
-            int kq = st.executeUpdate(sql);
+            PreparedStatement st = con.prepareStatement(sql);
+            
+             st.setString(1, t.getMaLoaiSanh());
+            
+            int kq = st.executeUpdate();
             
             if(kq > 0){
                 System.out.println("Xoa du lieu thanh cong!");
@@ -102,7 +113,25 @@ public class LoaiSanhDAO implements DAOInterface<LoaiSanh>{
 
     @Override
     public ArrayList<LoaiSanh> SelectAll() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        ArrayList<LoaiSanh> loaiSanhs = new ArrayList<LoaiSanh>();
+       try {
+            Connection con = JDBCUtil.getConnection();
+            
+            String sql = "SELECT * FROM loaisanh";
+            
+            PreparedStatement st = con.prepareStatement(sql);
+            
+            ResultSet kq = st.executeQuery();
+            
+            while(kq.next()){
+                loaiSanhs.add(new LoaiSanh(kq.getString("maloaisanh"),kq.getString("tenloaisanh"), kq.getInt("soluongbantoida")));
+            }
+            
+            JDBCUtil.closeConnection(con);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return loaiSanhs;
     }
 
     @Override

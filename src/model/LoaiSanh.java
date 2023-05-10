@@ -34,6 +34,11 @@ public class LoaiSanh {
         return donGiaBanToiThieu;
     }
 
+    @Override
+    public String toString() {
+        return "LoaiSanh{" + "maLoaiSanh=" + maLoaiSanh + ", tenLoaiSanh=" + tenLoaiSanh + ", donGiaBanToiThieu=" + donGiaBanToiThieu + '}';
+    }
+
     public void setMaLoaiSanh(String maLoaiSanh) {
         this.maLoaiSanh = maLoaiSanh;
     }
