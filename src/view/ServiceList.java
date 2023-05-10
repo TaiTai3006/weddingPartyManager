@@ -576,6 +576,7 @@ public class ServiceList extends javax.swing.JInternalFrame {
     private void add_service_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_service_btnActionPerformed
         // TODO add your handling code here:
         service_list_dialog.setSize(400,400);
+        service_list_dialog.setLocationRelativeTo(null);
         service_list_dialog.setVisible(true);
     }//GEN-LAST:event_add_service_btnActionPerformed
 
