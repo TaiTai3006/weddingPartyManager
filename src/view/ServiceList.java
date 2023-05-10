@@ -78,43 +78,43 @@ public class ServiceList extends javax.swing.JInternalFrame {
 //        for(DichVu row : items){
 //            defaulttable.addRow(new Object[]{row.getStt(), row.getMaDV(),row.getTenDichVu(),row.getDonGia(),row.getTuyChon()});
 //        }
-            search_service_field.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                String filterText = search_service_field.getText().toLowerCase();
-                filteredItems.clear();
-                for (DichVu item : items) {
-                    if (item.getMaDV().toLowerCase().contains(filterText) || item.getTenDichVu().toLowerCase().contains(filterText)) {
-                        filteredItems.add(item);
-                    }
-                }
-                DefaultTableModel model = (DefaultTableModel) table_service_list.getModel();
-                model.setRowCount(0);
-                for (DichVu row : filteredItems) {
-                    model.addRow(new Object[]{row.getStt(), row.getMaDV(),row.getTenDichVu(),row.getDonGia(),row.getTuyChon()});
-                } 
-            }
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                String filterText = search_service_field.getText().toLowerCase();
-                filteredItems.clear();
-                for (DichVu item : items) {
-                    if (item.getMaDV().toLowerCase().contains(filterText) || item.getTenDichVu().toLowerCase().contains(filterText)) {
-                        filteredItems.add(item);
-                    }
-                }
-                DefaultTableModel model = (DefaultTableModel) table_service_list.getModel();
-                model.setRowCount(0);
-                for (DichVu row : filteredItems) {
-                    model.addRow(new Object[]{row.getStt(), row.getMaDV(),row.getTenDichVu(),row.getDonGia(),row.getTuyChon()});
-                }  
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                
-            }
-        });
+//            search_service_field.getDocument().addDocumentListener(new DocumentListener() {
+//            @Override
+//            public void insertUpdate(DocumentEvent e) {
+//                String filterText = search_service_field.getText().toLowerCase();
+//                filteredItems.clear();
+//                for (DichVu item : items) {
+//                    if (item.getMaDV().toLowerCase().contains(filterText) || item.getTenDichVu().toLowerCase().contains(filterText)) {
+//                        filteredItems.add(item);
+//                    }
+//                }
+//                DefaultTableModel model = (DefaultTableModel) table_service_list.getModel();
+//                model.setRowCount(0);
+//                for (DichVu row : filteredItems) {
+//                    model.addRow(new Object[]{row.getStt(), row.getMaDV(),row.getTenDichVu(),row.getDonGia(),row.getTuyChon()});
+//                } 
+//            }
+//            @Override
+//            public void removeUpdate(DocumentEvent e) {
+//                String filterText = search_service_field.getText().toLowerCase();
+//                filteredItems.clear();
+//                for (DichVu item : items) {
+//                    if (item.getMaDV().toLowerCase().contains(filterText) || item.getTenDichVu().toLowerCase().contains(filterText)) {
+//                        filteredItems.add(item);
+//                    }
+//                }
+//                DefaultTableModel model = (DefaultTableModel) table_service_list.getModel();
+//                model.setRowCount(0);
+//                for (DichVu row : filteredItems) {
+//                    model.addRow(new Object[]{row.getStt(), row.getMaDV(),row.getTenDichVu(),row.getDonGia(),row.getTuyChon()});
+//                }  
+//            }
+//
+//            @Override
+//            public void changedUpdate(DocumentEvent e) {
+//                
+//            }
+//        });
     }
 
     /**
