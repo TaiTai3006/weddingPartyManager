@@ -4,6 +4,8 @@
  */
 package view;
 
+import java.awt.Color;
+import java.awt.Font;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
@@ -52,7 +54,7 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
         btnAddWorkingTime = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        CaTable = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
@@ -222,8 +224,8 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/schedule.png"))); // NOI18N
 
-        jTable1.setBackground(new java.awt.Color(243, 246, 249));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        CaTable.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        CaTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -231,10 +233,23 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "STT", "Loại ca", "Giờ bắt đầu", "Giờ kết thúc ", "Tùy chọn"
+                "STT", "Mã loại ca", "Loại ca", "Giờ bắt đầu", "Giờ kết thúc "
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        CaTable.setFocusable(false);
+        CaTable.setGridColor(new java.awt.Color(255, 255, 255));
+        CaTable.setRowHeight(25);
+        CaTable.setSelectionBackground(new java.awt.Color(69, 96, 134));
+        jScrollPane1.setViewportView(CaTable);
+        if (CaTable.getColumnModel().getColumnCount() > 0) {
+            CaTable.getColumnModel().getColumn(0).setMinWidth(100);
+            CaTable.getColumnModel().getColumn(0).setPreferredWidth(100);
+            CaTable.getColumnModel().getColumn(0).setMaxWidth(20);
+        }
+        CaTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
+        CaTable.getTableHeader().setOpaque(false);
+        CaTable.getTableHeader().setBackground(new Color(243,246,249));
+        CaTable.setDefaultEditor(Object.class, null);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -361,8 +376,8 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel35, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(190, 190, 190)
                 .addComponent(BackPage3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -402,6 +417,7 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackPage3;
+    private javax.swing.JTable CaTable;
     private javax.swing.JDialog addForm;
     private javax.swing.JButton btnAddWorkingTime;
     private javax.swing.JButton btnAddWorkingTime1;
@@ -426,7 +442,6 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField12;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;

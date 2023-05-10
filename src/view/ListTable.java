@@ -75,11 +75,20 @@ public class ListTable extends javax.swing.JInternalFrame {
         jLabel28 = new javax.swing.JLabel();
         jLabel29 = new javax.swing.JLabel();
         jLabel30 = new javax.swing.JLabel();
+        DanhSachLoaiMonAn = new javax.swing.JPanel();
+        jPanel26 = new javax.swing.JPanel();
+        jLabel31 = new javax.swing.JLabel();
+        jLabel32 = new javax.swing.JLabel();
+        jPanel27 = new javax.swing.JPanel();
+        jLabel33 = new javax.swing.JLabel();
+        jLabel34 = new javax.swing.JLabel();
+        jLabel35 = new javax.swing.JLabel();
         jDesktopPane1 = new javax.swing.JDesktopPane();
 
         setPreferredSize(new java.awt.Dimension(1170, 730));
 
         listTable.setBackground(new java.awt.Color(255, 255, 255));
+        listTable.setPreferredSize(new java.awt.Dimension(1170, 730));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -561,6 +570,101 @@ public class ListTable extends javax.swing.JInternalFrame {
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
+        DanhSachLoaiMonAn.setBackground(new java.awt.Color(255, 255, 255));
+        DanhSachLoaiMonAn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(246, 198, 158), 3));
+        DanhSachLoaiMonAn.setPreferredSize(new java.awt.Dimension(410, 200));
+        DanhSachLoaiMonAn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                DanhSachLoaiMonAnMouseClicked(evt);
+            }
+        });
+
+        jPanel26.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel31.setFont(new java.awt.Font("Arial", 1, 25)); // NOI18N
+        jLabel31.setForeground(new java.awt.Color(69, 96, 134));
+        jLabel31.setText("Danh sách loại món ăn");
+
+        jLabel32.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Ellipse 1090.png"))); // NOI18N
+
+        javax.swing.GroupLayout jPanel26Layout = new javax.swing.GroupLayout(jPanel26);
+        jPanel26.setLayout(jPanel26Layout);
+        jPanel26Layout.setHorizontalGroup(
+            jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel26Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel31)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel32)
+                .addContainerGap())
+        );
+        jPanel26Layout.setVerticalGroup(
+            jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel26Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel31)
+                    .addComponent(jLabel32))
+                .addContainerGap())
+        );
+
+        jPanel27.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel33.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel33.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel33.setText("Hiển thị danh sách loại món ăn của nhà");
+
+        jLabel34.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel34.setText("hàng cung cấp các thông tin về: các loại ");
+
+        jLabel35.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel35.setText("món ăn.");
+
+        javax.swing.GroupLayout jPanel27Layout = new javax.swing.GroupLayout(jPanel27);
+        jPanel27.setLayout(jPanel27Layout);
+        jPanel27Layout.setHorizontalGroup(
+            jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel27Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel33)
+                    .addComponent(jLabel34)
+                    .addComponent(jLabel35))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel27Layout.setVerticalGroup(
+            jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel27Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel33)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel34)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel35)
+                .addContainerGap(27, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout DanhSachLoaiMonAnLayout = new javax.swing.GroupLayout(DanhSachLoaiMonAn);
+        DanhSachLoaiMonAn.setLayout(DanhSachLoaiMonAnLayout);
+        DanhSachLoaiMonAnLayout.setHorizontalGroup(
+            DanhSachLoaiMonAnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, DanhSachLoaiMonAnLayout.createSequentialGroup()
+                .addGap(36, 36, 36)
+                .addGroup(DanhSachLoaiMonAnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel26, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(36, 36, 36))
+        );
+        DanhSachLoaiMonAnLayout.setVerticalGroup(
+            DanhSachLoaiMonAnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(DanhSachLoaiMonAnLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel26, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel27, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(22, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -570,7 +674,7 @@ public class ListTable extends javax.swing.JInternalFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(DanhSachSanh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 137, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 138, Short.MAX_VALUE)
                         .addComponent(DanhSachLoaiSanh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(DanhSachMonAn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -578,7 +682,8 @@ public class ListTable extends javax.swing.JInternalFrame {
                         .addComponent(DanhSachDichVu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(DanhSachCa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(DanhSachLoaiMonAn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(106, 106, 106))
         );
         jPanel3Layout.setVerticalGroup(
@@ -592,9 +697,11 @@ public class ListTable extends javax.swing.JInternalFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(DanhSachMonAn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(DanhSachDichVu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(DanhSachCa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(DanhSachCa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(DanhSachLoaiMonAn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout listTableLayout = new javax.swing.GroupLayout(listTable);
@@ -610,7 +717,7 @@ public class ListTable extends javax.swing.JInternalFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         jDesktopPane1.setPreferredSize(new java.awt.Dimension(1170, 730));
@@ -700,10 +807,19 @@ public class ListTable extends javax.swing.JInternalFrame {
         jDesktopPane1.add(workingTimeList).setVisible(true);
     }//GEN-LAST:event_DanhSachCaMouseClicked
 
+    private void DanhSachLoaiMonAnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DanhSachLoaiMonAnMouseClicked
+        // TODO add your handling code here:
+       listTable.setVisible(false);
+        DishTypeList dishTypeList = new DishTypeList();
+        jDesktopPane1.removeAll();
+        jDesktopPane1.add(dishTypeList).setVisible(true);
+    }//GEN-LAST:event_DanhSachLoaiMonAnMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel DanhSachCa;
     private javax.swing.JPanel DanhSachDichVu;
+    private javax.swing.JPanel DanhSachLoaiMonAn;
     private javax.swing.JPanel DanhSachLoaiSanh;
     private javax.swing.JPanel DanhSachMonAn;
     private javax.swing.JPanel DanhSachSanh;
@@ -728,6 +844,11 @@ public class ListTable extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -745,6 +866,8 @@ public class ListTable extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel22;
     private javax.swing.JPanel jPanel24;
     private javax.swing.JPanel jPanel25;
+    private javax.swing.JPanel jPanel26;
+    private javax.swing.JPanel jPanel27;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel listTable;
     // End of variables declaration//GEN-END:variables

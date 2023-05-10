@@ -4,6 +4,8 @@
  */
 package view;
 
+import java.awt.Color;
+import java.awt.Font;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
@@ -48,7 +50,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
         Page1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        DatTiecTable = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jPanel30 = new javax.swing.JPanel();
         jLabel23 = new javax.swing.JLabel();
@@ -102,9 +104,9 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         jPanel14 = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        MonAnTable = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        DichVuTable = new javax.swing.JTable();
         jLabel17 = new javax.swing.JLabel();
         PageTTHDTT = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
@@ -128,7 +130,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         jLabel40 = new javax.swing.JLabel();
         TongTienBanValueTT = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable4 = new javax.swing.JTable();
+        DVHHTable = new javax.swing.JTable();
         jPanel15 = new javax.swing.JPanel();
         TongTienDVValueTT = new javax.swing.JLabel();
         jLabel34 = new javax.swing.JLabel();
@@ -154,7 +156,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         btnAddWorkingTime = new javax.swing.JButton();
         btnAddWorkingTime1 = new javax.swing.JButton();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jTable5 = new javax.swing.JTable();
+        DVSVTable = new javax.swing.JTable();
         BackPageXNDV = new javax.swing.JButton();
         NextPageXNDV = new javax.swing.JButton();
         PageTTHDH = new javax.swing.JPanel();
@@ -360,24 +362,35 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 
         Page1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jTable1.setBackground(new java.awt.Color(243, 246, 249));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        DatTiecTable.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        DatTiecTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"1", "TC001", "A", "B", "Đại lộ bóng tối", "03/05/2023", "11:00", "100", "Đã cọc"},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null}
+                {"1", "TC001", "A", "B", "Đại lộ bóng tối", "03/05/2023", "11:00", "100"},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "STT", "Mã tiệc cưới", "Tên chú rể", "Tên cô dâu", "Sảnh", "Ngày đặt tiệc", "Giờ", "Số lượng bàn", "Tình trạng"
+                "STT", "Mã tiệc cưới", "Tên chú rể", "Tên cô dâu", "Sảnh", "Ngày đặt tiệc", "Giờ", "Số lượng bàn"
             }
         ));
-        jTable1.setSelectionBackground(new java.awt.Color(238, 230, 226));
-        jScrollPane1.setViewportView(jTable1);
+        DatTiecTable.setFocusable(false);
+        DatTiecTable.setRowHeight(25);
+        DatTiecTable.setSelectionBackground(new java.awt.Color(69, 96, 134));
+        jScrollPane1.setViewportView(DatTiecTable);
+        if (DatTiecTable.getColumnModel().getColumnCount() > 0) {
+            DatTiecTable.getColumnModel().getColumn(0).setMinWidth(100);
+            DatTiecTable.getColumnModel().getColumn(0).setPreferredWidth(100);
+            DatTiecTable.getColumnModel().getColumn(0).setMaxWidth(20);
+        }
+        DatTiecTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
+        DatTiecTable.getTableHeader().setOpaque(false);
+        DatTiecTable.getTableHeader().setBackground(new Color(243,246,249));
+        DatTiecTable.setDefaultEditor(Object.class, null);
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 35)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(69, 96, 134));
@@ -784,31 +797,57 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         jLabel16.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jLabel16.setText("Danh sách món ăn");
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        MonAnTable.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        MonAnTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "STT", "Tên món ăn", "Loại", "Đơn giá", "Ghi chú", "Thành tiền"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        MonAnTable.setFocusable(false);
+        MonAnTable.setRowHeight(25);
+        MonAnTable.setSelectionBackground(new java.awt.Color(69, 96, 134));
+        jScrollPane2.setViewportView(MonAnTable);
+        if (MonAnTable.getColumnModel().getColumnCount() > 0) {
+            MonAnTable.getColumnModel().getColumn(0).setMinWidth(50);
+            MonAnTable.getColumnModel().getColumn(0).setPreferredWidth(50);
+            MonAnTable.getColumnModel().getColumn(0).setMaxWidth(20);
+        }
+        MonAnTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 13));
+        MonAnTable.getTableHeader().setOpaque(false);
+        MonAnTable.getTableHeader().setBackground(new Color(243,246,249));
+        MonAnTable.setDefaultEditor(Object.class, null);
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        DichVuTable.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        DichVuTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "STT", "Tên dịch vụ", "Số lượng", "Đơn giá", "Thành tiền"
             }
         ));
-        jScrollPane3.setViewportView(jTable3);
+        DichVuTable.setFocusable(false);
+        DichVuTable.setRowHeight(25);
+        DichVuTable.setSelectionBackground(new java.awt.Color(69, 96, 134));
+        jScrollPane3.setViewportView(DichVuTable);
+        if (DichVuTable.getColumnModel().getColumnCount() > 0) {
+            DichVuTable.getColumnModel().getColumn(0).setMinWidth(50);
+            DichVuTable.getColumnModel().getColumn(0).setPreferredWidth(50);
+            DichVuTable.getColumnModel().getColumn(0).setMaxWidth(20);
+        }
+        DichVuTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 13));
+        DichVuTable.getTableHeader().setOpaque(false);
+        DichVuTable.getTableHeader().setBackground(new Color(243,246,249));
+        DichVuTable.setDefaultEditor(Object.class, null);
 
         jLabel17.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jLabel17.setText("Danh sách dịch vụ");
@@ -1039,18 +1078,31 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+        DVHHTable.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        DVHHTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "STT", "Mã dịch vụ", "Tên dịch vụ", "Số lượng", "Đơn giá", "Thành tiền"
             }
         ));
-        jScrollPane4.setViewportView(jTable4);
+        DVHHTable.setFocusable(false);
+        DVHHTable.setRowHeight(25);
+        DVHHTable.setSelectionBackground(new java.awt.Color(69, 96, 134));
+        jScrollPane4.setViewportView(DVHHTable);
+        if (DVHHTable.getColumnModel().getColumnCount() > 0) {
+            DVHHTable.getColumnModel().getColumn(0).setMinWidth(100);
+            DVHHTable.getColumnModel().getColumn(0).setPreferredWidth(100);
+            DVHHTable.getColumnModel().getColumn(0).setMaxWidth(20);
+        }
+        DVHHTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
+        DVHHTable.getTableHeader().setOpaque(false);
+        DVHHTable.getTableHeader().setBackground(new Color(243,246,249));
+        DVHHTable.setDefaultEditor(Object.class, null);
 
         TongTienDVValueTT.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
 
@@ -1278,18 +1330,31 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         btnAddWorkingTime1.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
         btnAddWorkingTime1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Delete.png"))); // NOI18N
 
-        jTable5.setModel(new javax.swing.table.DefaultTableModel(
+        DVSVTable.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        DVSVTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "STT", "Mã dịch vụ", "Tên dịch vụ", "Số lượng", "Đơn giá"
             }
         ));
-        jScrollPane5.setViewportView(jTable5);
+        DVSVTable.setFocusable(false);
+        DVSVTable.setRowHeight(25);
+        DVSVTable.setSelectionBackground(new java.awt.Color(69, 96, 134));
+        jScrollPane5.setViewportView(DVSVTable);
+        if (DVSVTable.getColumnModel().getColumnCount() > 0) {
+            DVSVTable.getColumnModel().getColumn(0).setMinWidth(100);
+            DVSVTable.getColumnModel().getColumn(0).setPreferredWidth(100);
+            DVSVTable.getColumnModel().getColumn(0).setMaxWidth(20);
+        }
+        DVSVTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
+        DVSVTable.getTableHeader().setOpaque(false);
+        DVSVTable.getTableHeader().setBackground(new Color(243,246,249));
+        DVSVTable.setDefaultEditor(Object.class, null);
 
         BackPageXNDV.setBackground(new java.awt.Color(69, 96, 134));
         BackPageXNDV.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
@@ -1790,6 +1855,10 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
     private javax.swing.JLabel ConLaiValue;
     private javax.swing.JLabel ConLaiValueH;
     private javax.swing.JLabel ConLaiValueTT;
+    private javax.swing.JTable DVHHTable;
+    private javax.swing.JTable DVSVTable;
+    private javax.swing.JTable DatTiecTable;
+    private javax.swing.JTable DichVuTable;
     private javax.swing.JLabel DonGiaBanValue;
     private javax.swing.JLabel DonGiaBanValueH;
     private javax.swing.JLabel DonGiaBanValueTT;
@@ -1797,6 +1866,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
     private javax.swing.JButton HuyHJDialog;
     private javax.swing.JButton HuyTTJDialog;
     private javax.swing.JLabel MaDTValue;
+    private javax.swing.JTable MonAnTable;
     private javax.swing.JButton NextPageXNDV;
     private javax.swing.JButton NextPageXNDV1;
     private javax.swing.JLabel NgayDTValue;
@@ -1931,11 +2001,6 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
-    private javax.swing.JTable jTable4;
-    private javax.swing.JTable jTable5;
     private javax.swing.JTextField jTextField7;
     // End of variables declaration//GEN-END:variables
 }

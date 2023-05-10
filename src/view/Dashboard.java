@@ -237,6 +237,9 @@ public class Dashboard extends javax.swing.JFrame {
 
         ThongKe.setBackground(new java.awt.Color(251, 247, 244));
         ThongKe.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ThongKeMouseClicked(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 ThongKeMousePressed(evt);
             }
@@ -481,6 +484,13 @@ public class Dashboard extends javax.swing.JFrame {
         jDesktopPane1.removeAll();
         jDesktopPane1.add(lookup).setVisible(true);
     }//GEN-LAST:event_TraCuuMouseClicked
+
+    private void ThongKeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ThongKeMouseClicked
+        // TODO add your handling code here:
+        RevenueStatistics revenueStatistics = new RevenueStatistics();
+        jDesktopPane1.removeAll();
+        jDesktopPane1.add(revenueStatistics).setVisible(true);
+    }//GEN-LAST:event_ThongKeMouseClicked
 
     
     /**

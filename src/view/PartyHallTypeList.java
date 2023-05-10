@@ -3,6 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package view;
+import java.awt.Color;
+import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
@@ -70,7 +72,7 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
         ui.setNorthPane(null);
-        defaultTableModelHallType = (DefaultTableModel)Table_Hall.getModel();
+        defaultTableModelHallType = (DefaultTableModel)Table_Hall_Type.getModel();
         int i = 0;
         for(HallType x: arr){
             defaultTableModelHallType.addRow(new Object[]{++i, x.loaiSanh, x.donGiaToiThieu,x.chon});
@@ -112,7 +114,7 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
         btnAddWorkingTime = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        Table_Hall = new javax.swing.JTable();
+        Table_Hall_Type = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
@@ -377,31 +379,39 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Hall.png"))); // NOI18N
 
-        Table_Hall.setBackground(new java.awt.Color(243, 246, 249));
-        Table_Hall.setModel(new javax.swing.table.DefaultTableModel(
+        Table_Hall_Type.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        Table_Hall_Type.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "STT", "Loại Sảnh", "Đơn giá tối thiểu", "Tùy Chọn"
+                "STT", "Mã loại sảnh", "Tên loại sảnh", "Đơn giá tối thiểu"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.Long.class, java.lang.String.class, java.lang.Long.class, java.lang.Boolean.class
-            };
             boolean[] canEdit = new boolean [] {
-                false, false, false, true
+                false, true, false, false
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(Table_Hall);
+        Table_Hall_Type.setFocusable(false);
+        Table_Hall_Type.setRowHeight(25);
+        Table_Hall_Type.setSelectionBackground(new java.awt.Color(69, 96, 134));
+        jScrollPane1.setViewportView(Table_Hall_Type);
+        if (Table_Hall_Type.getColumnModel().getColumnCount() > 0) {
+            Table_Hall_Type.getColumnModel().getColumn(0).setMinWidth(100);
+            Table_Hall_Type.getColumnModel().getColumn(0).setPreferredWidth(100);
+            Table_Hall_Type.getColumnModel().getColumn(0).setMaxWidth(50);
+            Table_Hall_Type.getColumnModel().getColumn(1).setMinWidth(200);
+            Table_Hall_Type.getColumnModel().getColumn(1).setPreferredWidth(200);
+            Table_Hall_Type.getColumnModel().getColumn(1).setMaxWidth(20);
+        }
+        Table_Hall_Type.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
+        Table_Hall_Type.getTableHeader().setOpaque(false);
+        Table_Hall_Type.getTableHeader().setBackground(new Color(243,246,249));
+        Table_Hall_Type.setDefaultEditor(Object.class, null);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -597,7 +607,7 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
     private javax.swing.JDialog Add_HallType_List_Dialog;
     private javax.swing.JButton BackPage3;
     private javax.swing.JDialog Edit_HallType_List_Dialog;
-    private javax.swing.JTable Table_Hall;
+    private javax.swing.JTable Table_Hall_Type;
     private javax.swing.JButton btnAddWorkingTime;
     private javax.swing.JButton btnAddWorkingTime1;
     private javax.swing.JButton btnAddWorkingTime2;

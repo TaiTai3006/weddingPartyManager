@@ -3,6 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package view;
+import java.awt.Color;
+import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
@@ -479,20 +481,20 @@ public class PartyHallList extends javax.swing.JInternalFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Hall.png"))); // NOI18N
 
-        Table_Hall.setBackground(new java.awt.Color(243, 246, 249));
+        Table_Hall.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         Table_Hall.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "STT", "Tên Sảnh", "Loại Sảnh", "Đơn giá tối thiểu", "Số lượng bàn tối đa", "Tùy Chọn"
+                "STT", "Mã sảnh", "Tên Sảnh", "Loại Sảnh", "Số lượng bàn tối đa"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Long.class, java.lang.String.class, java.lang.String.class, java.lang.Long.class, java.lang.Long.class, java.lang.Boolean.class
+                java.lang.Long.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.Long.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, true, true
+                false, true, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -503,7 +505,22 @@ public class PartyHallList extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        Table_Hall.setFocusable(false);
+        Table_Hall.setRowHeight(25);
+        Table_Hall.setSelectionBackground(new java.awt.Color(69, 96, 134));
         jScrollPane1.setViewportView(Table_Hall);
+        if (Table_Hall.getColumnModel().getColumnCount() > 0) {
+            Table_Hall.getColumnModel().getColumn(0).setMinWidth(100);
+            Table_Hall.getColumnModel().getColumn(0).setPreferredWidth(100);
+            Table_Hall.getColumnModel().getColumn(0).setMaxWidth(20);
+            Table_Hall.getColumnModel().getColumn(1).setMinWidth(100);
+            Table_Hall.getColumnModel().getColumn(1).setPreferredWidth(100);
+            Table_Hall.getColumnModel().getColumn(1).setMaxWidth(20);
+        }
+        Table_Hall.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
+        Table_Hall.getTableHeader().setOpaque(false);
+        Table_Hall.getTableHeader().setBackground(new Color(243,246,249));
+        Table_Hall.setDefaultEditor(Object.class, null);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);

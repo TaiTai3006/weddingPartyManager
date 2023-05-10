@@ -146,8 +146,8 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
         ui.setNorthPane(null);
         
-        Page1.setVisible(false);
-        Page2.setVisible(true);
+        Page1.setVisible(true);
+        Page2.setVisible(false);
         Page3.setVisible(false);
         Page4.setVisible(false);
         setValueTableMA(String.valueOf(LoaiMonAn.getSelectedItem()));

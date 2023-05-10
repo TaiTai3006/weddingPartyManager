@@ -4,6 +4,8 @@
  */
 package view;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -67,15 +69,15 @@ public class ServiceList extends javax.swing.JInternalFrame {
         items.add(new DichVu(5,"DV05", "San khau","500000",""));
         items.add(new DichVu(6,"DV06", "Mua lua","500000",""));
         ArrayList<DichVu> filteredItems = new ArrayList<>(items);
-        DefaultTableModel defaulttable = new DefaultTableModel();
-        table_service_list.setModel(defaulttable);
-        defaulttable.addColumn("STT");
-        defaulttable.addColumn("Ma dich vu");
-        defaulttable.addColumn("Ten dich vu");
-        defaulttable.addColumn("Don gia");
-        for(DichVu row : items){
-            defaulttable.addRow(new Object[]{row.getStt(), row.getMaDV(),row.getTenDichVu(),row.getDonGia(),row.getTuyChon()});
-        }
+//        DefaultTableModel defaulttable = new DefaultTableModel();
+//        table_service_list.setModel(defaulttable);
+//        defaulttable.addColumn("STT");
+//        defaulttable.addColumn("Ma dich vu");
+//        defaulttable.addColumn("Ten dich vu");
+//        defaulttable.addColumn("Don gia");
+//        for(DichVu row : items){
+//            defaulttable.addRow(new Object[]{row.getStt(), row.getMaDV(),row.getTenDichVu(),row.getDonGia(),row.getTuyChon()});
+//        }
             search_service_field.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -307,6 +309,7 @@ public class ServiceList extends javax.swing.JInternalFrame {
         BackPage3.setText("Quay lại");
         BackPage3.setPreferredSize(new java.awt.Dimension(90, 40));
 
+        table_service_list.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         table_service_list.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -321,20 +324,31 @@ public class ServiceList extends javax.swing.JInternalFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "STT", "Ten dich vu", "Don gia", "Tuy chon"
+                "STT", "Mã dịch vụ", "Tên dịch vụ", "Đơn giá"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, true, true
+                false, true, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        table_service_list.setRowHeight(30);
-        table_service_list.setShowGrid(true);
+        table_service_list.setFocusable(false);
+        table_service_list.setRowHeight(25);
+        table_service_list.setSelectionBackground(new java.awt.Color(69, 96, 134));
+        table_service_list.setShowGrid(false);
         jScrollPane1.setViewportView(table_service_list);
+        if (table_service_list.getColumnModel().getColumnCount() > 0) {
+            table_service_list.getColumnModel().getColumn(0).setMinWidth(100);
+            table_service_list.getColumnModel().getColumn(0).setPreferredWidth(100);
+            table_service_list.getColumnModel().getColumn(0).setMaxWidth(20);
+        }
+        table_service_list.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
+        table_service_list.getTableHeader().setOpaque(false);
+        table_service_list.getTableHeader().setBackground(new Color(243,246,249));
+        table_service_list.setDefaultEditor(Object.class, null);
 
         jPanel30.setBackground(new java.awt.Color(255, 255, 255));
 

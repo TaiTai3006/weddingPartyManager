@@ -4,6 +4,8 @@
  */
 package view;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -64,7 +66,6 @@ public class DishList extends javax.swing.JInternalFrame {
      */
     public DishList() {
         initComponents();
-        initComponents();
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
         ui.setNorthPane(null);
@@ -78,17 +79,17 @@ public class DishList extends javax.swing.JInternalFrame {
         items.add(new MonAn(6,"ma06","heo quay", "mon chinh", "50000", ""));
         ArrayList<MonAn> filteredItems = new ArrayList<>(items);
         
-        DefaultTableModel defaulttable = new DefaultTableModel();
-        table_dish_list.setModel(defaulttable);
-        defaulttable.addColumn("STT");
-        defaulttable.addColumn("Mã món ăn");
-        defaulttable.addColumn("Tên món ăn");
-        defaulttable.addColumn("Loại món ăn");
-        defaulttable.addColumn("Đơn giá");
-        defaulttable.addColumn("Tuy chon");
-        for(MonAn row : items){
-            defaulttable.addRow(new Object[]{row.getStt(),row.getMa(),row.getTen(),row.getLoaiMon(),row.getDonGia(),row.getTuyChon()});
-        }
+//        DefaultTableModel defaulttable = new DefaultTableModel();
+//        table_dish_list.setModel(defaulttable);
+//        defaulttable.addColumn("STT");
+//        defaulttable.addColumn("Mã món ăn");
+//        defaulttable.addColumn("Tên món ăn");
+//        defaulttable.addColumn("Loại món ăn");
+//        defaulttable.addColumn("Đơn giá");
+//        defaulttable.addColumn("Tuy chon");
+//        for(MonAn row : items){
+//            defaulttable.addRow(new Object[]{row.getStt(),row.getMa(),row.getTen(),row.getLoaiMon(),row.getDonGia(),row.getTuyChon()});
+//        }
             search_field.getDocument().addDocumentListener(new DocumentListener() {
 
             @Override
@@ -338,31 +339,41 @@ public class DishList extends javax.swing.JInternalFrame {
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/MenuFood 1 (1).png"))); // NOI18N
 
-        table_dish_list.setBackground(new java.awt.Color(243, 246, 249));
+        table_dish_list.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         table_dish_list.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "STT", "Mã món ăn", "Tên món ăn", "Loại món ăn", "Đơn giá", "Tùy chọn"
+                "STT", "Mã món ăn", "Tên món ăn", "Loại món ăn", "Đơn giá"
             }
         ));
-        table_dish_list.setRowHeight(35);
-        table_dish_list.setShowGrid(true);
+        table_dish_list.setFocusable(false);
+        table_dish_list.setRowHeight(25);
+        table_dish_list.setSelectionBackground(new java.awt.Color(69, 96, 134));
+        table_dish_list.setShowGrid(false);
         jScrollPane1.setViewportView(table_dish_list);
         if (table_dish_list.getColumnModel().getColumnCount() > 0) {
-            table_dish_list.getColumnModel().getColumn(0).setMinWidth(50);
-            table_dish_list.getColumnModel().getColumn(0).setMaxWidth(50);
+            table_dish_list.getColumnModel().getColumn(0).setMinWidth(100);
+            table_dish_list.getColumnModel().getColumn(0).setPreferredWidth(100);
+            table_dish_list.getColumnModel().getColumn(0).setMaxWidth(20);
+            table_dish_list.getColumnModel().getColumn(1).setMinWidth(100);
+            table_dish_list.getColumnModel().getColumn(1).setPreferredWidth(100);
+            table_dish_list.getColumnModel().getColumn(1).setMaxWidth(20);
         }
+        table_dish_list.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
+        table_dish_list.getTableHeader().setOpaque(false);
+        table_dish_list.getTableHeader().setBackground(new Color(243,246,249));
+        table_dish_list.setDefaultEditor(Object.class, null);
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -503,7 +514,7 @@ public class DishList extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1158, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1168, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

@@ -4,6 +4,8 @@
  */
 package view;
 
+import java.awt.Color;
+import java.awt.Font;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
@@ -50,7 +52,7 @@ public class StaffList extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        NhanVienTable = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         txtSearch = new javax.swing.JTextField();
@@ -187,30 +189,35 @@ public class StaffList extends javax.swing.JInternalFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Account.png"))); // NOI18N
 
-        jTable1.setBackground(new java.awt.Color(243, 246, 249));
-        jTable1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        NhanVienTable.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        NhanVienTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"1", "PhuocPhan", "Staff", null},
-                {"2", "TaiTai", "Admin", null},
-                {"3", "Thang", "Staff", null},
-                {"4", "SonTran", "Staff", null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {"1", "PhuocPhan", "Staff"},
+                {"2", "TaiTai", "Admin"},
+                {"3", "Thang", "Staff"},
+                {"4", "SonTran", "Staff"},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "STT", "Tên tài khoản", "Quyền", "Tùy chọn"
+                "STT", "Tên tài khoản", "Chức vụ"
             }
         ));
-        jTable1.setSelectionBackground(new java.awt.Color(246, 198, 158));
-        jTable1.setShowGrid(false);
-        jScrollPane1.setViewportView(jTable1);
+        NhanVienTable.setFocusable(false);
+        NhanVienTable.setRowHeight(25);
+        NhanVienTable.setSelectionBackground(new java.awt.Color(69, 96, 134));
+        NhanVienTable.setShowGrid(false);
+        jScrollPane1.setViewportView(NhanVienTable);
+        NhanVienTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
+        NhanVienTable.getTableHeader().setOpaque(false);
+        NhanVienTable.getTableHeader().setBackground(new Color(243,246,249));
+        NhanVienTable.setDefaultEditor(Object.class, null);
 
         jPanel2.setBackground(new java.awt.Color(238, 230, 226));
 
@@ -357,7 +364,7 @@ public class StaffList extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 698, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 694, Short.MAX_VALUE)
         );
 
         pack();
@@ -392,6 +399,7 @@ public class StaffList extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackPage3;
+    private javax.swing.JTable NhanVienTable;
     private javax.swing.JDialog addForm;
     private javax.swing.JButton btnAddWorkingTime;
     private javax.swing.JButton btnAddWorkingTime1;
@@ -413,7 +421,6 @@ public class StaffList extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JRadioButton rdbtnAdmin;
     private javax.swing.JRadioButton rdbtnStaff;

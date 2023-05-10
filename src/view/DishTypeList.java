@@ -4,6 +4,10 @@
  */
 package view;
 
+import java.awt.Color;
+import java.awt.Font;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
+
 /**
  *
  * @author macbookpro
@@ -15,6 +19,9 @@ public class DishTypeList extends javax.swing.JInternalFrame {
      */
     public DishTypeList() {
         initComponents();
+        this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
+        ui.setNorthPane(null);
     }
 
     /**
@@ -42,14 +49,12 @@ public class DishTypeList extends javax.swing.JInternalFrame {
         add_dishType_btn = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        table_dish_list = new javax.swing.JTable();
+        table_dish_type_list = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         delete_dishType_btn = new javax.swing.JButton();
         edit_dishType_btn = new javax.swing.JButton();
-        jPanel35 = new javax.swing.JPanel();
-        dishType_fillter = new javax.swing.JComboBox<>();
         BackPage3 = new javax.swing.JButton();
 
         jPanel13.setLayout(new java.awt.BorderLayout());
@@ -192,8 +197,8 @@ public class DishTypeList extends javax.swing.JInternalFrame {
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/MenuFood 1 (1).png"))); // NOI18N
 
-        table_dish_list.setBackground(new java.awt.Color(243, 246, 249));
-        table_dish_list.setModel(new javax.swing.table.DefaultTableModel(
+        table_dish_type_list.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        table_dish_type_list.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -210,13 +215,19 @@ public class DishTypeList extends javax.swing.JInternalFrame {
                 "STT", "Mã loại món ăn", "Loại món ăn"
             }
         ));
-        table_dish_list.setRowHeight(35);
-        table_dish_list.setShowGrid(true);
-        jScrollPane1.setViewportView(table_dish_list);
-        if (table_dish_list.getColumnModel().getColumnCount() > 0) {
-            table_dish_list.getColumnModel().getColumn(0).setMinWidth(50);
-            table_dish_list.getColumnModel().getColumn(0).setMaxWidth(50);
+        table_dish_type_list.setFocusable(false);
+        table_dish_type_list.setRowHeight(25);
+        table_dish_type_list.setShowGrid(false);
+        jScrollPane1.setViewportView(table_dish_type_list);
+        if (table_dish_type_list.getColumnModel().getColumnCount() > 0) {
+            table_dish_type_list.getColumnModel().getColumn(0).setMinWidth(100);
+            table_dish_type_list.getColumnModel().getColumn(0).setPreferredWidth(100);
+            table_dish_type_list.getColumnModel().getColumn(0).setMaxWidth(20);
         }
+        table_dish_type_list.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
+        table_dish_type_list.getTableHeader().setOpaque(false);
+        table_dish_type_list.getTableHeader().setBackground(new Color(243,246,249));
+        table_dish_type_list.setDefaultEditor(Object.class, null);
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -235,7 +246,7 @@ public class DishTypeList extends javax.swing.JInternalFrame {
 
         jLabel13.setFont(new java.awt.Font("Arial", 1, 35)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(69, 96, 134));
-        jLabel13.setText("DANH SÁCH MÓN ĂN");
+        jLabel13.setText("DANH SÁCH LOẠI MÓN ĂN");
         jPanel5.add(jLabel13);
 
         delete_dishType_btn.setBackground(new java.awt.Color(132, 70, 133));
@@ -257,22 +268,6 @@ public class DishTypeList extends javax.swing.JInternalFrame {
                 edit_dishType_btnActionPerformed(evt);
             }
         });
-
-        jPanel35.setBackground(new java.awt.Color(238, 230, 226));
-        jPanel35.setPreferredSize(new java.awt.Dimension(260, 50));
-
-        dishType_fillter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        javax.swing.GroupLayout jPanel35Layout = new javax.swing.GroupLayout(jPanel35);
-        jPanel35.setLayout(jPanel35Layout);
-        jPanel35Layout.setHorizontalGroup(
-            jPanel35Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(dishType_fillter, javax.swing.GroupLayout.Alignment.TRAILING, 0, 260, Short.MAX_VALUE)
-        );
-        jPanel35Layout.setVerticalGroup(
-            jPanel35Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(dishType_fillter, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
-        );
 
         BackPage3.setBackground(new java.awt.Color(69, 96, 134));
         BackPage3.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
@@ -307,8 +302,7 @@ public class DishTypeList extends javax.swing.JInternalFrame {
                                 .addComponent(edit_dishType_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel35, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(100, 100, 100))))
         );
         jPanel1Layout.setVerticalGroup(
@@ -323,12 +317,10 @@ public class DishTypeList extends javax.swing.JInternalFrame {
                     .addComponent(add_dishType_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(edit_dishType_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel35, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(190, 190, 190)
                 .addComponent(BackPage3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -341,7 +333,7 @@ public class DishTypeList extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 694, Short.MAX_VALUE)
         );
 
         pack();
@@ -379,7 +371,6 @@ public class DishTypeList extends javax.swing.JInternalFrame {
     private javax.swing.JButton delete_dishType_btn;
     private javax.swing.JButton delete_dishType_dialog_btn;
     private javax.swing.JDialog dishType_dialog;
-    private javax.swing.JComboBox<String> dishType_fillter;
     private javax.swing.JButton edit_dishType_btn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel13;
@@ -392,10 +383,9 @@ public class DishTypeList extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
-    private javax.swing.JPanel jPanel35;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable table_dish_list;
+    private javax.swing.JTable table_dish_type_list;
     // End of variables declaration//GEN-END:variables
 }

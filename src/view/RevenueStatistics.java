@@ -4,6 +4,8 @@
  */
 package view;
 
+import java.awt.Color;
+import java.awt.Font;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
@@ -50,7 +52,7 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
         jButton3 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        ThongKeDoanhThuTable = new javax.swing.JTable();
         BackPage3 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -212,8 +214,8 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(1170, 730));
 
-        jTable1.setBackground(new java.awt.Color(243, 246, 249));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        ThongKeDoanhThuTable.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        ThongKeDoanhThuTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -221,10 +223,22 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "STT", "Loại ca", "Giờ bắt đầu", "Giờ kết thúc ", "Tùy chọn"
+                "STT", "Ngày", "Số lượng tiệc cưới", "Doanh thu ", "Tỷ lệ"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        ThongKeDoanhThuTable.setFocusable(false);
+        ThongKeDoanhThuTable.setRowHeight(25);
+        ThongKeDoanhThuTable.setSelectionBackground(new java.awt.Color(69, 96, 134));
+        jScrollPane1.setViewportView(ThongKeDoanhThuTable);
+        if (ThongKeDoanhThuTable.getColumnModel().getColumnCount() > 0) {
+            ThongKeDoanhThuTable.getColumnModel().getColumn(0).setMinWidth(100);
+            ThongKeDoanhThuTable.getColumnModel().getColumn(0).setPreferredWidth(100);
+            ThongKeDoanhThuTable.getColumnModel().getColumn(0).setMaxWidth(20);
+        }
+        ThongKeDoanhThuTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
+        ThongKeDoanhThuTable.getTableHeader().setOpaque(false);
+        ThongKeDoanhThuTable.getTableHeader().setBackground(new Color(243,246,249));
+        ThongKeDoanhThuTable.setDefaultEditor(Object.class, null);
 
         BackPage3.setBackground(new java.awt.Color(69, 96, 134));
         BackPage3.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
@@ -408,8 +422,8 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackPage3;
+    private javax.swing.JTable ThongKeDoanhThuTable;
     private javax.swing.JDialog addForm;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -419,10 +433,8 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel28;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -433,16 +445,12 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel35;
-    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField12;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     // End of variables declaration//GEN-END:variables
