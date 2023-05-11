@@ -4,6 +4,8 @@
  */
 package view;
 
+import javax.swing.JDesktopPane;
+import javax.swing.JPanel;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
@@ -20,6 +22,7 @@ public class ListTable extends javax.swing.JInternalFrame {
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
         ui.setNorthPane(null);
+        
     }
 
     /**
@@ -814,6 +817,14 @@ public class ListTable extends javax.swing.JInternalFrame {
         jDesktopPane1.removeAll();
         jDesktopPane1.add(dishTypeList).setVisible(true);
     }//GEN-LAST:event_DanhSachLoaiMonAnMouseClicked
+
+    public JDesktopPane getjDesktopPane1() {
+        return jDesktopPane1;
+    }
+
+    public JPanel getListTable() {
+        return listTable;
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

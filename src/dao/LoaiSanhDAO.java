@@ -27,7 +27,7 @@ public class LoaiSanhDAO implements DAOInterface<LoaiSanh>{
         try {
             Connection con = JDBCUtil.getConnection();
             
-            String sql = "INSERT INTO loaisanh (maloaisanh, tenloaisanh, soluongbantoida) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO LoaiSanh (maLoaiSanh, tenLoaiSanh, donGiaBanToiThieu) VALUES (?, ?, ?)";
             
             PreparedStatement st = con.prepareStatement(sql);
             
@@ -46,6 +46,8 @@ public class LoaiSanhDAO implements DAOInterface<LoaiSanh>{
             }
             
             JDBCUtil.closeConnection(con);
+            
+            return kq;
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -58,9 +60,9 @@ public class LoaiSanhDAO implements DAOInterface<LoaiSanh>{
      try {
             Connection con = JDBCUtil.getConnection();
             
-            String sql = "UPDATE loaisanh SET " +
-                    "tenloaisanh =?, soluongbantoida =? " +
-                    "WHERE maloaisanh =?";
+            String sql = "UPDATE LoaiSanh SET " +
+                    "tenLoaiSanh =?, donGiaBanToiThieu =? " +
+                    "WHERE maLoaiSanh =?";
             
             PreparedStatement st = con.prepareStatement(sql);
             
@@ -77,6 +79,7 @@ public class LoaiSanhDAO implements DAOInterface<LoaiSanh>{
             }
             
             JDBCUtil.closeConnection(con);
+            return kq;
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -85,12 +88,13 @@ public class LoaiSanhDAO implements DAOInterface<LoaiSanh>{
     
     @Override
     public int Delete(LoaiSanh t) {
+     
     try {
             Connection con = JDBCUtil.getConnection();
  
             
-            String sql = "DELETE FROM loaisanh " +
-                    "WHERE maloaisanh = ?";
+            String sql = "DELETE FROM LoaiSanh " +
+                    "WHERE maLoaisanh = ?";
             
             PreparedStatement st = con.prepareStatement(sql);
             
@@ -105,6 +109,8 @@ public class LoaiSanhDAO implements DAOInterface<LoaiSanh>{
             }
             
             JDBCUtil.closeConnection(con);
+            
+            return kq;
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -117,14 +123,14 @@ public class LoaiSanhDAO implements DAOInterface<LoaiSanh>{
        try {
             Connection con = JDBCUtil.getConnection();
             
-            String sql = "SELECT * FROM loaisanh";
+            String sql = "SELECT * FROM LoaiSanh";
             
             PreparedStatement st = con.prepareStatement(sql);
             
             ResultSet kq = st.executeQuery();
             
             while(kq.next()){
-                loaiSanhs.add(new LoaiSanh(kq.getString("maloaisanh"),kq.getString("tenloaisanh"), kq.getInt("soluongbantoida")));
+                loaiSanhs.add(new LoaiSanh(kq.getString("maLoaiSanh"),kq.getString("tenLoaiSanh"), kq.getInt("donGiaBanToiThieu")));
             }
             
             JDBCUtil.closeConnection(con);
