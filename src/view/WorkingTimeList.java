@@ -4,9 +4,18 @@
  */
 package view;
 
+import dao.CaDAO;
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ArrayList;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
+import javax.swing.table.DefaultTableModel;
+import model.Ca;
+import java.sql.Time;
+import javax.swing.RowFilter;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -17,12 +26,60 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
     /**
      * Creates new form WorkingTimeList
      */
+    private DefaultTableModel defaultTableCa;
+    private ArrayList<Ca> lstCa = CaDAO.getInstance().SelectAll();
+
     public WorkingTimeList() {
         initComponents();
         initComponents();
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
+        BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
+        CreateDataTable();
+    }
+
+    public void CreateDataTable() {
+        defaultTableCa = (DefaultTableModel) tblCa.getModel();
+        int i = 0;
+        for (Ca x : lstCa) {
+            defaultTableCa.addRow(new Object[]{++i, x.getMaCa(), x.getTenCa(), x.getGioBatDau(), x.getGioKetThuc()});
+        }
+    }
+
+
+    public void ReloadDataTable() {
+        lstCa = CaDAO.getInstance().SelectAll();
+        defaultTableCa.setRowCount(0);
+        CreateDataTable();
+    }
+
+    public void Message(String message, int messageType) {
+        JOptionPane jOptionPane = new JOptionPane(message, messageType);
+        JDialog dialog = jOptionPane.createDialog(null, "Message");
+        dialog.setAlwaysOnTop(true);
+        dialog.setVisible(true);
+    }
+
+    public String ConvertFormatTime(String time) {
+        String res = "";
+        String hour = "";
+        String kind = "";
+
+        for (int i = 0; i < 2; i++) {
+            hour += time.charAt(i);
+        }
+        for (int i = 6; i <= 7; i++) {
+            kind += time.charAt(i);
+        }
+        if (kind.equals("PM")) {
+            hour = (Integer.parseInt(hour) + 12) + "";
+        }
+        res += hour;
+        for (int i = 2; i < 5; i++) {
+            res += time.charAt(i);
+        }
+        res += ":00";
+        return res;
     }
 
     /**
@@ -38,34 +95,47 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtTenCaAdd = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        btnCancel = new javax.swing.JButton();
+        btnAdd = new javax.swing.JButton();
+        timeBatDau = new com.raven.swing.TimePicker();
+        timeKetThuc = new com.raven.swing.TimePicker();
+        updateForm = new javax.swing.JDialog();
+        jPanel8 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        txtTenCaUD = new javax.swing.JTextField();
+        jLabel33 = new javax.swing.JLabel();
+        jLabel34 = new javax.swing.JLabel();
+        jLabel35 = new javax.swing.JLabel();
+        jLabel36 = new javax.swing.JLabel();
+        jLabel37 = new javax.swing.JLabel();
+        btnCancelUD = new javax.swing.JButton();
+        btnUpdateUD = new javax.swing.JButton();
+        timeBatDauUD = new com.raven.swing.TimePicker();
+        timeKetThucUD = new com.raven.swing.TimePicker();
         jPanel1 = new javax.swing.JPanel();
-        btnAddWorkingTime = new javax.swing.JButton();
+        btnAddTime = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        CaTable = new javax.swing.JTable();
+        tblCa = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
-        btnAddWorkingTime1 = new javax.swing.JButton();
-        btnAddWorkingTime2 = new javax.swing.JButton();
+        btnDeleteTime = new javax.swing.JButton();
+        btnUpdateTime = new javax.swing.JButton();
         jPanel35 = new javax.swing.JPanel();
         jLabel28 = new javax.swing.JLabel();
-        jTextField12 = new javax.swing.JTextField();
+        txtSearch = new javax.swing.JTextField();
         BackPage3 = new javax.swing.JButton();
 
-        addForm.setMinimumSize(new java.awt.Dimension(531, 490));
+        addForm.setTitle("Add Form  ");
+        addForm.setMinimumSize(new java.awt.Dimension(700, 700));
         addForm.setModal(true);
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
@@ -78,9 +148,9 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
         jLabel5.setForeground(new java.awt.Color(153, 153, 153));
         jLabel5.setText("Tên ca làm");
 
-        jTextField2.setBackground(new java.awt.Color(242, 242, 242));
-        jTextField2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jTextField2.setText("PhuocPhan");
+        txtTenCaAdd.setBackground(new java.awt.Color(242, 242, 242));
+        txtTenCaAdd.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtTenCaAdd.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel7.setFont(new java.awt.Font("SansSerif", 2, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(153, 153, 153));
@@ -94,10 +164,6 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
         jLabel8.setForeground(new java.awt.Color(255, 0, 0));
         jLabel8.setText("*");
 
-        jTextField3.setBackground(new java.awt.Color(242, 242, 242));
-        jTextField3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jTextField3.setText("7:00:00");
-
         jLabel9.setFont(new java.awt.Font("SansSerif", 2, 14)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(153, 153, 153));
         jLabel9.setText("Giờ kết thúc");
@@ -106,21 +172,27 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
         jLabel10.setForeground(new java.awt.Color(255, 0, 0));
         jLabel10.setText("*");
 
-        jTextField4.setBackground(new java.awt.Color(242, 242, 242));
-        jTextField4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jTextField4.setText("21:00:00");
+        btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        btnCancel.setText("Hủy");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
 
-        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Clock.png"))); // NOI18N
+        btnAdd.setBackground(new java.awt.Color(132, 70, 133));
+        btnAdd.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        btnAdd.setForeground(new java.awt.Color(255, 255, 255));
+        btnAdd.setText("Thêm ");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
 
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Clock.png"))); // NOI18N
+        timeBatDau.setForeground(new java.awt.Color(69, 96, 134));
 
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jButton2.setText("Hủy");
-
-        jButton3.setBackground(new java.awt.Color(132, 70, 133));
-        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setText("Thêm ");
+        timeKetThuc.setForeground(new java.awt.Color(132, 70, 133));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -131,36 +203,38 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(43, 43, 43)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addComponent(jLabel7)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(174, 174, 174))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                        .addGap(0, 0, 0)
+                                        .addComponent(timeBatDau, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(53, 53, 53)))
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                        .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addGap(31, 31, 31)
+                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(timeKetThuc, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel3Layout.createSequentialGroup()
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel3Layout.createSequentialGroup()
-                                    .addComponent(jLabel7)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel3Layout.createSequentialGroup()
-                                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel3Layout.createSequentialGroup()
-                                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel3Layout.createSequentialGroup()
-                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
-                                        .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.LEADING))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtTenCaAdd, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -172,39 +246,181 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtTenCaAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(25, 25, 25)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
-                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
                     .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(timeBatDau, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(timeKetThuc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(34, 34, 34)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36))
+                    .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout addFormLayout = new javax.swing.GroupLayout(addForm.getContentPane());
         addForm.getContentPane().setLayout(addFormLayout);
         addFormLayout.setHorizontalGroup(
             addFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         addFormLayout.setVerticalGroup(
             addFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, addFormLayout.createSequentialGroup()
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        updateForm.setMinimumSize(new java.awt.Dimension(700, 700));
+
+        jPanel8.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(69, 96, 134));
+        jLabel11.setText("Cập nhật ca làm");
+
+        jLabel12.setFont(new java.awt.Font("SansSerif", 2, 14)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel12.setText("Tên ca làm");
+
+        txtTenCaUD.setBackground(new java.awt.Color(242, 242, 242));
+        txtTenCaUD.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtTenCaUD.setForeground(new java.awt.Color(0, 0, 0));
+
+        jLabel33.setFont(new java.awt.Font("SansSerif", 2, 14)); // NOI18N
+        jLabel33.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel33.setText("Giờ bắt đầu");
+
+        jLabel34.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        jLabel34.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel34.setText("*");
+
+        jLabel35.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        jLabel35.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel35.setText("*");
+
+        jLabel36.setFont(new java.awt.Font("SansSerif", 2, 14)); // NOI18N
+        jLabel36.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel36.setText("Giờ kết thúc");
+
+        jLabel37.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        jLabel37.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel37.setText("*");
+
+        btnCancelUD.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        btnCancelUD.setText("Hủy");
+        btnCancelUD.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelUDActionPerformed(evt);
+            }
+        });
+
+        btnUpdateUD.setBackground(new java.awt.Color(132, 70, 133));
+        btnUpdateUD.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        btnUpdateUD.setForeground(new java.awt.Color(255, 255, 255));
+        btnUpdateUD.setText("Cập nhật");
+        btnUpdateUD.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateUDActionPerformed(evt);
+            }
+        });
+
+        timeBatDauUD.setForeground(new java.awt.Color(69, 96, 134));
+
+        timeKetThucUD.setForeground(new java.awt.Color(132, 70, 133));
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel8Layout.createSequentialGroup()
+                                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jPanel8Layout.createSequentialGroup()
+                                        .addComponent(jLabel33)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel35, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(174, 174, 174))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                                        .addComponent(timeBatDauUD, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(53, 53, 53)))
+                                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                                        .addComponent(btnCancelUD, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnUpdateUD, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel8Layout.createSequentialGroup()
+                                        .addGap(31, 31, 31)
+                                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel8Layout.createSequentialGroup()
+                                                .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jLabel37, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(timeKetThucUD, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel8Layout.createSequentialGroup()
+                                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtTenCaUD, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(61, Short.MAX_VALUE))
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel34))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtTenCaUD, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel35)
+                    .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel37))
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(timeBatDauUD, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(timeKetThucUD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(34, 34, 34)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCancelUD, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnUpdateUD, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(36, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout updateFormLayout = new javax.swing.GroupLayout(updateForm.getContentPane());
+        updateForm.getContentPane().setLayout(updateFormLayout);
+        updateFormLayout.setHorizontalGroup(
+            updateFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        updateFormLayout.setVerticalGroup(
+            updateFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, updateFormLayout.createSequentialGroup()
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         setPreferredSize(new java.awt.Dimension(1170, 730));
@@ -212,44 +428,41 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(1170, 730));
 
-        btnAddWorkingTime.setBackground(new java.awt.Color(99, 122, 48));
-        btnAddWorkingTime.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
-        btnAddWorkingTime.setForeground(new java.awt.Color(255, 255, 255));
-        btnAddWorkingTime.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/plus.png"))); // NOI18N
-        btnAddWorkingTime.addActionListener(new java.awt.event.ActionListener() {
+        btnAddTime.setBackground(new java.awt.Color(99, 122, 48));
+        btnAddTime.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
+        btnAddTime.setForeground(new java.awt.Color(255, 255, 255));
+        btnAddTime.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/plus.png"))); // NOI18N
+        btnAddTime.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddWorkingTimeActionPerformed(evt);
+                btnAddTimeActionPerformed(evt);
             }
         });
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/schedule.png"))); // NOI18N
 
-        CaTable.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        CaTable.setModel(new javax.swing.table.DefaultTableModel(
+        tblCa.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        tblCa.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "STT", "Mã loại ca", "Loại ca", "Giờ bắt đầu", "Giờ kết thúc "
             }
         ));
-        CaTable.setFocusable(false);
-        CaTable.setGridColor(new java.awt.Color(255, 255, 255));
-        CaTable.setRowHeight(25);
-        CaTable.setSelectionBackground(new java.awt.Color(69, 96, 134));
-        jScrollPane1.setViewportView(CaTable);
-        if (CaTable.getColumnModel().getColumnCount() > 0) {
-            CaTable.getColumnModel().getColumn(0).setMinWidth(100);
-            CaTable.getColumnModel().getColumn(0).setPreferredWidth(100);
-            CaTable.getColumnModel().getColumn(0).setMaxWidth(20);
+        tblCa.setFocusable(false);
+        tblCa.setGridColor(new java.awt.Color(255, 255, 255));
+        tblCa.setRowHeight(25);
+        tblCa.setSelectionBackground(new java.awt.Color(69, 96, 134));
+        jScrollPane1.setViewportView(tblCa);
+        if (tblCa.getColumnModel().getColumnCount() > 0) {
+            tblCa.getColumnModel().getColumn(0).setMinWidth(100);
+            tblCa.getColumnModel().getColumn(0).setPreferredWidth(100);
+            tblCa.getColumnModel().getColumn(0).setMaxWidth(20);
         }
-        CaTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
-        CaTable.getTableHeader().setOpaque(false);
-        CaTable.getTableHeader().setBackground(new Color(243,246,249));
-        CaTable.setDefaultEditor(Object.class, null);
+        tblCa.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
+        tblCa.getTableHeader().setOpaque(false);
+        tblCa.getTableHeader().setBackground(new Color(243,246,249));
+        tblCa.setDefaultEditor(Object.class, null);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -267,23 +480,23 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
         jLabel13.setText("DANH SÁCH CA");
         jPanel5.add(jLabel13);
 
-        btnAddWorkingTime1.setBackground(new java.awt.Color(132, 70, 133));
-        btnAddWorkingTime1.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
-        btnAddWorkingTime1.setForeground(new java.awt.Color(255, 255, 255));
-        btnAddWorkingTime1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Delete.png"))); // NOI18N
-        btnAddWorkingTime1.addActionListener(new java.awt.event.ActionListener() {
+        btnDeleteTime.setBackground(new java.awt.Color(132, 70, 133));
+        btnDeleteTime.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
+        btnDeleteTime.setForeground(new java.awt.Color(255, 255, 255));
+        btnDeleteTime.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Delete.png"))); // NOI18N
+        btnDeleteTime.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddWorkingTime1ActionPerformed(evt);
+                btnDeleteTimeActionPerformed(evt);
             }
         });
 
-        btnAddWorkingTime2.setBackground(new java.awt.Color(248, 189, 141));
-        btnAddWorkingTime2.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
-        btnAddWorkingTime2.setForeground(new java.awt.Color(255, 255, 255));
-        btnAddWorkingTime2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Edit.png"))); // NOI18N
-        btnAddWorkingTime2.addActionListener(new java.awt.event.ActionListener() {
+        btnUpdateTime.setBackground(new java.awt.Color(248, 189, 141));
+        btnUpdateTime.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
+        btnUpdateTime.setForeground(new java.awt.Color(255, 255, 255));
+        btnUpdateTime.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Edit.png"))); // NOI18N
+        btnUpdateTime.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddWorkingTime2ActionPerformed(evt);
+                btnUpdateTimeActionPerformed(evt);
             }
         });
 
@@ -292,11 +505,15 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
 
         jLabel28.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Group 9.png"))); // NOI18N
 
-        jTextField12.setBackground(new java.awt.Color(238, 230, 226));
-        jTextField12.setBorder(null);
-        jTextField12.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField12ActionPerformed(evt);
+        txtSearch.setBackground(new java.awt.Color(238, 230, 226));
+        txtSearch.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        txtSearch.setBorder(null);
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtSearchKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchKeyReleased(evt);
             }
         });
 
@@ -308,7 +525,7 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jLabel28)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField12, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel35Layout.setVerticalGroup(
@@ -319,7 +536,7 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
                 .addContainerGap(18, Short.MAX_VALUE))
             .addGroup(jPanel35Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField12)
+                .addComponent(txtSearch)
                 .addContainerGap())
         );
 
@@ -328,6 +545,11 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
         BackPage3.setForeground(new java.awt.Color(255, 255, 255));
         BackPage3.setText("Quay lại");
         BackPage3.setPreferredSize(new java.awt.Dimension(90, 40));
+        BackPage3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BackPage3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -349,11 +571,11 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
                             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(btnAddWorkingTime, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnAddTime, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnAddWorkingTime1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnDeleteTime, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnAddWorkingTime2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(btnUpdateTime, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -368,9 +590,9 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnAddWorkingTime1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAddWorkingTime, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAddWorkingTime2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnDeleteTime, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAddTime, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnUpdateTime, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -396,40 +618,230 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAddWorkingTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddWorkingTimeActionPerformed
+    private void btnAddTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddTimeActionPerformed
         // TODO add your handling code here:
         addForm.setLocationRelativeTo(null);
         addForm.setVisible(true);
-    }//GEN-LAST:event_btnAddWorkingTimeActionPerformed
+    }//GEN-LAST:event_btnAddTimeActionPerformed
 
-    private void btnAddWorkingTime1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddWorkingTime1ActionPerformed
+    private void btnDeleteTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteTimeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnAddWorkingTime1ActionPerformed
+        int row = tblCa.getSelectedRow();
+        int[] rows = tblCa.getSelectedRows();
+        if (row < 0) {
+            Message("Vui lòng chọn dữ liệu muốn xoá!", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            String mess = "";
+            if (rows.length == 1) {
+                mess = String.valueOf(tblCa.getValueAt(row, 1)) + " ";
+            } else {
+                for (int r : rows) {
+                    mess += String.valueOf(tblCa.getValueAt(r, 1)) + " ";
+                }
+            }
 
-    private void btnAddWorkingTime2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddWorkingTime2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAddWorkingTime2ActionPerformed
+            int x = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xoá " + mess + "hay không?");
+            if (x == JOptionPane.YES_OPTION) {
+                int kq = 0;
+                if (rows.length == 1) {
+                    String maCa = String.valueOf(tblCa.getValueAt(row, 1));
+                    String tenCa = String.valueOf(tblCa.getValueAt(row, 2));
+                    String gioBatDau = String.valueOf(tblCa.getValueAt(row, 3));
+                    String gioKetThuc = String.valueOf(tblCa.getValueAt(row, 4));
 
-    private void jTextField12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField12ActionPerformed
+                    try {
+                        kq = CaDAO.getInstance().Delete(new Ca(maCa, tenCa, Time.valueOf(gioBatDau), Time.valueOf(gioKetThuc)));
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    for (int r : rows) {
+                        String maCa = String.valueOf(tblCa.getValueAt(r, 1));
+                        String tenCa = String.valueOf(tblCa.getValueAt(r, 2));
+                        String gioBatDau = String.valueOf(tblCa.getValueAt(r, 3));
+                        String gioKetThuc = String.valueOf(tblCa.getValueAt(r, 4));
+
+                        try {
+                            kq = CaDAO.getInstance().Delete(new Ca(maCa, tenCa, Time.valueOf(gioBatDau), Time.valueOf(gioKetThuc)));
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        if (kq < 0) {
+                            Message("Xoá dữ liệu " + maCa + " thất bại!", JOptionPane.ERROR_MESSAGE);
+                        }
+                        kq = 1;
+                    }
+                }
+                if (kq > 0) {
+                    ReloadDataTable();
+                } else {
+                    Message("Xoá dữ liệu thất bại!", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+    }//GEN-LAST:event_btnDeleteTimeActionPerformed
+
+    private void btnUpdateTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateTimeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField12ActionPerformed
+        int row = tblCa.getSelectedRow();
+        if (row < 0) {
+            Message("Vui lòng chọn dữ liệu muốn chỉnh sửa!", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            txtTenCaUD.setText(String.valueOf(tblCa.getValueAt(row, 2)));
+            timeBatDauUD.setSelectedTime(Time.valueOf(String.valueOf(tblCa.getValueAt(row, 3))));
+            timeKetThucUD.setSelectedTime(Time.valueOf(String.valueOf(tblCa.getValueAt(row, 4))));
+            updateForm.setLocationRelativeTo(null);
+            updateForm.setVisible(true);
+        }
+    }//GEN-LAST:event_btnUpdateTimeActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        // TODO add your handling code here:
+        addForm.setVisible(false);
+    }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        // TODO add your handling code here:
+        if (txtTenCaAdd.getText().equals("")) {
+            Message("Vui lòng nhập đầy đủ dữ liệu!", JOptionPane.WARNING_MESSAGE);
+        } else {
+            String maCa = String.valueOf(Integer.parseInt(String.valueOf(defaultTableCa.getValueAt(defaultTableCa.getRowCount() - 1, 1)).substring(2)) + 1);
+            switch (maCa.length()) {
+                case 1:
+                    maCa = "CA00" + maCa;
+                    break;
+                case 2:
+                    maCa = "CA0" + maCa;
+                    break;
+                case 3:
+                    maCa = "CA" + maCa;
+                    break;
+            }
+            int kq = 0;
+            try {
+                String gioBatDau = ConvertFormatTime(timeBatDau.getSelectedTime());
+                String gioKetThuc = ConvertFormatTime(timeKetThuc.getSelectedTime());
+
+                kq = CaDAO.getInstance().Insert(new Ca(maCa, txtTenCaAdd.getText(), Time.valueOf(gioBatDau), Time.valueOf(gioKetThuc)));
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            if (kq != 0) {
+                addForm.setVisible(false);
+                ReloadDataTable();
+                txtTenCaAdd.setText("");
+                timeBatDau.now();
+                timeKetThuc.now();
+            } else {
+                Message("Lỗi! Thêm dữ liệu thất bại. Vui lòng nhập lại dữ liệu.", JOptionPane.ERROR_MESSAGE);
+                txtTenCaAdd.setText("");
+                timeBatDau.now();
+                timeKetThuc.now();
+            }
+        }
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnCancelUDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelUDActionPerformed
+        // TODO add your handling code here:
+        updateForm.setVisible(false);
+    }//GEN-LAST:event_btnCancelUDActionPerformed
+
+    private void btnUpdateUDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateUDActionPerformed
+        // TODO add your handling code here:
+        int row = tblCa.getSelectedRow();
+        String maLoaiSanh = String.valueOf(tblCa.getValueAt(row, 1));
+        int kq = 0;
+        if (!txtTenCaUD.getText().equals(String.valueOf(tblCa.getValueAt(row, 2)))
+                || !timeBatDauUD.getSelectedTime().equals(String.valueOf(tblCa.getValueAt(row, 3)))
+                || !timeKetThucUD.getSelectedTime().equals(String.valueOf(tblCa.getValueAt(row, 4)))) {
+            String gioBatDau = ConvertFormatTime(timeBatDauUD.getSelectedTime());
+            String gioKetThuc = ConvertFormatTime(timeKetThucUD.getSelectedTime());
+            kq = CaDAO.getInstance().Update(new Ca(maLoaiSanh, txtTenCaUD.getText(), Time.valueOf(gioBatDau), Time.valueOf(gioKetThuc)));
+        }
+        if (kq > 0) {
+            Message("Chỉnh sửa dữ liệu thành công!", JOptionPane.INFORMATION_MESSAGE);
+            updateForm.setVisible(false);
+            ReloadDataTable();
+            txtTenCaUD.setText("");
+            timeBatDauUD.now();
+            timeKetThucUD.now();
+        } else {
+            updateForm.setVisible(false);
+            Message("Chỉnh sửa dữ liệu thất bại!", JOptionPane.ERROR_MESSAGE);
+
+        }
+    }//GEN-LAST:event_btnUpdateUDActionPerformed
+
+    private void txtSearchKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyPressed
+        // TODO add your handling code here:
+        defaultTableCa = (DefaultTableModel)tblCa.getModel();
+        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(defaultTableCa);
+        tblCa.setRowSorter(tr);
+        String tmp = txtSearch.getText();
+        tr.setRowFilter(RowFilter.regexFilter(tmp.trim()));
+    }//GEN-LAST:event_txtSearchKeyPressed
+
+    private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
+        // TODO add your handling code here:
+        defaultTableCa = (DefaultTableModel)tblCa.getModel();
+        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(defaultTableCa);
+        tblCa.setRowSorter(tr);
+        tr.setRowFilter(RowFilter.regexFilter(txtSearch.getText().trim()));
+    }//GEN-LAST:event_txtSearchKeyReleased
+
+    private void BackPage3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackPage3ActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_BackPage3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackPage3;
-    private javax.swing.JTable CaTable;
     private javax.swing.JDialog addForm;
-    private javax.swing.JButton btnAddWorkingTime;
-    private javax.swing.JButton btnAddWorkingTime1;
-    private javax.swing.JButton btnAddWorkingTime2;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnAdd1;
+    private javax.swing.JButton btnAdd2;
+    private javax.swing.JButton btnAddTime;
+    private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnCancel1;
+    private javax.swing.JButton btnCancel2;
+    private javax.swing.JButton btnCancelUD;
+    private javax.swing.JButton btnDeleteTime;
+    private javax.swing.JButton btnUpdateTime;
+    private javax.swing.JButton btnUpdateUD;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -441,10 +853,24 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel35;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField12;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTable tblCa;
+    private com.raven.swing.TimePicker timeBatDau;
+    private com.raven.swing.TimePicker timeBatDauUD;
+    private com.raven.swing.TimePicker timeKetThuc;
+    private com.raven.swing.TimePicker timeKetThucUD;
+    private javax.swing.JTextField txtGioBatDauAdd1;
+    private javax.swing.JTextField txtGioBatDauAdd2;
+    private javax.swing.JTextField txtGioKetThucAdd1;
+    private javax.swing.JTextField txtGioKetThucAdd2;
+    private javax.swing.JTextField txtSearch;
+    private javax.swing.JTextField txtTenCaAdd;
+    private javax.swing.JTextField txtTenCaAdd1;
+    private javax.swing.JTextField txtTenCaAdd2;
+    private javax.swing.JTextField txtTenCaUD;
+    private javax.swing.JDialog updateForm;
     // End of variables declaration//GEN-END:variables
 }

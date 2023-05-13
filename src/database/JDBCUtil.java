@@ -30,7 +30,6 @@ public class JDBCUtil {
             Logger.getLogger(JDBCUtil.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        
         return c;
     }
     

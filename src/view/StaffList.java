@@ -4,15 +4,25 @@
  */
 package view;
 
+import dao.NhanVienDAO;
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ArrayList;
+import javax.swing.ButtonModel;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
+import javax.swing.table.DefaultTableModel;
+import model.NhanVien;
 
 /**
  *
  * @author macbookpro
  */
 public class StaffList extends javax.swing.JInternalFrame {
+
+    private DefaultTableModel defaultTableStaff;
+    private ArrayList<NhanVien> lstStaff = NhanVienDAO.getInstance().SelectAll();
 
     /**
      * Creates new form StaffList
@@ -21,10 +31,45 @@ public class StaffList extends javax.swing.JInternalFrame {
 
         initComponents();
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
+        BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
-        btngrQuyen.add(rdbtnAdmin);
-        btngrQuyen.add(rdbtnStaff);
+        btngrQuyenAdd.add(rdbtnAdmin);
+        btngrQuyenAdd.add(rdbtnStaff);
+        CreatDataTable();
+    }
+
+    public void CreatDataTable() {
+        defaultTableStaff = (DefaultTableModel) tblStaff.getModel();
+        int i = 0;
+        for (NhanVien nv : lstStaff) {
+//            defaultTableStaff.addRow(new Object[]{++i, nv.getUserName(), nv.getChucVu()});
+        }
+    }
+
+    public void SearchTable(String value) {
+        defaultTableStaff.setRowCount(0);
+        defaultTableStaff = (DefaultTableModel) tblStaff.getModel();
+        int i = 0;
+
+//        for (NhanVien nv : lstStaff) {
+//            System.out.println();
+//            if (nv.getTenTaiKhoan().toLowerCase().contains(value.toLowerCase()) || nv.getChucVu().toLowerCase().contains(value.toLowerCase())) {
+//                defaultTableStaff.addRow(new Object[]{++i, nv.getTenTaiKhoan(), nv.getChucVu()});
+//            }
+//        }
+    }
+
+    public void ReloadDataTable() {
+        lstStaff = NhanVienDAO.getInstance().SelectAll();
+        defaultTableStaff.setRowCount(0);
+        CreatDataTable();
+    }
+
+    public void Message(String message, int messageType) {
+        JOptionPane jOptionPane = new JOptionPane(message, messageType);
+        JDialog dialog = jOptionPane.createDialog(null, "Message");
+        dialog.setAlwaysOnTop(true);
+        dialog.setVisible(true);
     }
 
     /**
@@ -41,28 +86,38 @@ public class StaffList extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtUserName = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         rdbtnAdmin = new javax.swing.JRadioButton();
         rdbtnStaff = new javax.swing.JRadioButton();
         btnCancel = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        btngrQuyen = new javax.swing.ButtonGroup();
+        btnAdd = new javax.swing.JButton();
+        btngrQuyenAdd = new javax.swing.ButtonGroup();
+        updateForm = new javax.swing.JDialog();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        rdbtnAdminUD = new javax.swing.JRadioButton();
+        rdbtnStaffUD = new javax.swing.JRadioButton();
+        btnUpdateUD = new javax.swing.JButton();
+        btnCancelUD = new javax.swing.JButton();
+        btngrQuyenUpdate = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        NhanVienTable = new javax.swing.JTable();
+        tblStaff = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         txtSearch = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
-        btnAddWorkingTime = new javax.swing.JButton();
-        btnAddWorkingTime1 = new javax.swing.JButton();
-        btnAddWorkingTime2 = new javax.swing.JButton();
+        btnAddStaff = new javax.swing.JButton();
+        btnDeleteStaff = new javax.swing.JButton();
         BackPage3 = new javax.swing.JButton();
+        btnUpdateStaff = new javax.swing.JButton();
 
         addForm.setMinimumSize(new java.awt.Dimension(453, 383));
         addForm.setModal(true);
@@ -81,9 +136,10 @@ public class StaffList extends javax.swing.JInternalFrame {
         jLabel6.setForeground(new java.awt.Color(255, 0, 0));
         jLabel6.setText("*");
 
-        jTextField2.setBackground(new java.awt.Color(242, 242, 242));
-        jTextField2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jTextField2.setText("PhuocPhan");
+        txtUserName.setBackground(new java.awt.Color(242, 242, 242));
+        txtUserName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtUserName.setForeground(new java.awt.Color(0, 0, 0));
+        txtUserName.setText("PhuocPhan");
 
         jLabel7.setFont(new java.awt.Font("SansSerif", 2, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(153, 153, 153));
@@ -94,9 +150,11 @@ public class StaffList extends javax.swing.JInternalFrame {
         jLabel8.setText("*");
 
         rdbtnAdmin.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        rdbtnAdmin.setForeground(new java.awt.Color(0, 0, 0));
         rdbtnAdmin.setText("Admin");
 
         rdbtnStaff.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        rdbtnStaff.setForeground(new java.awt.Color(0, 0, 0));
         rdbtnStaff.setText("Staff");
 
         btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
@@ -107,10 +165,15 @@ public class StaffList extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(132, 70, 133));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Thêm ");
+        btnAdd.setBackground(new java.awt.Color(132, 70, 133));
+        btnAdd.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        btnAdd.setForeground(new java.awt.Color(255, 255, 255));
+        btnAdd.setText("Thêm ");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -125,11 +188,11 @@ public class StaffList extends javax.swing.JInternalFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtUserName, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(27, 27, 27))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -155,7 +218,7 @@ public class StaffList extends javax.swing.JInternalFrame {
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -166,7 +229,7 @@ public class StaffList extends javax.swing.JInternalFrame {
                 .addComponent(rdbtnStaff)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(24, 24, 24))
         );
@@ -182,6 +245,97 @@ public class StaffList extends javax.swing.JInternalFrame {
             .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(69, 96, 134));
+        jLabel9.setText("Cập nhật nhân viên");
+
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel11.setText("*");
+
+        jLabel12.setFont(new java.awt.Font("SansSerif", 2, 14)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel12.setText("Phân quyền");
+
+        rdbtnAdminUD.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        rdbtnAdminUD.setForeground(new java.awt.Color(0, 0, 0));
+        rdbtnAdminUD.setText("Admin");
+
+        rdbtnStaffUD.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        rdbtnStaffUD.setForeground(new java.awt.Color(0, 0, 0));
+        rdbtnStaffUD.setText("Staff");
+
+        btnUpdateUD.setBackground(new java.awt.Color(132, 70, 133));
+        btnUpdateUD.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        btnUpdateUD.setForeground(new java.awt.Color(255, 255, 255));
+        btnUpdateUD.setText("Thêm ");
+
+        btnCancelUD.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        btnCancelUD.setText("Hủy");
+        btnCancelUD.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelUDActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(rdbtnAdminUD, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(rdbtnStaffUD, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap(152, Short.MAX_VALUE)
+                .addComponent(btnCancelUD, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnUpdateUD, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rdbtnAdminUD)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rdbtnStaffUD)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnUpdateUD, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCancelUD, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30))
+        );
+
+        javax.swing.GroupLayout updateFormLayout = new javax.swing.GroupLayout(updateForm.getContentPane());
+        updateForm.getContentPane().setLayout(updateFormLayout);
+        updateFormLayout.setHorizontalGroup(
+            updateFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        updateFormLayout.setVerticalGroup(
+            updateFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
         setPreferredSize(new java.awt.Dimension(1170, 730));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -189,13 +343,9 @@ public class StaffList extends javax.swing.JInternalFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Account.png"))); // NOI18N
 
-        NhanVienTable.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        NhanVienTable.setModel(new javax.swing.table.DefaultTableModel(
+        tblStaff.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        tblStaff.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"1", "PhuocPhan", "Staff"},
-                {"2", "TaiTai", "Admin"},
-                {"3", "Thang", "Staff"},
-                {"4", "SonTran", "Staff"},
                 {null, null, null},
                 {null, null, null},
                 {null, null, null},
@@ -209,15 +359,15 @@ public class StaffList extends javax.swing.JInternalFrame {
                 "STT", "Tên tài khoản", "Chức vụ"
             }
         ));
-        NhanVienTable.setFocusable(false);
-        NhanVienTable.setRowHeight(25);
-        NhanVienTable.setSelectionBackground(new java.awt.Color(69, 96, 134));
-        NhanVienTable.setShowGrid(false);
-        jScrollPane1.setViewportView(NhanVienTable);
-        NhanVienTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
-        NhanVienTable.getTableHeader().setOpaque(false);
-        NhanVienTable.getTableHeader().setBackground(new Color(243,246,249));
-        NhanVienTable.setDefaultEditor(Object.class, null);
+        tblStaff.setFocusable(false);
+        tblStaff.setRowHeight(25);
+        tblStaff.setSelectionBackground(new java.awt.Color(69, 96, 134));
+        tblStaff.setShowGrid(false);
+        jScrollPane1.setViewportView(tblStaff);
+        tblStaff.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
+        tblStaff.getTableHeader().setOpaque(false);
+        tblStaff.getTableHeader().setBackground(new Color(243,246,249));
+        tblStaff.setDefaultEditor(Object.class, null);
 
         jPanel2.setBackground(new java.awt.Color(238, 230, 226));
 
@@ -226,11 +376,6 @@ public class StaffList extends javax.swing.JInternalFrame {
         txtSearch.setBackground(new java.awt.Color(238, 230, 226));
         txtSearch.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         txtSearch.setBorder(null);
-        txtSearch.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                txtSearchMouseClicked(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -270,33 +415,23 @@ public class StaffList extends javax.swing.JInternalFrame {
         jLabel13.setText("DANH SÁCH NHÂN VIÊN");
         jPanel5.add(jLabel13);
 
-        btnAddWorkingTime.setBackground(new java.awt.Color(99, 122, 48));
-        btnAddWorkingTime.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
-        btnAddWorkingTime.setForeground(new java.awt.Color(255, 255, 255));
-        btnAddWorkingTime.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/plus.png"))); // NOI18N
-        btnAddWorkingTime.addActionListener(new java.awt.event.ActionListener() {
+        btnAddStaff.setBackground(new java.awt.Color(99, 122, 48));
+        btnAddStaff.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
+        btnAddStaff.setForeground(new java.awt.Color(255, 255, 255));
+        btnAddStaff.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/plus.png"))); // NOI18N
+        btnAddStaff.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddWorkingTimeActionPerformed(evt);
+                btnAddStaffActionPerformed(evt);
             }
         });
 
-        btnAddWorkingTime1.setBackground(new java.awt.Color(132, 70, 133));
-        btnAddWorkingTime1.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
-        btnAddWorkingTime1.setForeground(new java.awt.Color(255, 255, 255));
-        btnAddWorkingTime1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Delete.png"))); // NOI18N
-        btnAddWorkingTime1.addActionListener(new java.awt.event.ActionListener() {
+        btnDeleteStaff.setBackground(new java.awt.Color(132, 70, 133));
+        btnDeleteStaff.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
+        btnDeleteStaff.setForeground(new java.awt.Color(255, 255, 255));
+        btnDeleteStaff.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Delete.png"))); // NOI18N
+        btnDeleteStaff.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddWorkingTime1ActionPerformed(evt);
-            }
-        });
-
-        btnAddWorkingTime2.setBackground(new java.awt.Color(248, 189, 141));
-        btnAddWorkingTime2.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
-        btnAddWorkingTime2.setForeground(new java.awt.Color(255, 255, 255));
-        btnAddWorkingTime2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Edit.png"))); // NOI18N
-        btnAddWorkingTime2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddWorkingTime2ActionPerformed(evt);
+                btnDeleteStaffActionPerformed(evt);
             }
         });
 
@@ -305,6 +440,16 @@ public class StaffList extends javax.swing.JInternalFrame {
         BackPage3.setForeground(new java.awt.Color(255, 255, 255));
         BackPage3.setText("Quay lại");
         BackPage3.setPreferredSize(new java.awt.Dimension(90, 40));
+
+        btnUpdateStaff.setBackground(new java.awt.Color(248, 189, 141));
+        btnUpdateStaff.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
+        btnUpdateStaff.setForeground(new java.awt.Color(255, 255, 255));
+        btnUpdateStaff.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Edit.png"))); // NOI18N
+        btnUpdateStaff.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateStaffActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -323,11 +468,11 @@ public class StaffList extends javax.swing.JInternalFrame {
                             .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(btnAddWorkingTime, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnAddStaff, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnAddWorkingTime1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnDeleteStaff, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnAddWorkingTime2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(btnUpdateStaff, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -342,15 +487,15 @@ public class StaffList extends javax.swing.JInternalFrame {
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnAddWorkingTime, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAddWorkingTime1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAddWorkingTime2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnAddStaff, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDeleteStaff, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnUpdateStaff, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(BackPage3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26))
@@ -370,44 +515,138 @@ public class StaffList extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtSearchMouseClicked
-        // TODO add your handling code here:
-        txtSearch.setFocusable(true);
-        txtSearch.setText("");
-    }//GEN-LAST:event_txtSearchMouseClicked
-
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         // TODO add your handling code here:
         addForm.setVisible(false);
     }//GEN-LAST:event_btnCancelActionPerformed
 
-    private void btnAddWorkingTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddWorkingTimeActionPerformed
+    private void btnAddStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddStaffActionPerformed
         // TODO add your handling code here: 
         addForm.setLocationRelativeTo(null);
         addForm.setVisible(true);
-    }//GEN-LAST:event_btnAddWorkingTimeActionPerformed
+    }//GEN-LAST:event_btnAddStaffActionPerformed
 
-    private void btnAddWorkingTime1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddWorkingTime1ActionPerformed
+    private void btnDeleteStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteStaffActionPerformed
         // TODO add your handling code here:
-        
-    }//GEN-LAST:event_btnAddWorkingTime1ActionPerformed
+        int row = tblStaff.getSelectedRow();
+        int[] rows = tblStaff.getSelectedRows();
+        if (row < 0) {
+            Message("Vui lòng chọn dữ liệu muốn xoá!", JOptionPane.INFORMATION_MESSAGE);
+        } else {
 
-    private void btnAddWorkingTime2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddWorkingTime2ActionPerformed
+            String mess = "";
+            if (rows.length == 1) {
+                mess = String.valueOf(tblStaff.getValueAt(row, 1)) + " ";
+            } else {
+                for (int r : rows) {
+                    mess += String.valueOf(tblStaff.getValueAt(r, 1)) + " ";
+                }
+            }
+
+            int x = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xoá " + mess + "hay không?");
+            if (x == JOptionPane.YES_OPTION) {
+                int kq = 0;
+                if (rows.length == 1) {
+                    String tenTaiKhoan = String.valueOf(tblStaff.getValueAt(row, 1));
+                    String chucVu = String.valueOf(tblStaff.getValueAt(row, 2));
+
+                    try {
+//                        kq = NhanVienDAO.getInstance().Delete(new NhanVien(tenTaiKhoan, chucVu));
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    for (int r : rows) {
+                        String userName = String.valueOf(tblStaff.getValueAt(row, 1));
+                        String passWord = String.valueOf(tblStaff.getValueAt(row, 2));
+                        String maChucVu = String.valueOf(tblStaff.getValueAt(row, 3));
+
+                        try {
+                            kq = NhanVienDAO.getInstance().Delete(new NhanVien(userName, passWord, maChucVu));
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                if (kq > 0) {
+                    ReloadDataTable();
+                } else {
+                    Message("Xoá dữ liệu thất bại!", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+    }//GEN-LAST:event_btnDeleteStaffActionPerformed
+
+    private void btnUpdateStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateStaffActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnAddWorkingTime2ActionPerformed
+        int row = tblStaff.getSelectedRow();
+        if (row < 0) {
+            Message("Vui lòng chọn dữ liệu muốn chỉnh sửa!", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            String permission = String.valueOf(tblStaff.getValueAt(row, 2));
+            if (permission.equals(rdbtnAdminUD.getText())) {
+                btngrQuyenUpdate.setSelected((ButtonModel) rdbtnAdminUD, true);
+            } else {
+                btngrQuyenUpdate.setSelected((ButtonModel) rdbtnStaffUD, true);
+            }
+            updateForm.setLocationRelativeTo(null);
+            updateForm.setVisible(true);
+        }
+    }//GEN-LAST:event_btnUpdateStaffActionPerformed
+
+    private void btnCancelUDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelUDActionPerformed
+        // TODO add your handling code here:
+        updateForm.setVisible(false);
+    }//GEN-LAST:event_btnCancelUDActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        // TODO add your handling code here:
+        if (txtUserName.getText().equals("") || btngrQuyenAdd.getSelection().equals(null)) {
+            Message("Vui lòng nhập đầy đủ dữ liệu!", JOptionPane.WARNING_MESSAGE);
+        } else {
+            int kq = 0;
+            try {
+//                String chucvu; 
+//                if(rdbtnAdmin.isSelected()) chucvu = "Admin";
+//                else chucvu = "Staff";
+//                kq = NhanVienDAO.getInstance().Insert(new NhanVien(txtUserName.getText(), chucvu));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            if(kq != 0){
+                addForm.setVisible(false);
+                ReloadDataTable();
+                txtUserName.setText("");
+                rdbtnAdmin.setSelected(false);
+                rdbtnAdmin.setSelected(false);
+            }else{
+                Message("Lỗi! Thêm dữ liệu thất bại. Vui lòng nhập lại dữ liệu.", JOptionPane.ERROR_MESSAGE);
+                txtUserName.setText("");
+                rdbtnAdmin.setSelected(false);
+                rdbtnAdmin.setSelected(false);
+            }
+        }
+    }//GEN-LAST:event_btnAddActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackPage3;
-    private javax.swing.JTable NhanVienTable;
     private javax.swing.JDialog addForm;
-    private javax.swing.JButton btnAddWorkingTime;
-    private javax.swing.JButton btnAddWorkingTime1;
-    private javax.swing.JButton btnAddWorkingTime2;
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnAddStaff;
     private javax.swing.JButton btnCancel;
-    private javax.swing.ButtonGroup btngrQuyen;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnCancelUD;
+    private javax.swing.JButton btnDeleteStaff;
+    private javax.swing.JButton btnUpdateStaff;
+    private javax.swing.JButton btnUpdateUD;
+    private javax.swing.ButtonGroup btngrQuyenAdd;
+    private javax.swing.ButtonGroup btngrQuyenUpdate;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -415,15 +654,21 @@ public class StaffList extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JRadioButton rdbtnAdmin;
+    private javax.swing.JRadioButton rdbtnAdminUD;
     private javax.swing.JRadioButton rdbtnStaff;
+    private javax.swing.JRadioButton rdbtnStaffUD;
+    private javax.swing.JTable tblStaff;
     private javax.swing.JTextField txtSearch;
+    private javax.swing.JTextField txtUserName;
+    private javax.swing.JDialog updateForm;
     // End of variables declaration//GEN-END:variables
 }
