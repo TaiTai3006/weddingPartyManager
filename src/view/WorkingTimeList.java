@@ -711,12 +711,15 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
             String maCa = String.valueOf(Integer.parseInt(String.valueOf(defaultTableCa.getValueAt(defaultTableCa.getRowCount() - 1, 1)).substring(2)) + 1);
             switch (maCa.length()) {
                 case 1:
-                    maCa = "CA00" + maCa;
+                    maCa = "CA000" + maCa;
                     break;
                 case 2:
-                    maCa = "CA0" + maCa;
+                    maCa = "CA00" + maCa;
                     break;
                 case 3:
+                    maCa = "CA0" + maCa;
+                    break;
+                case 4:
                     maCa = "CA" + maCa;
                     break;
             }
