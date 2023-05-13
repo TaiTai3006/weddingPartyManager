@@ -8,28 +8,41 @@ package model;
  *
  * @author macbookpro
  */
-public class Sanh {
+public class Sanh extends LoaiSanh{
     private String maSanh;
-    private String maLoaiSanh;
     private String tenSanh;
     private int soLuongBanToiDa;
+    private String ghiChu;
 
     public Sanh() {
     }
 
-    public Sanh(String maSanh, String maLoaiSanh, String tenSanh, int soLuongBanToiDa) {
+    @Override
+    public String toString() {
+       
+        return "Sanh{" + "maSanh=" + maSanh + ", tenSanh=" + tenSanh + ", soLuongBanToiDa=" + soLuongBanToiDa + '}' +  super.toString();
+    }
+
+    public void setGhiChu(String ghiChu) {
+        this.ghiChu = ghiChu;
+    }
+
+    public String getGhiChu() {
+        return ghiChu;
+    }
+
+    public Sanh(String maSanh, String maLoaiSanh, String tenSanh, int soLuongBanToiDa, String tenLoaiSanh, int donGiaBanToiThieu, String ghiChu) {
+        super(maLoaiSanh, tenLoaiSanh, donGiaBanToiThieu);
         this.maSanh = maSanh;
-        this.maLoaiSanh = maLoaiSanh;
+        this.ghiChu = ghiChu;
         this.tenSanh = tenSanh;
         this.soLuongBanToiDa = soLuongBanToiDa;
     }
 
+    
+
     public String getMaSanh() {
         return maSanh;
-    }
-
-    public String getMaLoaiSanh() {
-        return maLoaiSanh;
     }
 
     public String getTenSanh() {
@@ -42,10 +55,6 @@ public class Sanh {
 
     public void setMaSanh(String maSanh) {
         this.maSanh = maSanh;
-    }
-
-    public void setMaLoaiSanh(String maLoaiSanh) {
-        this.maLoaiSanh = maLoaiSanh;
     }
 
     public void setTenSanh(String tenSanh) {

@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package view;
+
 import dao.LoaiSanhDAO;
 import java.awt.Color;
 import java.awt.Font;
@@ -26,43 +27,44 @@ import model.LoaiSanh;
  * @author macbookpro
  */
 public class PartyHallTypeList extends javax.swing.JInternalFrame {
+
     private DefaultTableModel defaultTableModelHallType;
     private ArrayList<LoaiSanh> loaiSanhs = LoaiSanhDAO.getInstance().SelectAll();
-    
 
     /**
      * Creates new form WorkingTimeList
      */
     public PartyHallTypeList() {
-        
+
         initComponents();
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
+        BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
         CreateDataTable();
     }
-    
-    public void CreateDataTable(){
-        defaultTableModelHallType = (DefaultTableModel)Table_Hall_Type.getModel();
+
+    public void CreateDataTable() {
+        defaultTableModelHallType = (DefaultTableModel) Table_Hall_Type.getModel();
         int i = 0;
-        for(LoaiSanh x: loaiSanhs){
-            defaultTableModelHallType.addRow(new Object[]{++i, x.getMaLoaiSanh(), x.getTenLoaiSanh(),x.getDonGiaBanToiThieu()});
+        for (LoaiSanh x : loaiSanhs) {
+            defaultTableModelHallType.addRow(new Object[]{++i, x.getMaLoaiSanh(), x.getTenLoaiSanh(), x.getDonGiaBanToiThieu()});
         }
     }
-    
-    public void SearchTable(String value){
+
+    public void SearchTable(String value) {
         defaultTableModelHallType.setRowCount(0);
-        defaultTableModelHallType = (DefaultTableModel)Table_Hall_Type.getModel();
+        defaultTableModelHallType = (DefaultTableModel) Table_Hall_Type.getModel();
         int i = 0;
-        
-        for(LoaiSanh x: loaiSanhs){
+
+        for (LoaiSanh x : loaiSanhs) {
             System.out.println();
-            if(x.getMaLoaiSanh().toLowerCase().contains(value.toLowerCase()) || x.getTenLoaiSanh().toLowerCase().contains(value.toLowerCase()))
-            defaultTableModelHallType.addRow(new Object[]{++i, x.getMaLoaiSanh(), x.getTenLoaiSanh(),x.getDonGiaBanToiThieu()});
+            if (x.getMaLoaiSanh().toLowerCase().contains(value.toLowerCase()) || x.getTenLoaiSanh().toLowerCase().contains(value.toLowerCase())) {
+                defaultTableModelHallType.addRow(new Object[]{++i, x.getMaLoaiSanh(), x.getTenLoaiSanh(), x.getDonGiaBanToiThieu()});
+            }
         }
     }
-    
-    public void ReloadDataTable(){
+
+    public void ReloadDataTable() {
         loaiSanhs = LoaiSanhDAO.getInstance().SelectAll();
         defaultTableModelHallType.setRowCount(0);
         CreateDataTable();
@@ -570,15 +572,13 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-  
-    
     public void Message(String message, int messageType) {
         JOptionPane jOptionPane = new JOptionPane(message, messageType);
         JDialog dialog = jOptionPane.createDialog(null, "Message");
         dialog.setAlwaysOnTop(true);
         dialog.setVisible(true);
     }
-    
+
     private void btnAddHallTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddHallTypeActionPerformed
 
         Add_HallType_List_Dialog.setLocationRelativeTo(null);
@@ -589,56 +589,54 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         int row = Table_Hall_Type.getSelectedRow();
         int[] rows = Table_Hall_Type.getSelectedRows();
-        if(row < 0){
+        if (row < 0) {
             Message("Vui lòng chọn dữ liệu muốn xoá!", JOptionPane.INFORMATION_MESSAGE);
-        } else{
-            
+        } else {
+
             String mess = "";
-            if(rows.length == 1){
-              mess = String.valueOf(Table_Hall_Type.getValueAt(row, 1)) + " ";
-            }else{
-              for(int r : rows){
-                  mess += String.valueOf(Table_Hall_Type.getValueAt(r, 1)) + " ";
-              }
+            if (rows.length == 1) {
+                mess = String.valueOf(Table_Hall_Type.getValueAt(row, 1)) + " ";
+            } else {
+                for (int r : rows) {
+                    mess += String.valueOf(Table_Hall_Type.getValueAt(r, 1)) + " ";
+                }
             }
-            
+
             int x = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xoá " + mess + "hay không?");
-            if(x == JOptionPane.YES_OPTION){
+            if (x == JOptionPane.YES_OPTION) {
                 int kq = 0;
-                if(rows.length == 1){
+                if (rows.length == 1) {
                     String maLoaiSanh = String.valueOf(Table_Hall_Type.getValueAt(row, 1));
                     String tenLoaiSanh = String.valueOf(Table_Hall_Type.getValueAt(row, 2));
                     int donGiaToiThieu = Integer.parseInt(String.valueOf(Table_Hall_Type.getValueAt(row, 3)));
-                
-                    try{
+
+                    try {
                         kq = LoaiSanhDAO.getInstance().Delete(new LoaiSanh(maLoaiSanh, tenLoaiSanh, donGiaToiThieu));
-                    
-                    }catch(Exception e){
+
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
-                 
-                }else{
-                    for(int r : rows){
-                      String maLoaiSanh = String.valueOf(Table_Hall_Type.getValueAt(r, 1));
-                    String tenLoaiSanh = String.valueOf(Table_Hall_Type.getValueAt(r, 2));
-                    int donGiaToiThieu = Integer.parseInt(String.valueOf(Table_Hall_Type.getValueAt(r, 3)));
-                
-                    try{
-                        kq = LoaiSanhDAO.getInstance().Delete(new LoaiSanh(maLoaiSanh, tenLoaiSanh, donGiaToiThieu));
-                        
-                    }catch(Exception e){
-                        e.printStackTrace();
+
+                } else {
+                    for (int r : rows) {
+                        String maLoaiSanh = String.valueOf(Table_Hall_Type.getValueAt(r, 1));
+                        String tenLoaiSanh = String.valueOf(Table_Hall_Type.getValueAt(r, 2));
+                        int donGiaToiThieu = Integer.parseInt(String.valueOf(Table_Hall_Type.getValueAt(r, 3)));
+
+                        try {
+                            kq = LoaiSanhDAO.getInstance().Delete(new LoaiSanh(maLoaiSanh, tenLoaiSanh, donGiaToiThieu));
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
-                    }  
                 }
-                if(kq>0){
+                if (kq > 0) {
                     ReloadDataTable();
-                }
-                else{
+                } else {
                     Message("Xoá dữ liệu thất bại!", JOptionPane.ERROR_MESSAGE);
                 }
-                
-                
+
             }
         }
     }//GEN-LAST:event_btnDeleteHallTypeActionPerformed
@@ -646,15 +644,15 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
     private void btnEditHallTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditHallTypeActionPerformed
 
         int row = Table_Hall_Type.getSelectedRow();
-        if(row < 0){
+        if (row < 0) {
             Message("Vui lòng chọn dữ liệu muốn chỉnh sửa!", JOptionPane.INFORMATION_MESSAGE);
-        }else{
+        } else {
             tenLoaiSanhValue.setText(String.valueOf(Table_Hall_Type.getValueAt(row, 2)));
             donGiaToiThieuValue.setText(String.valueOf(Table_Hall_Type.getValueAt(row, 3)));
             Edit_HallType_List_Dialog.setLocationRelativeTo(null);
             Edit_HallType_List_Dialog.setVisible(true);
-        } 
-        
+        }
+
     }//GEN-LAST:event_btnEditHallTypeActionPerformed
 
     private void txfSearchTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txfSearchTableActionPerformed
@@ -671,7 +669,7 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        Add_HallType_List_Dialog.setVisible(false); 
+        Add_HallType_List_Dialog.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnUpdateHallTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateHallTypeActionPerformed
@@ -679,21 +677,20 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
         int row = Table_Hall_Type.getSelectedRow();
         String maLoaiSanh = String.valueOf(Table_Hall_Type.getValueAt(row, 1));
         int kq = 0;
-        if(!tenLoaiSanhValue.getText().equals(String.valueOf(Table_Hall_Type.getValueAt(row, 2))) || 
-                !donGiaToiThieuValue.getText().equals(String.valueOf(Table_Hall_Type.getValueAt(row, 3)))){
+        if (!tenLoaiSanhValue.getText().equals(String.valueOf(Table_Hall_Type.getValueAt(row, 2)))
+                || !donGiaToiThieuValue.getText().equals(String.valueOf(Table_Hall_Type.getValueAt(row, 3)))) {
             kq = LoaiSanhDAO.getInstance().Update(new LoaiSanh(maLoaiSanh, tenLoaiSanhValue.getText(), Integer.parseInt(donGiaToiThieuValue.getText())));
         }
-        if(kq>0){
-                    Edit_HallType_List_Dialog.setVisible(false);
-                    ReloadDataTable();
-                    tenLoaiSanhValue.setText("");
-                    donGiaToiThieuValue.setText("");
-                }
-                else{
-                    Edit_HallType_List_Dialog.setVisible(false);
-                    Message("Chỉnh sửa dữ liệu thất bại!", JOptionPane.ERROR_MESSAGE);
-                   
-                }
+        if (kq > 0) {
+            Edit_HallType_List_Dialog.setVisible(false);
+            ReloadDataTable();
+            tenLoaiSanhValue.setText("");
+            donGiaToiThieuValue.setText("");
+        } else {
+            Edit_HallType_List_Dialog.setVisible(false);
+            Message("Chỉnh sửa dữ liệu thất bại!", JOptionPane.ERROR_MESSAGE);
+
+        }
     }//GEN-LAST:event_btnUpdateHallTypeActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -703,34 +700,37 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
 
     private void addHallTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addHallTypeActionPerformed
         // TODO add your handling code here:
-        if(txftenLoaiSanh.getText().equals("") || txfdonGiaToiThieu.getText().equals("")){
+        if (txftenLoaiSanh.getText().equals("") || txfdonGiaToiThieu.getText().equals("")) {
             Message("Vui lòng nhập dữ liệu!", JOptionPane.WARNING_MESSAGE);
-        } else{
-            String maLS =  String.valueOf(Integer.parseInt(String.valueOf(defaultTableModelHallType.getValueAt(defaultTableModelHallType.getRowCount() - 1, 1)).substring(2)) + 1);
-            switch(maLS.length()){
-                case 1: 
-                    maLS = "LS00" + maLS;
+        } else {
+            String maLS = String.valueOf(LoaiSanhDAO.getInstance().GetID() + 1);
+            switch (maLS.length()) {
+                case 1:
+                    maLS = "LS000" + maLS;
                     break;
                 case 2:
-                    maLS = "LS0" + maLS;
+                    maLS = "LS00" + maLS;
                     break;
                 case 3:
+                    maLS = "LS0" + maLS;
+                    break;
+                case 4:
                     maLS = "LS" + maLS;
                     break;
             }
             int kq = 0;
-            try{
-            kq = LoaiSanhDAO.getInstance().Insert(new LoaiSanh(maLS, txftenLoaiSanh.getText(),
-                    Integer.parseInt(txfdonGiaToiThieu.getText())));
+            try {
+                kq = LoaiSanhDAO.getInstance().Insert(new LoaiSanh(maLS, txftenLoaiSanh.getText(),
+                        Integer.parseInt(txfdonGiaToiThieu.getText())));
             } catch (Exception ex) {
-            ex.printStackTrace();
+                ex.printStackTrace();
             }
-            if(kq != 0){
+            if (kq != 0) {
                 Add_HallType_List_Dialog.setVisible(false);
                 ReloadDataTable();
                 txftenLoaiSanh.setText("");
                 txfdonGiaToiThieu.setText("");
-            }else{
+            } else {
                 Message("Lỗi! Thêm dữ liệu thất bại. Vui lòng nhập lại dữ liệu.", JOptionPane.ERROR_MESSAGE);
                 txftenLoaiSanh.setText("");
                 txfdonGiaToiThieu.setText("");
