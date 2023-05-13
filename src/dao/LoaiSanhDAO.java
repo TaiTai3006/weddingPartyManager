@@ -116,6 +116,30 @@ public class LoaiSanhDAO implements DAOInterface<LoaiSanh>{
         }
         return 0 ;
     }
+    
+    public int GetID(){
+        int key = 0;
+         try {
+            Connection con = JDBCUtil.getConnection();
+            
+            String sql = "SELECT * FROM LoaiSanh ORDER BY maLoaiSanh DESC LIMIT 1";
+            
+            PreparedStatement st = con.prepareStatement(sql);
+            
+            ResultSet kq = st.executeQuery();
+            
+            while(kq.next()){
+                if(kq.getString("maLoaiSanh").length() != 0){
+                key = Integer.parseInt(kq.getString("maLoaiSanh").substring(2));
+            }
+            }
+            
+            JDBCUtil.closeConnection(con);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+         return key;
+    }
 
     @Override
     public ArrayList<LoaiSanh> SelectAll() {
