@@ -46,7 +46,6 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
         }
     }
 
-
     public void ReloadDataTable() {
         lstCa = CaDAO.getInstance().SelectAll();
         defaultTableCa.setRowCount(0);
@@ -727,8 +726,38 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
             try {
                 String gioBatDau = ConvertFormatTime(timeBatDau.getSelectedTime());
                 String gioKetThuc = ConvertFormatTime(timeKetThuc.getSelectedTime());
+                String hourBatDau = "";
+                String hoursKetThuc = "";
+                String minuteBatDau = "";
+                String minuteKetThuc = "";
+                hourBatDau = hourBatDau + gioBatDau.charAt(0) + gioBatDau.charAt(1);
+                hoursKetThuc = hoursKetThuc + gioKetThuc.charAt(0) + gioKetThuc.charAt(1);
+                minuteBatDau = minuteBatDau + gioBatDau.charAt(3) + gioBatDau.charAt(4);
+                minuteKetThuc = minuteKetThuc + gioKetThuc.charAt(3) + gioKetThuc.charAt(4);
+                int hourBD = Integer.parseInt(hourBatDau);
+                int hourKT = Integer.parseInt(hoursKetThuc);
+                int minuteBD = Integer.parseInt(minuteBatDau);
+                int minuteKT = Integer.parseInt(minuteKetThuc);
 
-                kq = CaDAO.getInstance().Insert(new Ca(maCa, txtTenCaAdd.getText(), Time.valueOf(gioBatDau), Time.valueOf(gioKetThuc)));
+                if (hourBD > hourKT) {
+                    Message("Thời gian bắt đầu và kết thúc không hợp lệ, vui lòng nhập lại!", JOptionPane.ERROR_MESSAGE);
+                    txtTenCaAdd.setText("");
+                    timeBatDau.now();
+                    timeKetThuc.now();
+                    return;
+                } else if (hourBD == hourKT) {
+                    if (minuteBD >= minuteKT) {
+                        Message("Thời gian bắt đầu và kết thúc không hợp lệ, vui lòng nhập lại!", JOptionPane.ERROR_MESSAGE);
+                        txtTenCaAdd.setText("");
+                        timeBatDau.now();
+                        timeKetThuc.now();
+                        return;
+                    } else {
+                        kq = CaDAO.getInstance().Insert(new Ca(maCa, txtTenCaAdd.getText(), Time.valueOf(gioBatDau), Time.valueOf(gioKetThuc)));
+                    }
+                } else {
+                    kq = CaDAO.getInstance().Insert(new Ca(maCa, txtTenCaAdd.getText(), Time.valueOf(gioBatDau), Time.valueOf(gioKetThuc)));
+                }
 
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -781,7 +810,7 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
 
     private void txtSearchKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyPressed
         // TODO add your handling code here:
-        defaultTableCa = (DefaultTableModel)tblCa.getModel();
+        defaultTableCa = (DefaultTableModel) tblCa.getModel();
         TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(defaultTableCa);
         tblCa.setRowSorter(tr);
         String tmp = txtSearch.getText();
@@ -790,7 +819,7 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
 
     private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
         // TODO add your handling code here:
-        defaultTableCa = (DefaultTableModel)tblCa.getModel();
+        defaultTableCa = (DefaultTableModel) tblCa.getModel();
         TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(defaultTableCa);
         tblCa.setRowSorter(tr);
         tr.setRowFilter(RowFilter.regexFilter(txtSearch.getText().trim()));
@@ -798,7 +827,7 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
 
     private void BackPage3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackPage3ActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_BackPage3ActionPerformed
 
 
