@@ -772,9 +772,6 @@ public class ServiceList extends javax.swing.JInternalFrame {
 
     private void edit_service_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edit_service_btnActionPerformed
         // TODO add your handling code here:
-        service_list_dialog_update.setSize(400,400);
-        service_list_dialog_update.setLocationRelativeTo(null);
-        service_list_dialog_update.setVisible(true);
         
         int row = table_service_list.getSelectedRow();
         if(row < 0){
@@ -782,6 +779,7 @@ public class ServiceList extends javax.swing.JInternalFrame {
         }else{
             update_dichvu_field1.setText(String.valueOf(table_service_list.getValueAt(row, 2)));
             update_dongia_field1.setText(String.valueOf(table_service_list.getValueAt(row, 3)));
+            service_list_dialog_update.setSize(400,400);
             service_list_dialog_update.setLocationRelativeTo(null);
             service_list_dialog_update.setVisible(true);
         }
@@ -796,22 +794,27 @@ public class ServiceList extends javax.swing.JInternalFrame {
         int row = table_service_list.getSelectedRow();
         String maDichVu = String.valueOf(table_service_list.getValueAt(row, 1));
         int kq = 0;
-        if(!update_dichvu_field1.getText().equals(String.valueOf(table_service_list.getValueAt(row, 2))) || 
-                !update_dongia_field1.getText().equals(String.valueOf(table_service_list.getValueAt(row, 3)))){
-            kq = DichVuDAO.getInstance().Update(new DichVu(maDichVu, update_dichvu_field1.getText(), Integer.parseInt(update_dongia_field1.getText())));
+        if(!update_dichvu_field1.getText().equals("") && !update_dongia_field1.getText().equals(""))
+        {
+            if(!update_dichvu_field1.getText().equals(String.valueOf(table_service_list.getValueAt(row, 2))) || 
+                !update_dongia_field1.getText().equals(String.valueOf(table_service_list.getValueAt(row, 3))))
+            {
+                kq = DichVuDAO.getInstance().Update(new DichVu(maDichVu, update_dichvu_field1.getText(), Integer.parseInt(update_dongia_field1.getText())));
+            }
         }
-        if(kq>0){
-                    ReloadDataTable();
-                    service_list_dialog_update.setVisible(false);
-                    Message("Chỉnh sửa dữ liệu thành công!", JOptionPane.CLOSED_OPTION);
-                    update_dichvu_field1.setText("");
-                    update_dongia_field1.setText("");
-                }
-                else{
-                    service_list_dialog_update.setVisible(false);
-                    Message("Chỉnh sửa dữ liệu thất bại!", JOptionPane.ERROR_MESSAGE);
-                   
-                }
+        if(kq!=0)
+        {
+            ReloadDataTable();
+            service_list_dialog_update.setVisible(false);
+            Message("Chỉnh sửa dữ liệu thành công!", JOptionPane.CLOSED_OPTION);
+            update_dichvu_field1.setText("");
+            update_dongia_field1.setText("");
+        }
+        else{
+            service_list_dialog_update.setVisible(false);
+            Message("Chỉnh sửa dữ liệu thất bại!", JOptionPane.ERROR_MESSAGE);
+
+        }
     }//GEN-LAST:event_add_dich_dialog_btn1ActionPerformed
 
     private void update_dongia_field1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_update_dongia_field1ActionPerformed
