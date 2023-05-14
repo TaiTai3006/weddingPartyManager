@@ -11,117 +11,61 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
+import dao.DichVuDAO;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import model.DichVu;
 
 /**
  *
  * @author macbookpro
  */
 public class ServiceList extends javax.swing.JInternalFrame {
-    class DichVu{
-        int stt;
-        String MaDV;
-        String TenDichVu;
-        String DonGia;
-        String TuyChon;
-
-        public DichVu(int stt, String MaDV, String TenDichVu, String DonGia, String TuyChon) {
-            this.stt = stt;
-            this.MaDV = MaDV;
-            this.TenDichVu = TenDichVu;
-            this.DonGia = DonGia;
-            this.TuyChon = TuyChon;
-        }
-
-        public String getMaDV() {
-            return MaDV;
-        }
-
-        public int getStt() {
-            return stt;
-        }
-
-        public String getTenDichVu() {
-            return TenDichVu;
-        }
-
-        public String getDonGia() {
-            return DonGia;
-        }
-
-        public String getTuyChon() {
-            return TuyChon;
-        }
-        
-    }
+    private DefaultTableModel defaultTableModelServiceList;
+    private ArrayList<DichVu> dichVus = DichVuDAO.getInstance().SelectAll();
     /**
      * Creates new form ServiceList
      */
-    public ServiceList() {
+    public ServiceList(){
         initComponents();
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
         ui.setNorthPane(null);
-        ArrayList<DichVu> items = new ArrayList<>();
-        items.add(new DichVu(1,"DV01", "Ca nhac","500000",""));
-        items.add(new DichVu(2,"DV02", "Hoa cuoi","300000",""));
-        items.add(new DichVu(3,"DV03", "Don dep","200000",""));
-        items.add(new DichVu(4,"DV04", "Banh kem","500000",""));
-        items.add(new DichVu(5,"DV05", "San khau","500000",""));
-        items.add(new DichVu(6,"DV06", "Mua lua","500000",""));
-        ArrayList<DichVu> filteredItems = new ArrayList<>(items);
-//        DefaultTableModel defaulttable = new DefaultTableModel();
-//        table_service_list.setModel(defaulttable);
-//        defaulttable.addColumn("STT");
-//        defaulttable.addColumn("Ma dich vu");
-//        defaulttable.addColumn("Ten dich vu");
-//        defaulttable.addColumn("Don gia");
-//        for(DichVu row : items){
-//            defaulttable.addRow(new Object[]{row.getStt(), row.getMaDV(),row.getTenDichVu(),row.getDonGia(),row.getTuyChon()});
-//        }
-//            search_service_field.getDocument().addDocumentListener(new DocumentListener() {
-//            @Override
-//            public void insertUpdate(DocumentEvent e) {
-//                String filterText = search_service_field.getText().toLowerCase();
-//                filteredItems.clear();
-//                for (DichVu item : items) {
-//                    if (item.getMaDV().toLowerCase().contains(filterText) || item.getTenDichVu().toLowerCase().contains(filterText)) {
-//                        filteredItems.add(item);
-//                    }
-//                }
-//                DefaultTableModel model = (DefaultTableModel) table_service_list.getModel();
-//                model.setRowCount(0);
-//                for (DichVu row : filteredItems) {
-//                    model.addRow(new Object[]{row.getStt(), row.getMaDV(),row.getTenDichVu(),row.getDonGia(),row.getTuyChon()});
-//                } 
-//            }
-//            @Override
-//            public void removeUpdate(DocumentEvent e) {
-//                String filterText = search_service_field.getText().toLowerCase();
-//                filteredItems.clear();
-//                for (DichVu item : items) {
-//                    if (item.getMaDV().toLowerCase().contains(filterText) || item.getTenDichVu().toLowerCase().contains(filterText)) {
-//                        filteredItems.add(item);
-//                    }
-//                }
-//                DefaultTableModel model = (DefaultTableModel) table_service_list.getModel();
-//                model.setRowCount(0);
-//                for (DichVu row : filteredItems) {
-//                    model.addRow(new Object[]{row.getStt(), row.getMaDV(),row.getTenDichVu(),row.getDonGia(),row.getTuyChon()});
-//                }  
-//            }
-//
-//            @Override
-//            public void changedUpdate(DocumentEvent e) {
-//                
-//            }
-//        });
+        CreateTable();
+    }
+    
+    public void CreateTable()
+    {
+        defaultTableModelServiceList = (DefaultTableModel)table_service_list.getModel();
+        int i = 0;
+        for(DichVu x: dichVus){
+            defaultTableModelServiceList.addRow(new Object[]{++i, x.getMaDichVu(), x.getTenDichVu(),x.getDonGia()});
+        }
+    }
+    public void SearchTable(String value){
+        defaultTableModelServiceList.setRowCount(0);
+        defaultTableModelServiceList = (DefaultTableModel)table_service_list.getModel();
+        int i = 0;
+        for(DichVu x: dichVus){
+            System.out.println();
+            if(x.getMaDichVu().toLowerCase().contains(value.toLowerCase()) || x.getTenDichVu().toLowerCase().contains(value.toLowerCase()))
+            defaultTableModelServiceList.addRow(new Object[]{++i, x.getMaDichVu(), x.getTenDichVu(),x.getDonGia()});
+        }
+    }
+     
+    public void ReloadDataTable(){
+        dichVus = DichVuDAO.getInstance().SelectAll();
+        defaultTableModelServiceList.setRowCount(0);
+        CreateTable();
+    }
+    
+    public void Message(String message, int messageType) {
+        JOptionPane jOptionPane = new JOptionPane(message, messageType);
+        JDialog dialog = jOptionPane.createDialog(null, "Thông báo");
+        dialog.setAlwaysOnTop(true);
+        dialog.setVisible(true);
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -140,6 +84,20 @@ public class ServiceList extends javax.swing.JInternalFrame {
         add_dongia_field = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        service_list_dialog_update = new javax.swing.JDialog();
+        jPanel19 = new javax.swing.JPanel();
+        jPanel20 = new javax.swing.JPanel();
+        jPanel21 = new javax.swing.JPanel();
+        delete_dichvu_dialog_btn1 = new javax.swing.JButton();
+        add_dich_dialog_btn1 = new javax.swing.JButton();
+        jPanel22 = new javax.swing.JPanel();
+        jPanel23 = new javax.swing.JPanel();
+        jPanel24 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        update_dichvu_field1 = new javax.swing.JTextField();
+        update_dongia_field1 = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jPanel34 = new javax.swing.JPanel();
         BackPage3 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -298,6 +256,146 @@ public class ServiceList extends javax.swing.JInternalFrame {
             .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
+        service_list_dialog_update.setLocation(new java.awt.Point(400, 400));
+
+        jPanel19.setLayout(new java.awt.BorderLayout());
+
+        javax.swing.GroupLayout jPanel20Layout = new javax.swing.GroupLayout(jPanel20);
+        jPanel20.setLayout(jPanel20Layout);
+        jPanel20Layout.setHorizontalGroup(
+            jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jPanel20Layout.setVerticalGroup(
+            jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 10, Short.MAX_VALUE)
+        );
+
+        jPanel19.add(jPanel20, java.awt.BorderLayout.PAGE_START);
+
+        delete_dichvu_dialog_btn1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        delete_dichvu_dialog_btn1.setText("Hủy");
+        delete_dichvu_dialog_btn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delete_dichvu_dialog_btn1ActionPerformed(evt);
+            }
+        });
+
+        add_dich_dialog_btn1.setBackground(new java.awt.Color(132, 70, 133));
+        add_dich_dialog_btn1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        add_dich_dialog_btn1.setForeground(new java.awt.Color(255, 255, 255));
+        add_dich_dialog_btn1.setText("Cập nhật");
+        add_dich_dialog_btn1.setPreferredSize(new java.awt.Dimension(72, 26));
+        add_dich_dialog_btn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                add_dich_dialog_btn1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel21Layout = new javax.swing.GroupLayout(jPanel21);
+        jPanel21.setLayout(jPanel21Layout);
+        jPanel21Layout.setHorizontalGroup(
+            jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel21Layout.createSequentialGroup()
+                .addContainerGap(196, Short.MAX_VALUE)
+                .addComponent(delete_dichvu_dialog_btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(add_dich_dialog_btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(11, 11, 11))
+        );
+        jPanel21Layout.setVerticalGroup(
+            jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel21Layout.createSequentialGroup()
+                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(delete_dichvu_dialog_btn1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(add_dich_dialog_btn1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
+        jPanel19.add(jPanel21, java.awt.BorderLayout.PAGE_END);
+
+        javax.swing.GroupLayout jPanel22Layout = new javax.swing.GroupLayout(jPanel22);
+        jPanel22.setLayout(jPanel22Layout);
+        jPanel22Layout.setHorizontalGroup(
+            jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 10, Short.MAX_VALUE)
+        );
+        jPanel22Layout.setVerticalGroup(
+            jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 204, Short.MAX_VALUE)
+        );
+
+        jPanel19.add(jPanel22, java.awt.BorderLayout.LINE_START);
+
+        javax.swing.GroupLayout jPanel23Layout = new javax.swing.GroupLayout(jPanel23);
+        jPanel23.setLayout(jPanel23Layout);
+        jPanel23Layout.setHorizontalGroup(
+            jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 10, Short.MAX_VALUE)
+        );
+        jPanel23Layout.setVerticalGroup(
+            jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 204, Short.MAX_VALUE)
+        );
+
+        jPanel19.add(jPanel23, java.awt.BorderLayout.LINE_END);
+
+        jLabel7.setBackground(new java.awt.Color(69, 96, 134));
+        jLabel7.setFont(new java.awt.Font("Arial", 1, 35)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(69, 96, 134));
+        jLabel7.setText("Cập nhật dịch vụ");
+
+        update_dongia_field1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                update_dongia_field1ActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setBackground(new java.awt.Color(69, 96, 134));
+        jLabel4.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel4.setText("Tên dịch");
+
+        jLabel5.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel5.setText("Đơn giá");
+
+        javax.swing.GroupLayout jPanel24Layout = new javax.swing.GroupLayout(jPanel24);
+        jPanel24.setLayout(jPanel24Layout);
+        jPanel24Layout.setHorizontalGroup(
+            jPanel24Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+            .addComponent(update_dichvu_field1)
+            .addComponent(update_dongia_field1)
+            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel24Layout.setVerticalGroup(
+            jPanel24Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel24Layout.createSequentialGroup()
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addGap(7, 7, 7)
+                .addComponent(update_dichvu_field1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(update_dongia_field1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(8, Short.MAX_VALUE))
+        );
+
+        jPanel19.add(jPanel24, java.awt.BorderLayout.CENTER);
+
+        javax.swing.GroupLayout service_list_dialog_updateLayout = new javax.swing.GroupLayout(service_list_dialog_update.getContentPane());
+        service_list_dialog_update.getContentPane().setLayout(service_list_dialog_updateLayout);
+        service_list_dialog_updateLayout.setHorizontalGroup(
+            service_list_dialog_updateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        service_list_dialog_updateLayout.setVerticalGroup(
+            service_list_dialog_updateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
         setPreferredSize(new java.awt.Dimension(1170, 730));
 
         jPanel34.setBackground(new java.awt.Color(255, 255, 255));
@@ -312,16 +410,7 @@ public class ServiceList extends javax.swing.JInternalFrame {
         table_service_list.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         table_service_list.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "STT", "Mã dịch vụ", "Tên dịch vụ", "Đơn giá"
@@ -436,6 +525,11 @@ public class ServiceList extends javax.swing.JInternalFrame {
 
         edit_service_btn.setBackground(new java.awt.Color(248, 189, 141));
         edit_service_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Edit.png"))); // NOI18N
+        edit_service_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                edit_service_btnActionPerformed(evt);
+            }
+        });
 
         jPanel32.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -563,6 +657,44 @@ public class ServiceList extends javax.swing.JInternalFrame {
 
     private void add_dich_dialog_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_dich_dialog_btnActionPerformed
         // TODO add your handling code here:
+        if(add_dichvu_field.getText().equals("") || add_dongia_field.getText().equals("")){
+            Message("Vui lòng nhập dữ liệu!", JOptionPane.WARNING_MESSAGE);
+        } else{
+            String maDV =  String.valueOf(Integer.parseInt(String.valueOf(defaultTableModelServiceList.getValueAt(defaultTableModelServiceList.getRowCount() - 1, 1)).substring(2)) + 1);
+            switch(maDV.length()){
+                case 1: 
+                    maDV = "DV000" + maDV;
+                    break;
+                case 2:
+                    maDV = "DV00" + maDV;
+                    break;
+                case 3:
+                    maDV = "DV0" + maDV;
+                    break;
+                case 4:
+                    maDV = "DV" + maDV;
+                break;
+            }
+            int kq = 0;
+            try{
+                kq = DichVuDAO.getInstance().Insert(new DichVu(maDV, add_dichvu_field.getText(),
+                    Integer.parseInt(add_dongia_field.getText())));
+            } 
+            catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            if(kq != 0){
+                ReloadDataTable();
+                service_list_dialog.setVisible(false);
+                Message("Thêm dữ liệu thành công.", JOptionPane.CLOSED_OPTION);
+                add_dichvu_field.setText("");
+                add_dongia_field.setText("");
+            }else{
+                Message("Lỗi! Thêm dữ liệu thất bại. Vui lòng nhập lại dữ liệu.", JOptionPane.ERROR_MESSAGE);
+                add_dichvu_field.setText("");
+                add_dongia_field.setText("");
+            }
+        }
     }//GEN-LAST:event_add_dich_dialog_btnActionPerformed
 
     private void add_dongia_fieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_dongia_fieldActionPerformed
@@ -571,6 +703,59 @@ public class ServiceList extends javax.swing.JInternalFrame {
 
     private void delete_service_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delete_service_btnActionPerformed
         // TODO add your handling code here:
+        int row = table_service_list.getSelectedRow();
+        int[] rows = table_service_list.getSelectedRows();
+        if(row < 0){
+            Message("Vui lòng chọn dữ liệu muốn xoá!", JOptionPane.INFORMATION_MESSAGE);
+        } else{
+            
+            String mess = "";
+            if(rows.length == 1){
+              mess = String.valueOf(table_service_list.getValueAt(row, 1)) + " ";
+            }else{
+              for(int r : rows){
+                  mess += String.valueOf(table_service_list.getValueAt(r, 1)) + " ";
+              }
+            }
+            
+            int x = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xoá " + mess + "hay không?");
+            if(x == JOptionPane.YES_OPTION){
+                int kq = 0;
+                if(rows.length == 1){
+                    String maDichVu = String.valueOf(table_service_list.getValueAt(row, 1));
+                    String tenDichVu = String.valueOf(table_service_list.getValueAt(row, 2));
+                    int donGia = Integer.parseInt(String.valueOf(table_service_list.getValueAt(row, 3)));    
+                    try{
+                        kq = DichVuDAO.getInstance().Delete(new DichVu(maDichVu, tenDichVu, donGia));
+                    
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                 
+                }else{
+                    for(int r : rows){
+                        String maDichVu = String.valueOf(table_service_list.getValueAt(r, 1));
+                        String tenDichVu = String.valueOf(table_service_list.getValueAt(r, 2));
+                        int donGia = Integer.parseInt(String.valueOf(table_service_list.getValueAt(r, 3)));
+
+                        try{
+                            kq = DichVuDAO.getInstance().Delete(new DichVu(maDichVu, tenDichVu, donGia));  
+                        }
+                        catch(Exception e){
+                            e.printStackTrace();
+                        }
+                    }  
+                }
+                if(kq>0){
+                    ReloadDataTable();
+                    Message("Xóa dữ liệu thành công.", JOptionPane.CLOSED_OPTION);
+                    
+                }
+                else{
+                    Message("Xoá dữ liệu thất bại!", JOptionPane.ERROR_MESSAGE);
+                } 
+            }
+        }
     }//GEN-LAST:event_delete_service_btnActionPerformed
 
     private void add_service_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_service_btnActionPerformed
@@ -582,16 +767,67 @@ public class ServiceList extends javax.swing.JInternalFrame {
 
     private void search_fieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_fieldActionPerformed
         // TODO add your handling code here:
+        SearchTable(search_service_field.getText());
     }//GEN-LAST:event_search_fieldActionPerformed
+
+    private void edit_service_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edit_service_btnActionPerformed
+        // TODO add your handling code here:
+        service_list_dialog_update.setSize(400,400);
+        service_list_dialog_update.setLocationRelativeTo(null);
+        service_list_dialog_update.setVisible(true);
+        
+        int row = table_service_list.getSelectedRow();
+        if(row < 0){
+            Message("Vui lòng chọn dữ liệu muốn chỉnh sửa!", JOptionPane.INFORMATION_MESSAGE);
+        }else{
+            update_dichvu_field1.setText(String.valueOf(table_service_list.getValueAt(row, 2)));
+            update_dongia_field1.setText(String.valueOf(table_service_list.getValueAt(row, 3)));
+            service_list_dialog_update.setLocationRelativeTo(null);
+            service_list_dialog_update.setVisible(true);
+        }
+    }//GEN-LAST:event_edit_service_btnActionPerformed
+
+    private void delete_dichvu_dialog_btn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delete_dichvu_dialog_btn1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_delete_dichvu_dialog_btn1ActionPerformed
+
+    private void add_dich_dialog_btn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_dich_dialog_btn1ActionPerformed
+        // TODO add your handling code here:
+        int row = table_service_list.getSelectedRow();
+        String maDichVu = String.valueOf(table_service_list.getValueAt(row, 1));
+        int kq = 0;
+        if(!update_dichvu_field1.getText().equals(String.valueOf(table_service_list.getValueAt(row, 2))) || 
+                !update_dongia_field1.getText().equals(String.valueOf(table_service_list.getValueAt(row, 3)))){
+            kq = DichVuDAO.getInstance().Update(new DichVu(maDichVu, update_dichvu_field1.getText(), Integer.parseInt(update_dongia_field1.getText())));
+        }
+        if(kq>0){
+                    ReloadDataTable();
+                    service_list_dialog_update.setVisible(false);
+                    Message("Chỉnh sửa dữ liệu thành công!", JOptionPane.CLOSED_OPTION);
+                    update_dichvu_field1.setText("");
+                    update_dongia_field1.setText("");
+                }
+                else{
+                    service_list_dialog_update.setVisible(false);
+                    Message("Chỉnh sửa dữ liệu thất bại!", JOptionPane.ERROR_MESSAGE);
+                   
+                }
+    }//GEN-LAST:event_add_dich_dialog_btn1ActionPerformed
+
+    private void update_dongia_field1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_update_dongia_field1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_update_dongia_field1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackPage3;
     private javax.swing.JButton add_dich_dialog_btn;
+    private javax.swing.JButton add_dich_dialog_btn1;
     private javax.swing.JTextField add_dichvu_field;
     private javax.swing.JTextField add_dongia_field;
     private javax.swing.JButton add_service_btn;
     private javax.swing.JButton delete_dichvu_dialog_btn;
+    private javax.swing.JButton delete_dichvu_dialog_btn1;
     private javax.swing.JButton delete_service_btn;
     private javax.swing.JButton edit_service_btn;
     private javax.swing.JLabel jLabel1;
@@ -600,7 +836,10 @@ public class ServiceList extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
@@ -608,6 +847,12 @@ public class ServiceList extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
+    private javax.swing.JPanel jPanel19;
+    private javax.swing.JPanel jPanel20;
+    private javax.swing.JPanel jPanel21;
+    private javax.swing.JPanel jPanel22;
+    private javax.swing.JPanel jPanel23;
+    private javax.swing.JPanel jPanel24;
     private javax.swing.JPanel jPanel29;
     private javax.swing.JPanel jPanel30;
     private javax.swing.JPanel jPanel31;
@@ -616,6 +861,9 @@ public class ServiceList extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField search_service_field;
     private javax.swing.JDialog service_list_dialog;
+    private javax.swing.JDialog service_list_dialog_update;
     private javax.swing.JTable table_service_list;
+    private javax.swing.JTextField update_dichvu_field1;
+    private javax.swing.JTextField update_dongia_field1;
     // End of variables declaration//GEN-END:variables
 }
