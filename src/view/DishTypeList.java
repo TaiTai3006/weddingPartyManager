@@ -4,17 +4,75 @@
  */
 package view;
 
+import dao.LoaiMonAnDAO;
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ArrayList;
+import java.util.Arrays;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
+import javax.swing.table.DefaultTableModel;
+import model.LoaiMonAn;
 
 /**
  *
  * @author macbookpro
  */
 public class DishTypeList extends javax.swing.JInternalFrame {
+ArrayList<LoaiMonAn> items = new ArrayList<>(LoaiMonAnDAO.getInstance().SelectAll());
 
-    /**
+    public void Message(String message, int messageType) {
+        JOptionPane jOptionPane = new JOptionPane(message, messageType);
+        JDialog dialog = jOptionPane.createDialog(null, "Message");
+        dialog.setAlwaysOnTop(true);
+        dialog.setVisible(true);
+    }
+    public void CreateDataTable() {
+        defaulttable = (DefaultTableModel) table_dish_type_list.getModel();
+        int i = 0;
+        for (LoaiMonAn x : items) {
+            defaulttable.addRow(new Object[]{++i, x.getMaLoaiMonAn(), x.getTenLoaiMonAn()});
+        }
+    }
+    public void ReloadDataTable() {
+        items = LoaiMonAnDAO.getInstance().SelectAll();
+        defaulttable.setRowCount(0);
+        CreateDataTable();
+    }
+public void notification(int check){
+    if(check == 1){
+        JOptionPane.showConfirmDialog(null, "Thêm dữ liệu thành công","NOTIFICATION", JOptionPane.CLOSED_OPTION);
+        dishType_dialog.setVisible(false);
+        add_dishType_field.setText("");
+//        if(ret == JOptionPane.YES_OPTION){
+//            dish_list_dialog.setVisible(false);
+//        }else{
+//            dish_list_dialog.setVisible(true);
+//        }
+    }else{
+        JOptionPane.showConfirmDialog(null, "Thêm dữ liệu thất bại","NOTIFICATION", JOptionPane.CLOSED_OPTION);
+    }
+}
+    int macount = 0;
+    DefaultTableModel defaulttable = new DefaultTableModel();
+    public int findMissingNumber(int[] numbers) {
+        Arrays.sort(numbers);
+        
+        for (int i = 0; i < numbers.length - 1; i++) {
+            if (numbers[i + 1] - numbers[i] > 1) {
+                return numbers[i] + 1;
+            }
+        }
+        
+        // Nếu không tìm thấy số bị thiếu giữa các số đã cho
+        return -1;
+    }
+    public int lastChars(String maMonAn){
+        int length = maMonAn.length();
+        String lastchar = maMonAn.substring(length - 2);
+        return Integer.parseInt(lastchar);
+    }   /**
      * Creates new form DishTypeList
      */
     public DishTypeList() {
@@ -22,6 +80,18 @@ public class DishTypeList extends javax.swing.JInternalFrame {
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
         ui.setNorthPane(null);
+        
+        ArrayList<LoaiMonAn> lm = LoaiMonAnDAO.getInstance().SelectAll();
+
+        table_dish_type_list.setModel(defaulttable);
+        defaulttable.addColumn("STT");
+        defaulttable.addColumn("Mã loai món ăn");
+        defaulttable.addColumn("Tên loai món ăn");
+        for(LoaiMonAn row : lm){
+            int count = defaulttable.getRowCount()+ 1;
+            defaulttable.addRow(new Object[]{count, row.getMaLoaiMonAn(), row.getTenLoaiMonAn()});
+
+        }
     }
 
     /**
@@ -43,8 +113,20 @@ public class DishTypeList extends javax.swing.JInternalFrame {
         jPanel17 = new javax.swing.JPanel();
         jPanel18 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        add_dichvu_field = new javax.swing.JTextField();
+        add_dishType_field = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        update_dishType_dialog = new javax.swing.JDialog();
+        jPanel19 = new javax.swing.JPanel();
+        jPanel20 = new javax.swing.JPanel();
+        jPanel21 = new javax.swing.JPanel();
+        delete_update_dishType_btn = new javax.swing.JButton();
+        update_dishType_dialog_btn = new javax.swing.JButton();
+        jPanel22 = new javax.swing.JPanel();
+        jPanel23 = new javax.swing.JPanel();
+        jPanel24 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        update_dishType_field = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         add_dishType_btn = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
@@ -144,6 +226,12 @@ public class DishTypeList extends javax.swing.JInternalFrame {
         jLabel6.setForeground(new java.awt.Color(69, 96, 134));
         jLabel6.setText("Thêm Loại Món");
 
+        add_dishType_field.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                add_dishType_fieldActionPerformed(evt);
+            }
+        });
+
         jLabel1.setBackground(new java.awt.Color(69, 96, 134));
         jLabel1.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel1.setText("Tên loại món");
@@ -153,7 +241,7 @@ public class DishTypeList extends javax.swing.JInternalFrame {
         jPanel18Layout.setHorizontalGroup(
             jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
-            .addComponent(add_dichvu_field)
+            .addComponent(add_dishType_field)
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel18Layout.setVerticalGroup(
@@ -163,7 +251,7 @@ public class DishTypeList extends javax.swing.JInternalFrame {
                 .addGap(32, 32, 32)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(add_dichvu_field, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(add_dishType_field, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(51, Short.MAX_VALUE))
         );
 
@@ -178,6 +266,135 @@ public class DishTypeList extends javax.swing.JInternalFrame {
         dishType_dialogLayout.setVerticalGroup(
             dishType_dialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jPanel19.setLayout(new java.awt.BorderLayout());
+
+        javax.swing.GroupLayout jPanel20Layout = new javax.swing.GroupLayout(jPanel20);
+        jPanel20.setLayout(jPanel20Layout);
+        jPanel20Layout.setHorizontalGroup(
+            jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jPanel20Layout.setVerticalGroup(
+            jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 10, Short.MAX_VALUE)
+        );
+
+        jPanel19.add(jPanel20, java.awt.BorderLayout.PAGE_START);
+
+        delete_update_dishType_btn.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        delete_update_dishType_btn.setText("Hủy");
+        delete_update_dishType_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delete_update_dishType_btnActionPerformed(evt);
+            }
+        });
+
+        update_dishType_dialog_btn.setBackground(new java.awt.Color(132, 70, 133));
+        update_dishType_dialog_btn.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        update_dishType_dialog_btn.setForeground(new java.awt.Color(255, 255, 255));
+        update_dishType_dialog_btn.setText("Cập nhật");
+        update_dishType_dialog_btn.setPreferredSize(new java.awt.Dimension(72, 26));
+        update_dishType_dialog_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                update_dishType_dialog_btnActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel21Layout = new javax.swing.GroupLayout(jPanel21);
+        jPanel21.setLayout(jPanel21Layout);
+        jPanel21Layout.setHorizontalGroup(
+            jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel21Layout.createSequentialGroup()
+                .addContainerGap(206, Short.MAX_VALUE)
+                .addComponent(delete_update_dishType_btn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(update_dishType_dialog_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(11, 11, 11))
+        );
+        jPanel21Layout.setVerticalGroup(
+            jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel21Layout.createSequentialGroup()
+                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(delete_update_dishType_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(update_dishType_dialog_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
+        jPanel19.add(jPanel21, java.awt.BorderLayout.PAGE_END);
+
+        javax.swing.GroupLayout jPanel22Layout = new javax.swing.GroupLayout(jPanel22);
+        jPanel22.setLayout(jPanel22Layout);
+        jPanel22Layout.setHorizontalGroup(
+            jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 10, Short.MAX_VALUE)
+        );
+        jPanel22Layout.setVerticalGroup(
+            jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 189, Short.MAX_VALUE)
+        );
+
+        jPanel19.add(jPanel22, java.awt.BorderLayout.LINE_START);
+
+        javax.swing.GroupLayout jPanel23Layout = new javax.swing.GroupLayout(jPanel23);
+        jPanel23.setLayout(jPanel23Layout);
+        jPanel23Layout.setHorizontalGroup(
+            jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 10, Short.MAX_VALUE)
+        );
+        jPanel23Layout.setVerticalGroup(
+            jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 189, Short.MAX_VALUE)
+        );
+
+        jPanel19.add(jPanel23, java.awt.BorderLayout.LINE_END);
+
+        jLabel7.setBackground(new java.awt.Color(69, 96, 134));
+        jLabel7.setFont(new java.awt.Font("Arial", 1, 35)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(69, 96, 134));
+        jLabel7.setText("Cập Nhật Loại Món");
+
+        update_dishType_field.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                update_dishType_fieldActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setBackground(new java.awt.Color(69, 96, 134));
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel2.setText("Tên loại món");
+
+        javax.swing.GroupLayout jPanel24Layout = new javax.swing.GroupLayout(jPanel24);
+        jPanel24.setLayout(jPanel24Layout);
+        jPanel24Layout.setHorizontalGroup(
+            jPanel24Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+            .addComponent(update_dishType_field)
+            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel24Layout.setVerticalGroup(
+            jPanel24Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel24Layout.createSequentialGroup()
+                .addComponent(jLabel7)
+                .addGap(32, 32, 32)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(update_dishType_field, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(51, Short.MAX_VALUE))
+        );
+
+        jPanel19.add(jPanel24, java.awt.BorderLayout.CENTER);
+
+        javax.swing.GroupLayout update_dishType_dialogLayout = new javax.swing.GroupLayout(update_dishType_dialog.getContentPane());
+        update_dishType_dialog.getContentPane().setLayout(update_dishType_dialogLayout);
+        update_dishType_dialogLayout.setHorizontalGroup(
+            update_dishType_dialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        update_dishType_dialogLayout.setVerticalGroup(
+            update_dishType_dialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         setPreferredSize(new java.awt.Dimension(1170, 730));
@@ -346,36 +563,159 @@ public class DishTypeList extends javax.swing.JInternalFrame {
 
     private void add_dishType_dialog_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_dishType_dialog_btnActionPerformed
         // TODO add your handling code here:
+       macount = defaulttable.getRowCount() + 1;
+       int i = 0;
+       int[] numbers = new int[macount];
+
+       // Retrieve the list of MonAn objects from the database
+       ArrayList<LoaiMonAn> listLoaiMonAn = new ArrayList<>(LoaiMonAnDAO.getInstance().SelectAll());
+
+       // Extract the last characters from the MaMonAn field for each MonAn object
+       for(LoaiMonAn row : listLoaiMonAn){
+           numbers[i] = lastChars(row.getMaLoaiMonAn());
+           System.out.println("so" + numbers[i]);
+           i++;
+       }
+
+       String maloaimonan = "";
+
+       // Find the missing number in the sequence
+       int missingNumber = findMissingNumber(numbers);
+       System.out.println("miss number is " + missingNumber);
+
+       // Generate the MaMonAn based on the missing number or the current count
+       if (missingNumber != -1){
+           // Use the missing number
+           if(missingNumber < 10){
+                maloaimonan = "ML0" + String.valueOf(missingNumber);
+           }else if(missingNumber < 100){
+                maloaimonan = "ML" + String.valueOf(missingNumber);
+           }
+       }else{
+           // Use the current count
+           if(macount < 10){
+                maloaimonan = "ML0" + String.valueOf(macount);
+           }else if(macount < 100){
+                maloaimonan = "ML" + String.valueOf(macount);
+           }
+       }
+       String tenloaimonan = add_dishType_field.getText();
+       LoaiMonAn lm = new LoaiMonAn(maloaimonan,tenloaimonan);
+       if(missingNumber != -1){
+           defaulttable.addRow(new Object[]{missingNumber, maloaimonan, tenloaimonan});
+       }else{
+           defaulttable.addRow(new Object[]{macount, maloaimonan, tenloaimonan});
+       }
+        int check = LoaiMonAnDAO.getInstance().Insert(lm);
+        ReloadDataTable();
+        notification(check);
+
     }//GEN-LAST:event_add_dishType_dialog_btnActionPerformed
 
     private void add_dishType_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_dishType_btnActionPerformed
         // TODO add your handling code here:
+        dishType_dialog.setSize(400,231);
         dishType_dialog.setLocationRelativeTo(null);
         dishType_dialog.setVisible(true);
     }//GEN-LAST:event_add_dishType_btnActionPerformed
 
     private void delete_dishType_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delete_dishType_btnActionPerformed
         // TODO add your handling code here:
+        int selectedRow = table_dish_type_list.getSelectedRow();
+        int rowCount = selectedRow+1;
+        if(selectedRow == -1){
+            JOptionPane.showConfirmDialog(null, "Hãy chọn hàng trước", "WARNING", JOptionPane.CLOSED_OPTION);
+        }else{
+            int ret = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa dữ liệu dòng "+rowCount+"", "NOTIFICATION", JOptionPane.YES_NO_OPTION);
+            if (ret == JOptionPane.YES_OPTION){
+                Object maValue = defaulttable.getValueAt(selectedRow, 1);
+                System.out.println(maValue);
+                LoaiMonAn temp = new LoaiMonAn();
+                temp.setMaLoaiMonAn(String.valueOf(maValue));
+                LoaiMonAn x = LoaiMonAnDAO.getInstance().SelectById(temp);
+
+                System.out.println(x.getTenLoaiMonAn());
+                LoaiMonAnDAO.getInstance().Delete(x);
+
+                ReloadDataTable();
+                JOptionPane.showConfirmDialog(null, "Xóa dữ liệu thành công", "NOTIFICATION", JOptionPane.CLOSED_OPTION);
+
+            }else{
+                
+            }
+
+        }
+
     }//GEN-LAST:event_delete_dishType_btnActionPerformed
 
     private void edit_dishType_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edit_dishType_btnActionPerformed
         // TODO add your handling code here:
+        update_dishType_dialog.setLocationRelativeTo(null);
+        update_dishType_dialog.setVisible(true);
+        update_dishType_dialog.setSize(400,300);
+        int selectedRow = table_dish_type_list.getSelectedRow();
+        Object tenValue = defaulttable.getValueAt(selectedRow,2);
+
+        update_dishType_field.setText(String.valueOf(tenValue));
+
+
     }//GEN-LAST:event_edit_dishType_btnActionPerformed
+
+    private void add_dishType_fieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_dishType_fieldActionPerformed
+        // TODO add your handling code here:
+        String text = add_dishType_field.getText();
+        System.out.println(text);
+        //LoaiMonAn lm = new LoaiMonAn("LM5",'""');
+    }//GEN-LAST:event_add_dishType_fieldActionPerformed
+
+    private void delete_update_dishType_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delete_update_dishType_btnActionPerformed
+        // TODO add your handling code here:
+        update_dishType_dialog.setVisible(false);
+    }//GEN-LAST:event_delete_update_dishType_btnActionPerformed
+
+    private void update_dishType_dialog_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_update_dishType_dialog_btnActionPerformed
+        // TODO add your handling code here:
+        int selectedRow = table_dish_type_list.getSelectedRow();
+        int rowCount = selectedRow + 1;
+        Object maValue = defaulttable.getValueAt(selectedRow,1);
+        LoaiMonAn monan = new LoaiMonAn();
+        monan.setMaLoaiMonAn(String.valueOf(maValue));
+        String tenloaimonan = update_dishType_field.getText();
+        System.out.println(tenloaimonan);
+        if(!tenloaimonan.equals(String.valueOf(table_dish_type_list.getValueAt(selectedRow, 2)))){
+                    LoaiMonAn monAnCapNhat = new LoaiMonAn(String.valueOf(maValue),tenloaimonan);
+                    LoaiMonAnDAO.getInstance().Update(monAnCapNhat);
+        
+        update_dishType_dialog.setVisible(false);
+        ReloadDataTable();
+        Message("Cập nhật dữ liệu dòng "+rowCount+" thành công",-1);
+        }else{
+            Message("Cập nhật dữ liệu dòng "+rowCount+" thất bại",-1);
+            update_dishType_dialog.setVisible(false);
+        }
+    }//GEN-LAST:event_update_dishType_dialog_btnActionPerformed
+
+    private void update_dishType_fieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_update_dishType_fieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_update_dishType_fieldActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackPage3;
-    private javax.swing.JTextField add_dichvu_field;
     private javax.swing.JButton add_dishType_btn;
     private javax.swing.JButton add_dishType_dialog_btn;
+    private javax.swing.JTextField add_dishType_field;
     private javax.swing.JButton delete_dishType_btn;
     private javax.swing.JButton delete_dishType_dialog_btn;
+    private javax.swing.JButton delete_update_dishType_btn;
     private javax.swing.JDialog dishType_dialog;
     private javax.swing.JButton edit_dishType_btn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
@@ -383,9 +723,18 @@ public class DishTypeList extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
+    private javax.swing.JPanel jPanel19;
+    private javax.swing.JPanel jPanel20;
+    private javax.swing.JPanel jPanel21;
+    private javax.swing.JPanel jPanel22;
+    private javax.swing.JPanel jPanel23;
+    private javax.swing.JPanel jPanel24;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable table_dish_type_list;
+    private javax.swing.JDialog update_dishType_dialog;
+    private javax.swing.JButton update_dishType_dialog_btn;
+    private javax.swing.JTextField update_dishType_field;
     // End of variables declaration//GEN-END:variables
 }
