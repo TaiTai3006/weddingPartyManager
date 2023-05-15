@@ -684,7 +684,19 @@ public class StaffList extends javax.swing.JInternalFrame {
                 String tenChucVu = cbQuyenAdd.getSelectedItem().toString();
                 String maChucVu = mapTenChucVu.get(tenChucVu);
 
-                kq = NhanVienDAO.getInstance().Insert(new NhanVien(tenTaiKhoan, "", maChucVu, tenChucVu));
+                boolean check = true;
+                for (NhanVien nv : lstStaff) {
+                    if (nv.getUserName().equals(tenTaiKhoan)) {
+                        check = false;
+                    }
+                }
+                if (!check) {
+                    Message("Tài khoản đã tồn tại, vui lòng nhập lại!", JOptionPane.WARNING_MESSAGE);
+                    txtUserNameAdd.setText("");
+                    return;
+                } else {
+                    kq = NhanVienDAO.getInstance().Insert(new NhanVien(tenTaiKhoan, "", maChucVu, tenChucVu));
+                }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -692,11 +704,9 @@ public class StaffList extends javax.swing.JInternalFrame {
                 addForm.setVisible(false);
                 ReloadDataTable();
                 txtUserNameAdd.setText("");
-                cbQuyenAdd.setEditable(false);
             } else {
                 Message("Lỗi! Thêm dữ liệu thất bại. Vui lòng nhập lại dữ liệu.", JOptionPane.ERROR_MESSAGE);
                 txtUserNameAdd.setText("");
-                cbQuyenAdd.setEditable(false);
             }
         }
     }//GEN-LAST:event_btnAddActionPerformed
