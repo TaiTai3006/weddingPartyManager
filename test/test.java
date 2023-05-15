@@ -4,12 +4,14 @@
  */
 import dao.CaDAO;
 import dao.LoaiSanhDAO;
+import dao.NhanVienDAO;
 import database.JDBCUtil;
 import java.sql.Connection;
 import java.sql.Time;
 import java.util.ArrayList;
 import model.Ca;
 import model.LoaiSanh;
+import model.NhanVien;
 import model.Sanh;
 
 /**
@@ -26,10 +28,17 @@ public class test {
 //            System.out.println(x.toString());
 //        }
 
-        Ca ca = new Ca("CA001", "Ca sáng", Time.valueOf("07:00:00"), Time.valueOf("15:00:00"));
-        CaDAO.getInstance().Insert(ca);
-        ArrayList<Ca> lstCa = CaDAO.getInstance().SelectAll();
-        for (Ca x : lstCa) {
+//        Ca ca = new Ca("CA001", "Ca sáng", Time.valueOf("07:00:00"), Time.valueOf("15:00:00"));
+//        CaDAO.getInstance().Insert(ca);
+//        ArrayList<Ca> lstCa = CaDAO.getInstance().SelectAll();
+//        for (Ca x : lstCa) {
+//            System.out.println(x.toString());
+//        }
+        
+        NhanVien nv = new NhanVien("Sgg2003", "", "ST001", "Staff");
+        NhanVienDAO.getInstance().Insert(nv);
+        ArrayList<NhanVien> lstNhanVien = NhanVienDAO.getInstance().SelectAll();
+        for (NhanVien x : lstNhanVien) {
             System.out.println(x.toString());
         }
     }

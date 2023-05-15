@@ -15,6 +15,8 @@ import javax.swing.table.DefaultTableModel;
 import model.Ca;
 import java.sql.Time;
 import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.TableRowSorter;
 
 /**
@@ -50,6 +52,19 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
         lstCa = CaDAO.getInstance().SelectAll();
         defaultTableCa.setRowCount(0);
         CreateDataTable();
+    }
+
+    public void SearchTable() {
+        defaultTableCa.setRowCount(0);
+        defaultTableCa = (DefaultTableModel) tblCa.getModel();
+        int i = 0;
+        String value = txtSearch.getText();
+        for (Ca x : lstCa) {
+            System.out.println();
+            if (x.getMaCa().toLowerCase().contains(value.toLowerCase()) || x.getTenCa().toLowerCase().contains(value.toLowerCase())) {
+                defaultTableCa.addRow(new Object[]{++i, x.getMaCa(), x.getTenCa(), x.getGioBatDau(), x.getGioKetThuc()});
+            }
+        }
     }
 
     public void Message(String message, int messageType) {
@@ -507,14 +522,6 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
         txtSearch.setBackground(new java.awt.Color(238, 230, 226));
         txtSearch.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         txtSearch.setBorder(null);
-        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtSearchKeyPressed(evt);
-            }
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtSearchKeyReleased(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel35Layout = new javax.swing.GroupLayout(jPanel35);
         jPanel35.setLayout(jPanel35Layout);
@@ -538,6 +545,23 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
                 .addComponent(txtSearch)
                 .addContainerGap())
         );
+
+        txtSearch.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
+                SearchTable();
+            }
+            public void removeUpdate(DocumentEvent e) {
+                if(txtSearch.getText().equals("")){
+                    defaultTableCa.setRowCount(0);
+                    CreateDataTable();
+                }else{
+                    SearchTable();
+                }
+            }
+            public void insertUpdate(DocumentEvent e) {
+                SearchTable();
+            }
+        });
 
         BackPage3.setBackground(new java.awt.Color(69, 96, 134));
         BackPage3.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
@@ -808,23 +832,6 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnUpdateUDActionPerformed
 
-    private void txtSearchKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyPressed
-        // TODO add your handling code here:
-        defaultTableCa = (DefaultTableModel) tblCa.getModel();
-        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(defaultTableCa);
-        tblCa.setRowSorter(tr);
-        String tmp = txtSearch.getText();
-        tr.setRowFilter(RowFilter.regexFilter(tmp.trim()));
-    }//GEN-LAST:event_txtSearchKeyPressed
-
-    private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
-        // TODO add your handling code here:
-        defaultTableCa = (DefaultTableModel) tblCa.getModel();
-        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(defaultTableCa);
-        tblCa.setRowSorter(tr);
-        tr.setRowFilter(RowFilter.regexFilter(txtSearch.getText().trim()));
-    }//GEN-LAST:event_txtSearchKeyReleased
-
     private void BackPage3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackPage3ActionPerformed
         // TODO add your handling code here:
 
@@ -835,12 +842,8 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
     private javax.swing.JButton BackPage3;
     private javax.swing.JDialog addForm;
     private javax.swing.JButton btnAdd;
-    private javax.swing.JButton btnAdd1;
-    private javax.swing.JButton btnAdd2;
     private javax.swing.JButton btnAddTime;
     private javax.swing.JButton btnCancel;
-    private javax.swing.JButton btnCancel1;
-    private javax.swing.JButton btnCancel2;
     private javax.swing.JButton btnCancelUD;
     private javax.swing.JButton btnDeleteTime;
     private javax.swing.JButton btnUpdateTime;
@@ -849,26 +852,8 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
-    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
-    private javax.swing.JLabel jLabel29;
-    private javax.swing.JLabel jLabel30;
-    private javax.swing.JLabel jLabel31;
-    private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
@@ -885,8 +870,6 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel35;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblCa;
@@ -894,14 +877,8 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
     private com.raven.swing.TimePicker timeBatDauUD;
     private com.raven.swing.TimePicker timeKetThuc;
     private com.raven.swing.TimePicker timeKetThucUD;
-    private javax.swing.JTextField txtGioBatDauAdd1;
-    private javax.swing.JTextField txtGioBatDauAdd2;
-    private javax.swing.JTextField txtGioKetThucAdd1;
-    private javax.swing.JTextField txtGioKetThucAdd2;
     private javax.swing.JTextField txtSearch;
     private javax.swing.JTextField txtTenCaAdd;
-    private javax.swing.JTextField txtTenCaAdd1;
-    private javax.swing.JTextField txtTenCaAdd2;
     private javax.swing.JTextField txtTenCaUD;
     private javax.swing.JDialog updateForm;
     // End of variables declaration//GEN-END:variables

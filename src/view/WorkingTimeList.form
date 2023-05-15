@@ -855,10 +855,9 @@
                   <Border info="null"/>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtSearchKeyPressed"/>
-                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtSearchKeyReleased"/>
-              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="txtSearch.getDocument().addDocumentListener(new DocumentListener() {&#xa;  public void changedUpdate(DocumentEvent e) {&#xa;  SearchTable();&#xa;  }&#xa;  public void removeUpdate(DocumentEvent e) {&#xa;  if(txtSearch.getText().equals(&quot;&quot;)){&#xa;    defaultTableCa.setRowCount(0);&#xa;    CreateDataTable();&#xa;  }else{&#xa;    SearchTable();&#xa;  }&#xa;}&#xa;  public void insertUpdate(DocumentEvent e) {&#xa;  SearchTable();&#xa;  }&#xa;});"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>

@@ -8,20 +8,21 @@ package model;
  *
  * @author Asus
  */
-public class NhanVien {
+public class NhanVien extends ChucVu{
     private String userName;
     private String passWord;
     private String maChucVu;
 
     public NhanVien() {
     }
-
-    public NhanVien(String userName, String passWord, String maChucVu) {
+    
+    public NhanVien(String userName, String passWord, String maChucVu, String tenChucVu) {
+        super(maChucVu, tenChucVu);
         this.userName = userName;
         this.passWord = passWord;
         this.maChucVu = maChucVu;
     }
-
+    
     public void setUserName(String userName) {
         this.userName = userName;
     }
@@ -45,5 +46,6 @@ public class NhanVien {
     public String getMaChucVu() {
         return maChucVu;
     }
+
     
 }
