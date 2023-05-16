@@ -42,10 +42,11 @@ public class ServiceList extends javax.swing.JInternalFrame {
             defaultTableModelServiceList.addRow(new Object[]{++i, x.getMaDichVu(), x.getTenDichVu(),x.getDonGia()});
         }
     }
-    public void SearchTable(String value){
+    public void SearchTable(){
         defaultTableModelServiceList.setRowCount(0);
         defaultTableModelServiceList = (DefaultTableModel)table_service_list.getModel();
         int i = 0;
+        String value = search_service_field.getText();
         for(DichVu x: dichVus){
             System.out.println();
             if(x.getMaDichVu().toLowerCase().contains(value.toLowerCase()) || x.getTenDichVu().toLowerCase().contains(value.toLowerCase()))
@@ -505,6 +506,23 @@ public class ServiceList extends javax.swing.JInternalFrame {
             .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
+        search_service_field.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
+                SearchTable();
+            }
+            public void removeUpdate(DocumentEvent e) {
+                if(search_service_field.getText().equals("")){
+                    defaultTableModelServiceList.setRowCount(0);
+                    CreateTable();
+                }else{
+                    SearchTable();
+                }
+            }
+            public void insertUpdate(DocumentEvent e) {
+                SearchTable();
+            }
+        });
+
         add_service_btn.setBackground(new java.awt.Color(99, 122, 48));
         add_service_btn.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         add_service_btn.setForeground(new java.awt.Color(255, 255, 255));
@@ -767,7 +785,7 @@ public class ServiceList extends javax.swing.JInternalFrame {
 
     private void search_fieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_fieldActionPerformed
         // TODO add your handling code here:
-        SearchTable(search_service_field.getText());
+        SearchTable();
     }//GEN-LAST:event_search_fieldActionPerformed
 
     private void edit_service_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edit_service_btnActionPerformed

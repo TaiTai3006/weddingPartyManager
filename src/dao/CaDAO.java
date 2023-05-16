@@ -8,8 +8,10 @@ import database.JDBCUtil;
 import model.Ca;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+//import java.sql.Statement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.sql.Time;
 
 /**
  *
@@ -130,6 +132,37 @@ public class CaDAO implements DAOInterface<Ca> {
             ex.printStackTrace();
         }
         return lstCa;
+    }
+    public Ca SelectBy_Id(String id) {
+//        System.out.println("ID Ca:" + id);
+        Ca ca0 = new Ca();
+        try {
+            Connection con = JDBCUtil.getConnection();
+//            Statement a = con.createStatement();
+            String sql = "SELECT * FROM Ca WHERE Ca.maCa='"+id+"'" ;
+            
+            PreparedStatement st = con.prepareStatement(sql);
+            
+            ResultSet kq = st.executeQuery();
+            
+            while(kq.next()){
+                String maCa = kq.getString("maCa");
+                String tenCa = kq.getString("tenCa");
+                Time gioBatDau = kq.getTime("gioBatDau");
+                Time gioKetThuc = kq.getTime("gioKetThuc");
+                ca0.setMaCa(maCa);
+                ca0.setTenCa(tenCa);
+                ca0.setGioBatDau(gioBatDau);
+                ca0.setGioKetThuc(gioKetThuc);
+//                System.out.println(ca0.getGioBatDau());
+//                ca0 = new Ca(maCa, tenCa, gioBatDau, gioKetThuc);
+            }
+            
+            JDBCUtil.closeConnection(con);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return ca0;
     }
 
     @Override
