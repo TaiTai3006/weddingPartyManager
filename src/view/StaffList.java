@@ -668,6 +668,7 @@ public class StaffList extends javax.swing.JInternalFrame {
             txtUserNameUD.setText(tenTaiKhoan);
             String tenChucVu = String.valueOf(tblStaff.getValueAt(row, 2));
             cbQuyenUD.setSelectedItem(tenChucVu);
+            txtUserNameUD.enable(false);
             updateForm.setLocationRelativeTo(null);
             updateForm.setVisible(true);
         }
@@ -720,7 +721,6 @@ public class StaffList extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         int row = tblStaff.getSelectedRow();
 
-        String maSanh = String.valueOf(tblStaff.getValueAt(row, 1));
         int kq = 0;
         String tenTaiKhoan = txtUserNameUD.getText();
         String tenChucVu = cbQuyenUD.getSelectedItem().toString();
