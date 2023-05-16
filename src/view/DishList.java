@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Arrays;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.YES_OPTION;
@@ -28,9 +29,12 @@ import model.MonAn;
 public class DishList extends javax.swing.JInternalFrame {
     
 int count = 0;
+int i = 0;
 int macount = 0;
 DefaultTableModel defaulttable = new DefaultTableModel();
+ArrayList<String> dynamicArray = new ArrayList<>();
 ArrayList<MonAn> items = new ArrayList<>(MonAnDAO.getInstance().SelectAll());
+ArrayList<LoaiMonAn> loaimon = new ArrayList<>(LoaiMonAnDAO.getInstance().SelectAll());
     public void Message(String message, int messageType) {
         JOptionPane jOptionPane = new JOptionPane(message, messageType);
         JDialog dialog = jOptionPane.createDialog(null, "Message");
@@ -49,16 +53,16 @@ public int findMissingNumber(int[] numbers) {
         // Nếu không tìm thấy số bị thiếu giữa các số đã cho
         return -1;
     }
-public int lastChars(String maMonAn){
+public int lastChars(String maMonAn, int numberID){
     int length = maMonAn.length();
-    String lastchar = maMonAn.substring(length - 4);
+    String lastchar = maMonAn.substring(length - numberID);
     return Integer.parseInt(lastchar);
 }
     public void CreateDataTable() {
         defaulttable = (DefaultTableModel) table_dish_list.getModel();
         int i = 0;
         for (MonAn x : items) {
-            defaulttable.addRow(new Object[]{++i, x.getMaMonAn(), x.getTenMonAn(),x.getMaLoaiMonAn(), x.getDonGia()});
+            defaulttable.addRow(new Object[]{++i, x.getMaMonAn(), x.getTenMonAn(),MonAnDAO.getInstance().SelectedNameByID(x.getMaLoaiMonAn()).getTenLoaiMonAn(), x.getDonGia()});
         }
     }
     public void ReloadDataTable() {
@@ -71,7 +75,7 @@ public void notification(int check){
         int ret = JOptionPane.showConfirmDialog(null, "Thêm dữ liệu thành công","NOTIFICATION", JOptionPane.CLOSED_OPTION);
         dish_list_dialog.setVisible(false);
         add_monan_field.setText("");
-        add_loaimonan_field.setText("");
+//        add_loaimonan_field.setText("");
         dongia_monan_field.setText("");
 //        if(ret == JOptionPane.YES_OPTION){
 //            dish_list_dialog.setVisible(false);
@@ -81,6 +85,31 @@ public void notification(int check){
     }else{
         JOptionPane.showConfirmDialog(null, "Thêm dữ liệu thất bại","NOTIFICATION", JOptionPane.CLOSED_OPTION);
     }
+}
+public void loaiMonAnElement(){
+        for(LoaiMonAn x : loaimon){
+            if(x.getTenLoaiMonAn().equals("")){
+                return;
+            }else{
+                dynamicArray.add(x.getTenLoaiMonAn());
+            }
+        }
+}
+public void filter(ArrayList<MonAn> filteredItems){
+                String filterText = search_field.getText().toLowerCase();
+                filteredItems.clear();
+                ArrayList<MonAn> listMonAn = new ArrayList<>(MonAnDAO.getInstance().SelectAll());
+                for (MonAn item : listMonAn) {
+                    if (item.getMaMonAn().toLowerCase().contains(filterText) || item.getTenMonAn().toLowerCase().contains(filterText)) {
+                        filteredItems.add(item);
+                    }
+                }
+                DefaultTableModel model = (DefaultTableModel) table_dish_list.getModel();
+                model.setRowCount(0);
+                for (MonAn row : filteredItems) {
+                count = defaulttable.getRowCount() + 1;
+                    model.addRow(new Object[]{count, row.getMaMonAn(), row.getTenMonAn(), MonAnDAO.getInstance().SelectedNameByID(row.getMaLoaiMonAn()).getTenLoaiMonAn(), row.getDonGia()});
+                } 
 }
     /**
      * Creates new form DishList
@@ -100,50 +129,27 @@ public void notification(int check){
         defaulttable.addColumn("Đơn giá");
 
         for(MonAn row : items){
-            defaulttable.addRow(new Object[]{defaulttable.getRowCount() + 1, row.getMaMonAn(), row.getTenMonAn(), row.getMaLoaiMonAn(), row.getDonGia()});
+            defaulttable.addRow(new Object[]{defaulttable.getRowCount() + 1, row.getMaMonAn(), row.getTenMonAn(),MonAnDAO.getInstance().SelectedNameByID(row.getMaLoaiMonAn()).getTenLoaiMonAn() , row.getDonGia()});
         }
-
+        loaiMonAnElement();
+        DefaultComboBoxModel<String> newModel = new DefaultComboBoxModel<>(dynamicArray.toArray(new String[0]));
+        add_loaimonan_field.setModel(newModel);
+        Update_loaimonan_field.setModel(newModel);
             search_field.getDocument().addDocumentListener(new DocumentListener() {
 
             @Override
             public void insertUpdate(DocumentEvent e) {
-                String filterText = search_field.getText().toLowerCase();
-                filteredItems.clear();
-                ArrayList<MonAn> listMonAn = new ArrayList<>(MonAnDAO.getInstance().SelectAll());
-                for (MonAn item : listMonAn) {
-                    if (item.getMaMonAn().toLowerCase().contains(filterText) || item.getTenMonAn().toLowerCase().contains(filterText)) {
-                        filteredItems.add(item);
-                    }
-                }
-                DefaultTableModel model = (DefaultTableModel) table_dish_list.getModel();
-                model.setRowCount(0);
-                for (MonAn row : filteredItems) {
-                count = defaulttable.getRowCount() + 1;
-                    model.addRow(new Object[]{count, row.getMaMonAn(), row.getTenMonAn(), row.getMaLoaiMonAn(), row.getDonGia()});
-                } 
+                  filter(filteredItems);
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                String filterText = search_field.getText().toLowerCase();
-                filteredItems.clear();
-                ArrayList<MonAn> listMonAn = new ArrayList<>(MonAnDAO.getInstance().SelectAll());
-                for (MonAn item : listMonAn) {
-                    if (item.getMaMonAn().toLowerCase().contains(filterText) || item.getTenMonAn().toLowerCase().contains(filterText)) {
-                        filteredItems.add(item);
-                    }
-                }
-                DefaultTableModel model = (DefaultTableModel) table_dish_list.getModel();
-                model.setRowCount(0);
-                for (MonAn row : filteredItems) {
-                count = defaulttable.getRowCount() + 1;
-                    model.addRow(new Object[]{count, row.getMaMonAn(), row.getTenMonAn(), row.getMaLoaiMonAn(), row.getDonGia()});
-                }  
+                filter(filteredItems);
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                
+                filter(filteredItems);
             }
         });
     }
@@ -168,11 +174,11 @@ public void notification(int check){
         jPanel18 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         add_monan_field = new javax.swing.JTextField();
-        add_loaimonan_field = new javax.swing.JTextField();
         dongia_monan_field = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        add_loaimonan_field = new javax.swing.JComboBox<>();
         dish_listUpdate_dialog = new javax.swing.JDialog();
         jPanel19 = new javax.swing.JPanel();
         jPanel20 = new javax.swing.JPanel();
@@ -184,11 +190,11 @@ public void notification(int check){
         jPanel24 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         Update_monan_field = new javax.swing.JTextField();
-        Update_loaimonan_field = new javax.swing.JTextField();
         Update_dongia_field = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        Update_loaimonan_field = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
         add_dish_btn = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
@@ -295,12 +301,6 @@ public void notification(int check){
         jLabel6.setForeground(new java.awt.Color(69, 96, 134));
         jLabel6.setText("Thêm món ăn");
 
-        add_loaimonan_field.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                add_loaimonan_fieldActionPerformed(evt);
-            }
-        });
-
         dongia_monan_field.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dongia_monan_fieldActionPerformed(evt);
@@ -317,17 +317,19 @@ public void notification(int check){
         jLabel3.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel3.setText("Đơn giá");
 
+        add_loaimonan_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ML01", "ML02", "ML03" }));
+
         javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
         jPanel18.setLayout(jPanel18Layout);
         jPanel18Layout.setHorizontalGroup(
             jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
             .addComponent(add_monan_field)
-            .addComponent(add_loaimonan_field)
             .addComponent(dongia_monan_field)
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(add_loaimonan_field, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel18Layout.setVerticalGroup(
             jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -341,7 +343,7 @@ public void notification(int check){
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(add_loaimonan_field, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(dongia_monan_field, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -458,12 +460,6 @@ public void notification(int check){
             }
         });
 
-        Update_loaimonan_field.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Update_loaimonan_fieldActionPerformed(evt);
-            }
-        });
-
         Update_dongia_field.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Update_dongia_fieldActionPerformed(evt);
@@ -480,17 +476,24 @@ public void notification(int check){
         jLabel9.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel9.setText("Đơn giá");
 
+        Update_loaimonan_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        Update_loaimonan_field.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Update_loaimonan_fieldActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel24Layout = new javax.swing.GroupLayout(jPanel24);
         jPanel24.setLayout(jPanel24Layout);
         jPanel24Layout.setHorizontalGroup(
             jPanel24Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
             .addComponent(Update_monan_field)
-            .addComponent(Update_loaimonan_field)
             .addComponent(Update_dongia_field)
             .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(Update_loaimonan_field, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel24Layout.setVerticalGroup(
             jPanel24Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -503,8 +506,8 @@ public void notification(int check){
                 .addGap(18, 18, 18)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Update_loaimonan_field, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
+                .addComponent(Update_loaimonan_field, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Update_dongia_field, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -738,7 +741,7 @@ public void notification(int check){
 
        // Extract the last characters from the MaMonAn field for each MonAn object
        for(MonAn row : listMonAn){
-           numbers[i] = lastChars(row.getMaMonAn());;
+           numbers[i] = lastChars(row.getMaMonAn(),4);
            i++;
        }
        String mamonan = "";
@@ -770,46 +773,34 @@ public void notification(int check){
                 mamonan = "MA" + String.valueOf(macount);
            }
        }
-
        // Get the input values for the new MonAn object
+       String loaimonan = LoaiMonAnDAO.getInstance().SelectByName((String) add_loaimonan_field.getSelectedItem()).getMaLoaiMonAn();
        String tenmonan = add_monan_field.getText();
-       String loaimonan = add_loaimonan_field.getText();
-       long dongia = 0;
-        try {
-            dongia = Long.parseLong(dongia_monan_field.getText());
-            check = 1;
-        } catch (NumberFormatException numberFormatException) {
-            check = 0;
-        }
-       if(check == 1){
-            // Create a new MonAn object with the generated MaMonAn and input values
-            MonAn monan = new MonAn(mamonan, tenmonan, dongia, loaimonan);
-            // Insert the new MonAn into the database
-            MonAnDAO.getInstance().Insert(monan);
-            // Add a new row to the default table model with the values of the new MonAn
-            if(missingNumber != -1){
-                defaulttable.addRow(new Object[]{missingNumber, mamonan, tenmonan, loaimonan, dongia});
-            }else{
-                defaulttable.addRow(new Object[]{macount, mamonan, tenmonan, loaimonan, dongia});
+       if(tenmonan.equals("")){
+           JOptionPane.showConfirmDialog(null, "Hãy điền tên món ăn","WARNING", JOptionPane.CLOSED_OPTION);
+
+       }else{
+            long dongia = 0;
+             try {
+                 dongia = Long.parseLong(dongia_monan_field.getText());
+                 check = 1;
+             } catch (NumberFormatException numberFormatException) {
+                
+             }
+            if(check == 1){
+                 // Create a new MonAn object with the generated MaMonAn and input values
+                 MonAn monan = new MonAn(mamonan, tenmonan, dongia, loaimonan);
+                 // Insert the new MonAn into the database
+                 MonAnDAO.getInstance().Insert(monan);
+                 notification(check);
+             }else{
+                 JOptionPane.showConfirmDialog(null, "Đơn giá không được chứa kí tự hoặc để trống","WARNING", JOptionPane.CLOSED_OPTION);
             }
-        }else{
-            JOptionPane.showConfirmDialog(null, "Đơn giá không được chứa kí tự","WARNING", JOptionPane.CLOSED_OPTION);
+                // Update the table model of the JTable
+                ReloadDataTable();
+                // Close the dialog and reset the input fields
        }
-
-
-
-
-       // Update the table model of the JTable
-
-       ReloadDataTable();
-       // Close the dialog and reset the input fields
-       notification(check);
-
     }//GEN-LAST:event_add_dialog_btnActionPerformed
-
-    private void add_loaimonan_fieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_loaimonan_fieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_add_loaimonan_fieldActionPerformed
 
     private void delete_dialog_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delete_dialog_btnActionPerformed
         // TODO add your handling code here:
@@ -820,7 +811,8 @@ public void notification(int check){
         }else{
             dish_list_dialog.setVisible(true);
         }
-        
+        add_monan_field.setText("");
+        dongia_monan_field.setText("");
     }//GEN-LAST:event_delete_dialog_btnActionPerformed
 
     private void add_dish_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_dish_btnActionPerformed
@@ -832,42 +824,75 @@ public void notification(int check){
     private void delete_dish_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delete_dish_btnActionPerformed
         // TODO add your handling code here:
         int selectedRow = table_dish_list.getSelectedRow();
-        int rowCount = selectedRow+1;
+        int[] SelectedRows = table_dish_list.getSelectedRows();
+        for(int x : SelectedRows){
+            System.out.println("row" + x);
+        }
         if (selectedRow == -1){
-            JOptionPane.showConfirmDialog(null, "Hãy chọn hàng trước", "WARNING", JOptionPane.CLOSED_OPTION);
+            JOptionPane.showConfirmDialog(null, "Hãy chọn hàng hàng cần xóa", "WARNING", JOptionPane.CLOSED_OPTION);
         }else{
-            int ret = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa dữ liệu dòng "+rowCount+"", "NOTIFICATION", JOptionPane.YES_NO_OPTION);
-            if(ret == YES_OPTION){
-        //        int modelIndex = table_dish_list.convertRowIndexToModel(selectedRow);
-                Object maValue = defaulttable.getValueAt(selectedRow, 1);
-                MonAn monan = new MonAn();
-                monan.setMaMonAn(String.valueOf(maValue));
-                MonAn x = MonAnDAO.getInstance().SelectById(monan);
+            if(SelectedRows.length == 1){
+                int ret = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa dữ liệu mang mã "+String.valueOf(defaulttable.getValueAt(selectedRow, 1))+"", "NOTIFICATION", JOptionPane.YES_NO_OPTION);
+                if(ret == YES_OPTION){
+            //        int modelIndex = table_dish_list.convertRowIndexToModel(selectedRow);
+                    Object maValue = defaulttable.getValueAt(selectedRow, 1);
+                    MonAn monan = new MonAn();
+                    monan.setMaMonAn(String.valueOf(maValue));
+                    MonAn x = MonAnDAO.getInstance().SelectById(monan);
 
-                MonAnDAO.getInstance().Delete(x);
+                    MonAnDAO.getInstance().Delete(x);
 
-                ReloadDataTable();
-                JOptionPane.showConfirmDialog(null, "Xóa dữ liệu thành công", "NOTIFICATION", JOptionPane.CLOSED_OPTION);
+                    ReloadDataTable();
+                    JOptionPane.showConfirmDialog(null, "Xóa dữ liệu thành công", "NOTIFICATION", JOptionPane.CLOSED_OPTION);
 
+                }else{
+
+                }
             }else{
-                
+                String str = "";
+                for(int i : SelectedRows){
+                    str += String.valueOf(defaulttable.getValueAt(i, 1)) + " ";
+                }
+                int ret = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa dữ liệu mang mã "+str+"", "NOTIFICATION", JOptionPane.YES_NO_OPTION);
+                    if(ret == YES_OPTION){
+                        for(int i : SelectedRows){
+                            Object maValue = defaulttable.getValueAt(i, 1);
+                            MonAn monan = new MonAn();
+                            monan.setMaMonAn(String.valueOf(maValue));
+                            MonAn x = MonAnDAO.getInstance().SelectById(monan);
+                            MonAnDAO.getInstance().Delete(x);
+                            ReloadDataTable();
+                        }
+                    }
             }
+
         }
 
     }//GEN-LAST:event_delete_dish_btnActionPerformed
 
     private void edit_dish_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edit_dish_btnActionPerformed
         // TODO add your handling code here:
-        dish_listUpdate_dialog.setLocationRelativeTo(null);
-        dish_listUpdate_dialog.setVisible(true);
         int selectedRow = table_dish_list.getSelectedRow();
-        System.out.println(selectedRow + 1);
-        Object tenValue = defaulttable.getValueAt(selectedRow,2);
-        Object giaValue = defaulttable.getValueAt(selectedRow,4);
-        Object loaiValue = defaulttable.getValueAt(selectedRow,3);
-        Update_monan_field.setText(String.valueOf(tenValue));
-        Update_loaimonan_field.setText(String.valueOf(loaiValue));
-        Update_dongia_field.setText(String.valueOf(giaValue));
+
+        if(selectedRow == -1){
+            JOptionPane.showConfirmDialog(null, "Hãy chọn hàng cần cập nhật", "WARNING", JOptionPane.CLOSED_OPTION);
+
+        }else{
+            dish_listUpdate_dialog.setLocationRelativeTo(null);
+            dish_listUpdate_dialog.setVisible(true);
+
+            System.out.println(selectedRow + 1);
+            Object tenValue = defaulttable.getValueAt(selectedRow,2);
+            Object giaValue = defaulttable.getValueAt(selectedRow,4);
+            String stringLoaiValue = String.valueOf(defaulttable.getValueAt(selectedRow,3));
+            String maLoaiValue = LoaiMonAnDAO.getInstance().SelectByName(stringLoaiValue).getMaLoaiMonAn();
+            int index = lastChars(maLoaiValue,2) ;
+            System.out.println(index);
+            Update_monan_field.setText(String.valueOf(tenValue));
+            Update_loaimonan_field.setSelectedIndex(index - 1);
+            Update_dongia_field.setText(String.valueOf(giaValue));
+        }
+
     }//GEN-LAST:event_edit_dish_btnActionPerformed
 
     private void search_fieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_fieldActionPerformed
@@ -881,17 +906,17 @@ public void notification(int check){
     private void deleteUpdate_dialog_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteUpdate_dialog_btnActionPerformed
         // TODO add your handling code here:
         dish_listUpdate_dialog.setVisible(false);
+
     }//GEN-LAST:event_deleteUpdate_dialog_btnActionPerformed
 
     private void update_dialog_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_update_dialog_btnActionPerformed
-        // TODO add your handling code here:
+//        // TODO add your handling code here:
         int selectedRow = table_dish_list.getSelectedRow();
-        int rowCount = selectedRow + 1;
         Object maValue = defaulttable.getValueAt(selectedRow,1);
         MonAn monan = new MonAn();
         monan.setMaMonAn(String.valueOf(maValue));
         String tenmonan = Update_monan_field.getText();
-        String loaimonan = Update_loaimonan_field.getText();
+        String loaimonan = LoaiMonAnDAO.getInstance().SelectByName((String) add_loaimonan_field.getSelectedItem()).getMaLoaiMonAn();
         long dongia = Long.parseLong(Update_dongia_field.getText());
         if(!tenmonan.equals(String.valueOf(table_dish_list.getValueAt(selectedRow, 2))) 
                 || !loaimonan.equals(String.valueOf(table_dish_list.getValueAt(selectedRow, 3)))
@@ -901,9 +926,9 @@ public void notification(int check){
         
         dish_listUpdate_dialog.setVisible(false);
         ReloadDataTable();
-        Message("Cập nhật dữ liệu dòng "+rowCount+" thành công",-1);
+        Message("Cập nhật dữ liệu mang mã "+table_dish_list.getValueAt(selectedRow, 1)+" thành công",-1);
         }else{
-            Message("Cập nhật dữ liệu dòng "+rowCount+" thất bại",-1);
+            Message("Cập nhật dữ liệu mang mã "+table_dish_list.getValueAt(selectedRow, 1)+" thất bại",-1);
             dish_listUpdate_dialog.setVisible(false);
         }
 
@@ -926,10 +951,6 @@ public void notification(int check){
 //        }
     }//GEN-LAST:event_update_dialog_btnActionPerformed
 
-    private void Update_loaimonan_fieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Update_loaimonan_fieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Update_loaimonan_fieldActionPerformed
-
     private void Update_dongia_fieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Update_dongia_fieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_Update_dongia_fieldActionPerformed
@@ -938,15 +959,19 @@ public void notification(int check){
         // TODO add your handling code here:
     }//GEN-LAST:event_Update_monan_fieldActionPerformed
 
+    private void Update_loaimonan_fieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Update_loaimonan_fieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Update_loaimonan_fieldActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackPage3;
     private javax.swing.JTextField Update_dongia_field;
-    private javax.swing.JTextField Update_loaimonan_field;
+    private javax.swing.JComboBox<String> Update_loaimonan_field;
     private javax.swing.JTextField Update_monan_field;
     private javax.swing.JButton add_dialog_btn;
     private javax.swing.JButton add_dish_btn;
-    private javax.swing.JTextField add_loaimonan_field;
+    private javax.swing.JComboBox<String> add_loaimonan_field;
     private javax.swing.JTextField add_monan_field;
     private javax.swing.JButton deleteUpdate_dialog_btn;
     private javax.swing.JButton delete_dialog_btn;

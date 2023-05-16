@@ -10,6 +10,7 @@ import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import model.LoaiMonAn;
 import model.MonAn;
 
 /**
@@ -147,7 +148,6 @@ public class MonAnDAO implements DAOInterface<MonAn> {
             String sql = "SELECT * FROM monan WHERE maMonAn = '"+t.getMaMonAn()+"' ";
             
 
-            System.out.println(sql);
             ResultSet kq = st.executeQuery(sql);
             
             while(kq.next()){
@@ -160,7 +160,27 @@ public class MonAnDAO implements DAOInterface<MonAn> {
         }
         return monan;      
 }
-
+    public LoaiMonAn SelectedNameByID(String t){
+       LoaiMonAn loaimon = null;
+       try {
+            Connection con = JDBCUtil.getConnection();
+            
+            Statement st = con.createStatement();
+            
+            String sql = "SELECT * FROM loaimonan WHERE maLoaiMonAn = '"+t+"' ";
+            
+            ResultSet kq = st.executeQuery(sql);
+            
+            while(kq.next()){
+                loaimon = new LoaiMonAn(kq.getString("maLoaiMonAn"), kq.getString("tenLoaiMonan"));
+            }
+            
+            JDBCUtil.closeConnection(con);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return loaimon;    
+    }
     @Override
     public ArrayList<MonAn> SelectByCondition(String condition) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

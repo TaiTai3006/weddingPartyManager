@@ -141,7 +141,29 @@ public class LoaiMonAnDAO implements DAOInterface<LoaiMonAn> {
         }
         return loaimon;    
     }
+    public LoaiMonAn SelectByName(String t) {
+        LoaiMonAn loaimon = null;
+       try {
+            Connection con = JDBCUtil.getConnection();
+            
+            Statement st = con.createStatement();
+            
+            String sql = "SELECT * FROM loaimonan WHERE tenLoaiMonAn = '"+t+"' ";
+            
 
+            System.out.println(sql);
+            ResultSet kq = st.executeQuery(sql);
+            
+            while(kq.next()){
+                loaimon = new LoaiMonAn(kq.getString("maLoaiMonAn"), kq.getString("tenLoaiMonan"));
+            }
+            
+            JDBCUtil.closeConnection(con);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return loaimon;    
+    }
     @Override
     public ArrayList<LoaiMonAn> SelectByCondition(String condition) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

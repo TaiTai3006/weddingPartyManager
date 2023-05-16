@@ -5,6 +5,7 @@
 package view;
 
 import dao.LoaiMonAnDAO;
+import dao.MonAnDAO;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
 import model.LoaiMonAn;
+import model.MonAn;
 
 /**
  *
@@ -21,7 +23,15 @@ import model.LoaiMonAn;
  */
 public class DishTypeList extends javax.swing.JInternalFrame {
 ArrayList<LoaiMonAn> items = new ArrayList<>(LoaiMonAnDAO.getInstance().SelectAll());
-
+ArrayList<MonAn> monan = new ArrayList<>(MonAnDAO.getInstance().SelectAll());
+public boolean isMaMonAnExist(String ma, ArrayList<MonAn> monan){
+    for(MonAn x : monan){
+        if(x.getMaLoaiMonAn().equals(ma)){
+            return true;
+        }
+            
+    }return false;
+}
     public void Message(String message, int messageType) {
         JOptionPane jOptionPane = new JOptionPane(message, messageType);
         JDialog dialog = jOptionPane.createDialog(null, "Message");
@@ -67,6 +77,13 @@ public void notification(int check){
         
         // Nếu không tìm thấy số bị thiếu giữa các số đã cho
         return -1;
+    }
+    public boolean isNameExist(String name, ArrayList<LoaiMonAn> loaimonan){
+        for(LoaiMonAn x: loaimonan){
+            if(x.getTenLoaiMonAn().equals(name))
+                return true;
+        }
+        return false;
     }
     public int lastChars(String maMonAn){
         int length = maMonAn.length();
@@ -559,6 +576,7 @@ public void notification(int check){
     private void delete_dishType_dialog_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delete_dishType_dialog_btnActionPerformed
         // TODO add your handling code here:
         dishType_dialog.setVisible(false);
+        add_dishType_field.setText("");
     }//GEN-LAST:event_delete_dishType_dialog_btnActionPerformed
 
     private void add_dishType_dialog_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_dishType_dialog_btnActionPerformed
@@ -566,50 +584,50 @@ public void notification(int check){
        macount = defaulttable.getRowCount() + 1;
        int i = 0;
        int[] numbers = new int[macount];
-
-       // Retrieve the list of MonAn objects from the database
-       ArrayList<LoaiMonAn> listLoaiMonAn = new ArrayList<>(LoaiMonAnDAO.getInstance().SelectAll());
-
-       // Extract the last characters from the MaMonAn field for each MonAn object
-       for(LoaiMonAn row : listLoaiMonAn){
-           numbers[i] = lastChars(row.getMaLoaiMonAn());
-           System.out.println("so" + numbers[i]);
-           i++;
-       }
-
-       String maloaimonan = "";
-
-       // Find the missing number in the sequence
-       int missingNumber = findMissingNumber(numbers);
-       System.out.println("miss number is " + missingNumber);
-
-       // Generate the MaMonAn based on the missing number or the current count
-       if (missingNumber != -1){
-           // Use the missing number
-           if(missingNumber < 10){
-                maloaimonan = "ML0" + String.valueOf(missingNumber);
-           }else if(missingNumber < 100){
-                maloaimonan = "ML" + String.valueOf(missingNumber);
-           }
-       }else{
-           // Use the current count
-           if(macount < 10){
-                maloaimonan = "ML0" + String.valueOf(macount);
-           }else if(macount < 100){
-                maloaimonan = "ML" + String.valueOf(macount);
-           }
-       }
        String tenloaimonan = add_dishType_field.getText();
-       LoaiMonAn lm = new LoaiMonAn(maloaimonan,tenloaimonan);
-       if(missingNumber != -1){
-           defaulttable.addRow(new Object[]{missingNumber, maloaimonan, tenloaimonan});
-       }else{
-           defaulttable.addRow(new Object[]{macount, maloaimonan, tenloaimonan});
-       }
-        int check = LoaiMonAnDAO.getInstance().Insert(lm);
-        ReloadDataTable();
-        notification(check);
+       if(tenloaimonan.equals("")){
+            JOptionPane.showConfirmDialog(null, "Tên loại món đã tồn tại", "WARNING", JOptionPane.CLOSED_OPTION);
 
+       }else{
+            // Retrieve the list of MonAn objects from the database
+            ArrayList<LoaiMonAn> listLoaiMonAn = new ArrayList<>(LoaiMonAnDAO.getInstance().SelectAll());
+            if(!isNameExist(tenloaimonan,listLoaiMonAn)){
+                 // Extract the last characters from the MaMonAn field for each MonAn object
+                 for(LoaiMonAn row : listLoaiMonAn){
+                     numbers[i] = lastChars(row.getMaLoaiMonAn());
+                     i++;
+                 }
+
+                 String maloaimonan = "";
+
+                 // Find the missing number in the sequence
+                 int missingNumber = findMissingNumber(numbers);
+                 System.out.println("miss number is " + missingNumber);
+
+                 // Generate the MaMonAn based on the missing number or the current count
+                 if (missingNumber != -1){
+                     // Use the missing number
+                     if(missingNumber < 10){
+                          maloaimonan = "ML0" + String.valueOf(missingNumber);
+                     }else if(missingNumber < 100){
+                          maloaimonan = "ML" + String.valueOf(missingNumber);
+                     }
+                 }else{
+                     // Use the current count
+                     if(macount < 10){
+                          maloaimonan = "ML0" + String.valueOf(macount);
+                     }else if(macount < 100){
+                          maloaimonan = "ML" + String.valueOf(macount);
+                     }
+                 }
+                 LoaiMonAn lm = new LoaiMonAn(maloaimonan,tenloaimonan);
+                 int check = LoaiMonAnDAO.getInstance().Insert(lm);
+                 ReloadDataTable();
+                 notification(check);     
+            }else{
+                 JOptionPane.showConfirmDialog(null, "Tên loại món đã tồn tại", "WARNING", JOptionPane.CLOSED_OPTION);
+            }
+       }
     }//GEN-LAST:event_add_dishType_dialog_btnActionPerformed
 
     private void add_dishType_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_dishType_btnActionPerformed
@@ -620,45 +638,91 @@ public void notification(int check){
     }//GEN-LAST:event_add_dishType_btnActionPerformed
 
     private void delete_dishType_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delete_dishType_btnActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here
         int selectedRow = table_dish_type_list.getSelectedRow();
-        int rowCount = selectedRow+1;
+        int[] selectedRows = table_dish_type_list.getSelectedRows();
         if(selectedRow == -1){
-            JOptionPane.showConfirmDialog(null, "Hãy chọn hàng trước", "WARNING", JOptionPane.CLOSED_OPTION);
+            JOptionPane.showConfirmDialog(null, "Hãy chọn hàng cần xóa", "WARNING", JOptionPane.CLOSED_OPTION);
         }else{
-            int ret = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa dữ liệu dòng "+rowCount+"", "NOTIFICATION", JOptionPane.YES_NO_OPTION);
-            if (ret == JOptionPane.YES_OPTION){
+            if(selectedRows.length == 1){
                 Object maValue = defaulttable.getValueAt(selectedRow, 1);
-                System.out.println(maValue);
-                LoaiMonAn temp = new LoaiMonAn();
-                temp.setMaLoaiMonAn(String.valueOf(maValue));
-                LoaiMonAn x = LoaiMonAnDAO.getInstance().SelectById(temp);
+                if(isMaMonAnExist(String.valueOf(maValue),monan)){
+                    JOptionPane.showConfirmDialog(null, "Dữ liệu đã bị ràng buộc\nVui lòng xóa dữ liệu này ở nơi khác để xóa dữ liệu "+String.valueOf(maValue)+"","WARNING", JOptionPane.CLOSED_OPTION);
 
-                System.out.println(x.getTenLoaiMonAn());
-                LoaiMonAnDAO.getInstance().Delete(x);
+                }else{
+                    int ret = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa dữ liệu mang mã "+String.valueOf(maValue)+"", "NOTIFICATION", JOptionPane.YES_NO_OPTION);
+                    if (ret == JOptionPane.YES_OPTION){
+        //                Object maValue = defaulttable.getValueAt(selectedRow, 1);
+                        System.out.println(maValue);
+                        LoaiMonAn temp = new LoaiMonAn();
+                        temp.setMaLoaiMonAn(String.valueOf(maValue));
+                        LoaiMonAn x = LoaiMonAnDAO.getInstance().SelectById(temp);
 
-                ReloadDataTable();
-                JOptionPane.showConfirmDialog(null, "Xóa dữ liệu thành công", "NOTIFICATION", JOptionPane.CLOSED_OPTION);
+                        System.out.println(x.getTenLoaiMonAn());
+                        LoaiMonAnDAO.getInstance().Delete(x);
 
+                        ReloadDataTable();
+                        JOptionPane.showConfirmDialog(null, "Xóa dữ liệu thành công", "NOTIFICATION", JOptionPane.CLOSED_OPTION);
+
+                        }else{
+
+                    }
+                }
             }else{
-                
-            }
+                boolean exist = false;
+                String ma = "";
+                for(int i : selectedRows){
+                    Object maValue = defaulttable.getValueAt(i, 1);
+                    if(isMaMonAnExist(String.valueOf(maValue),monan)){
+                        ma = String.valueOf(maValue);
+                        exist = true;
+                        break;
+                    }
+                }
+                if(exist == true){
+                    JOptionPane.showConfirmDialog(null, "Dữ liệu mang mã "+ma+" đã bị ràng buộc\nVui lòng xóa dữ liệu này ở nơi khác để xóa dữ liệu mang mã "+ma+"","WARNING", JOptionPane.CLOSED_OPTION);  
+                }
+                else{
+                    String str = "";
+                    for(int i : selectedRows){
+                        str += String.valueOf(defaulttable.getValueAt(i, 1)) + " ";
+                    }
+                    int ret = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa dữ liệu mang mã "+str+"", "NOTIFICATION", JOptionPane.YES_NO_OPTION);
+                    if (ret == JOptionPane.YES_OPTION){
+                        for(int i : selectedRows){
+                        Object maValue = defaulttable.getValueAt(i, 1);
+                        System.out.println(maValue);
+                        LoaiMonAn temp = new LoaiMonAn();
+                        temp.setMaLoaiMonAn(String.valueOf(maValue));
+                        LoaiMonAn x = LoaiMonAnDAO.getInstance().SelectById(temp);
+
+                        System.out.println(x.getTenLoaiMonAn());
+                        LoaiMonAnDAO.getInstance().Delete(x);
+
+                        
+                        }
+                        JOptionPane.showConfirmDialog(null, "Xóa dữ liệu thành công", "NOTIFICATION", JOptionPane.CLOSED_OPTION);  
+                        ReloadDataTable();
+                    }
+                }
+            
 
         }
-
     }//GEN-LAST:event_delete_dishType_btnActionPerformed
-
+    }
     private void edit_dishType_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edit_dishType_btnActionPerformed
         // TODO add your handling code here:
-        update_dishType_dialog.setLocationRelativeTo(null);
-        update_dishType_dialog.setVisible(true);
-        update_dishType_dialog.setSize(400,300);
+
         int selectedRow = table_dish_type_list.getSelectedRow();
-        Object tenValue = defaulttable.getValueAt(selectedRow,2);
-
-        update_dishType_field.setText(String.valueOf(tenValue));
-
-
+        if(selectedRow == -1){
+            JOptionPane.showConfirmDialog(null, "Hãy chọn hàng cần cập nhật", "WARNING", JOptionPane.CLOSED_OPTION);
+        }else{
+            update_dishType_dialog.setLocationRelativeTo(null);
+            update_dishType_dialog.setVisible(true);
+            update_dishType_dialog.setSize(400,300); 
+            Object tenValue = defaulttable.getValueAt(selectedRow,2);
+            update_dishType_field.setText(String.valueOf(tenValue));
+        }
     }//GEN-LAST:event_edit_dishType_btnActionPerformed
 
     private void add_dishType_fieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_dishType_fieldActionPerformed
@@ -688,9 +752,9 @@ public void notification(int check){
         
         update_dishType_dialog.setVisible(false);
         ReloadDataTable();
-        Message("Cập nhật dữ liệu dòng "+rowCount+" thành công",-1);
+        Message("Cập nhật dữ liệu mang mã "+String.valueOf(maValue)+" thành công",-1);
         }else{
-            Message("Cập nhật dữ liệu dòng "+rowCount+" thất bại",-1);
+            Message("Cập nhật dữ mang mã "+String.valueOf(maValue)+" thất bại",-1);
             update_dishType_dialog.setVisible(false);
         }
     }//GEN-LAST:event_update_dishType_dialog_btnActionPerformed
