@@ -20,26 +20,29 @@ import model.Sanh;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author macbookpro
  */
 public class WeddingPartyLookup extends javax.swing.JInternalFrame {
-    
+
     private DefaultTableModel defaultTableModelSearch;
     private ArrayList<PhieuDatTiecCuoi> pdtcs = PhieuDatTiecCuoiDAO.getInstance().SelectAll();
     private ArrayList<Sanh> sanhcbb = SanhDAO.getInstance().SelectAll();
     private ArrayList<Ca> cacbb = CaDAO.getInstance().SelectAll();
     private Map<String, String> mapTenLoaiSanh = new HashMap<>();
     private Map<String, String> mapGio = new HashMap<>();
+
     /**
      * Creates new form WeddingPartyLookup
      */
     public WeddingPartyLookup() {
         initComponents();
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
+        BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
         PageTTHDTT.setVisible(false);
         PageThongTinDT.setVisible(false);
@@ -47,8 +50,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         String arr[];
         ArrayList<String> arrStr = new ArrayList<>();
         arrStr.add("Không");
-        for(Sanh x:sanhcbb)
-        {
+        for (Sanh x : sanhcbb) {
             mapTenLoaiSanh.put(x.getMaSanh(), x.getTenSanh());
             arrStr.add(x.getTenSanh());
         }
@@ -56,81 +58,70 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         HallNameCbBox.setModel(new javax.swing.DefaultComboBoxModel<>(arr));
         ArrayList<String> arrStr0 = new ArrayList<>();
         arrStr0.add("Không");
-        for(Ca x: cacbb)
-        {
-            mapGio.put( x.getMaCa(), String.valueOf(x.getGioBatDau()));
+        for (Ca x : cacbb) {
+            mapGio.put(x.getMaCa(), String.valueOf(x.getGioBatDau()));
             arrStr0.add(String.valueOf(x.getGioBatDau()));
         }
-        arr = arrStr0.toArray(new String[0]);        
+        arr = arrStr0.toArray(new String[0]);
         TimeCbBox.setModel(new javax.swing.DefaultComboBoxModel<>(arr));
         CreateTable();
     }
-    public void CreateTable()
-    {
-        defaultTableModelSearch = (DefaultTableModel)DatTiecTable.getModel();
+
+    public void CreateTable() {
+        defaultTableModelSearch = (DefaultTableModel) DatTiecTable.getModel();
         int i = 0;
-        for(PhieuDatTiecCuoi x: pdtcs)
-        {
+        for (PhieuDatTiecCuoi x : pdtcs) {
 //            Sanh sanh0 = SanhDAO.getInstance().SelectBy_Id(x.getMaSanh());
 //            Ca ca0 = CaDAO.getInstance().SelectBy_Id(x.getMaCa());
-            defaultTableModelSearch.addRow(new Object[]{++i, x.getMaTiecCuoi(), x.getTenChuRe(),x.getTenCoDau(), mapTenLoaiSanh.get(x.getMaSanh()), x.getNgayDaiTiec(), mapGio.get(x.getMaCa()), x.getSoLuongBan(), x.getUserName()});
+            defaultTableModelSearch.addRow(new Object[]{++i, x.getMaTiecCuoi(), x.getTenChuRe(), x.getTenCoDau(), mapTenLoaiSanh.get(x.getMaSanh()), x.getNgayDaiTiec(), mapGio.get(x.getMaCa()), x.getSoLuongBan(), x.getUserName()});
         }
     }
-    
-    public void SearchTable(String groomName, String brideName, String hallName, String idWedding, String ReceptionDate, String time, int numberType){
+
+    public void SearchTable(String groomName, String brideName, String hallName, String idWedding, String ReceptionDate, String time, int numberType) {
         defaultTableModelSearch.setRowCount(0);
-        defaultTableModelSearch = (DefaultTableModel)DatTiecTable.getModel();
+        defaultTableModelSearch = (DefaultTableModel) DatTiecTable.getModel();
         int i = 0;
 //        System.out.println("ten ch re:\n"+groomName +"co dau\n"+brideName +"ten sanh\n "+hallName +"id\n "+idWedding +"ngay\n "+ReceptionDate +"h\n "+time +" type\n"+numberType);
-        if(numberType == 2)
-        {
+        if (numberType == 2) {
             ArrayList<PhieuDatTiecCuoi> pdtcDesc = PhieuDatTiecCuoiDAO.getInstance().SelectDesc();
-            for (PhieuDatTiecCuoi x: pdtcDesc)
-            {
-                if(x.getMaTiecCuoi().toLowerCase().contains(idWedding.toLowerCase()) && x.getTenCoDau().toLowerCase().contains(brideName.toLowerCase()) &&
-                    x.getTenChuRe().toLowerCase().contains(groomName.toLowerCase()) && x.getNgayDaiTiec().toLowerCase().contains(ReceptionDate.toLowerCase()))
-                    
-                {
+            for (PhieuDatTiecCuoi x : pdtcDesc) {
+                if (x.getMaTiecCuoi().toLowerCase().contains(idWedding.toLowerCase()) && x.getTenCoDau().toLowerCase().contains(brideName.toLowerCase())
+                        && x.getTenChuRe().toLowerCase().contains(groomName.toLowerCase()) && x.getNgayDaiTiec().toLowerCase().contains(ReceptionDate.toLowerCase())) {
                     System.out.println(i);
 //                    Sanh sanh0 = SanhDAO.getInstance().SelectBy_Id(x.getMaSanh());
 //                    Ca ca0 = CaDAO.getInstance().SelectBy_Id(x.getMaCa());
                     System.out.println(x.getMaSanh());
                     System.out.println(x.getMaCa());
-                    if(mapTenLoaiSanh.get(x.getMaSanh()).toLowerCase().contains(hallName.toLowerCase()) && 
-                        mapGio.get(x.getMaCa()).toLowerCase().contains(time.toLowerCase()))
-                        defaultTableModelSearch.addRow(new Object[]{++i, x.getMaTiecCuoi(), x.getTenChuRe(),x.getTenCoDau(), mapTenLoaiSanh.get(x.getMaSanh()), x.getNgayDaiTiec(), mapGio.get(x.getMaCa()), x.getSoLuongBan(), x.getUserName()});
+                    if (mapTenLoaiSanh.get(x.getMaSanh()).toLowerCase().contains(hallName.toLowerCase())
+                            && mapGio.get(x.getMaCa()).toLowerCase().contains(time.toLowerCase())) {
+                        defaultTableModelSearch.addRow(new Object[]{++i, x.getMaTiecCuoi(), x.getTenChuRe(), x.getTenCoDau(), mapTenLoaiSanh.get(x.getMaSanh()), x.getNgayDaiTiec(), mapGio.get(x.getMaCa()), x.getSoLuongBan(), x.getUserName()});
+                    }
                 }
             }
         }
-        if(numberType == 1)
-        {
+        if (numberType == 1) {
             ArrayList<PhieuDatTiecCuoi> pdtcAsc = PhieuDatTiecCuoiDAO.getInstance().SelectAsc();
-            for (PhieuDatTiecCuoi x: pdtcAsc)
-            {
-                if(x.getMaTiecCuoi().toLowerCase().contains(idWedding.toLowerCase()) && x.getTenCoDau().toLowerCase().contains(brideName.toLowerCase()) &&
-                    x.getTenChuRe().toLowerCase().contains(groomName.toLowerCase()) && x.getNgayDaiTiec().toLowerCase().contains(ReceptionDate.toLowerCase()))
-                {
+            for (PhieuDatTiecCuoi x : pdtcAsc) {
+                if (x.getMaTiecCuoi().toLowerCase().contains(idWedding.toLowerCase()) && x.getTenCoDau().toLowerCase().contains(brideName.toLowerCase())
+                        && x.getTenChuRe().toLowerCase().contains(groomName.toLowerCase()) && x.getNgayDaiTiec().toLowerCase().contains(ReceptionDate.toLowerCase())) {
 //                    Sanh sanh0 = SanhDAO.getInstance().SelectBy_Id(x.getMaSanh());
 //                    Ca ca0 = CaDAO.getInstance().SelectBy_Id(x.getMaCa());
-                    if(mapTenLoaiSanh.get(x.getMaSanh()).toLowerCase().contains(hallName.toLowerCase()) && 
-                        mapGio.get(x.getMaCa()).toLowerCase().contains(time.toLowerCase()))
-                        defaultTableModelSearch.addRow(new Object[]{++i, x.getMaTiecCuoi(), x.getTenChuRe(),x.getTenCoDau(), mapTenLoaiSanh.get(x.getMaSanh()), x.getNgayDaiTiec(), mapGio.get(x.getMaCa()), x.getSoLuongBan(), x.getUserName()});
+                    if (mapTenLoaiSanh.get(x.getMaSanh()).toLowerCase().contains(hallName.toLowerCase())
+                            && mapGio.get(x.getMaCa()).toLowerCase().contains(time.toLowerCase())) {
+                        defaultTableModelSearch.addRow(new Object[]{++i, x.getMaTiecCuoi(), x.getTenChuRe(), x.getTenCoDau(), mapTenLoaiSanh.get(x.getMaSanh()), x.getNgayDaiTiec(), mapGio.get(x.getMaCa()), x.getSoLuongBan(), x.getUserName()});
+                    }
                 }
             }
         }
-        if(numberType == 0)
-        {
-            for (PhieuDatTiecCuoi x: pdtcs)
-            {
-                if(x.getMaTiecCuoi().toLowerCase().contains(idWedding.toLowerCase()) && x.getTenCoDau().toLowerCase().contains(brideName.toLowerCase()) &&
-                    x.getTenChuRe().toLowerCase().contains(groomName.toLowerCase()) && x.getNgayDaiTiec().toLowerCase().contains(ReceptionDate.toLowerCase()))
-                {
+        if (numberType == 0) {
+            for (PhieuDatTiecCuoi x : pdtcs) {
+                if (x.getMaTiecCuoi().toLowerCase().contains(idWedding.toLowerCase()) && x.getTenCoDau().toLowerCase().contains(brideName.toLowerCase())
+                        && x.getTenChuRe().toLowerCase().contains(groomName.toLowerCase()) && x.getNgayDaiTiec().toLowerCase().contains(ReceptionDate.toLowerCase())) {
 //                    Sanh sanh0 = SanhDAO.getInstance().SelectBy_Id(x.getMaSanh());
 //                    Ca ca0 = CaDAO.getInstance().SelectBy_Id(x.getMaCa());
-                    if(mapTenLoaiSanh.get(x.getMaSanh()).toLowerCase().contains(hallName.toLowerCase()) && 
-                        mapGio.get(x.getMaCa()).toLowerCase().contains(time.toLowerCase()))
-                    {
-                         defaultTableModelSearch.addRow(new Object[]{++i, x.getMaTiecCuoi(), x.getTenChuRe(),x.getTenCoDau(), mapTenLoaiSanh.get(x.getMaSanh()), x.getNgayDaiTiec(), mapGio.get(x.getMaCa()), x.getSoLuongBan(), x.getUserName()});
+                    if (mapTenLoaiSanh.get(x.getMaSanh()).toLowerCase().contains(hallName.toLowerCase())
+                            && mapGio.get(x.getMaCa()).toLowerCase().contains(time.toLowerCase())) {
+                        defaultTableModelSearch.addRow(new Object[]{++i, x.getMaTiecCuoi(), x.getTenChuRe(), x.getTenCoDau(), mapTenLoaiSanh.get(x.getMaSanh()), x.getNgayDaiTiec(), mapGio.get(x.getMaCa()), x.getSoLuongBan(), x.getUserName()});
                     }
                 }
             }
@@ -146,22 +137,31 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 //            }
 //        }
     }
-    
-    public String YYYY_MM_DD(int year, int month, int day)
-    {
+
+    public void Message(String message, int messageType) {
+        JOptionPane jOptionPane = new JOptionPane(message, messageType);
+        JDialog dialog = jOptionPane.createDialog(null, "Message");
+        dialog.setAlwaysOnTop(true);
+        dialog.setVisible(true);
+    }
+
+    public String YYYY_MM_DD(int year, int month, int day) {
         String m;
         String d;
-        if(month < 10)
-            m="0" + month;
-        else
+        if (month < 10) {
+            m = "0" + month;
+        } else {
             m = String.valueOf(month);
-        if(day < 10)
-            d="0" + day;
-        else
+        }
+        if (day < 10) {
+            d = "0" + day;
+        } else {
             d = String.valueOf(day);
+        }
         return year + "-" + m + "-" + d;
     }
-    public void ReloadDataTable(){
+
+    public void ReloadDataTable() {
         pdtcs = PhieuDatTiecCuoiDAO.getInstance().SelectAll();
         defaultTableModelSearch.setRowCount(0);
         CreateTable();
@@ -2052,9 +2052,14 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 
     private void btnThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThanhToanActionPerformed
         // TODO add your handling code here:
-        ThanhToanJDialog.setLocationRelativeTo(null);
-        ThanhToanJDialog.setModal(true);
-        ThanhToanJDialog.setVisible(true);
+        int row = DatTiecTable.getSelectedRow();
+        if (row < 0) {
+            Message("Vui lòng chọn dữ liệu muốn chỉnh sửa!", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            ThanhToanJDialog.setLocationRelativeTo(null);
+            ThanhToanJDialog.setModal(true);
+            ThanhToanJDialog.setVisible(true);
+        }
     }//GEN-LAST:event_btnThanhToanActionPerformed
 
     private void HuyTTJDialogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HuyTTJDialogActionPerformed
@@ -2085,6 +2090,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         ThanhToanJDialog.setVisible(false);
         Page1.setVisible(false);
+        PageTTHDH.setVisible(false);
         PageXNDV.setVisible(true);
     }//GEN-LAST:event_TiepTucTTJDialogActionPerformed
 
@@ -2156,16 +2162,19 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         Date receptionDate = ReceptionDate.getDate();
         String hallNameText = String.valueOf(HallNameCbBox.getSelectedItem());
         String timeText = String.valueOf(TimeCbBox.getSelectedItem());
-        if(HallNameCbBox.getSelectedIndex()==0)
+        if (HallNameCbBox.getSelectedIndex() == 0) {
             hallNameText = "";
-        if(TimeCbBox.getSelectedIndex()==0)
-               timeText = "";
-        String receptionDateString="";
+        }
+        if (TimeCbBox.getSelectedIndex() == 0) {
+            timeText = "";
+        }
+        String receptionDateString = "";
         System.out.println("hallName: " + hallNameText);
         System.out.println("Time: " + timeText);
-        if(receptionDate != null)
-        receptionDateString = YYYY_MM_DD((receptionDate.getYear()+1900), (receptionDate.getMonth()+1), receptionDate.getDate());
-        SearchTable(GroomNameText.getText(), BrideNameText.getText(),  hallNameText, IdWeddingText.getText(),
+        if (receptionDate != null) {
+            receptionDateString = YYYY_MM_DD((receptionDate.getYear() + 1900), (receptionDate.getMonth() + 1), receptionDate.getDate());
+        }
+        SearchTable(GroomNameText.getText(), BrideNameText.getText(), hallNameText, IdWeddingText.getText(),
                 receptionDateString, timeText, SortCbBox.getSelectedIndex());
     }//GEN-LAST:event_SearchBtActionPerformed
 
