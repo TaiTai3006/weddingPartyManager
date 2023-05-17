@@ -15,7 +15,9 @@ public class NhanVien extends ChucVu{
 
     public NhanVien() {
     }
-    
+    public NhanVien(String userName) {
+        this.userName = userName;
+    }
     public NhanVien(String userName, String passWord, String maChucVu, String tenChucVu) {
         super(maChucVu, tenChucVu);
         this.userName = userName;

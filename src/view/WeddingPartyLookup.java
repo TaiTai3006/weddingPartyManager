@@ -12,16 +12,25 @@ import javax.swing.table.DefaultTableModel;
 import model.PhieuDatTiecCuoi;
 import java.util.ArrayList;
 import dao.CaDAO;
+import dao.ChiTietDichVuDAO;
+import dao.HoaDonDAO;
 import dao.SanhDAO;
 import dao.PhieuDatTiecCuoiDAO;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import javax.swing.JComboBox;
 import model.Ca;
 import model.Sanh;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import model.ChiTietDichVu;
+import model.HoaDon;
 
 /**
  *
@@ -65,6 +74,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         arr = arrStr0.toArray(new String[0]);
         TimeCbBox.setModel(new javax.swing.DefaultComboBoxModel<>(arr));
         CreateTable();
+
     }
 
     public void CreateTable() {
@@ -167,6 +177,10 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         CreateTable();
     }
 
+    // Code danh cho lay du lieu len bang XNDV (Chuc nang Thanh Toan)
+    private DefaultTableModel defaultTableXNDV;
+    private ArrayList<ChiTietDichVu> lstDetailServices = ChiTietDichVuDAO.getInstance().SelectAll();
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -179,7 +193,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         ThanhToanJDialog = new javax.swing.JDialog();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jDateChooser3 = new com.toedter.calendar.JDateChooser();
+        jdNgayThanhToan = new com.toedter.calendar.JDateChooser();
         HuyTTJDialog = new javax.swing.JButton();
         TiepTucTTJDialog = new javax.swing.JButton();
         HuyDatTiecJDialog = new javax.swing.JDialog();
@@ -384,7 +398,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(56, 56, 56)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jDateChooser3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jdNgayThanhToan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addGap(0, 0, Short.MAX_VALUE))
@@ -400,7 +414,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                 .addGap(68, 68, 68)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jDateChooser3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jdNgayThanhToan, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(HuyTTJDialog, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1613,10 +1627,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         DVSVTable.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         DVSVTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "STT", "Mã dịch vụ", "Tên dịch vụ", "Số lượng", "Đơn giá"
@@ -1695,7 +1706,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                     .addComponent(btnAddWorkingTime1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
                 .addGroup(PageXNDVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(NextPageXNDV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(BackPageXNDV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -2059,7 +2070,18 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             ThanhToanJDialog.setLocationRelativeTo(null);
             ThanhToanJDialog.setModal(true);
             ThanhToanJDialog.setVisible(true);
+            String maPDTC = String.valueOf(DatTiecTable.getValueAt(row, 1));
+            defaultTableXNDV = (DefaultTableModel) DVSVTable.getModel();
+            int i = 0;
+
+            for (ChiTietDichVu ct : lstDetailServices) {
+                if (ct.getMaTiecCuoi().equals(maPDTC)) {
+                    defaultTableXNDV.addRow(new Object[]{++i, ct.getMaDichVu(), ct.getTenDichVu(), ct.getSoLuong(), ct.getDonGiaDichVu()});
+                }
+            }
         }
+        DateFormat dateFormat = new SimpleDateFormat("dd//MM//yyyy");
+        dateFormat.format(jdNgayThanhToan);
     }//GEN-LAST:event_btnThanhToanActionPerformed
 
     private void HuyTTJDialogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HuyTTJDialogActionPerformed
@@ -2085,10 +2107,35 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         Page1.setVisible(true);
         PageThongTinDT.setVisible(false);
     }//GEN-LAST:event_BackPageTTDTActionPerformed
-
+    private ArrayList<HoaDon> lstHoaDon = HoaDonDAO.getInstance().SelectAll();
     private void TiepTucTTJDialogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TiepTucTTJDialogActionPerformed
         // TODO add your handling code here:
-        ThanhToanJDialog.setVisible(false);
+        //-----
+        int row = DatTiecTable.getSelectedRow();
+        String maPDTC = String.valueOf(DatTiecTable.getValueAt(row, 1));
+
+        int kq = 0;
+        String ngayThanhToan = jdNgayThanhToan.getDateFormatString();
+        Date ngayTT = new Date();
+        try {
+            ngayTT = new SimpleDateFormat("dd//MM//yyyy").parse(ngayThanhToan);
+        } catch (ParseException ex) {
+            Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        for(HoaDon hd : lstHoaDon) {
+            if(hd.getMaTiecCuoi().equals(maPDTC)) {
+                kq = HoaDonDAO.getInstance().Update(new HoaDon(hd.getMaHoaDon(), hd.getMaTiecCuoi(), ngayTT, hd.getTongTienDichVu(), hd.getTienPhat(),
+                hd.getTongTienHoaDon(), hd.getConLai(), hd.getUserName()));
+            }
+        }
+
+        if (kq > 0) {
+            ThanhToanJDialog.setVisible(false);
+
+        } else {
+            ThanhToanJDialog.setVisible(false);
+            Message("Cập nhật ngày thanh toán thất bại!", JOptionPane.ERROR_MESSAGE);
+        }
         Page1.setVisible(false);
         PageTTHDH.setVisible(false);
         PageXNDV.setVisible(true);
@@ -2257,7 +2304,6 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnXemCT;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
-    private com.toedter.calendar.JDateChooser jDateChooser3;
     private com.toedter.calendar.JDateChooser jDateChooser4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -2349,6 +2395,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private com.toedter.calendar.JDateChooser jdNgayThanhToan;
     // End of variables declaration//GEN-END:variables
 
     private JComboBox<String> JcomboBox() {
