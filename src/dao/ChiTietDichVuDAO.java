@@ -32,7 +32,31 @@ public class ChiTietDichVuDAO implements DAOInterface<ChiTietDichVu>{
 
     @Override
     public int Delete(ChiTietDichVu t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+         try {
+            Connection con = JDBCUtil.getConnection();
+ 
+            
+            String sql = "DELETE FROM `ChiTietDichVu` WHERE maDichVu = ?";
+            
+            PreparedStatement st = con.prepareStatement(sql);
+            
+             st.setString(1, t.getMaDichVu());
+            
+            int kq = st.executeUpdate();
+            
+            if(kq > 0){
+                System.out.println("Xoa du lieu thanh cong!");
+            } else{
+                System.out.println("Xoa du lieu that bai!");
+            }
+            
+            JDBCUtil.closeConnection(con);
+            
+            return kq;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return 0 ;
     }
 
     @Override

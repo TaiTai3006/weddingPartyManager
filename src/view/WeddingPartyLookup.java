@@ -13,6 +13,7 @@ import model.PhieuDatTiecCuoi;
 import java.util.ArrayList;
 import dao.CaDAO;
 import dao.ChiTietDichVuDAO;
+import dao.DichVuDAO;
 import dao.HoaDonDAO;
 import dao.SanhDAO;
 import dao.PhieuDatTiecCuoiDAO;
@@ -30,6 +31,7 @@ import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import model.ChiTietDichVu;
+import model.DichVu;
 import model.HoaDon;
 
 /**
@@ -74,7 +76,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         arr = arrStr0.toArray(new String[0]);
         TimeCbBox.setModel(new javax.swing.DefaultComboBoxModel<>(arr));
         CreateTable();
-
+        CreateTableXNDV();
     }
 
     public void CreateTable() {
@@ -179,7 +181,18 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 
     // Code danh cho lay du lieu len bang XNDV (Chuc nang Thanh Toan)
     private DefaultTableModel defaultTableXNDV;
+    private DefaultTableModel defaultTableDV;
     private ArrayList<ChiTietDichVu> lstDetailServices = ChiTietDichVuDAO.getInstance().SelectAll();
+    private ArrayList<HoaDon> lstHoaDon = HoaDonDAO.getInstance().SelectAll();
+    private ArrayList<DichVu> lstDichVu = DichVuDAO.getInstance().SelectAll();
+
+    public void CreateTableXNDV() {
+        defaultTableDV = (DefaultTableModel) tblSelectService.getModel();
+        int i = 0;
+        for (DichVu dv : lstDichVu) {
+            defaultTableDV.addRow(new Object[]{++i, dv.getMaDichVu(), dv.getTenDichVu(), dv.getDonGia()});
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -202,6 +215,12 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         HuyHJDialog = new javax.swing.JButton();
         jDateChooser4 = new com.toedter.calendar.JDateChooser();
         jLabel5 = new javax.swing.JLabel();
+        AddSelectServices = new javax.swing.JDialog();
+        jPanel28 = new javax.swing.JPanel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        tblSelectService = new javax.swing.JTable();
+        btnXacNhanDV = new javax.swing.JButton();
+        jLabel45 = new javax.swing.JLabel();
         Page1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         DatTiecTable = new javax.swing.JTable();
@@ -320,8 +339,8 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         jPanel19 = new javax.swing.JPanel();
         jPanel20 = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
-        btnAddWorkingTime = new javax.swing.JButton();
-        btnAddWorkingTime1 = new javax.swing.JButton();
+        btnAddXNDV = new javax.swing.JButton();
+        btnDeleteXNDV = new javax.swing.JButton();
         jScrollPane5 = new javax.swing.JScrollPane();
         DVSVTable = new javax.swing.JTable();
         BackPageXNDV = new javax.swing.JButton();
@@ -368,6 +387,9 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 
         jLabel4.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jLabel4.setText("Ngày thanh toan");
+
+        jdNgayThanhToan.setDateFormatString("yyyy-MM-dd");
+        jdNgayThanhToan.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         HuyTTJDialog.setBackground(new java.awt.Color(69, 96, 134));
         HuyTTJDialog.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
@@ -523,6 +545,81 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                     .addGap(0, 0, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(0, 0, Short.MAX_VALUE)))
+        );
+
+        AddSelectServices.setMinimumSize(new java.awt.Dimension(900, 530));
+        AddSelectServices.setModal(true);
+
+        jPanel28.setBackground(new java.awt.Color(255, 255, 255));
+
+        tblSelectService.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        tblSelectService.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "STT", "Mã dịch vụ ", "Tên dịch vụ", "Đơn giá "
+            }
+        ));
+        tblSelectService.setFocusable(false);
+        tblSelectService.setRowHeight(25);
+        tblSelectService.setSelectionBackground(new java.awt.Color(69, 96, 134));
+        tblSelectService.setShowGrid(false);
+        jScrollPane6.setViewportView(tblSelectService);
+        if (tblSelectService.getColumnModel().getColumnCount() > 0) {
+            tblSelectService.getColumnModel().getColumn(0).setPreferredWidth(50);
+            tblSelectService.getColumnModel().getColumn(2).setPreferredWidth(150);
+        }
+
+        btnXacNhanDV.setBackground(new java.awt.Color(132, 70, 133));
+        btnXacNhanDV.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        btnXacNhanDV.setForeground(new java.awt.Color(255, 255, 255));
+        btnXacNhanDV.setText("Xác nhận");
+
+        jLabel45.setFont(new java.awt.Font("Segoe UI", 1, 32)); // NOI18N
+        jLabel45.setForeground(new java.awt.Color(69, 96, 134));
+        jLabel45.setText("Danh sách lựa chọn dịch vụ ");
+
+        javax.swing.GroupLayout jPanel28Layout = new javax.swing.GroupLayout(jPanel28);
+        jPanel28.setLayout(jPanel28Layout);
+        jPanel28Layout.setHorizontalGroup(
+            jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel28Layout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 650, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(btnXacNhanDV, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel28Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel45, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(224, 224, 224))
+        );
+        jPanel28Layout.setVerticalGroup(
+            jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel28Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(jLabel45, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                .addGroup(jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnXacNhanDV, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27))
+        );
+
+        javax.swing.GroupLayout AddSelectServicesLayout = new javax.swing.GroupLayout(AddSelectServices.getContentPane());
+        AddSelectServices.getContentPane().setLayout(AddSelectServicesLayout);
+        AddSelectServicesLayout.setHorizontalGroup(
+            AddSelectServicesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AddSelectServicesLayout.createSequentialGroup()
+                .addComponent(jPanel28, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        AddSelectServicesLayout.setVerticalGroup(
+            AddSelectServicesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AddSelectServicesLayout.createSequentialGroup()
+                .addComponent(jPanel28, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         setPreferredSize(new java.awt.Dimension(1170, 730));
@@ -1615,14 +1712,24 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         jLabel20.setText("XÁC NHẬN DỊCH VỤ ĐÃ SỬ DỤNG");
         jPanel20.add(jLabel20);
 
-        btnAddWorkingTime.setBackground(new java.awt.Color(99, 122, 48));
-        btnAddWorkingTime.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
-        btnAddWorkingTime.setForeground(new java.awt.Color(255, 255, 255));
-        btnAddWorkingTime.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/plus.png"))); // NOI18N
+        btnAddXNDV.setBackground(new java.awt.Color(99, 122, 48));
+        btnAddXNDV.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
+        btnAddXNDV.setForeground(new java.awt.Color(255, 255, 255));
+        btnAddXNDV.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/plus.png"))); // NOI18N
+        btnAddXNDV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddXNDVActionPerformed(evt);
+            }
+        });
 
-        btnAddWorkingTime1.setBackground(new java.awt.Color(132, 70, 133));
-        btnAddWorkingTime1.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
-        btnAddWorkingTime1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Delete.png"))); // NOI18N
+        btnDeleteXNDV.setBackground(new java.awt.Color(132, 70, 133));
+        btnDeleteXNDV.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
+        btnDeleteXNDV.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Delete.png"))); // NOI18N
+        btnDeleteXNDV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteXNDVActionPerformed(evt);
+            }
+        });
 
         DVSVTable.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         DVSVTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -1682,9 +1789,9 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PageXNDVLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnAddWorkingTime, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnAddXNDV, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnAddWorkingTime1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnDeleteXNDV, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PageXNDVLayout.createSequentialGroup()
                         .addComponent(BackPageXNDV, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1702,8 +1809,8 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                 .addComponent(jPanel20, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(PageXNDVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnAddWorkingTime, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAddWorkingTime1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnAddXNDV, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDeleteXNDV, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
@@ -2080,8 +2187,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                 }
             }
         }
-        DateFormat dateFormat = new SimpleDateFormat("dd//MM//yyyy");
-        dateFormat.format(jdNgayThanhToan);
+        jdNgayThanhToan.setDateFormatString("yyyy-dd-MM");
     }//GEN-LAST:event_btnThanhToanActionPerformed
 
     private void HuyTTJDialogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HuyTTJDialogActionPerformed
@@ -2107,7 +2213,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         Page1.setVisible(true);
         PageThongTinDT.setVisible(false);
     }//GEN-LAST:event_BackPageTTDTActionPerformed
-    private ArrayList<HoaDon> lstHoaDon = HoaDonDAO.getInstance().SelectAll();
+
     private void TiepTucTTJDialogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TiepTucTTJDialogActionPerformed
         // TODO add your handling code here:
         //-----
@@ -2115,17 +2221,21 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         String maPDTC = String.valueOf(DatTiecTable.getValueAt(row, 1));
 
         int kq = 0;
-        String ngayThanhToan = jdNgayThanhToan.getDateFormatString();
+        Date tmp = jdNgayThanhToan.getDate();
+        String ngayThanhToan = "";
+        if (tmp != null) {
+            ngayThanhToan = YYYY_MM_DD((tmp.getYear() + 1900), (tmp.getMonth() + 1), tmp.getDate());
+        }
         Date ngayTT = new Date();
         try {
-            ngayTT = new SimpleDateFormat("dd//MM//yyyy").parse(ngayThanhToan);
+            ngayTT = new SimpleDateFormat("yyyy-MM-dd").parse(ngayThanhToan);
         } catch (ParseException ex) {
             Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
         }
-        for(HoaDon hd : lstHoaDon) {
-            if(hd.getMaTiecCuoi().equals(maPDTC)) {
+        for (HoaDon hd : lstHoaDon) {
+            if (hd.getMaTiecCuoi().equals(maPDTC)) {
                 kq = HoaDonDAO.getInstance().Update(new HoaDon(hd.getMaHoaDon(), hd.getMaTiecCuoi(), ngayTT, hd.getTongTienDichVu(), hd.getTienPhat(),
-                hd.getTongTienHoaDon(), hd.getConLai(), hd.getUserName()));
+                        hd.getTongTienHoaDon(), hd.getConLai(), hd.getUserName()));
             }
         }
 
@@ -2225,8 +2335,79 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                 receptionDateString, timeText, SortCbBox.getSelectedIndex());
     }//GEN-LAST:event_SearchBtActionPerformed
 
+    private void btnAddXNDVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddXNDVActionPerformed
+        // TODO add your handling code here:
+        AddSelectServices.setLocationRelativeTo(null);
+        AddSelectServices.setVisible(true);
+
+    }//GEN-LAST:event_btnAddXNDVActionPerformed
+
+    private void btnDeleteXNDVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteXNDVActionPerformed
+        // TODO add your handling code here:
+        int tmp = DatTiecTable.getSelectedRow();
+        String maPDTC = String.valueOf(DatTiecTable.getValueAt(tmp, 1));
+
+        int row = DVSVTable.getSelectedRow();
+        int[] rows = DVSVTable.getSelectedRows();
+        if (row < 0) {
+            Message("Vui lòng chọn dữ liệu muốn xoá!", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+
+            String mess = "";
+            if (rows.length == 1) {
+                mess = String.valueOf(DVSVTable.getValueAt(row, 1)) + " ";
+            } else {
+                for (int r : rows) {
+                    mess += String.valueOf(DVSVTable.getValueAt(r, 1)) + " ";
+                }
+            }
+
+            int x = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xoá " + mess + "hay không?");
+            if (x == JOptionPane.YES_OPTION) {
+                int kq = 0;
+                if (rows.length == 1) {
+                    try {
+                        for (ChiTietDichVu ctdv : lstDetailServices) {
+                            if (ctdv.getMaTiecCuoi().equals(maPDTC)) {
+                                kq = ChiTietDichVuDAO.getInstance().Delete(ctdv);
+
+                            }
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    for (int r : rows) {
+                        try {
+                            for (ChiTietDichVu ctdv : lstDetailServices) {
+                            if (ctdv.getMaTiecCuoi().equals(maPDTC)) {
+                                kq = ChiTietDichVuDAO.getInstance().Delete(ctdv);
+                            }
+                        }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        if (kq < 0) {
+                            Message("Xoá dữ liệu " + " thất bại!", JOptionPane.ERROR_MESSAGE);
+                        }
+                        kq = 1;
+                    }
+                }
+                if (kq > 0) {
+                    ReloadDataTable();
+                } else {
+                    Message("Xoá dữ liệu thất bại!", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+    }//GEN-LAST:event_btnDeleteXNDVActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDialog AddSelectServices;
     private javax.swing.JButton BackPageTTDT;
     private javax.swing.JButton BackPageTTDT1;
     private javax.swing.JButton BackPageTTHDH;
@@ -2297,10 +2478,11 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
     private javax.swing.JLabel TongTienDVValueTT;
     private javax.swing.JLabel TongTienHDValue;
     private javax.swing.JLabel TongTienHDValueTT;
-    private javax.swing.JButton btnAddWorkingTime;
-    private javax.swing.JButton btnAddWorkingTime1;
+    private javax.swing.JButton btnAddXNDV;
+    private javax.swing.JButton btnDeleteXNDV;
     private javax.swing.JButton btnHuy;
     private javax.swing.JButton btnThanhToan;
+    private javax.swing.JButton btnXacNhanDV;
     private javax.swing.JButton btnXemCT;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
@@ -2344,6 +2526,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel43;
     private javax.swing.JLabel jLabel44;
+    private javax.swing.JLabel jLabel45;
     private javax.swing.JLabel jLabel46;
     private javax.swing.JLabel jLabel47;
     private javax.swing.JLabel jLabel49;
@@ -2383,6 +2566,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel25;
     private javax.swing.JPanel jPanel26;
     private javax.swing.JPanel jPanel27;
+    private javax.swing.JPanel jPanel28;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
@@ -2395,7 +2579,9 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private com.toedter.calendar.JDateChooser jdNgayThanhToan;
+    private javax.swing.JTable tblSelectService;
     // End of variables declaration//GEN-END:variables
 
     private JComboBox<String> JcomboBox() {

@@ -10,7 +10,7 @@ import java.sql.Connection;
 import database.JDBCUtil;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
-
+import java.sql.Date;
 /**
  *
  * @author Asus
@@ -33,8 +33,9 @@ public class HoaDonDAO implements DAOInterface<HoaDon> {
             String sql = "UPDATE `HoaDon` SET `ngayThanhToan`= ? WHERE `maHoaDon`= ?";
             
             PreparedStatement st = con.prepareStatement(sql);
-            
-            st.setString(1, t.getNgayThanhToan().toString());
+                                
+            java.sql.Date sqlDate = new java.sql.Date(t.getNgayThanhToan().getTime());
+            st.setDate(1, sqlDate);
             st.setString(2, t.getMaHoaDon());
             System.out.println(st);
             int kq = st.executeUpdate();
