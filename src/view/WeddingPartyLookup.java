@@ -189,11 +189,22 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
     private DefaultTableModel defaultTableDV;
     private ArrayList<ChiTietDichVu> lstDetailServices = ChiTietDichVuDAO.getInstance().SelectAll();
     private ArrayList<HoaDon> lstHoaDon = HoaDonDAO.getInstance().SelectAll();
-    private ArrayList<DichVu> lstDichVu = DichVuDAO.getInstance().SelectAll();
+    private ArrayList<DichVu> lstDichVu = DichVuDAO.getInstance().SelectXNDV();
 
     public void CreateTableADD_XNDV() {
         defaultTableDV = (DefaultTableModel) tblSelectService.getModel();
         int i = 0;
+        for (DichVu dv : lstDichVu) {
+            defaultTableDV.addRow(new Object[]{++i, dv.getMaDichVu(), dv.getTenDichVu(), dv.getDonGia()});
+        }
+    }
+
+    public void ReloadDataAdd_XNDV() {
+        lstDichVu = DichVuDAO.getInstance().SelectXNDV();
+        defaultTableDV.setRowCount(0);
+        defaultTableDV = (DefaultTableModel) tblSelectService.getModel();
+        int i = 0;
+
         for (DichVu dv : lstDichVu) {
             defaultTableDV.addRow(new Object[]{++i, dv.getMaDichVu(), dv.getTenDichVu(), dv.getDonGia()});
         }
@@ -2438,6 +2449,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                 }
                 if (kq > 0) {
                     ReloadDataXNDV();
+                    ReloadDataAdd_XNDV();
                 } else {
                     Message("Xoá dữ liệu thất bại!", JOptionPane.ERROR_MESSAGE);
                 }
@@ -2523,6 +2535,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                 if (kq != 0) {
                     AddSelectServices.setVisible(false);
                     ReloadDataXNDV();
+                    ReloadDataAdd_XNDV();
                 } else {
                     Message("Thêm dịch vụ thất bại!", JOptionPane.ERROR_MESSAGE);
                 }
