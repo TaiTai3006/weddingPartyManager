@@ -22,7 +22,36 @@ public class ChiTietDichVuDAO implements DAOInterface<ChiTietDichVu>{
     
     @Override
     public int Insert(ChiTietDichVu t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            Connection con = JDBCUtil.getConnection();
+            
+            String sql = "INSERT INTO `ChiTietDichVu`(`maTiecCuoi`, `maDichVu`, `soLuong`, `donGiaDichVu`, `thanhTien`) VALUES (?, ?, ?, ?, ?)";
+            
+            PreparedStatement st = con.prepareStatement(sql);
+            
+            st.setString(1, t.getMaTiecCuoi());
+            st.setString(2, t.getMaDichVu());
+            st.setInt(3, t.getSoLuong());
+            st.setInt(4, t.getDonGiaDichVu());
+            st.setDouble(5, t.getThanhTien());
+        
+            
+            System.out.println(st);
+            
+            int kq = st.executeUpdate();
+            
+            if(kq > 0){
+                System.out.println("Them du lieu thanh cong!");
+            } else{
+                System.out.println("Them du lieu that bai!");
+            }
+            
+            JDBCUtil.closeConnection(con);
+            return kq;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return 0 ;
     }
 
     @Override

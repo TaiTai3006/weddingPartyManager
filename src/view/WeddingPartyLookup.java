@@ -75,8 +75,10 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         }
         arr = arrStr0.toArray(new String[0]);
         TimeCbBox.setModel(new javax.swing.DefaultComboBoxModel<>(arr));
+        
+        //
         CreateTable();
-        CreateTableXNDV();
+        CreateTableADD_XNDV();
     }
 
     public void CreateTable() {
@@ -186,12 +188,30 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
     private ArrayList<HoaDon> lstHoaDon = HoaDonDAO.getInstance().SelectAll();
     private ArrayList<DichVu> lstDichVu = DichVuDAO.getInstance().SelectAll();
 
-    public void CreateTableXNDV() {
+    public void CreateTableADD_XNDV() {
         defaultTableDV = (DefaultTableModel) tblSelectService.getModel();
         int i = 0;
         for (DichVu dv : lstDichVu) {
             defaultTableDV.addRow(new Object[]{++i, dv.getMaDichVu(), dv.getTenDichVu(), dv.getDonGia()});
         }
+    }
+
+    public void CreateTableXNDV() {
+        String maPDTC = String.valueOf(DatTiecTable.getValueAt(selectRow, 1));
+        defaultTableXNDV = (DefaultTableModel) DVSVTable.getModel();
+        int i = 0;
+
+        for (ChiTietDichVu ct : lstDetailServices) {
+            if (ct.getMaTiecCuoi().equals(maPDTC)) {
+                defaultTableXNDV.addRow(new Object[]{++i, ct.getMaDichVu(), ct.getTenDichVu(), ct.getSoLuong(), ct.getDonGiaDichVu()});
+            }
+        }
+    }
+
+    public void ReloadDataXNDV() {
+        lstDetailServices = ChiTietDichVuDAO.getInstance().SelectAll();
+        defaultTableModelSearch.setRowCount(0);
+        CreateTableXNDV();
     }
 
     /**
@@ -380,6 +400,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         BackPageTTHDH = new javax.swing.JButton();
 
         ThanhToanJDialog.setBackground(new java.awt.Color(255, 255, 255));
+        ThanhToanJDialog.setModal(true);
         ThanhToanJDialog.setSize(new java.awt.Dimension(400, 300));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -465,6 +486,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
 
+        HuyDatTiecJDialog.setModal(true);
         HuyDatTiecJDialog.setSize(new java.awt.Dimension(400, 300));
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
@@ -575,6 +597,11 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         btnXacNhanDV.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         btnXacNhanDV.setForeground(new java.awt.Color(255, 255, 255));
         btnXacNhanDV.setText("Xác nhận");
+        btnXacNhanDV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXacNhanDVActionPerformed(evt);
+            }
+        });
 
         jLabel45.setFont(new java.awt.Font("Segoe UI", 1, 32)); // NOI18N
         jLabel45.setForeground(new java.awt.Color(69, 96, 134));
@@ -2168,26 +2195,26 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private int selectRow = 0;
     private void btnThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThanhToanActionPerformed
         // TODO add your handling code here:
-        int row = DatTiecTable.getSelectedRow();
-        if (row < 0) {
+        selectRow = DatTiecTable.getSelectedRow();
+        if (selectRow < 0) {
             Message("Vui lòng chọn dữ liệu muốn chỉnh sửa!", JOptionPane.INFORMATION_MESSAGE);
         } else {
             ThanhToanJDialog.setLocationRelativeTo(null);
             ThanhToanJDialog.setModal(true);
             ThanhToanJDialog.setVisible(true);
-            String maPDTC = String.valueOf(DatTiecTable.getValueAt(row, 1));
-            defaultTableXNDV = (DefaultTableModel) DVSVTable.getModel();
-            int i = 0;
+        }
+        String maPDTC = String.valueOf(DatTiecTable.getValueAt(selectRow, 1));
+        defaultTableXNDV = (DefaultTableModel) DVSVTable.getModel();
+        int i = 0;
 
-            for (ChiTietDichVu ct : lstDetailServices) {
-                if (ct.getMaTiecCuoi().equals(maPDTC)) {
-                    defaultTableXNDV.addRow(new Object[]{++i, ct.getMaDichVu(), ct.getTenDichVu(), ct.getSoLuong(), ct.getDonGiaDichVu()});
-                }
+        for (ChiTietDichVu ct : lstDetailServices) {
+            if (ct.getMaTiecCuoi().equals(maPDTC)) {
+                defaultTableXNDV.addRow(new Object[]{++i, ct.getMaDichVu(), ct.getTenDichVu(), ct.getSoLuong(), ct.getDonGiaDichVu()});
             }
         }
-        jdNgayThanhToan.setDateFormatString("yyyy-dd-MM");
     }//GEN-LAST:event_btnThanhToanActionPerformed
 
     private void HuyTTJDialogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HuyTTJDialogActionPerformed
@@ -2241,7 +2268,6 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 
         if (kq > 0) {
             ThanhToanJDialog.setVisible(false);
-
         } else {
             ThanhToanJDialog.setVisible(false);
             Message("Cập nhật ngày thanh toán thất bại!", JOptionPane.ERROR_MESSAGE);
@@ -2255,6 +2281,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         Page1.setVisible(true);
         PageXNDV.setVisible(false);
+        defaultTableXNDV.setRowCount(0);
     }//GEN-LAST:event_BackPageXNDVActionPerformed
 
     private void NextPageXNDVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextPageXNDVActionPerformed
@@ -2344,8 +2371,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 
     private void btnDeleteXNDVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteXNDVActionPerformed
         // TODO add your handling code here:
-        int tmp = DatTiecTable.getSelectedRow();
-        String maPDTC = String.valueOf(DatTiecTable.getValueAt(tmp, 1));
+        String maPDTC = String.valueOf(DatTiecTable.getValueAt(selectRow, 1));
 
         int row = DVSVTable.getSelectedRow();
         int[] rows = DVSVTable.getSelectedRows();
@@ -2367,10 +2393,10 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                 int kq = 0;
                 if (rows.length == 1) {
                     try {
+                        String maDV = String.valueOf(DVSVTable.getValueAt(row, 1));
                         for (ChiTietDichVu ctdv : lstDetailServices) {
-                            if (ctdv.getMaTiecCuoi().equals(maPDTC)) {
+                            if (ctdv.getMaTiecCuoi().equals(maPDTC) && ctdv.getMaDichVu().equals(maDV)) {
                                 kq = ChiTietDichVuDAO.getInstance().Delete(ctdv);
-
                             }
                         }
 
@@ -2381,11 +2407,12 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                 } else {
                     for (int r : rows) {
                         try {
+                            String maDV = String.valueOf(DVSVTable.getValueAt(r, 1));
                             for (ChiTietDichVu ctdv : lstDetailServices) {
-                            if (ctdv.getMaTiecCuoi().equals(maPDTC)) {
-                                kq = ChiTietDichVuDAO.getInstance().Delete(ctdv);
+                                if (ctdv.getMaTiecCuoi().equals(maPDTC) && ctdv.getMaDichVu().equals(maDV)) {
+                                    kq = ChiTietDichVuDAO.getInstance().Delete(ctdv);
+                                }
                             }
-                        }
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -2397,13 +2424,96 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                     }
                 }
                 if (kq > 0) {
-                    ReloadDataTable();
+                    ReloadDataXNDV();
                 } else {
                     Message("Xoá dữ liệu thất bại!", JOptionPane.ERROR_MESSAGE);
                 }
             }
         }
     }//GEN-LAST:event_btnDeleteXNDVActionPerformed
+
+    private void btnXacNhanDVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXacNhanDVActionPerformed
+        // TODO add your handling code here:
+        String maPDTC = String.valueOf(DatTiecTable.getValueAt(selectRow, 1));
+        int row = tblSelectService.getSelectedRow();
+        int[] rows = tblSelectService.getSelectedRows();
+        if (row < 0) {
+            Message("Vui lòng chọn dịch vụ muốn thêm!", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            String mess = "";
+            if (rows.length == 1) {
+                mess = String.valueOf(tblSelectService.getValueAt(row, 1)) + " ";
+            } else {
+                for (int r : rows) {
+                    mess += String.valueOf(tblSelectService.getValueAt(r, 1)) + " ";
+                }
+            }
+
+            int x = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn thêm " + mess + "hay không?");
+            if (x == JOptionPane.YES_OPTION) {
+                int kq = 0;
+                if (rows.length == 1) {
+                    String maDV = String.valueOf(tblSelectService.getValueAt(row, 1));
+                    String tenDV = String.valueOf(tblSelectService.getValueAt(row, 2));
+                    int donGia = Integer.parseInt(String.valueOf(tblSelectService.getValueAt(row, 3)));
+                    boolean check = false;
+                    for (ChiTietDichVu ctdv : lstDetailServices) {
+                        if (ctdv.getMaDichVu().equals(maDV)) {
+                            int soLuong = ctdv.getSoLuong();
+                            soLuong += 1;
+                            ctdv.setSoLuong(soLuong);
+                            ctdv.setThanhTien(soLuong * ctdv.getDonGia());
+                            check = true;
+                            kq = 1;
+                            return;
+                        }
+                    }
+                    try {
+                        if (!check) {
+                            kq = ChiTietDichVuDAO.getInstance().Insert(new ChiTietDichVu(maPDTC, maDV, 1, donGia, donGia, tenDV));
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    for (int r : rows) {
+                        String maDV = String.valueOf(tblSelectService.getValueAt(r, 1));
+                        String tenDV = String.valueOf(tblSelectService.getValueAt(r, 2));
+                        int donGia = Integer.parseInt(String.valueOf(tblSelectService.getValueAt(r, 3)));
+                        boolean check = false;
+                        for (ChiTietDichVu ctdv : lstDetailServices) {
+                            if (ctdv.getMaDichVu().equals(maDV)) {
+                                int soLuong = ctdv.getSoLuong();
+                                soLuong += 1;
+                                ctdv.setSoLuong(soLuong);
+                                ctdv.setThanhTien(soLuong * ctdv.getDonGia());
+                                check = true;
+                                kq = 1;
+                                return;
+                            }
+                        }
+                        try {
+                            if (!check) {
+                                kq = ChiTietDichVuDAO.getInstance().Insert(new ChiTietDichVu(maPDTC, maDV, 1, donGia, donGia, tenDV));
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        if (kq < 0) {
+                            Message("Thêm dịch vụ " + maDV +" thất bại!", JOptionPane.ERROR_MESSAGE);
+                        }
+                        kq = 1;
+                    }
+                }
+                if (kq > 0) {
+                    ReloadDataXNDV();
+                } else {
+                    Message("Thêm dịch vụ thất bại!", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+    }//GEN-LAST:event_btnXacNhanDVActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -61,7 +61,7 @@ public class ChiTietDichVu extends DichVu{
         return soLuong;
     }
 
-    public double getDonGiaDichVu() {
+    public int getDonGiaDichVu() {
         return donGiaDichVu;
     }
 
