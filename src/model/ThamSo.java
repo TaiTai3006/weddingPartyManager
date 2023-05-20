@@ -9,7 +9,7 @@ package model;
  * @author Asus
  */
 public class ThamSo {
-    private boolean kiemTraPhat; 
+    private int kiemTraPhat; 
     private double tiLePhat; 
     private double tienDatCoc;
     private int tgPhatHuyTiec;
@@ -17,14 +17,14 @@ public class ThamSo {
     public ThamSo() {
     }
 
-    public ThamSo(boolean kiemTraPhat, double tiLePhat, double tienDatCoc, int tgPhatHuyTiec) {
+    public ThamSo(int kiemTraPhat, double tiLePhat, double tienDatCoc, int tgPhatHuyTiec) {
         this.kiemTraPhat = kiemTraPhat;
         this.tiLePhat = tiLePhat;
         this.tienDatCoc = tienDatCoc;
         this.tgPhatHuyTiec = tgPhatHuyTiec;
     }
 
-    public boolean getKiemTraPhat() {
+    public int getKiemTraPhat() {
         return kiemTraPhat;
     }
     

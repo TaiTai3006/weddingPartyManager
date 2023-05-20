@@ -40,14 +40,14 @@ public class ThamSoDAO implements DAOInterface<ThamSo> {
         try {
             java.sql.Connection con = JDBCUtil.getConnection();
 
-            String sql = "SELECT * FROM ThamSo";
+            String sql = "SELECT * FROM thamso";
 
             PreparedStatement st = con.prepareStatement(sql);
 
             ResultSet kq = st.executeQuery();
 
             while (kq.next()) {
-                lstThamSo.add(new ThamSo(kq.getBoolean("kiemTraPhat"), kq.getDouble("tiLePhat"), kq.getDouble("tienDatCoc"), 
+                lstThamSo.add(new ThamSo(kq.getInt("kiemTraPhat"), kq.getDouble("tiLePhat"), kq.getDouble("tiLeDatCoc"), 
                         kq.getInt("tgPhatHuyTiec")));
             }
 
