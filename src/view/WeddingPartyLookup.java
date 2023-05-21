@@ -43,7 +43,7 @@ import model.ThamSo;
  * @author macbookpro
  */
 public class WeddingPartyLookup extends javax.swing.JInternalFrame {
-    
+
     private DefaultTableModel defaultTableModelSearch;
     private ArrayList<PhieuDatTiecCuoi> pdtcs = PhieuDatTiecCuoiDAO.getInstance().SelectAll();
     private ArrayList<Sanh> sanhcbb = SanhDAO.getInstance().SelectAll();
@@ -82,9 +82,8 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 
         //
         CreateTable();
-        CreateTableADD_XNDV();
     }
-    
+
     public void CreateTable() {
         defaultTableModelSearch = (DefaultTableModel) DatTiecTable.getModel();
         int i = 0;
@@ -94,7 +93,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             defaultTableModelSearch.addRow(new Object[]{++i, x.getMaTiecCuoi(), x.getTenChuRe(), x.getTenCoDau(), mapTenLoaiSanh.get(x.getMaSanh()), x.getNgayDaiTiec(), mapGio.get(x.getMaCa()), x.getSoLuongBan(), x.getUserName()});
         }
     }
-    
+
     public void SearchTable(String groomName, String brideName, String hallName, String idWedding, String ReceptionDate, String time, int numberType) {
         defaultTableModelSearch.setRowCount(0);
         defaultTableModelSearch = (DefaultTableModel) DatTiecTable.getModel();
@@ -155,14 +154,14 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 //            }
 //        }
     }
-    
+
     public void Message(String message, int messageType) {
         JOptionPane jOptionPane = new JOptionPane(message, messageType);
         JDialog dialog = jOptionPane.createDialog(null, "Message");
         dialog.setAlwaysOnTop(true);
         dialog.setVisible(true);
     }
-    
+
     public String YYYY_MM_DD(int year, int month, int day) {
         String m;
         String d;
@@ -178,13 +177,13 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         }
         return year + "-" + m + "-" + d;
     }
-    
+
     public void ReloadDataTable() {
         pdtcs = PhieuDatTiecCuoiDAO.getInstance().SelectAll();
         defaultTableModelSearch.setRowCount(0);
         CreateTable();
     }
-    
+
     public int getSelectedRow() {
         return DatTiecTable.getSelectedRow();
     }
@@ -195,67 +194,66 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
     private DefaultTableModel defaultTableXNTTHD;
     private ArrayList<ChiTietDichVu> lstDetailServices = ChiTietDichVuDAO.getInstance().SelectAll();
     private ArrayList<HoaDon> lstHoaDon = HoaDonDAO.getInstance().SelectAll();
-    private ArrayList<DichVu> lstDichVu = DichVuDAO.getInstance().SelectXNDV();
+    private ArrayList<DichVu> lstDichVu = DichVuDAO.getInstance().SelectAll();
     private ArrayList<ThamSo> lstThamSo = ThamSoDAO.getInstance().SelectAll();
     
-    public void CreateTableADD_XNDV() {
-        defaultTableDV = (DefaultTableModel) tblSelectService.getModel();
+    public void CreateTableXNDV_ADD() {
+        defaultTableDV = (DefaultTableModel)tblSelectService.getModel();
+        int row = getSelectedRow();
+        String maPDTC = String.valueOf(DatTiecTable.getValueAt(row, 1));
+        ArrayList<String> tmp = new ArrayList<String>();
+        for(ChiTietDichVu ct : lstDetailServices) {
+            if(ct.getMaTiecCuoi().equals(maPDTC)) {
+                tmp.add(ct.getMaDichVu());
+            }
+        }
         int i = 0;
-        for (DichVu dv : lstDichVu) {
-            defaultTableDV.addRow(new Object[]{++i, dv.getMaDichVu(), dv.getTenDichVu(), dv.getDonGia()});
+        for(DichVu dv : lstDichVu) {
+            if(!tmp.contains(dv.getMaDichVu())) {
+                defaultTableDV.addRow(new Object[] {++i, dv.getMaDichVu(), dv.getTenDichVu(), dv.getDonGia()});
+            }
         }
     }
     
-    public void ReloadDataAdd_XNDV() {
-        lstDichVu = DichVuDAO.getInstance().SelectXNDV();
+    public void ReloadTableXNDV_ADD() {
         defaultTableDV.setRowCount(0);
-        defaultTableDV = (DefaultTableModel) tblSelectService.getModel();
-        int i = 0;
-        
-        for (DichVu dv : lstDichVu) {
-            defaultTableDV.addRow(new Object[]{++i, dv.getMaDichVu(), dv.getTenDichVu(), dv.getDonGia()});
-        }
+        CreateTableXNDV_ADD();
     }
-    
+
     public void CreateTableXNDV() {
         int selectRow = getSelectedRow();
         String maPDTC = String.valueOf(DatTiecTable.getValueAt(selectRow, 1));
         defaultTableXNDV = (DefaultTableModel) DVSVTable.getModel();
         int i = 0;
-        
+
         for (ChiTietDichVu ct : lstDetailServices) {
             if (ct.getMaTiecCuoi().equals(maPDTC)) {
                 defaultTableXNDV.addRow(new Object[]{++i, ct.getMaDichVu(), ct.getTenDichVu(), ct.getSoLuong(), ct.getDonGiaDichVu()});
             }
         }
     }
-    
+
     public void ReloadDataXNDV() {
         lstDetailServices = ChiTietDichVuDAO.getInstance().SelectAll();
         defaultTableXNDV.setRowCount(0);
+        CreateTableXNDV();
+    }
+
+    public void CreateTableXNTTHD() {
         int selectRow = getSelectedRow();
         String maPDTC = String.valueOf(DatTiecTable.getValueAt(selectRow, 1));
-        defaultTableXNDV = (DefaultTableModel) DVSVTable.getModel();
-        int i = 0;
-        
-        for (ChiTietDichVu ct : lstDetailServices) {
-            if (ct.getMaTiecCuoi().equals(maPDTC)) {
-                defaultTableXNDV.addRow(new Object[]{++i, ct.getMaDichVu(), ct.getTenDichVu(), ct.getSoLuong(), ct.getDonGiaDichVu()});
-            }
-        }
-    }
-    
-    public void CreateTableXNTTHD() {
         defaultTableXNTTHD = (DefaultTableModel) DVHHTable.getModel();
         int i = 0;
         for (ChiTietDichVu ctdvtt : lstDetailServices) {
-            defaultTableXNTTHD.addRow(new Object[]{++i, ctdvtt.getMaDichVu(), ctdvtt.getTenDichVu(), ctdvtt.getSoLuong(),
-                ctdvtt.getDonGiaDichVu(), ctdvtt.getThanhTien()});
+            if (ctdvtt.getMaTiecCuoi().equals(maPDTC)) {
+                defaultTableXNTTHD.addRow(new Object[]{++i, ctdvtt.getMaDichVu(), ctdvtt.getTenDichVu(), ctdvtt.getSoLuong(),
+                    ctdvtt.getDonGiaDichVu(), ctdvtt.getThanhTien()});
+            }
         }
     }
-    
+
     public void ReloadTableXNTTHD() {
-        
+
     }
 
     /**
@@ -1906,7 +1904,6 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         jLabel19.setText("Phương thức thanh toán: ");
 
         cbPhuongThucTT.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        cbPhuongThucTT.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
 
         javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
         jPanel16.setLayout(jPanel16Layout);
@@ -1971,9 +1968,8 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                             .addComponent(jScrollPane4)
                             .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(PageTTHDTTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jPanel15, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel16, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -2506,7 +2502,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
     private void btnThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThanhToanActionPerformed
         // TODO add your handling code here:
         int selectRow = getSelectedRow();
-        
+
         if (selectRow < 0) {
             Message("Vui lòng chọn dữ liệu muốn chỉnh sửa!", JOptionPane.INFORMATION_MESSAGE);
         } else {
@@ -2514,15 +2510,8 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             ThanhToanJDialog.setModal(true);
             ThanhToanJDialog.setVisible(true);
         }
-        String maPDTC = String.valueOf(DatTiecTable.getValueAt(selectRow, 1));
-        defaultTableXNDV = (DefaultTableModel) DVSVTable.getModel();
-        int i = 0;
-        
-        for (ChiTietDichVu ct : lstDetailServices) {
-            if (ct.getMaTiecCuoi().equals(maPDTC)) {
-                defaultTableXNDV.addRow(new Object[]{++i, ct.getMaDichVu(), ct.getTenDichVu(), ct.getSoLuong(), ct.getDonGiaDichVu()});
-            }
-        }
+        CreateTableXNDV();
+        CreateTableXNDV_ADD();
     }//GEN-LAST:event_btnThanhToanActionPerformed
 
     private void HuyTTJDialogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HuyTTJDialogActionPerformed
@@ -2554,7 +2543,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         //-----
         int row = getSelectedRow();
         String maPDTC = String.valueOf(DatTiecTable.getValueAt(row, 1));
-        
+
         int kq = 0;
         Date tmp = jdNgayThanhToan.getDate();
         String ngayThanhToan = "";
@@ -2573,7 +2562,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                         hd.getTongTienHoaDon(), hd.getConLai(), hd.getUserName()));
             }
         }
-        
+
         if (kq > 0) {
             ThanhToanJDialog.setVisible(false);
         } else {
@@ -2590,6 +2579,8 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         Page1.setVisible(true);
         PageXNDV.setVisible(false);
         defaultTableXNDV.setRowCount(0);
+        defaultTableDV.setRowCount(0);
+
     }//GEN-LAST:event_BackPageXNDVActionPerformed
 
     private void NextPageXNDVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextPageXNDVActionPerformed
@@ -2599,11 +2590,11 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         CreateTableXNTTHD();
         int row = getSelectedRow();
         String maPDTC = String.valueOf(DatTiecTable.getValueAt(row, 1));
-        
+
         Date date = jdNgayThanhToan.getDate();
         String ngayThanhToan = YYYY_MM_DD((date.getYear() + 1900), (date.getMonth() + 1), date.getDate());
         lblNgayThanhToan.setText(ngayThanhToan);
-        
+
         double tongTienBan = 0;
         for (PhieuDatTiecCuoi pdtc : pdtcs) {
             if (pdtc.getMaTiecCuoi().equals(maPDTC)) {
@@ -2616,7 +2607,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                 lblTongTienBan.setText(tongTienBan + "");
             }
         }
-        
+
         double sumDV = 0;
         for (ChiTietDichVu ctdv : lstDetailServices) {
             if (ctdv.getMaTiecCuoi().equals(maPDTC)) {
@@ -2624,7 +2615,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             }
         }
         lblTongTienDichVu.setText(sumDV + "");
-        
+
         double tiLePhat = 0;
         double tiLeDatCoc = 0;
         for (ThamSo ts : lstThamSo) {
@@ -2635,7 +2626,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         }
         System.out.println(tiLePhat);
         System.out.println(tiLeDatCoc);
-        
+
         double tienPhat = tiLePhat * sumDV;
         double tongTienHD = sumDV + tongTienBan - tienPhat;
         double tienCoc = tongTienHD * tiLeDatCoc;
@@ -2643,6 +2634,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         lblTongTienHoaDon.setText(tongTienHD + "");
         lblTienCoc.setText(tienCoc + "");
         lblSoTienThanhToan.setText(tongTienHD + "");
+        cbPhuongThucTT.removeAll();
         cbPhuongThucTT.addItem("Tiền mặt");
         cbPhuongThucTT.addItem("Chuyển khoản");
         cbPhuongThucTT.setSelectedItem("Tiền mặt");
@@ -2735,13 +2727,13 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         int selectRow = getSelectedRow();
         String maPDTC = String.valueOf(DatTiecTable.getValueAt(selectRow, 1));
-        
+
         int row = DVSVTable.getSelectedRow();
         int[] rows = DVSVTable.getSelectedRows();
         if (row < 0) {
             Message("Vui lòng chọn dữ liệu muốn xoá!", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            
+
             String mess = "";
             if (rows.length == 1) {
                 mess = String.valueOf(DVSVTable.getValueAt(row, 1)) + " ";
@@ -2750,7 +2742,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                     mess += String.valueOf(DVSVTable.getValueAt(r, 1)) + " ";
                 }
             }
-            
+
             int x = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xoá " + mess + "hay không?");
             if (x == JOptionPane.YES_OPTION) {
                 int kq = 0;
@@ -2762,11 +2754,11 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                                 kq = ChiTietDichVuDAO.getInstance().Delete(ctdv);
                             }
                         }
-                        
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    
+
                 } else {
                     for (int r : rows) {
                         try {
@@ -2776,7 +2768,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                                     kq = ChiTietDichVuDAO.getInstance().Delete(ctdv);
                                 }
                             }
-                            
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -2788,7 +2780,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                 }
                 if (kq > 0) {
                     ReloadDataXNDV();
-                    ReloadDataAdd_XNDV();
+                    ReloadTableXNDV_ADD();
                 } else {
                     Message("Xoá dữ liệu thất bại!", JOptionPane.ERROR_MESSAGE);
                 }
@@ -2801,7 +2793,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         int selectRow = getSelectedRow();
         String maPDTC = String.valueOf(DatTiecTable.getValueAt(selectRow, 1));
         System.out.println(maPDTC);
-        
+
         int row = tblSelectService.getSelectedRow();
         int[] rows = tblSelectService.getSelectedRows();
         if (row < 0) {
@@ -2815,9 +2807,9 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                     mess += String.valueOf(tblSelectService.getValueAt(r, 1)) + " ";
                 }
             }
-            
+
             int x = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn thêm " + mess + "hay không?");
-            
+
             if (x == JOptionPane.YES_OPTION) {
                 int kq = 0;
                 if (rows.length == 1) {
@@ -2874,7 +2866,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                 if (kq != 0) {
                     AddSelectServices.setVisible(false);
                     ReloadDataXNDV();
-                    ReloadDataAdd_XNDV();
+                    ReloadTableXNDV_ADD();
                 } else {
                     Message("Thêm dịch vụ thất bại!", JOptionPane.ERROR_MESSAGE);
                 }

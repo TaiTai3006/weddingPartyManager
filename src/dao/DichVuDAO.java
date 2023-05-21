@@ -139,32 +139,6 @@ public class DichVuDAO implements DAOInterface<DichVu> {
         return dichVus;
     }
 
-    public ArrayList<DichVu> SelectXNDV() {
-        ArrayList<DichVu> dichVus = new ArrayList<DichVu>();
-        try {
-            Connection con = JDBCUtil.getConnection();
-
-            String sql = "SELECT *"
-                    + " FROM dichvu"
-                    + " WHERE dichvu.maDichVu NOT IN (SELECT ct.maDichVu"
-                    + " FROM phieudattieccuoi pd, chitietdichvu ct"
-                    + " WHERE pd.maTiecCuoi = ct.maTiecCuoi)";
-
-            PreparedStatement st = con.prepareStatement(sql);
-
-            ResultSet kq = st.executeQuery();
-
-            while (kq.next()) {
-                dichVus.add(new DichVu(kq.getString("maDichVu"), kq.getString("tenDichVu"), kq.getInt("donGia")));
-            }
-
-            JDBCUtil.closeConnection(con);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return dichVus;
-    }
-
     @Override
     public DichVu SelectById(DichVu t) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
