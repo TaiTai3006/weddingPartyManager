@@ -11,6 +11,7 @@ import database.JDBCUtil;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.Date;
+
 /**
  *
  * @author Asus
@@ -22,7 +23,38 @@ public class HoaDonDAO implements DAOInterface<HoaDon> {
 
     @Override
     public int Insert(HoaDon t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            Connection con = JDBCUtil.getConnection();
+            
+            String sql = "INSERT INTO HoaDon (maHoaDon, maTiecCuoi, ngayThanhToan, tongTienDichVu, tienPhat, tongTienHoaDon, conLai, userName) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, t.getMaHoaDon());
+            st.setString(2, t.getMaTiecCuoi());
+            st.setDate(3, (java.sql.Date) t.getNgayThanhToan());
+            st.setDouble(4, t.getTongTienDichVu());
+            st.setDouble(5, t.getTienPhat());
+            st.setDouble(6, t.getTongTienHoaDon());
+            st.setDouble(7, t.getConLai());
+            st.setString(8, t.getUserName());
+            
+            System.out.println(st);
+            
+            int kq = st.executeUpdate();
+            
+            if(kq > 0){
+                System.out.println("Them du lieu thanh cong!");
+            } else{
+                System.out.println("Them du lieu that bai!");
+            }
+            
+            JDBCUtil.closeConnection(con);
+            
+            return kq;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return 0 ;
     }
 
     @Override
@@ -52,6 +84,30 @@ public class HoaDonDAO implements DAOInterface<HoaDon> {
             ex.printStackTrace();
         }
         return 0 ;
+    }
+    
+    public int GetID(){
+        int key = 0;
+         try {
+            Connection con = JDBCUtil.getConnection();
+            
+            String sql = "SELECT * FROM HoaDon ORDER BY maHoaDon DESC LIMIT 1";
+            
+            PreparedStatement st = con.prepareStatement(sql);
+            
+            ResultSet kq = st.executeQuery();
+            
+            while(kq.next()){
+                if(kq.getString("maHoaDon").length() != 0){
+                key = Integer.parseInt(kq.getString("maHoaDon").substring(2));
+            }
+            }
+            
+            JDBCUtil.closeConnection(con);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+         return key;
     }
 
     @Override
