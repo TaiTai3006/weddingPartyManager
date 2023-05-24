@@ -366,14 +366,14 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         jLabel50 = new javax.swing.JLabel();
         ReceptionDate = new com.toedter.calendar.JDateChooser();
         IdWeddingText = new javax.swing.JTextField();
-        SearchBt = new javax.swing.JButton();
-        RetypeBt = new javax.swing.JButton();
         jLabel52 = new javax.swing.JLabel();
         HallNameCbBox = new javax.swing.JComboBox<>();
         jLabel54 = new javax.swing.JLabel();
         TimeCbBox = new javax.swing.JComboBox<>();
         jLabel56 = new javax.swing.JLabel();
         SortCbBox = new javax.swing.JComboBox<>();
+        SearchBt = new javax.swing.JButton();
+        RetypeBt = new javax.swing.JButton();
         PageThongTinDT = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -958,7 +958,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 
             Page1.setBackground(new java.awt.Color(255, 255, 255));
 
-            DatTiecTable.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+            DatTiecTable.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
             DatTiecTable.setModel(new javax.swing.table.DefaultTableModel(
                 new Object [][] {
 
@@ -972,24 +972,19 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             DatTiecTable.setSelectionBackground(new java.awt.Color(69, 96, 134));
             jScrollPane1.setViewportView(DatTiecTable);
             if (DatTiecTable.getColumnModel().getColumnCount() > 0) {
-                DatTiecTable.getColumnModel().getColumn(0).setMinWidth(40);
-                DatTiecTable.getColumnModel().getColumn(0).setPreferredWidth(40);
-                DatTiecTable.getColumnModel().getColumn(0).setMaxWidth(40);
+                DatTiecTable.getColumnModel().getColumn(0).setPreferredWidth(18);
                 DatTiecTable.getColumnModel().getColumn(1).setMinWidth(100);
                 DatTiecTable.getColumnModel().getColumn(1).setPreferredWidth(100);
                 DatTiecTable.getColumnModel().getColumn(1).setMaxWidth(100);
+                DatTiecTable.getColumnModel().getColumn(4).setPreferredWidth(50);
                 DatTiecTable.getColumnModel().getColumn(5).setMinWidth(100);
                 DatTiecTable.getColumnModel().getColumn(5).setPreferredWidth(100);
                 DatTiecTable.getColumnModel().getColumn(5).setMaxWidth(100);
-                DatTiecTable.getColumnModel().getColumn(6).setMinWidth(70);
                 DatTiecTable.getColumnModel().getColumn(6).setPreferredWidth(70);
-                DatTiecTable.getColumnModel().getColumn(6).setMaxWidth(70);
                 DatTiecTable.getColumnModel().getColumn(7).setMinWidth(110);
                 DatTiecTable.getColumnModel().getColumn(7).setPreferredWidth(110);
                 DatTiecTable.getColumnModel().getColumn(7).setMaxWidth(110);
-                DatTiecTable.getColumnModel().getColumn(8).setMinWidth(100);
-                DatTiecTable.getColumnModel().getColumn(8).setPreferredWidth(100);
-                DatTiecTable.getColumnModel().getColumn(8).setMaxWidth(100);
+                DatTiecTable.getColumnModel().getColumn(8).setPreferredWidth(60);
             }
             DatTiecTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
             DatTiecTable.getTableHeader().setOpaque(false);
@@ -1035,15 +1030,16 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 
             jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-            jLabel23.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+            jLabel23.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
             jLabel23.setText("Mã tiệc cưới:");
 
-            jLabel24.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+            jLabel24.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
             jLabel24.setText("Tên chú rể:");
 
-            jLabel41.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+            jLabel41.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
             jLabel41.setText("Tên cô dâu:");
 
+            GroomNameText.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
             GroomNameText.setMinimumSize(new java.awt.Dimension(64, 33));
             GroomNameText.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1051,6 +1047,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                 }
             });
 
+            BrideNameText.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
             BrideNameText.setMinimumSize(new java.awt.Dimension(64, 33));
             BrideNameText.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1058,9 +1055,10 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                 }
             });
 
-            jLabel50.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+            jLabel50.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
             jLabel50.setText("Ngày đãi tiệc:");
 
+            IdWeddingText.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
             IdWeddingText.setMinimumSize(new java.awt.Dimension(64, 33));
             IdWeddingText.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1068,38 +1066,22 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                 }
             });
 
-            SearchBt.setBackground(new java.awt.Color(255, 204, 204));
-            SearchBt.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-            SearchBt.setText("Tra Cứu");
-            SearchBt.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    SearchBtActionPerformed(evt);
-                }
-            });
-
-            RetypeBt.setBackground(new java.awt.Color(0, 51, 255));
-            RetypeBt.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-            RetypeBt.setForeground(new java.awt.Color(255, 255, 255));
-            RetypeBt.setText("Nhập lại");
-            RetypeBt.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    RetypeBtActionPerformed(evt);
-                }
-            });
-
-            jLabel52.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+            jLabel52.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
             jLabel52.setText("Sảnh:");
 
+            HallNameCbBox.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
             HallNameCbBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-            jLabel54.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+            jLabel54.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
             jLabel54.setText("Giờ:");
 
+            TimeCbBox.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
             TimeCbBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-            jLabel56.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+            jLabel56.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
             jLabel56.setText("Số lượng bàn:");
 
+            SortCbBox.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
             SortCbBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Không sắp xếp", "Sắp xếp tăng dần", "Sắp xếp giảm dần" }));
 
             javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -1127,25 +1109,17 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                             .addGap(35, 35, 35)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(ReceptionDate, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
-                                .addComponent(HallNameCbBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(HallNameCbBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGap(1, 1, 1)
                             .addComponent(jLabel54, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(34, 34, 34)
-                            .addComponent(TimeCbBox, 0, 160, Short.MAX_VALUE)
-                            .addGap(99, 99, 99)))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(SearchBt, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(88, 88, 88)
-                            .addComponent(RetypeBt, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(6, 6, 6)
-                            .addComponent(jLabel56, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(SortCbBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGap(19, 19, 19))))
+                            .addGap(40, 40, 40)
+                            .addComponent(TimeCbBox, 0, 160, Short.MAX_VALUE)))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
+                    .addComponent(jLabel56, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(SortCbBox, 0, 160, Short.MAX_VALUE)
+                    .addGap(19, 19, 19))
             );
             jPanel1Layout.setVerticalGroup(
                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1159,22 +1133,14 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                                     .addComponent(HallNameCbBox, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel56, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(SortCbBox, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGap(15, 15, 15)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGap(15, 15, 15)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel50, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(ReceptionDate, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(15, 15, 15)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel54, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(TimeCbBox, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(RetypeBt, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(SearchBt, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(16, 16, 16))))
+                                .addComponent(jLabel50, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(ReceptionDate, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(15, 15, 15)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel54, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
+                                .addComponent(TimeCbBox, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel24, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1189,6 +1155,26 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                                 .addComponent(IdWeddingText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
             );
 
+            SearchBt.setBackground(new java.awt.Color(255, 167, 149));
+            SearchBt.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+            SearchBt.setForeground(new java.awt.Color(255, 255, 255));
+            SearchBt.setText("Tra Cứu");
+            SearchBt.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    SearchBtActionPerformed(evt);
+                }
+            });
+
+            RetypeBt.setBackground(new java.awt.Color(69, 96, 134));
+            RetypeBt.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+            RetypeBt.setForeground(new java.awt.Color(255, 255, 255));
+            RetypeBt.setText("Nhập lại");
+            RetypeBt.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    RetypeBtActionPerformed(evt);
+                }
+            });
+
             javax.swing.GroupLayout Page1Layout = new javax.swing.GroupLayout(Page1);
             Page1.setLayout(Page1Layout);
             Page1Layout.setHorizontalGroup(
@@ -1197,6 +1183,10 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                     .addGroup(Page1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(Page1Layout.createSequentialGroup()
                             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(SearchBt, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(RetypeBt, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(btnXemCT)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(btnThanhToan)
@@ -1215,6 +1205,9 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addContainerGap(62, Short.MAX_VALUE))
             );
+
+            Page1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnHuy, btnThanhToan});
+
             Page1Layout.setVerticalGroup(
                 Page1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Page1Layout.createSequentialGroup()
@@ -1226,7 +1219,9 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                     .addGroup(Page1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnHuy, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnThanhToan, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnXemCT, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnXemCT, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(SearchBt, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(RetypeBt, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(43, 43, 43))
