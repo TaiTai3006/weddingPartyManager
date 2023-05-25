@@ -30,6 +30,11 @@ public class Sanh extends LoaiSanh{
     public String getGhiChu() {
         return ghiChu;
     }
+    
+      public Sanh(String maSanh, String tenSanh) {
+        this.maSanh = maSanh;
+        this.tenSanh = tenSanh;
+    }
 
     public Sanh(String maSanh, String maLoaiSanh, String tenSanh, int soLuongBanToiDa, String tenLoaiSanh, int donGiaBanToiThieu, String ghiChu) {
         super(maLoaiSanh, tenLoaiSanh, donGiaBanToiThieu);
@@ -39,6 +44,7 @@ public class Sanh extends LoaiSanh{
         this.soLuongBanToiDa = soLuongBanToiDa;
     }
 
+  
     
 
     public String getMaSanh() {

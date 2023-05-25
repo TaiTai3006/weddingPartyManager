@@ -7,6 +7,8 @@ package dao;
 import database.JDBCUtil;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Connection;
+import java.sql.Statement;
 import java.util.ArrayList;
 import model.ThamSo;
 
@@ -67,4 +69,42 @@ public class ThamSoDAO implements DAOInterface<ThamSo> {
     public ArrayList<ThamSo> SelectByCondition(String condition) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+    
+    public int GetTyLePhat(){
+        try{
+            Connection con = JDBCUtil.getConnection();
+            Statement st = con.createStatement();
+            String sql  = "SELECT  `TiLePhat` FROM `ThamSo`";
+            
+            ResultSet kq = st.executeQuery(sql);
+            
+            while(kq.next()){
+                return kq.getInt("TiLePhat");
+            }
+            
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    
+    public int GetTyLeCoc(){
+        try{
+            Connection con = JDBCUtil.getConnection();
+            Statement st = con.createStatement();
+            String sql  = "SELECT  `TiLeDatCoc` FROM `ThamSo`";
+            
+            ResultSet kq = st.executeQuery(sql);
+            
+            while(kq.next()){
+                return kq.getInt("TiLeDatCoc");
+            }
+            
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        return 0;
+
+    }
+    
 }

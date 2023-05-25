@@ -21,6 +21,7 @@ public class LoaiSanh {
         this.tenLoaiSanh = tenLoaiSanh;
         this.donGiaBanToiThieu = donGiaBanToiThieu;
     }
+    
 
     public String getMaLoaiSanh() {
         return maLoaiSanh;
