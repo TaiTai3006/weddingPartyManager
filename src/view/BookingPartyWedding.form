@@ -1165,7 +1165,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="SearchFood" pref="214" max="32767" attributes="0"/>
+                          <Component id="txfSearchFood" pref="214" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -1179,7 +1179,7 @@
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="SearchFood" max="32767" attributes="0"/>
+                          <Component id="txfSearchFood" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -1193,7 +1193,7 @@
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="SearchFood">
+                <Component class="javax.swing.JTextField" name="txfSearchFood">
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="e2" green="e6" red="ee" type="rgb"/>
@@ -1206,10 +1206,10 @@
                     </Property>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SearchFoodActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txfSearchFoodActionPerformed"/>
                   </Events>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="//SearchFood.getDocument().addDocumentListener(new DocumentListener() {&#xa;//  public void changedUpdate(DocumentEvent e) {&#xa;//  searchFood();&#xa;//  }&#xa;//  public void removeUpdate(DocumentEvent e) {&#xa;//  if(SearchFood.getText().equals(&quot;&quot;)){&#xa;//    defaultTableModelMA.setRowCount(0);&#xa;//    setValueTableMA(String.valueOf(LoaiMonAn.getSelectedItem()));&#xa;//  }else{&#xa;//    searchFood();&#xa;//  }&#xa;//}&#xa;//  public void insertUpdate(DocumentEvent e) {&#xa;//  searchFood();&#xa;//  }&#xa;//});"/>
+                    <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="txfSearchFood.getDocument().addDocumentListener(new DocumentListener() {&#xa;  public void changedUpdate(DocumentEvent e) {&#xa;  SearchFood();&#xa;  }&#xa;  public void removeUpdate(DocumentEvent e) {&#xa;  if(txfSearchFood.getText().equals(&quot;&quot;)){&#xa;    CreateValueTableMA();&#xa;    &#xa;  }else{&#xa;    SearchFood();&#xa;  }&#xa;}&#xa;  public void insertUpdate(DocumentEvent e) {&#xa;  SearchFood();&#xa;  }&#xa;});"/>
                   </AuxValues>
                 </Component>
               </SubComponents>
@@ -1328,6 +1328,9 @@
                       <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="ThucDonTableMouseClicked"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -1375,7 +1378,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jLabel18" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="LoaiMonAn" min="-2" pref="180" max="-2" attributes="0"/>
+                          <Component id="cbxLoaiMonAn" min="-2" pref="180" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -1385,7 +1388,7 @@
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="LoaiMonAn" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                              <Component id="cbxLoaiMonAn" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                               <Component id="jLabel18" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
@@ -1394,21 +1397,17 @@
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JComboBox" name="LoaiMonAn">
+                <Component class="javax.swing.JComboBox" name="cbxLoaiMonAn">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Arial" size="16" style="0"/>
                     </Property>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                      <StringArray count="3">
-                        <StringItem index="0" value="Khai v&#x1ecb;"/>
-                        <StringItem index="1" value="M&#xf3;n ch&#xed;nh"/>
-                        <StringItem index="2" value="Tr&#xe1;ng mi&#x1ec7;ng"/>
-                      </StringArray>
+                      <StringArray count="0"/>
                     </Property>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="LoaiMonAnActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbxLoaiMonAnActionPerformed"/>
                   </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
