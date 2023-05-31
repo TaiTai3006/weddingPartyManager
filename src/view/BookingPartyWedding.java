@@ -5,13 +5,13 @@
 package view;
 
 import dao.CaDAO;
+import dao.DichVuDAO;
 import dao.LoaiMonAnDAO;
 import dao.MonAnDAO;
 import dao.SanhDAO;
 import dao.ThamSoDAO;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -26,7 +26,9 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import model.Ca;
+import model.DTDichVu;
 import model.DTMonAn;
+import model.DichVu;
 import model.LoaiMonAn;
 import model.MonAn;
 import model.Sanh;
@@ -40,19 +42,29 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
 
     private DefaultTableModel defaultTableModelMA;
     private DefaultTableModel defaultTableModelDV;
+    private DefaultTableModel modelDV;
     private int SoLuongBanToiDa;
     private int donGiaBanToiThieu;
     private int tongDonBanHienTai = 0;
+    private int tongSLB;
+    private int tongtienban;
+    private int tongTienDV= 0;
+    private int tongtienHD;
+    private double tienCoc;
+    private int conLai;
+    private int TiLeCoc = ThamSoDAO.getInstance().GetTyLeCoc();
     private Map<String, String> mapMaSanh = new HashMap<>();
     private Map<String, String> mapMaLoaiMA = new HashMap<>();
+    private Map<String, String> mapMaCa = new HashMap<>();
     private ArrayList<MonAn> monAns = MonAnDAO.getInstance().SelectAll();
     private ArrayList<DTMonAn> dTMonAns = new ArrayList<>();
+    private ArrayList<DichVu> dichVus = DichVuDAO.getInstance().SelectAll();
+    private ArrayList<DTDichVu> dTDichVus = new ArrayList<>();
     private ArrayList<Sanh> sanhs;
     private ArrayList<DTMonAn> CTMonAns = new ArrayList<>();
+    private ArrayList<DTDichVu> CTDichVus = new ArrayList<>();
     private ArrayList<Ca> Cas = CaDAO.getInstance().SelectAll();
     private ArrayList<LoaiMonAn> loaiMonAns = LoaiMonAnDAO.getInstance().SelectAll();
-    private Map<String, String> mapMaCa = new HashMap<>();
-    private int TiLeCoc = ThamSoDAO.getInstance().GetTyLeCoc();
 
     /**
      * Creates new form BookingPartyWedding
@@ -89,12 +101,18 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         defaultTableModelMA = (DefaultTableModel) ThucDonTable.getModel();
 
         for (MonAn x : monAns) {
-
             DTMonAn Temp = new DTMonAn(x.getMaMonAn(), x.getTenMonAn(), x.getDonGia(), x.getMaLoaiMonAn());
-
             dTMonAns.add(Temp);
         }
         CreateValueTableMA();
+
+        defaultTableModelDV = (DefaultTableModel) DichVuTable.getModel();
+
+        for (DichVu x : dichVus) {
+            dTDichVus.add(new DTDichVu(x.getMaDichVu(), x.getTenDichVu(), x.getDonGia()));
+        }
+
+        CreateValueTableDV();
 
         defaultTableModelMA.addTableModelListener(new TableModelListener() {
             @Override
@@ -103,7 +121,6 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                     int row = e.getFirstRow();
                     int column = e.getColumn();
 
-                    // Lấy giá trị của ô đã được cập nhật
                     if (column == 4) {
                         if ((boolean) ThucDonTable.getValueAt(row, 5)) {
                             UpdateGhiChu(ThucDonTable.getValueAt(row, column).toString(), row);
@@ -119,6 +136,73 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                 }
             }
         });
+
+        defaultTableModelDV.addTableModelListener(new TableModelListener() {
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                if (e.getType() == TableModelEvent.UPDATE) {
+                    int row = DichVuTable.getSelectedRow();
+                    int column = DichVuTable.getSelectedColumn();
+                    System.out.println(row + " " + column);
+                    if (column == 3) {
+                        boolean chon = (boolean) DichVuTable.getValueAt(row, 5);
+                        if (chon) {
+                            String soLuong = DichVuTable.getValueAt(row, column).toString();
+                            if (soLuong.equals("")) {
+                                defaultTableModelDV.setValueAt(1, row, 3);
+                            }
+                            for (DTDichVu X : dTDichVus) {
+                                if (X.getMaDichVu().equals(DichVuTable.getValueAt(row, 1).toString())) {
+                                    X.setSoLuong(Integer.parseInt(DichVuTable.getValueAt(row, 3).toString()));
+                                }
+                            }
+                        } else {
+
+                        }
+                    }
+
+                }
+            }
+        });
+
+    }
+
+    public void Page2() {
+        DonBanToiThieu.setText(String.valueOf(donGiaBanToiThieu));
+
+    }
+
+    public void Page4() {
+        TenChuRe.setText(inputTenChuRe.getText());
+        TenCoDau.setText(inputTenCoDau.getText());
+        Date ngayDaiTiec = inputNgayDaiTiec.getDate();
+        int day = ngayDaiTiec.getDate();
+        int month = ngayDaiTiec.getMonth() + 1;
+        int year = ngayDaiTiec.getYear() + 1900;
+        NgayDaiTiec.setText(day+"/"+month+"/"+year);
+        tongSLB = Integer.parseInt(inputSoLuongBan.getValue().toString()) + Integer.parseInt(inputSLDT.getValue().toString());
+        SoLuongBan.setText(String.valueOf(tongSLB));
+        DonGiaBan.setText(String.valueOf(tongDonBanHienTai));
+        tongtienban = tongSLB * tongDonBanHienTai;
+        TongTienBan.setText(String.valueOf(tongtienban));
+        
+        modelDV = (DefaultTableModel) DichVuDatTiecTable.getModel();
+        int i = 0;
+        for(DTDichVu x : CTDichVus){
+            int temp = x.getSoLuong() * x.getDonGia();
+            tongTienDV += temp;
+           modelDV.addRow(new Object[]{++i, x.getMaDichVu(), x.getTenDichVu(), x.getSoLuong(), x.getDonGia(), temp});
+        }
+        
+        TongTienDV.setText(String.valueOf(tongTienDV));
+        tienCocText.setText("Tiền cọc ("+ TiLeCoc+"%):");
+        tongtienHD = tongtienban + tongTienDV;
+        TongTienHD.setText(String.valueOf(tongtienHD));
+        tienCoc = (double)((double)TiLeCoc/100) * (double) tongtienban;
+        TienCoc.setText(String.valueOf(tienCoc));
+        conLai = tongtienHD - (int)tienCoc;
+        ConLai.setText(String.valueOf(conLai));
+        
     }
 
     public void CreateValueTableMA() {
@@ -131,9 +215,12 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         }
     }
 
-    public void Page2() {
-        DonBanToiThieu.setText(String.valueOf(donGiaBanToiThieu));
-
+    public void CreateValueTableDV() {
+        defaultTableModelDV.setRowCount(0);
+        int i = 0;
+        for (DTDichVu x : dTDichVus) {
+            defaultTableModelDV.addRow(new Object[]{++i, x.getMaDichVu(), x.getTenDichVu(), x.getSoLuong(), x.getDonGia(), x.isChon()});
+        }
     }
 
     /**
@@ -224,7 +311,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         jLabel22 = new javax.swing.JLabel();
         jPanel30 = new javax.swing.JPanel();
         jLabel23 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
+        txfSearchService = new javax.swing.JTextField();
         jLabel24 = new javax.swing.JLabel();
         jPanel33 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -265,7 +352,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         TienCoc = new javax.swing.JLabel();
         ConLai = new javax.swing.JLabel();
         jLabel37 = new javax.swing.JLabel();
-        jLabel36 = new javax.swing.JLabel();
+        tienCocText = new javax.swing.JLabel();
         jLabel34 = new javax.swing.JLabel();
         jLabel33 = new javax.swing.JLabel();
 
@@ -1212,11 +1299,11 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
 
         jLabel23.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Group 9.png"))); // NOI18N
 
-        jTextField7.setBackground(new java.awt.Color(238, 230, 226));
-        jTextField7.setBorder(null);
-        jTextField7.addActionListener(new java.awt.event.ActionListener() {
+        txfSearchService.setBackground(new java.awt.Color(238, 230, 226));
+        txfSearchService.setBorder(null);
+        txfSearchService.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField7ActionPerformed(evt);
+                txfSearchServiceActionPerformed(evt);
             }
         });
 
@@ -1228,7 +1315,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jLabel23)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField7, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                .addComponent(txfSearchService, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel30Layout.setVerticalGroup(
@@ -1239,9 +1326,28 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                 .addContainerGap(18, Short.MAX_VALUE))
             .addGroup(jPanel30Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField7)
+                .addComponent(txfSearchService)
                 .addContainerGap())
         );
+
+        txfSearchService.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
+                SearchService();
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                if (txfSearchFood.getText().equals("")) {
+                    CreateValueTableDV();
+
+                } else {
+                    SearchService();
+                }
+            }
+
+            public void insertUpdate(DocumentEvent e) {
+                SearchService();
+            }
+        });
 
         jLabel24.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/filter.png"))); // NOI18N
 
@@ -1295,6 +1401,11 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         });
         DichVuTable.setRowHeight(25);
         DichVuTable.setSelectionBackground(new java.awt.Color(69, 96, 134));
+        DichVuTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                DichVuTableMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(DichVuTable);
         if (DichVuTable.getColumnModel().getColumnCount() > 0) {
             DichVuTable.getColumnModel().getColumn(0).setMinWidth(100);
@@ -1311,6 +1422,8 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         DichVuTable.getTableHeader().setOpaque(false);
         DichVuTable.getTableHeader().setBackground(new Color(243,246,249));
         DichVuTable.setDefaultEditor(Object.class, null);
+        TableCellEditor editor1 = new DefaultCellEditor(new JTextField());
+        DichVuTable.getColumnModel().getColumn(3).setCellEditor(editor1);
 
         javax.swing.GroupLayout jPanel33Layout = new javax.swing.GroupLayout(jPanel33);
         jPanel33.setLayout(jPanel33Layout);
@@ -1440,6 +1553,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         TongTienBan.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
 
         NgayDaiTiec.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        NgayDaiTiec.setToolTipText("");
 
         javax.swing.GroupLayout jPanel37Layout = new javax.swing.GroupLayout(jPanel37);
         jPanel37.setLayout(jPanel37Layout);
@@ -1450,31 +1564,29 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                 .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel30)
                     .addComponent(jLabel26))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(TenChuRe)
                     .addComponent(SoLuongBan))
+                .addGap(277, 277, 277)
+                .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel28)
+                    .addComponent(jLabel31))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(DonGiaBan)
+                    .addComponent(TenCoDau))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel37Layout.createSequentialGroup()
-                        .addComponent(jLabel28)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(TenCoDau))
-                    .addGroup(jPanel37Layout.createSequentialGroup()
-                        .addComponent(jLabel31)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(DonGiaBan)))
-                .addGap(260, 260, 260)
-                .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel37Layout.createSequentialGroup()
                         .addComponent(jLabel32)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(TongTienBan))
                     .addGroup(jPanel37Layout.createSequentialGroup()
                         .addComponent(jLabel29)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(23, 23, 23)
                         .addComponent(NgayDaiTiec)))
-                .addGap(161, 161, 161))
+                .addGap(104, 104, 104))
         );
         jPanel37Layout.setVerticalGroup(
             jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1501,15 +1613,23 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         jPanel43.setBackground(new java.awt.Color(255, 255, 255));
 
         DichVuDatTiecTable.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        DichVuDatTiecTable.setForeground(new java.awt.Color(255, 255, 255));
         DichVuDatTiecTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "STT", "Tên dịch vụ", "Số lượng", "Đơn giá", "Ghi chú"
+                "STT", "Mã dịch vụ", "Tên dịch vụ", "Số lượng", "Đơn giá", "Thành tiền"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        DichVuDatTiecTable.setRowHeight(25);
         jScrollPane3.setViewportView(DichVuDatTiecTable);
         if (DichVuDatTiecTable.getColumnModel().getColumnCount() > 0) {
             DichVuDatTiecTable.getColumnModel().getColumn(0).setMinWidth(100);
@@ -1527,7 +1647,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
             jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel43Layout.createSequentialGroup()
                 .addGap(106, 106, 106)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 958, Short.MAX_VALUE)
+                .addComponent(jScrollPane3)
                 .addGap(106, 106, 106))
         );
         jPanel43Layout.setVerticalGroup(
@@ -1542,7 +1662,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
 
         jPanel49.setBackground(new java.awt.Color(255, 255, 255));
 
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tiền mặt" }));
 
         jLabel35.setBackground(new java.awt.Color(255, 255, 255));
         jLabel35.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
@@ -1594,6 +1714,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         jPanel10.setBackground(new java.awt.Color(255, 255, 255));
 
         TongTienDV.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        TongTienDV.setToolTipText("");
 
         TongTienHD.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
 
@@ -1604,8 +1725,8 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         jLabel37.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel37.setText("Còn lại (Tạm tính):");
 
-        jLabel36.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        jLabel36.setText("Tiền cọc (50%):");
+        tienCocText.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        tienCocText.setText("Tiền cọc (50%):");
 
         jLabel34.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel34.setText("Tổng tiền hoá đơn:");
@@ -1619,27 +1740,26 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel37)
-                            .addComponent(jLabel36))
-                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel33)
+                        .addGap(33, 33, 33)
+                        .addComponent(TongTienDV, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel10Layout.createSequentialGroup()
+                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel10Layout.createSequentialGroup()
-                                .addGap(21, 21, 21)
-                                .addComponent(TienCoc))
+                                .addComponent(jLabel34)
+                                .addGap(24, 24, 24)
+                                .addComponent(TongTienHD))
                             .addGroup(jPanel10Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(ConLai))))
-                    .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(jPanel10Layout.createSequentialGroup()
-                            .addComponent(jLabel33)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(TongTienDV))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel10Layout.createSequentialGroup()
-                            .addComponent(jLabel34)
-                            .addGap(18, 18, 18)
-                            .addComponent(TongTienHD))))
+                                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel37)
+                                    .addComponent(tienCocText))
+                                .addGap(27, 27, 27)
+                                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(ConLai)
+                                    .addComponent(TienCoc))))
+                        .addGap(0, 15, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel10Layout.setVerticalGroup(
@@ -1655,7 +1775,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                     .addComponent(TongTienHD))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel36)
+                    .addComponent(tienCocText)
                     .addComponent(TienCoc))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -1675,7 +1795,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                         .addGroup(jPanel46Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel49, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(688, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel46Layout.createSequentialGroup()
                         .addComponent(BackPage4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1700,7 +1820,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         Page4.setLayout(Page4Layout);
         Page4Layout.setHorizontalGroup(
             Page4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel34, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel34, javax.swing.GroupLayout.DEFAULT_SIZE, 1170, Short.MAX_VALUE)
             .addComponent(jPanel36, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel37, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel43, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1768,21 +1888,34 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     private void inputTenChuReActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputTenChuReActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_inputTenChuReActionPerformed
-    
-    private void SearchFood(){
+
+    private void SearchFood() {
         defaultTableModelMA.setRowCount(0);
         defaultTableModelMA = (DefaultTableModel) ThucDonTable.getModel();
         int i = 0;
         String value = txfSearchFood.getText();
         for (DTMonAn x : dTMonAns) {
-            if (x.getMaLoaiMonAn().equals(mapMaLoaiMA.get(cbxLoaiMonAn.getSelectedItem())) && (x.getMaMonAn().toLowerCase().contains(value.toLowerCase()) 
+            if (x.getMaLoaiMonAn().equals(mapMaLoaiMA.get(cbxLoaiMonAn.getSelectedItem())) && (x.getMaMonAn().toLowerCase().contains(value.toLowerCase())
                     || x.getTenMonAn().toLowerCase().contains(value.toLowerCase()))) {
                 System.out.println(x.getMaLoaiMonAn().equals(mapMaLoaiMA.get(cbxLoaiMonAn.getSelectedItem())));
                 defaultTableModelMA.addRow(new Object[]{++i, x.getMaMonAn(), x.getTenMonAn(), x.getDonGia(), x.getGhiChu(), x.getChon()});
             }
         }
     }
-    
+
+    private void SearchService() {
+        defaultTableModelDV.setRowCount(0);
+        defaultTableModelDV = (DefaultTableModel) DichVuTable.getModel();
+        int i = 0;
+        String value = txfSearchService.getText();
+        for (DTDichVu x : dTDichVus) {
+            if (x.getMaDichVu().toLowerCase().contains(value.toLowerCase())
+                    || x.getTenDichVu().toLowerCase().contains(value.toLowerCase())) {
+                defaultTableModelDV.addRow(new Object[]{++i, x.getMaDichVu(), x.getTenDichVu(), x.getSoLuong(), x.getDonGia(), x.isChon()});
+            }
+        }
+    }
+
     private void NextPage1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextPage1ActionPerformed
         // TODO add your handling code here:
         Page1.setVisible(false);
@@ -1794,9 +1927,9 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txfSearchFoodActionPerformed
 
-    private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
+    private void txfSearchServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txfSearchServiceActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField7ActionPerformed
+    }//GEN-LAST:event_txfSearchServiceActionPerformed
 
     private void BackPage3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackPage3ActionPerformed
         // TODO add your handling code here:
@@ -1808,6 +1941,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         Page4.setVisible(true);
         Page3.setVisible(false);
+        Page4();
     }//GEN-LAST:event_NextPage3ActionPerformed
 
     private void BackPage4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackPage4ActionPerformed
@@ -1898,7 +2032,6 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                 } else {
                     inputSanh.removeAllItems();
                     inputSanh.addItem("<Không có dữ liệu>");
-                    System.out.println("view.BookingPartyWedding.inputCaActionPerformed()");
                 }
 
             }
@@ -1970,11 +2103,14 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                 CTMonAns.add(new DTMonAn(maMonAn, tenMonAn, donGia, maLoaiMonAn, ghiChu));
                 tongDonBanHienTai += donGia;
                 TongDonBanHT.setText(String.valueOf(tongDonBanHienTai));
-                if(tongDonBanHienTai < donGiaBanToiThieu) TongDonBanHT.setForeground(Color.red);
-                else TongDonBanHT.setForeground(Color.black);
-                
+                if (tongDonBanHienTai < donGiaBanToiThieu) {
+                    TongDonBanHT.setForeground(Color.red);
+                } else {
+                    TongDonBanHT.setForeground(Color.black);
+                }
+
             } else {
-                
+
                 for (DTMonAn x : CTMonAns) {
                     if (x.getMaMonAn().equals(maMonAn)) {
                         CTMonAns.remove(x);
@@ -1983,14 +2119,59 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                 }
                 tongDonBanHienTai -= donGia;
                 TongDonBanHT.setText(String.valueOf(tongDonBanHienTai));
-                if(tongDonBanHienTai < donGiaBanToiThieu) TongDonBanHT.setForeground(Color.red);
-                else TongDonBanHT.setForeground(Color.black);
+                if (tongDonBanHienTai < donGiaBanToiThieu) {
+                    TongDonBanHT.setForeground(Color.red);
+                } else {
+                    TongDonBanHT.setForeground(Color.black);
+                }
 
             }
             System.out.println(CTMonAns);
 
         }
     }//GEN-LAST:event_ThucDonTableMouseClicked
+
+    private void DichVuTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DichVuTableMouseClicked
+        // TODO add your handling code here:
+        int row = DichVuTable.getSelectedRow();
+        int col = DichVuTable.getSelectedColumn();
+        if (col == 5) {
+            String maDichVu = DichVuTable.getValueAt(row, 1).toString();
+            String tenDichVu = DichVuTable.getValueAt(row, 2).toString();
+            int donGia = Integer.parseInt(DichVuTable.getValueAt(row, 4).toString());
+            boolean chon = (boolean) DichVuTable.getValueAt(row, 5);
+
+            if (chon) {
+                if (Integer.parseInt(DichVuTable.getValueAt(row, 3).toString()) == 0) {
+                    defaultTableModelDV.setValueAt(1, row, 3);
+                }
+                CTDichVus.add(new DTDichVu(Integer.parseInt(DichVuTable.getValueAt(row, 3).toString()), chon, maDichVu, tenDichVu, donGia));
+
+            } else {
+                defaultTableModelDV.setValueAt(0, row, 3);
+                for (DTDichVu x : CTDichVus) {
+                    if (x.getMaDichVu().equals(maDichVu)) {
+                        CTDichVus.remove(x);
+                        break;
+                    }
+                }
+            }
+
+            int soLuong = Integer.parseInt(DichVuTable.getValueAt(row, 3).toString());
+            UpdateChonDV(chon, soLuong, row);
+
+        }
+
+    }//GEN-LAST:event_DichVuTableMouseClicked
+
+    public void UpdateChonDV(boolean chon, int soluong, int row) {
+        for (DTDichVu x : dTDichVus) {
+            if (x.getMaDichVu().equals(DichVuTable.getValueAt(row, 1))) {
+                x.setChon(chon);
+                x.setSoLuong(soluong);
+            }
+        }
+    }
 
     public void UpdateChon(boolean chon, String ghiChu, int row) {
         for (DTMonAn x : dTMonAns) {
@@ -2007,7 +2188,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                 x.setGhiChu(ghiChu);
             }
         }
-        
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -2084,7 +2265,6 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
-    private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel4;
@@ -2132,7 +2312,8 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextField jTextField7;
+    private javax.swing.JLabel tienCocText;
     private javax.swing.JTextField txfSearchFood;
+    private javax.swing.JTextField txfSearchService;
     // End of variables declaration//GEN-END:variables
 }
