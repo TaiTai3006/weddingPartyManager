@@ -5,16 +5,21 @@
 package view;
 
 import dao.CaDAO;
+import dao.ChiTietDichVuDAO;
+import dao.ChiTietMonAnDAO;
 import dao.DichVuDAO;
 import dao.LoaiMonAnDAO;
 import dao.MonAnDAO;
+import dao.PhieuDatTiecCuoiDAO;
 import dao.SanhDAO;
 import dao.ThamSoDAO;
 import java.awt.Color;
 import java.awt.Font;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JTextField;
@@ -26,11 +31,14 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import model.Ca;
+import model.ChiTietDichVu;
+import model.ChiTietMonAn;
 import model.DTDichVu;
 import model.DTMonAn;
 import model.DichVu;
 import model.LoaiMonAn;
 import model.MonAn;
+import model.PhieuDatTiecCuoi;
 import model.Sanh;
 
 /**
@@ -48,7 +56,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     private int tongDonBanHienTai = 0;
     private int tongSLB;
     private int tongtienban;
-    private int tongTienDV= 0;
+    private int tongTienDV = 0;
     private int tongtienHD;
     private double tienCoc;
     private int conLai;
@@ -173,36 +181,38 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     }
 
     public void Page4() {
+        NumberFormat currencyFormatVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
         TenChuRe.setText(inputTenChuRe.getText());
         TenCoDau.setText(inputTenCoDau.getText());
         Date ngayDaiTiec = inputNgayDaiTiec.getDate();
         int day = ngayDaiTiec.getDate();
         int month = ngayDaiTiec.getMonth() + 1;
         int year = ngayDaiTiec.getYear() + 1900;
-        NgayDaiTiec.setText(day+"/"+month+"/"+year);
+        NgayDaiTiec.setText(day + "/" + month + "/" + year);
         tongSLB = Integer.parseInt(inputSoLuongBan.getValue().toString()) + Integer.parseInt(inputSLDT.getValue().toString());
         SoLuongBan.setText(String.valueOf(tongSLB));
-        DonGiaBan.setText(String.valueOf(tongDonBanHienTai));
+        DonGiaBan.setText(String.valueOf(currencyFormatVN.format(tongDonBanHienTai)));
         tongtienban = tongSLB * tongDonBanHienTai;
-        TongTienBan.setText(String.valueOf(tongtienban));
-        
+        TongTienBan.setText(String.valueOf(currencyFormatVN.format(tongtienban)));
+
         modelDV = (DefaultTableModel) DichVuDatTiecTable.getModel();
+        modelDV.setRowCount(0);
         int i = 0;
-        for(DTDichVu x : CTDichVus){
+        for (DTDichVu x : CTDichVus) {
             int temp = x.getSoLuong() * x.getDonGia();
             tongTienDV += temp;
-           modelDV.addRow(new Object[]{++i, x.getMaDichVu(), x.getTenDichVu(), x.getSoLuong(), x.getDonGia(), temp});
+            modelDV.addRow(new Object[]{++i, x.getMaDichVu(), x.getTenDichVu(), x.getSoLuong(), x.getDonGia(), currencyFormatVN.format(temp)});
         }
-        
-        TongTienDV.setText(String.valueOf(tongTienDV));
-        tienCocText.setText("Tiền cọc ("+ TiLeCoc+"%):");
+
+        TongTienDV.setText(String.valueOf(currencyFormatVN.format(tongTienDV)));
+        tienCocText.setText("Tiền cọc (" + TiLeCoc + "%):");
         tongtienHD = tongtienban + tongTienDV;
-        TongTienHD.setText(String.valueOf(tongtienHD));
-        tienCoc = (double)((double)TiLeCoc/100) * (double) tongtienban;
-        TienCoc.setText(String.valueOf(tienCoc));
-        conLai = tongtienHD - (int)tienCoc;
-        ConLai.setText(String.valueOf(conLai));
-        
+        TongTienHD.setText(String.valueOf(currencyFormatVN.format(tongtienHD)));
+        tienCoc = (double) ((double) TiLeCoc / 100) * (double) tongtienban;
+        TienCoc.setText(String.valueOf(currencyFormatVN.format((int) tienCoc)));
+        conLai = tongtienHD - (int) tienCoc;
+        ConLai.setText(String.valueOf(currencyFormatVN.format(conLai)));
+
     }
 
     public void CreateValueTableMA() {
@@ -242,6 +252,21 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         ValueDGMAX = new javax.swing.JLabel();
         ExitSearchFood = new javax.swing.JButton();
         SaveSearchFood = new javax.swing.JButton();
+        ThanhToanTienMat = new javax.swing.JDialog();
+        jLabel17 = new javax.swing.JLabel();
+        inputSoTienDaNhan = new javax.swing.JTextField();
+        btnmuoiTrieu = new javax.swing.JButton();
+        btnhaiMuoiTrieu = new javax.swing.JButton();
+        btn50tr = new javax.swing.JButton();
+        btn70tr = new javax.swing.JButton();
+        btn90tr = new javax.swing.JButton();
+        btn100tr = new javax.swing.JButton();
+        btn200tr = new javax.swing.JButton();
+        btn300tr = new javax.swing.JButton();
+        btn400tr = new javax.swing.JButton();
+        btn500tr = new javax.swing.JButton();
+        btnXoa = new javax.swing.JButton();
+        btnXacNhan = new javax.swing.JButton();
         Page1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -342,7 +367,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         DichVuDatTiecTable = new javax.swing.JTable();
         jPanel46 = new javax.swing.JPanel();
         jPanel49 = new javax.swing.JPanel();
-        jComboBox5 = new javax.swing.JComboBox<>();
+        cbxPTTT = new javax.swing.JComboBox<>();
         jLabel35 = new javax.swing.JLabel();
         BackPage4 = new javax.swing.JButton();
         NextPage5 = new javax.swing.JButton();
@@ -478,6 +503,185 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
+        ThanhToanTienMat.setBackground(new java.awt.Color(255, 255, 255));
+        ThanhToanTienMat.setPreferredSize(new java.awt.Dimension(427, 400));
+        ThanhToanTienMat.setSize(new java.awt.Dimension(427, 400));
+
+        jLabel17.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        jLabel17.setText("Số tiền đã nhận:");
+
+        inputSoTienDaNhan.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        inputSoTienDaNhan.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        inputSoTienDaNhan.setText("0");
+        inputSoTienDaNhan.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
+
+        btnmuoiTrieu.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        btnmuoiTrieu.setText("10.000.000");
+        btnmuoiTrieu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnmuoiTrieuActionPerformed(evt);
+            }
+        });
+
+        btnhaiMuoiTrieu.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        btnhaiMuoiTrieu.setText("20.000.000");
+        btnhaiMuoiTrieu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnhaiMuoiTrieuActionPerformed(evt);
+            }
+        });
+
+        btn50tr.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        btn50tr.setText("50.000.000");
+        btn50tr.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn50trActionPerformed(evt);
+            }
+        });
+
+        btn70tr.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        btn70tr.setText("70.000.000");
+        btn70tr.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn70trActionPerformed(evt);
+            }
+        });
+
+        btn90tr.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        btn90tr.setText("90.000.000");
+        btn90tr.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn90trActionPerformed(evt);
+            }
+        });
+
+        btn100tr.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        btn100tr.setText("100.000.000");
+        btn100tr.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn100trActionPerformed(evt);
+            }
+        });
+
+        btn200tr.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        btn200tr.setText("200.000.000");
+        btn200tr.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn200trActionPerformed(evt);
+            }
+        });
+
+        btn300tr.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        btn300tr.setText("300.000.000");
+        btn300tr.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn300trActionPerformed(evt);
+            }
+        });
+
+        btn400tr.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        btn400tr.setText("400.000.000");
+        btn400tr.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn400trActionPerformed(evt);
+            }
+        });
+
+        btn500tr.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        btn500tr.setText("500.000.000");
+        btn500tr.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn500trActionPerformed(evt);
+            }
+        });
+
+        btnXoa.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        btnXoa.setText("C");
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
+            }
+        });
+
+        btnXacNhan.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        btnXacNhan.setText("Xác nhận");
+        btnXacNhan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXacNhanActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout ThanhToanTienMatLayout = new javax.swing.GroupLayout(ThanhToanTienMat.getContentPane());
+        ThanhToanTienMat.getContentPane().setLayout(ThanhToanTienMatLayout);
+        ThanhToanTienMatLayout.setHorizontalGroup(
+            ThanhToanTienMatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ThanhToanTienMatLayout.createSequentialGroup()
+                .addGap(56, 56, 56)
+                .addGroup(ThanhToanTienMatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(inputSoTienDaNhan)
+                    .addComponent(jLabel17)
+                    .addGroup(ThanhToanTienMatLayout.createSequentialGroup()
+                        .addGroup(ThanhToanTienMatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(btnmuoiTrieu, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btn70tr, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btn200tr, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnXoa, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(ThanhToanTienMatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(ThanhToanTienMatLayout.createSequentialGroup()
+                                .addGap(5, 5, 5)
+                                .addComponent(btn90tr, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(ThanhToanTienMatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btn50tr, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btn100tr, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(ThanhToanTienMatLayout.createSequentialGroup()
+                                .addGap(5, 5, 5)
+                                .addComponent(btnhaiMuoiTrieu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(107, 107, 107))
+                            .addGroup(ThanhToanTienMatLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(ThanhToanTienMatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(ThanhToanTienMatLayout.createSequentialGroup()
+                                        .addComponent(btn500tr)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnXacNhan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(ThanhToanTienMatLayout.createSequentialGroup()
+                                        .addComponent(btn300tr)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btn400tr)))))))
+                .addGap(56, 56, 56))
+        );
+        ThanhToanTienMatLayout.setVerticalGroup(
+            ThanhToanTienMatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ThanhToanTienMatLayout.createSequentialGroup()
+                .addGap(56, 56, 56)
+                .addComponent(jLabel17)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(inputSoTienDaNhan, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(ThanhToanTienMatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnmuoiTrieu, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnhaiMuoiTrieu, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn50tr, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ThanhToanTienMatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn70tr, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn90tr, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn100tr, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ThanhToanTienMatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn200tr, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn300tr, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn400tr, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ThanhToanTienMatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(ThanhToanTienMatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btn500tr, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnXacNhan, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 50, Short.MAX_VALUE))
+        );
+
         setPreferredSize(new java.awt.Dimension(1170, 730));
 
         Page1.setBackground(new java.awt.Color(255, 255, 255));
@@ -499,6 +703,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         jLabel3.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel3.setText("Tên chú rể");
 
+        inputTenChuRe.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         inputTenChuRe.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 inputTenChuReActionPerformed(evt);
@@ -531,6 +736,8 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         jLabel4.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel4.setText("Tên cô dâu");
 
+        inputTenCoDau.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
@@ -556,6 +763,8 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
 
         jLabel5.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel5.setText("Số điện thoại");
+
+        inputSDT.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -621,6 +830,8 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         jLabel7.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel7.setText("Ngày đặt tiệc");
 
+        inputNgayDatTiec.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+
         javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
         jPanel13.setLayout(jPanel13Layout);
         jPanel13Layout.setHorizontalGroup(
@@ -647,6 +858,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         jLabel8.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel8.setText("Ngày đãi tiệc");
 
+        inputNgayDaiTiec.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         inputNgayDaiTiec.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 inputNgayDaiTiecPropertyChange(evt);
@@ -1635,6 +1847,12 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
             DichVuDatTiecTable.getColumnModel().getColumn(0).setMinWidth(100);
             DichVuDatTiecTable.getColumnModel().getColumn(0).setPreferredWidth(100);
             DichVuDatTiecTable.getColumnModel().getColumn(0).setMaxWidth(20);
+            DichVuDatTiecTable.getColumnModel().getColumn(1).setMinWidth(100);
+            DichVuDatTiecTable.getColumnModel().getColumn(1).setPreferredWidth(100);
+            DichVuDatTiecTable.getColumnModel().getColumn(1).setMaxWidth(50);
+            DichVuDatTiecTable.getColumnModel().getColumn(3).setMinWidth(100);
+            DichVuDatTiecTable.getColumnModel().getColumn(3).setPreferredWidth(100);
+            DichVuDatTiecTable.getColumnModel().getColumn(3).setMaxWidth(50);
         }
         DichVuDatTiecTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
         DichVuDatTiecTable.getTableHeader().setOpaque(false);
@@ -1662,7 +1880,8 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
 
         jPanel49.setBackground(new java.awt.Color(255, 255, 255));
 
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tiền mặt" }));
+        cbxPTTT.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        cbxPTTT.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tiền mặt" }));
 
         jLabel35.setBackground(new java.awt.Color(255, 255, 255));
         jLabel35.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
@@ -1676,7 +1895,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jLabel35)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cbxPTTT, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel49Layout.setVerticalGroup(
@@ -1685,7 +1904,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel49Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel35)
-                    .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbxPTTT, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -1770,7 +1989,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                     .addComponent(jLabel33)
                     .addComponent(TongTienDV))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel34)
                     .addComponent(TongTienHD))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1952,6 +2171,11 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
 
     private void NextPage5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextPage5ActionPerformed
         // TODO add your handling code here:
+        if (cbxPTTT.getSelectedItem().equals("Tiền mặt")) {
+            ThanhToanTienMat.setLocationRelativeTo(null);
+            ThanhToanTienMat.setVisible(true);
+            inputSoTienDaNhan.setText(String.valueOf((int) tienCoc));
+        }
     }//GEN-LAST:event_NextPage5ActionPerformed
 
     private void NextPage2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextPage2ActionPerformed
@@ -2164,6 +2388,123 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_DichVuTableMouseClicked
 
+    private void btn200trActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn200trActionPerformed
+        // TODO add your handling code here:
+        inputSoTienDaNhan.setText("200000000");
+    }//GEN-LAST:event_btn200trActionPerformed
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        // TODO add your handling code here:
+        inputSoTienDaNhan.setText("0");
+    }//GEN-LAST:event_btnXoaActionPerformed
+
+    private void btnmuoiTrieuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnmuoiTrieuActionPerformed
+        // TODO add your handling code here:
+        inputSoTienDaNhan.setText("10000000");
+    }//GEN-LAST:event_btnmuoiTrieuActionPerformed
+
+    private void btnhaiMuoiTrieuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnhaiMuoiTrieuActionPerformed
+        // TODO add your handling code here:
+        inputSoTienDaNhan.setText("20000000");
+    }//GEN-LAST:event_btnhaiMuoiTrieuActionPerformed
+
+    private void btn50trActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn50trActionPerformed
+        // TODO add your handling code here:
+        inputSoTienDaNhan.setText("50000000");
+    }//GEN-LAST:event_btn50trActionPerformed
+
+    private void btn70trActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn70trActionPerformed
+        // TODO add your handling code here:
+        inputSoTienDaNhan.setText("70000000");
+    }//GEN-LAST:event_btn70trActionPerformed
+
+    private void btn90trActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn90trActionPerformed
+        // TODO add your handling code here:
+        inputSoTienDaNhan.setText("90000000");
+    }//GEN-LAST:event_btn90trActionPerformed
+
+    private void btn100trActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn100trActionPerformed
+        // TODO add your handling code here:
+        inputSoTienDaNhan.setText("100000000");
+    }//GEN-LAST:event_btn100trActionPerformed
+
+    private void btn300trActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn300trActionPerformed
+        // TODO add your handling code here:
+        inputSoTienDaNhan.setText("300000000");
+    }//GEN-LAST:event_btn300trActionPerformed
+
+    private void btn400trActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn400trActionPerformed
+        // TODO add your handling code here:
+        inputSoTienDaNhan.setText("400000000");
+    }//GEN-LAST:event_btn400trActionPerformed
+
+    private void btn500trActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn500trActionPerformed
+        // TODO add your handling code here:
+        inputSoTienDaNhan.setText("500000000");
+    }//GEN-LAST:event_btn500trActionPerformed
+
+    private void btnXacNhanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXacNhanActionPerformed
+        // TODO add your handling code here:
+        String maTiecCuoi = String.valueOf(PhieuDatTiecCuoiDAO.getInstance().GetID() + 1);
+        switch (maTiecCuoi.length()) {
+            case 1:
+                maTiecCuoi = "TC000" + maTiecCuoi;
+                break;
+            case 2:
+                maTiecCuoi = "TC00" + maTiecCuoi;
+                break;
+            case 3:
+                maTiecCuoi = "TC0" + maTiecCuoi;
+                break;
+            case 4:
+                maTiecCuoi = "TC" + maTiecCuoi;
+                break;
+        }
+        
+        Date ngayDT = inputNgayDatTiec.getDate();
+        Date ngayDTiec = inputNgayDatTiec.getDate();
+        
+        String ngayDat =   (ngayDT.getYear() + 1900) + "-" + (ngayDT.getMonth() + 1)  + "-" + ngayDT.getDay();
+        String ngayDaiTiec =  (ngayDTiec.getYear() + 1900) + "-" + (ngayDTiec.getMonth() + 1)  + "-" + ngayDTiec.getDay();
+        
+        int soLuongBan = Integer.parseInt(inputSoLuongBan.getValue().toString());
+        
+        int soLuongBanDuTru = Integer.parseInt(inputSLDT.getValue().toString());
+        
+        String tenCoDau = inputTenCoDau.getText();
+        
+        String tenChuRe = inputTenChuRe.getText();
+        
+        String sdt = inputSDT.getText();
+        
+        String maCa = mapMaCa.get(inputCa.getSelectedItem().toString().split(" ")[0]);
+        
+        String maSanh = mapMaSanh.get(inputSanh.getSelectedItem().toString());
+        
+        String userName = "taitai";
+        
+        int kq1 = PhieuDatTiecCuoiDAO.getInstance().Insert(new PhieuDatTiecCuoi(maTiecCuoi, ngayDat, ngayDaiTiec, soLuongBan, soLuongBanDuTru, tongDonBanHienTai, tongtienban, 
+            tongTienDV, tongtienHD,(int) tienCoc, conLai, tenCoDau, tenChuRe, sdt, maCa, maSanh, userName));
+        
+        if(kq1 > 0){
+            int kq2 = 0;
+            for(DTMonAn x : CTMonAns){
+              kq2 = ChiTietMonAnDAO.getInstance().Insert(new ChiTietMonAn(maTiecCuoi, x.getMaMonAn(), x.getDonGia(), tongSLB, x.getGhiChu()));
+              if(kq2 == 0) return;
+            }
+            if(kq2 > 0){
+                int kq3 = 0;
+                for(DTDichVu x : CTDichVus){
+                    int temp = x.getSoLuong() * x.getDonGia();
+                    kq3 = ChiTietDichVuDAO.getInstance().Insert(new ChiTietDichVu(maTiecCuoi, x.getMaDichVu(), x.getSoLuong(), x.getDonGia(), temp));
+                    if(kq3 == 0) return;
+                }
+            }
+        }
+        
+        
+    }//GEN-LAST:event_btnXacNhanActionPerformed
+
     public void UpdateChonDV(boolean chon, int soluong, int row) {
         for (DTDichVu x : dTDichVus) {
             if (x.getMaDichVu().equals(DichVuTable.getValueAt(row, 1))) {
@@ -2218,6 +2559,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     private javax.swing.JLabel SoLuongBan;
     private javax.swing.JLabel TenChuRe;
     private javax.swing.JLabel TenCoDau;
+    private javax.swing.JDialog ThanhToanTienMat;
     private javax.swing.JTable ThucDonTable;
     private javax.swing.JLabel TienCoc;
     private javax.swing.JLabel TongDonBanHT;
@@ -2225,7 +2567,20 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     private javax.swing.JLabel TongTienDV;
     private javax.swing.JLabel TongTienHD;
     private javax.swing.JLabel ValueDGMAX;
+    private javax.swing.JButton btn100tr;
+    private javax.swing.JButton btn200tr;
+    private javax.swing.JButton btn300tr;
+    private javax.swing.JButton btn400tr;
+    private javax.swing.JButton btn500tr;
+    private javax.swing.JButton btn50tr;
+    private javax.swing.JButton btn70tr;
+    private javax.swing.JButton btn90tr;
+    private javax.swing.JButton btnXacNhan;
+    private javax.swing.JButton btnXoa;
+    private javax.swing.JButton btnhaiMuoiTrieu;
+    private javax.swing.JButton btnmuoiTrieu;
     private javax.swing.JComboBox<String> cbxLoaiMonAn;
+    private javax.swing.JComboBox<String> cbxPTTT;
     private javax.swing.JComboBox<String> inputCa;
     private com.toedter.calendar.JDateChooser inputNgayDaiTiec;
     private com.toedter.calendar.JDateChooser inputNgayDatTiec;
@@ -2233,10 +2588,10 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     private javax.swing.JSpinner inputSLDT;
     private javax.swing.JComboBox<String> inputSanh;
     private javax.swing.JSpinner inputSoLuongBan;
+    private javax.swing.JTextField inputSoTienDaNhan;
     private javax.swing.JTextField inputTenChuRe;
     private javax.swing.JTextField inputTenCoDau;
     private javax.swing.JTextField inputTyLeTienCoc;
-    private javax.swing.JComboBox<String> jComboBox5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2245,6 +2600,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;

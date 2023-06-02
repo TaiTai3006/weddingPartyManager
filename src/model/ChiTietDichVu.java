@@ -26,6 +26,14 @@ public class ChiTietDichVu extends DichVu{
         this.donGiaDichVu = donGiaDichVu;
         this.thanhTien = thanhTien;
     }
+
+    public ChiTietDichVu(String maTiecCuoi, String maDichVu, int soLuong, int donGiaDichVu, double thanhTien) {
+        this.maTiecCuoi = maTiecCuoi;
+        this.maDichVu = maDichVu;
+        this.soLuong = soLuong;
+        this.donGiaDichVu = donGiaDichVu;
+        this.thanhTien = thanhTien;
+    }
     
     
 

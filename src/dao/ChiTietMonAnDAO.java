@@ -16,14 +16,43 @@ import model.ChiTietMonAn;
  *
  * @author Asus
  */
-public class ChiTietMonAnDAO implements DAOInterface<ChiTietMonAn>{
+public class ChiTietMonAnDAO implements DAOInterface<ChiTietMonAn> {
+
     public static ChiTietMonAnDAO getInstance() {
         return new ChiTietMonAnDAO();
     }
 
     @Override
     public int Insert(ChiTietMonAn t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            Connection con = JDBCUtil.getConnection();
+
+            String sql = "INSERT INTO `ChiTietMonAn`(`maMonAn`, `maTiecCuoi`, `donGiaMonAn`, `soLuong`, `ghiChu`) VALUES (?,?,?,?,?)";
+
+            PreparedStatement st = con.prepareStatement(sql);
+
+            st.setString(1, t.getMaMonAn());
+            st.setString(2, t.getMaTiecCuoi());
+            st.setLong(3, t.getDonGiaMonAn());
+            st.setInt(4, t.getSoLuong());
+            st.setString(5, t.getGhiChu());
+
+            System.out.println(st);
+
+            int kq = st.executeUpdate();
+
+            if (kq > 0) {
+                System.out.println("Them du lieu thanh cong!");
+            } else {
+                System.out.println("Them du lieu that bai!");
+            }
+
+            JDBCUtil.closeConnection(con);
+            return kq;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return 0;
     }
 
     @Override
@@ -50,7 +79,7 @@ public class ChiTietMonAnDAO implements DAOInterface<ChiTietMonAn>{
             ResultSet kq = st.executeQuery();
 
             while (kq.next()) {
-                lstDetailFoods.add(new ChiTietMonAn(kq.getString("maTiecCuoi"), kq.getString("maMonAn"), kq.getLong("donGiaMonAn"),kq.getInt("soLuong"), 
+                lstDetailFoods.add(new ChiTietMonAn(kq.getString("maTiecCuoi"), kq.getString("maMonAn"), kq.getLong("donGiaMonAn"), kq.getInt("soLuong"),
                         kq.getString("ghiChu"), kq.getString("tenMonAn"), kq.getString("maLoaiMonAn")));
             }
 

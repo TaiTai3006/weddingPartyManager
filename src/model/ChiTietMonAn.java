@@ -28,6 +28,26 @@ public class ChiTietMonAn extends MonAn {
         this.ghiChu = ghiChu;
     }
 
+    public ChiTietMonAn(String maTiecCuoi, String maMonAn, long donGiaMonAn, int soLuong, String ghiChu) {
+        this.maTiecCuoi = maTiecCuoi;
+        this.maMonAn = maMonAn;
+        this.donGiaMonAn = donGiaMonAn;
+        this.soLuong = soLuong;
+        this.ghiChu = ghiChu;
+    }
+
+    public String getMaMonAn() {
+        return maMonAn;
+    }
+
+    public long getDonGiaMonAn() {
+        return donGiaMonAn;
+    }
+
+    public double getThanhTien() {
+        return thanhTien;
+    }
+
     public String getMaTiecCuoi() {
         return maTiecCuoi;
     }
