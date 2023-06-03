@@ -19,6 +19,8 @@ import java.awt.Font;
 import java.io.File;
 import java.sql.Connection;
 import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -26,7 +28,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.DefaultCellEditor;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -60,6 +66,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     private DefaultTableModel defaultTableModelMA;
     private DefaultTableModel defaultTableModelDV;
     private DefaultTableModel modelDV;
+    private String PHONE_NUMBER_REGEX = "^\\d{10}$";
     private int SoLuongBanToiDa;
     private int donGiaBanToiThieu;
     private int tongDonBanHienTai = 0;
@@ -69,6 +76,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     private int tongtienHD;
     private double tienCoc;
     private int conLai;
+    private int thoiGianDatTiec = ThamSoDAO.getInstance().GetThoiGianDatTiec();
     private int tyLePhat = ThamSoDAO.getInstance().GetTyLePhat();
     private int thoiGianPhat = ThamSoDAO.getInstance().GetThoiGianPhat();
     private int TiLeCoc = ThamSoDAO.getInstance().GetTyLeCoc();
@@ -224,6 +232,19 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         conLai = tongtienHD - (int) tienCoc;
         ConLai.setText(String.valueOf(currencyFormatVN.format(conLai)));
 
+    }
+
+    public boolean validatePhoneNumber() {
+        Pattern pattern = Pattern.compile(PHONE_NUMBER_REGEX);
+        Matcher matcher = pattern.matcher(inputSDT.getText());
+        return matcher.matches();
+    }
+
+    public void Message(String message, int messageType) {
+        JOptionPane jOptionPane = new JOptionPane(message, messageType);
+        JDialog dialog = jOptionPane.createDialog(null, "Message");
+        dialog.setAlwaysOnTop(true);
+        dialog.setVisible(true);
     }
 
     public void CreateValueTableMA() {
@@ -2146,11 +2167,40 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         }
     }
 
+    public int DateDifference() {
+        Date ngayDatTiec = inputNgayDatTiec.getDate();
+        Date ngayDaiTiec = inputNgayDaiTiec.getDate();
+
+        LocalDate date1 = LocalDate.of(ngayDatTiec.getYear() + 1900, ngayDatTiec.getMonth() + 1, ngayDatTiec.getDate());
+        LocalDate date2 = LocalDate.of(ngayDaiTiec.getYear() + 1900, ngayDaiTiec.getMonth() + 1, ngayDaiTiec.getDate());
+
+        long daysBetween = ChronoUnit.DAYS.between(date1, date2);
+        return (int) daysBetween;
+    }
+
     private void NextPage1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextPage1ActionPerformed
         // TODO add your handling code here:
-        Page1.setVisible(false);
-        Page2.setVisible(true);
-        Page2();
+
+        String mess = "";
+        if (inputTenChuRe.getText().equals("")) {
+            mess += "Lỗi! Mời nhập tên chú rể.\n";
+        }
+        if (inputTenCoDau.getText().equals("")) {
+            mess += "Lỗi! Mời nhập tên cô dâu.\n";
+        }
+        if (!validatePhoneNumber()) {
+            mess += "Lỗi! Số điện thoại không hợp lệ.\n";
+        }
+        if (Integer.parseInt(inputSoLuongBan.getValue().toString()) == 0) {
+            mess += "Lỗi! Mời nhập số lượng bàn.\n";
+        }
+        if (mess.equals("")) {
+            Page1.setVisible(false);
+            Page2.setVisible(true);
+            Page2();
+        } else {
+            Message(mess, JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_NextPage1ActionPerformed
 
     private void txfSearchFoodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txfSearchFoodActionPerformed
@@ -2191,8 +2241,13 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
 
     private void NextPage2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextPage2ActionPerformed
         // TODO add your handling code here:
-        Page2.setVisible(false);
-        Page3.setVisible(true);
+        if (tongDonBanHienTai >= donGiaBanToiThieu) {
+            Page2.setVisible(false);
+            Page3.setVisible(true);
+        } else {
+            Message("Lỗi! Tổng đơn bàn hiện tại phải lớn hơn hoặc bằng đơn bàn tối thiểu.", JOptionPane.WARNING_MESSAGE);
+        }
+
     }//GEN-LAST:event_NextPage2ActionPerformed
 
     private void BackPage2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackPage2ActionPerformed
@@ -2236,6 +2291,8 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
             if (Integer.parseInt(inputSoLuongBan.getValue().toString()) > SoLuongBanToiDa) {
                 inputSoLuongBan.setValue(SoLuongBanToiDa);
             }
+        } else {
+            inputSoLuongBan.setValue(0);
         }
 
     }//GEN-LAST:event_inputSoLuongBanStateChanged
@@ -2243,33 +2300,44 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     private void inputNgayDaiTiecPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_inputNgayDaiTiecPropertyChange
         // TODO add your handling code here:
         if (inputNgayDaiTiec.getDate() != null) {
+            int daysBetween = DateDifference();
+            if (daysBetween >= thoiGianDatTiec) {
+                Date ngayDatTiec = inputNgayDatTiec.getDate();
+                Date ngayDaiTiec = inputNgayDaiTiec.getDate();
+                if (ngayDatTiec.compareTo(ngayDaiTiec) < 0) {
+                    String tenCa = inputCa.getSelectedItem().toString().split(" ")[0];
+                    int day = ngayDaiTiec.getDate();
+                    int month = ngayDaiTiec.getMonth() + 1;
+                    int year = ngayDaiTiec.getYear() + 1900;
 
-            Date ngayDatTiec = inputNgayDatTiec.getDate();
-            Date ngayDaiTiec = inputNgayDaiTiec.getDate();
-            if (ngayDatTiec.compareTo(ngayDaiTiec) < 0) {
-                String tenCa = inputCa.getSelectedItem().toString().split(" ")[0];
-                int day = ngayDaiTiec.getDate();
-                int month = ngayDaiTiec.getMonth() + 1;
-                int year = ngayDaiTiec.getYear() + 1900;
-
-                sanhs = SanhDAO.getInstance().SelectSanhDatTiec(mapMaCa.get(tenCa), String.valueOf(day), String.valueOf(month), String.valueOf(year));
-                for (Sanh x : sanhs) {
-                    System.out.println(x.getTenSanh());
-                }
-
-                if (sanhs.size() != 0) {
-                    inputSanh.removeAllItems();
+                    sanhs = SanhDAO.getInstance().SelectSanhDatTiec(mapMaCa.get(tenCa), String.valueOf(day), String.valueOf(month), String.valueOf(year));
                     for (Sanh x : sanhs) {
-                        mapMaSanh.put(x.getTenSanh(), x.getMaSanh());
-                        System.out.println(x.getMaSanh());
-                        inputSanh.addItem(x.getTenSanh());
+                        System.out.println(x.getTenSanh());
                     }
-                } else {
-                    inputSanh.removeAllItems();
-                    inputSanh.addItem("<Không có dữ liệu>");
+
+                    if (sanhs.size() != 0) {
+                        inputSanh.removeAllItems();
+                        for (Sanh x : sanhs) {
+                            mapMaSanh.put(x.getTenSanh(), x.getMaSanh());
+                            System.out.println(x.getMaSanh());
+                            inputSanh.addItem(x.getTenSanh());
+                        }
+                    } else {
+                        inputSanh.removeAllItems();
+                        inputSanh.addItem("<Không có dữ liệu>");
+                    }
+
                 }
 
+            } else if (DateDifference() < 0) {
+                Message("Lỗi! Mời chọn ngày khác.", JOptionPane.WARNING_MESSAGE);
+                inputNgayDaiTiec.setDate(null);
+            } else {
+                String mess = "Lỗi! Khoảng thời gian đặt tiệc phải trước " + thoiGianDatTiec + " ngày.";
+                Message(mess, JOptionPane.WARNING_MESSAGE);
+                inputNgayDaiTiec.setDate(null);
             }
+
         }
     }//GEN-LAST:event_inputNgayDaiTiecPropertyChange
 
@@ -2496,21 +2564,23 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
 
         int kq1 = PhieuDatTiecCuoiDAO.getInstance().Insert(new PhieuDatTiecCuoi(maTiecCuoi, ngayDat, ngayDaiTiec, soLuongBan, soLuongBanDuTru, tongDonBanHienTai, tongtienban,
                 tongTienDV, tongtienHD, (int) tienCoc, conLai, tenCoDau, tenChuRe, sdt, maCa, maSanh, userName));
-        int kq3 = 0;
+        int flag = 1;
         if (kq1 > 0) {
             int kq2 = 0;
             for (DTMonAn x : CTMonAns) {
                 kq2 = ChiTietMonAnDAO.getInstance().Insert(new ChiTietMonAn(maTiecCuoi, x.getMaMonAn(), x.getDonGia(), tongSLB, x.getGhiChu()));
                 if (kq2 == 0) {
+                    flag = 0;
                     break;
                 }
             }
             if (kq2 > 0) {
-
+                int kq3 = 0;
                 for (DTDichVu x : CTDichVus) {
                     int temp = x.getSoLuong() * x.getDonGia();
                     kq3 = ChiTietDichVuDAO.getInstance().Insert(new ChiTietDichVu(maTiecCuoi, x.getMaDichVu(), x.getSoLuong(), x.getDonGia(), temp));
                     if (kq3 == 0) {
+                        flag = 0;
                         break;
                     }
                 }
@@ -2519,7 +2589,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
 
         }
 
-        if (kq3 > 0) {
+        if (flag > 0) {
             File file = new File("src/report/rptPhieuDatTiec.jasper");
             String absolutePath = file.getAbsolutePath();
             try {
@@ -2531,21 +2601,21 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                 map.put("tyLePhat", tyLePhat);
                 map.put("thoiGianPhat", thoiGianPhat);
                 System.out.println(maTiecCuoi);
-                 System.out.println(Double.parseDouble(inputSoTienDaNhan.getText()));
-               System.out.println( Double.parseDouble(inputSoTienDaNhan.getText()) - tienCoc);
-               System.out.println(tyLePhat);
-                System.out.println( thoiGianPhat);
+                System.out.println(Double.parseDouble(inputSoTienDaNhan.getText()));
+                System.out.println(Double.parseDouble(inputSoTienDaNhan.getText()) - tienCoc);
+                System.out.println(tyLePhat);
+                System.out.println(thoiGianPhat);
                 JasperPrint p = JasperFillManager.fillReport(absolutePath, map, con);
                 JasperViewer v = new JasperViewer(p, false);
                 v.setVisible(true);
 
             } catch (JRException ex) {
-                System.out.println("test.main()");
-                Logger.getLogger(test.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ex);
 
             }
         }
-
+        
+        
 
     }//GEN-LAST:event_btnXacNhanActionPerformed
 
