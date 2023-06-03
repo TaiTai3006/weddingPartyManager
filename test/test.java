@@ -9,10 +9,19 @@ import database.JDBCUtil;
 import java.sql.Connection;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Ca;
 import model.LoaiSanh;
 import model.NhanVien;
 import model.Sanh;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -35,11 +44,25 @@ public class test {
 //            System.out.println(x.toString());
 //        }
         
-        NhanVien nv = new NhanVien("Sgg2003", "", "ST001", "Staff");
-        NhanVienDAO.getInstance().Insert(nv);
-        ArrayList<NhanVien> lstNhanVien = NhanVienDAO.getInstance().SelectAll();
-        for (NhanVien x : lstNhanVien) {
-            System.out.println(x.toString());
+//        NhanVien nv = new NhanVien("Sgg2003", "", "ST001", "Staff");
+//        NhanVienDAO.getInstance().Insert(nv);
+//        ArrayList<NhanVien> lstNhanVien = NhanVienDAO.getInstance().SelectAll();
+//        for (NhanVien x : lstNhanVien) {
+//            System.out.println(x.toString());
+//        }
+
+        
+        try {
+            Hashtable map = new Hashtable();
+            JasperReport rpt = JasperCompileManager.compileReport("src/report/rptPhieuDatTiec.jrxml");
+            Connection con = JDBCUtil.getConnection();
+            map.put("maTiecCuoi", "TC0010");
+            JasperPrint p = JasperFillManager.fillReport(rpt, map, con);
+            JasperViewer.viewReport(p,false);
+            
+        } catch (JRException ex) {
+            Logger.getLogger(test.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("test.main()");
         }
     }
 }

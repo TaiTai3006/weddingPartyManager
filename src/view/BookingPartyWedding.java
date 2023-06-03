@@ -13,14 +13,19 @@ import dao.MonAnDAO;
 import dao.PhieuDatTiecCuoiDAO;
 import dao.SanhDAO;
 import dao.ThamSoDAO;
+import database.JDBCUtil;
 import java.awt.Color;
 import java.awt.Font;
+import java.io.File;
+import java.sql.Connection;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
@@ -40,6 +45,10 @@ import model.LoaiMonAn;
 import model.MonAn;
 import model.PhieuDatTiecCuoi;
 import model.Sanh;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -60,6 +69,8 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     private int tongtienHD;
     private double tienCoc;
     private int conLai;
+    private int tyLePhat = ThamSoDAO.getInstance().GetTyLePhat();
+    private int thoiGianPhat = ThamSoDAO.getInstance().GetThoiGianPhat();
     private int TiLeCoc = ThamSoDAO.getInstance().GetTyLeCoc();
     private Map<String, String> mapMaSanh = new HashMap<>();
     private Map<String, String> mapMaLoaiMA = new HashMap<>();
@@ -2460,49 +2471,82 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                 maTiecCuoi = "TC" + maTiecCuoi;
                 break;
         }
-        
+
         Date ngayDT = inputNgayDatTiec.getDate();
-        Date ngayDTiec = inputNgayDatTiec.getDate();
-        
-        String ngayDat =   (ngayDT.getYear() + 1900) + "-" + (ngayDT.getMonth() + 1)  + "-" + ngayDT.getDay();
-        String ngayDaiTiec =  (ngayDTiec.getYear() + 1900) + "-" + (ngayDTiec.getMonth() + 1)  + "-" + ngayDTiec.getDay();
-        
+        Date ngayDTiec = inputNgayDaiTiec.getDate();
+
+        String ngayDat = (ngayDT.getYear() + 1900) + "-" + (ngayDT.getMonth() + 1) + "-" + ngayDT.getDate();
+        String ngayDaiTiec = (ngayDTiec.getYear() + 1900) + "-" + (ngayDTiec.getMonth() + 1) + "-" + ngayDTiec.getDate();
+
         int soLuongBan = Integer.parseInt(inputSoLuongBan.getValue().toString());
-        
+
         int soLuongBanDuTru = Integer.parseInt(inputSLDT.getValue().toString());
-        
+
         String tenCoDau = inputTenCoDau.getText();
-        
+
         String tenChuRe = inputTenChuRe.getText();
-        
+
         String sdt = inputSDT.getText();
-        
+
         String maCa = mapMaCa.get(inputCa.getSelectedItem().toString().split(" ")[0]);
-        
+
         String maSanh = mapMaSanh.get(inputSanh.getSelectedItem().toString());
-        
+
         String userName = "taitai";
-        
-        int kq1 = PhieuDatTiecCuoiDAO.getInstance().Insert(new PhieuDatTiecCuoi(maTiecCuoi, ngayDat, ngayDaiTiec, soLuongBan, soLuongBanDuTru, tongDonBanHienTai, tongtienban, 
-            tongTienDV, tongtienHD,(int) tienCoc, conLai, tenCoDau, tenChuRe, sdt, maCa, maSanh, userName));
-        
-        if(kq1 > 0){
+
+        int kq1 = PhieuDatTiecCuoiDAO.getInstance().Insert(new PhieuDatTiecCuoi(maTiecCuoi, ngayDat, ngayDaiTiec, soLuongBan, soLuongBanDuTru, tongDonBanHienTai, tongtienban,
+                tongTienDV, tongtienHD, (int) tienCoc, conLai, tenCoDau, tenChuRe, sdt, maCa, maSanh, userName));
+        int kq3 = 0;
+        if (kq1 > 0) {
             int kq2 = 0;
-            for(DTMonAn x : CTMonAns){
-              kq2 = ChiTietMonAnDAO.getInstance().Insert(new ChiTietMonAn(maTiecCuoi, x.getMaMonAn(), x.getDonGia(), tongSLB, x.getGhiChu()));
-              if(kq2 == 0) return;
-            }
-            if(kq2 > 0){
-                int kq3 = 0;
-                for(DTDichVu x : CTDichVus){
-                    int temp = x.getSoLuong() * x.getDonGia();
-                    kq3 = ChiTietDichVuDAO.getInstance().Insert(new ChiTietDichVu(maTiecCuoi, x.getMaDichVu(), x.getSoLuong(), x.getDonGia(), temp));
-                    if(kq3 == 0) return;
+            for (DTMonAn x : CTMonAns) {
+                kq2 = ChiTietMonAnDAO.getInstance().Insert(new ChiTietMonAn(maTiecCuoi, x.getMaMonAn(), x.getDonGia(), tongSLB, x.getGhiChu()));
+                if (kq2 == 0) {
+                    break;
                 }
             }
+            if (kq2 > 0) {
+
+                for (DTDichVu x : CTDichVus) {
+                    int temp = x.getSoLuong() * x.getDonGia();
+                    kq3 = ChiTietDichVuDAO.getInstance().Insert(new ChiTietDichVu(maTiecCuoi, x.getMaDichVu(), x.getSoLuong(), x.getDonGia(), temp));
+                    if (kq3 == 0) {
+                        break;
+                    }
+                }
+
+            }
+
         }
-        
-        
+
+        if (kq3 > 0) {
+            File file = new File("src/report/rptPhieuDatTiec.jasper");
+            String absolutePath = file.getAbsolutePath();
+            try {
+                HashMap<String, Object> map = new HashMap<>();
+                Connection con = JDBCUtil.getConnection();
+                map.put("maTiecCuoi", maTiecCuoi);
+                map.put("tienKhachTra", Double.parseDouble(inputSoTienDaNhan.getText()));
+                map.put("tienThua", Double.parseDouble(inputSoTienDaNhan.getText()) - tienCoc);
+                map.put("tyLePhat", tyLePhat);
+                map.put("thoiGianPhat", thoiGianPhat);
+                System.out.println(maTiecCuoi);
+                 System.out.println(Double.parseDouble(inputSoTienDaNhan.getText()));
+               System.out.println( Double.parseDouble(inputSoTienDaNhan.getText()) - tienCoc);
+               System.out.println(tyLePhat);
+                System.out.println( thoiGianPhat);
+                JasperPrint p = JasperFillManager.fillReport(absolutePath, map, con);
+                JasperViewer v = new JasperViewer(p, false);
+                v.setVisible(true);
+
+            } catch (JRException ex) {
+                System.out.println("test.main()");
+                Logger.getLogger(test.class.getName()).log(Level.SEVERE, null, ex);
+
+            }
+        }
+
+
     }//GEN-LAST:event_btnXacNhanActionPerformed
 
     public void UpdateChonDV(boolean chon, int soluong, int row) {

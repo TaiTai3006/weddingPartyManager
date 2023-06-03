@@ -107,4 +107,22 @@ public class ThamSoDAO implements DAOInterface<ThamSo> {
 
     }
     
+    public int GetThoiGianPhat(){
+        try{
+            Connection con = JDBCUtil.getConnection();
+            Statement st = con.createStatement();
+            String sql  = "SELECT TGPhatHuyTiec FROM `ThamSo`";
+            
+            ResultSet kq = st.executeQuery(sql);
+            
+            while(kq.next()){
+                return kq.getInt(1);
+            }
+            
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    
 }
