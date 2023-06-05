@@ -178,7 +178,7 @@ public class PhieuDatTiecCuoiDAO implements DAOInterface<PhieuDatTiecCuoi>{
        try {
             Connection con = JDBCUtil.getConnection();
             
-            String sql = "SELECT * FROM PhieuDatTiecCuoi";
+            String sql = "SELECT * FROM PhieuDatTiecCuoi WHERE maTiecCuoi not in (SELECT hoadon.maTiecCuoi FROM hoadon)";
             
             PreparedStatement st = con.prepareStatement(sql);
             
@@ -203,7 +203,7 @@ public class PhieuDatTiecCuoiDAO implements DAOInterface<PhieuDatTiecCuoi>{
        try {
             Connection con = JDBCUtil.getConnection();
             
-            String sql = "SELECT * FROM PhieuDatTiecCuoi ORDER by soLuongBan DESC";
+            String sql = "SELECT * FROM PhieuDatTiecCuoi WHERE maTiecCuoi not in (SELECT hoadon.maTiecCuoi FROM hoadon) ORDER by soLuongBan DESC";
             
             PreparedStatement st = con.prepareStatement(sql);
             
@@ -228,7 +228,7 @@ public class PhieuDatTiecCuoiDAO implements DAOInterface<PhieuDatTiecCuoi>{
        try {
             Connection con = JDBCUtil.getConnection();
             
-            String sql = "SELECT * FROM PhieuDatTiecCuoi ORDER by soLuongBan ASC";
+            String sql = "SELECT * FROM PhieuDatTiecCuoi WHERE maTiecCuoi not in (SELECT hoadon.maTiecCuoi FROM hoadon) ORDER by soLuongBan ASC";
             
             PreparedStatement st = con.prepareStatement(sql);
             
