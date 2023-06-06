@@ -8,8 +8,10 @@ import dao.ChiTietBaoCaoDAO;
 import dao.BaoCaoDoanhThuDAO;
 import java.awt.Color;
 import java.awt.Font;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
 import model.BaoCaoDoanhThu;
@@ -66,20 +68,32 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
     }    
     
     public void CreateDataTableByDay(int month, int year) {
+        NumberFormat currencyFormatVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
         defaultTableModel_RStatistics = (DefaultTableModel) ThongKeDoanhThuTable.getModel();
         ArrayList<ChiTietBaoCao> ctbc = ChiTietBaoCaoDAO.getInstance().SelectByMonth(month, year);
         int i = 0;
         for (ChiTietBaoCao x : ctbc) {
-            defaultTableModel_RStatistics.addRow(new Object[]{++i, x.getNgay(), x.getSoLuongTiec(), String.valueOf(x.getDoanhThu()) , x.getTiLe()});
+            defaultTableModel_RStatistics.addRow(new Object[]{++i, x.getNgay(), x.getSoLuongTiec(), String.valueOf(currencyFormatVN.format(x.getDoanhThu())) , String.valueOf(Math.round(x.getTiLe()*1000)/10.0) + "%"});
         }
     }
     
     public void CreateDataTableByMonth(int year) {
+        NumberFormat currencyFormatVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
         defaultTableModel_RStatistics = (DefaultTableModel) ThongKeDoanhThuTable.getModel();
         ArrayList<BaoCaoDoanhThu> bcdt = BaoCaoDoanhThuDAO.getInstance().SelectByYear(year);
         int i = 0;
         for (BaoCaoDoanhThu x : bcdt) {
-            defaultTableModel_RStatistics.addRow(new Object[]{++i, x.getThang(), x.getTongDoanhThu()});
+            defaultTableModel_RStatistics.addRow(new Object[]{++i, x.getThang(), String.valueOf(currencyFormatVN.format(x.getTongDoanhThu()))});
+        }
+    }
+    
+    public void CreateDataTableByForYear1ToYear2(int year1, int year2) {
+        NumberFormat currencyFormatVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        defaultTableModel_RStatistics = (DefaultTableModel) ThongKeDoanhThuTable.getModel();
+        ArrayList<BaoCaoDoanhThu> bcdt = BaoCaoDoanhThuDAO.getInstance().SelectByFromY1toY2(year1, year2);
+        int i = 0;
+        for (BaoCaoDoanhThu x : bcdt) {
+            defaultTableModel_RStatistics.addRow(new Object[]{++i, x.getNam(), String.valueOf(currencyFormatVN.format(x.getTongDoanhThu()))});
         }
     }
     
@@ -866,6 +880,7 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
                     LineChart example = new LineChart(2, 0 , year1, year2);  
                     jpChart.removeAll();
                     jpChart.add(example).setVisible(true);
+                    CreateDataTableByForYear1ToYear2(year1, year2);
                 }
             }
             else

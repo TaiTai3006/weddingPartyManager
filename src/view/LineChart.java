@@ -233,7 +233,7 @@ public class LineChart extends javax.swing.JInternalFrame {
 //                        {
 ////                            System.out.println("TEst for: " + String.valueOf(yearValue));
 //                            dataset.addValue(0.0, "Bao cao nam", String.valueOf(yearValue));
-//                            yearValue++;
+//                            yearValue++;  
 //                        }
 //                        dataset.addValue(a0.getTongNam()/1000000.0, "Bao cao nam", String.valueOf(a0.getNam()));
 //                        yearValue++;
