@@ -5,11 +5,14 @@
 package view;
 
 import dao.ChiTietBaoCaoDAO;
+import dao.BaoCaoDoanhThuDAO;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Calendar;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
+import model.BaoCaoDoanhThu;
 import model.ChiTietBaoCao;
 
 import org.jfree.chart.ChartFactory;  
@@ -25,6 +28,8 @@ import org.jfree.data.category.DefaultCategoryDataset;
  */
 public class RevenueStatistics extends javax.swing.JInternalFrame {
     
+    private int MinValueYear_BCDT = BaoCaoDoanhThuDAO.getInstance().MinValueYear();
+    private int MaxValueYear_BCDT = BaoCaoDoanhThuDAO.getInstance().MaxValueYear();
     private DefaultTableModel defaultTableModel_RStatistics;
     /**
      * Creates new form WorkingTimeList
@@ -37,6 +42,7 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
         jpStatisticsByDay.setVisible(true);
         jpStatisticsByMonth.setVisible(false);
         jpStatisticsByYear.setVisible(false);
+        jpChart.setVisible(false);
 //        LineChart example = new LineChart(0);
 ////        example.setVisible(true);
 ////        example.setSize(400, 400);  
@@ -68,6 +74,15 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
         }
     }
     
+    public void CreateDataTableByMonth(int year) {
+        defaultTableModel_RStatistics = (DefaultTableModel) ThongKeDoanhThuTable.getModel();
+        ArrayList<BaoCaoDoanhThu> bcdt = BaoCaoDoanhThuDAO.getInstance().SelectByYear(year);
+        int i = 0;
+        for (BaoCaoDoanhThu x : bcdt) {
+            defaultTableModel_RStatistics.addRow(new Object[]{++i, x.getThang(), x.getTongDoanhThu()});
+        }
+    }
+    
     public void DeleteDataTable()
     {
 //        ThongKeDoanhThuTable.setRowCount(0);
@@ -90,7 +105,7 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
         new Object [][] {
             },
         new String [] {
-            "STT", "Tháng", "Số lượng tiệc cưới", "Doanh thu ", "Tỷ lệ"
+            "STT", "Tháng", "Doanh thu"
         }
         ));
     }
@@ -101,7 +116,7 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
         new Object [][] {
             },
         new String [] {
-            "STT", "Năm", "Số lượng tiệc cưới", "Doanh thu ", "Tỷ lệ"
+            "STT", "Năm","Doanh thu "
         }
         ));  
     }
@@ -141,19 +156,21 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
         jLayeredPane1 = new javax.swing.JLayeredPane();
         jpStatisticsByDay = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        jTextThang_Ngay = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
+        jTextNam_Ngay = new javax.swing.JTextField();
         jButton4 = new javax.swing.JButton();
+        jLThongBao_Ngay = new javax.swing.JLabel();
         jpStatisticsByMonth = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
-        jTextField8 = new javax.swing.JTextField();
+        jTextNam_Thang = new javax.swing.JTextField();
         jButton5 = new javax.swing.JButton();
+        jl_ThongBao_Thang = new javax.swing.JLabel();
         jpStatisticsByYear = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
-        jTextField11 = new javax.swing.JTextField();
+        jTextNam1_Nam = new javax.swing.JTextField();
         jLabel20 = new javax.swing.JLabel();
-        jTextField12 = new javax.swing.JTextField();
+        jTextNam2_Nam = new javax.swing.JTextField();
         jButton7 = new javax.swing.JButton();
         jpChart = new javax.swing.JDesktopPane();
 
@@ -352,14 +369,14 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
         jLabel2.setText("Thống kê theo:");
 
         jpStatisticsByDay.setBackground(new java.awt.Color(255, 255, 255));
-        jpStatisticsByDay.setPreferredSize(new java.awt.Dimension(392, 224));
+        jpStatisticsByDay.setPreferredSize(new java.awt.Dimension(355, 224));
 
         jLabel14.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jLabel14.setText("Tháng");
 
-        jTextField6.addActionListener(new java.awt.event.ActionListener() {
+        jTextThang_Ngay.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField6ActionPerformed(evt);
+                jTextThang_NgayActionPerformed(evt);
             }
         });
 
@@ -377,21 +394,26 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
             }
         });
 
+        jLThongBao_Ngay.setForeground(new java.awt.Color(255, 0, 0));
+
         javax.swing.GroupLayout jpStatisticsByDayLayout = new javax.swing.GroupLayout(jpStatisticsByDay);
         jpStatisticsByDay.setLayout(jpStatisticsByDayLayout);
         jpStatisticsByDayLayout.setHorizontalGroup(
             jpStatisticsByDayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTextField6, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addComponent(jTextField7)
             .addGroup(jpStatisticsByDayLayout.createSequentialGroup()
                 .addGroup(jpStatisticsByDayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpStatisticsByDayLayout.createSequentialGroup()
-                .addGap(0, 148, Short.MAX_VALUE)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(136, 136, 136))
+                    .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jpStatisticsByDayLayout.createSequentialGroup()
+                        .addGap(113, 113, 113)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 0, 0))
+            .addGroup(jpStatisticsByDayLayout.createSequentialGroup()
+                .addGroup(jpStatisticsByDayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jTextNam_Ngay, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
+                    .addComponent(jTextThang_Ngay, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLThongBao_Ngay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jpStatisticsByDayLayout.setVerticalGroup(
             jpStatisticsByDayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -399,14 +421,16 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
                 .addGap(10, 10, 10)
                 .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTextThang_Ngay, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(9, 9, 9)
+                .addComponent(jTextNam_Ngay, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLThongBao_Ngay, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
 
         jpStatisticsByMonth.setBackground(new java.awt.Color(255, 255, 255));
@@ -426,18 +450,21 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
             }
         });
 
+        jl_ThongBao_Thang.setForeground(new java.awt.Color(255, 0, 51));
+
         javax.swing.GroupLayout jpStatisticsByMonthLayout = new javax.swing.GroupLayout(jpStatisticsByMonth);
         jpStatisticsByMonth.setLayout(jpStatisticsByMonthLayout);
         jpStatisticsByMonthLayout.setHorizontalGroup(
             jpStatisticsByMonthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpStatisticsByMonthLayout.createSequentialGroup()
-                .addGap(128, 128, 128)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(156, Short.MAX_VALUE))
-            .addGroup(jpStatisticsByMonthLayout.createSequentialGroup()
                 .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addComponent(jTextField8)
+            .addComponent(jTextNam_Thang, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
+            .addComponent(jl_ThongBao_Thang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpStatisticsByMonthLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(117, 117, 117))
         );
         jpStatisticsByMonthLayout.setVerticalGroup(
             jpStatisticsByMonthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -445,10 +472,12 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
                 .addGap(54, 54, 54)
                 .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTextNam_Thang, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jl_ThongBao_Thang, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addGap(38, 38, 38))
         );
 
         jpStatisticsByYear.setBackground(new java.awt.Color(255, 255, 255));
@@ -475,17 +504,16 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
         jpStatisticsByYear.setLayout(jpStatisticsByYearLayout);
         jpStatisticsByYearLayout.setHorizontalGroup(
             jpStatisticsByYearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTextField11, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addComponent(jTextField12)
+            .addComponent(jTextNam1_Nam, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jTextNam2_Nam)
             .addGroup(jpStatisticsByYearLayout.createSequentialGroup()
                 .addGroup(jpStatisticsByYearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpStatisticsByYearLayout.createSequentialGroup()
-                .addGap(0, 148, Short.MAX_VALUE)
-                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(136, 136, 136))
+                    .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jpStatisticsByYearLayout.createSequentialGroup()
+                        .addGap(115, 115, 115)
+                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(194, Short.MAX_VALUE))
         );
         jpStatisticsByYearLayout.setVerticalGroup(
             jpStatisticsByYearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -493,14 +521,14 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
                 .addGap(10, 10, 10)
                 .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTextNam1_Nam, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(9, 9, 9)
+                .addComponent(jTextNam2_Nam, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(11, Short.MAX_VALUE))
         );
 
         jLayeredPane1.setLayer(jpStatisticsByDay, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -511,30 +539,37 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
         jLayeredPane1.setLayout(jLayeredPane1Layout);
         jLayeredPane1Layout.setHorizontalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jpStatisticsByDay, javax.swing.GroupLayout.DEFAULT_SIZE, 367, Short.MAX_VALUE)
+            .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                .addComponent(jpStatisticsByDay, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 27, Short.MAX_VALUE))
             .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jpStatisticsByMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jpStatisticsByMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jpStatisticsByYear, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 367, Short.MAX_VALUE))
+                .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                    .addComponent(jpStatisticsByYear, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 27, Short.MAX_VALUE)))
         );
         jLayeredPane1Layout.setVerticalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jpStatisticsByDay, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+            .addComponent(jpStatisticsByDay, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jpStatisticsByMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jpStatisticsByYear, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE))
         );
 
+        jpChart.setBackground(new java.awt.Color(255, 255, 255));
+        jpChart.setForeground(new java.awt.Color(255, 255, 255));
+
         javax.swing.GroupLayout jpChartLayout = new javax.swing.GroupLayout(jpChart);
         jpChart.setLayout(jpChartLayout);
         jpChartLayout.setHorizontalGroup(
             jpChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 595, Short.MAX_VALUE)
+            .addGap(0, 635, Short.MAX_VALUE)
         );
         jpChartLayout.setVerticalGroup(
             jpChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 320, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -547,7 +582,7 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 970, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1))
                         .addGap(100, 100, 100))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -557,28 +592,29 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabel2)
                                         .addGap(18, 18, 18)
-                                        .addComponent(jcbStatistics, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jcbStatistics, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jpChart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap(67, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jcbStatistics, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 9, Short.MAX_VALUE))
-                    .addComponent(jpChart))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jpChart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(BackPage3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -606,11 +642,11 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
                 jpStatisticsByDay.setVisible(true);
                 jpStatisticsByMonth.setVisible(false);
                 jpStatisticsByYear.setVisible(false);
-                jTextField6.setText("");
-                jTextField7.setText("");
+                jTextThang_Ngay.setText("");
+                jTextNam_Ngay.setText("");
                 SetDataTableByDayNull();
                 jpChart.removeAll();
-//                jpChart.setVisible(false);
+                jpChart.setVisible(false);
                 break;
             }
             case 1:
@@ -618,10 +654,10 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
                 jpStatisticsByDay.setVisible(false);
                 jpStatisticsByMonth.setVisible(true);
                 jpStatisticsByYear.setVisible(false);
-                jTextField8.setText("");
+                jTextNam_Thang.setText("");
                 SetDataTableByMonthNull();
                 jpChart.removeAll();
-//                jpChart.setVisible(false);
+                jpChart.setVisible(false);
                 
                 break;
             }
@@ -630,11 +666,11 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
                 jpStatisticsByDay.setVisible(false);
                 jpStatisticsByMonth.setVisible(false);
                 jpStatisticsByYear.setVisible(true);
-                jTextField11.setText("");
-                jTextField12.setText("");
+                jTextNam1_Nam.setText("");
+                jTextNam2_Nam.setText("");
                 SetDataTableByYearNull();   
                 jpChart.removeAll();
-//                jpChart.setVisible(false);
+                jpChart.setVisible(false);
                 break;
             }
             default:
@@ -645,32 +681,157 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        int month = Integer.valueOf(jTextField6.getText());
-        int year = Integer.valueOf(jTextField7.getText());
-        LineChart example = new LineChart(0, month , year, year);
-//        example.setVisible(true);
-//        example.setSize(400, 400);  
-        jpChart.removeAll();
-        jpChart.add(example).setVisible(true);
-//        DeleteDataTable();
         SetDataTableByDayNull();
-        CreateDataTableByDay(month, year);
-//        defaultTableModel_RStatistics.setRowCount(0);
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        String textMonth = jTextThang_Ngay.getText();
+        String textYear = jTextNam_Ngay.getText();
+            try {
+                int month = Integer.valueOf(textMonth);
+                int year = Integer.valueOf(textYear);
+                if(month >= 1 && month <=12)
+                {
+                    if(year >= MinValueYear_BCDT && year <= currentYear)
+                    {
+                        ArrayList<ChiTietBaoCao> ctbc0 = ChiTietBaoCaoDAO.getInstance().SelectByMonth(month, year);
+                        if(ctbc0.size() == 0)
+                        {
+                            jpChart.setVisible(false);
+                            jLThongBao_Ngay.setText("* Dữ liệu doanh thu của tháng, năm này rỗng!");
+//                            jTextNam_Ngay.setText("");
+//                            jTextThang_Ngay.setText("");
+                        }
+                        else
+                        {
+                            jpChart.setVisible(true);
+                            jLThongBao_Ngay.setText("");
+                            LineChart example = new LineChart(0, month , year, year);
+                            jpChart.add(example).setVisible(true);
+                            CreateDataTableByDay(month, year);
+                        }
+                    }
+                    else
+                    {
+                        if(year > currentYear)
+                        {
+                            jpChart.setVisible(false);
+                            jLThongBao_Ngay.setText("* Vui lòng nhập từ năm "+  currentYear + " trở về trước!");
+                            jTextThang_Ngay.setText("");
+                            jTextNam_Ngay.setText("");
+                        }
+                        else
+                        {
+                            jpChart.setVisible(false);
+                            jLThongBao_Ngay.setText("Vui lòng nhập từ năm " + MinValueYear_BCDT +"!");
+                            jTextThang_Ngay.setText("");
+                            jTextNam_Ngay.setText("");
+                        }
+                    }
+                }
+                else
+                {
+                    jpChart.setVisible(false);
+                    if(year >= MinValueYear_BCDT && year <= currentYear)
+                    {
+                        jLThongBao_Ngay.setText("* Vui lòng nhập đúng tháng!");
+                        jTextThang_Ngay.setText("");
+                        jTextNam_Ngay.setText("");
+                    }
+                    else
+                    {
+                        if(year > currentYear)
+                        {
+
+                            jLThongBao_Ngay.setText("* Vui lòng nhập đúng tháng, và từ năm "+  currentYear + " trở về trước!");
+                            jTextThang_Ngay.setText("");
+                            jTextNam_Ngay.setText("");
+                        }
+                        else
+                        {
+
+                            jLThongBao_Ngay.setText("Vui lòng nhập đúng tháng, và từ năm " + MinValueYear_BCDT +"!");
+                            jTextThang_Ngay.setText("");
+                            jTextNam_Ngay.setText("");
+                        }
+                    }
+                }
+                // Số hợp lệ, xử lý tại đây
+            } catch (NumberFormatException ex) {
+                // Không phải số, xử lý tại đây
+                jpChart.setVisible(false);
+                jLThongBao_Ngay.setText("* Vui lòng nhập tháng, năm hợp lệ!");
+                jTextNam_Ngay.setText("");
+                jTextThang_Ngay.setText("");
+            }
+        
+//        ArrayList<ChiTietBaoCao> ctbc0 = ChiTietBaoCaoDAO.getInstance().SelectByMonth(month, year);
+//        if(ctbc0.size() == 0)
+//        {
+//            jLThongBao_Ngay.setText("* Dữ liệu doanh thu của tháng, năm này rỗng!");
+//            jTextNam_Ngay.setText("");
+//            jTextNam_Ngay.setText("");
+//        }
+//        else
+//        {
+//            jpChart.setVisible(true);
+//            jLThongBao_Ngay.setText("");
+//            LineChart example = new LineChart(0, month , year, year);
+//            jpChart.add(example).setVisible(true);
+//            SetDataTableByDayNull();
+//            CreateDataTableByDay(month, year);
+//        }
+
         
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
+    private void jTextThang_NgayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextThang_NgayActionPerformed
         // TODO add your handling code here:
         
-    }//GEN-LAST:event_jTextField6ActionPerformed
+    }//GEN-LAST:event_jTextThang_NgayActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-        LineChart example = new LineChart(1, 0 , 2023, 2023);
-//        example.setVisible(true);
-//        example.setSize(400, 400);  
-        jpChart.removeAll();
-        jpChart.add(example).setVisible(true);
+//        int year = Integer.parseInt(jTextNam_Thang.getText());
+        SetDataTableByMonthNull();
+//        int year = 0;
+        String text = jTextNam_Thang.getText();
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+                try {
+                    int year = Integer.parseInt(text);
+//                    System.out.println("adsfadsfads" + year);
+                    if(year >= MinValueYear_BCDT && year <= currentYear)
+                    {
+                        jpChart.setVisible(true);
+                        LineChart example = new LineChart(1, 0 , year, year); 
+                        jpChart.removeAll();
+                        jpChart.add(example).setVisible(true);
+                        CreateDataTableByMonth(year);
+                        jl_ThongBao_Thang.setText("");
+                    }
+                    else
+                    {
+                        jpChart.setVisible(false);
+                        if(year > currentYear)
+                        {
+                            jl_ThongBao_Thang.setText("* Vui lòng nhập từ năm "+  currentYear + " trở về trước!");
+                            jTextNam_Thang.setText("");
+                        }
+                            
+                        else
+                        {
+                            jl_ThongBao_Thang.setText("Vui lòng nhập từ năm " + MinValueYear_BCDT +"!");
+                            jTextNam_Thang.setText("");
+                        }
+                            
+                    }
+                    // Số hợp lệ, xử lý tại đây
+                } catch (NumberFormatException ex) {
+                    // Không phải số, xử lý tại đây
+                    jpChart.setVisible(false);
+                    jl_ThongBao_Thang.setText("* Vui lòng nhập năm hợp lệ!");
+                    jTextNam_Thang.setText("");
+                }
+        
+
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
@@ -692,6 +853,7 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton7;
+    private javax.swing.JLabel jLThongBao_Ngay;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -712,15 +874,16 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField11;
-    private javax.swing.JTextField jTextField12;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
+    private javax.swing.JTextField jTextNam1_Nam;
+    private javax.swing.JTextField jTextNam2_Nam;
+    private javax.swing.JTextField jTextNam_Ngay;
+    private javax.swing.JTextField jTextNam_Thang;
+    private javax.swing.JTextField jTextThang_Ngay;
     private javax.swing.JComboBox<String> jcbStatistics;
+    private javax.swing.JLabel jl_ThongBao_Thang;
     private javax.swing.JDesktopPane jpChart;
     private javax.swing.JPanel jpStatisticsByDay;
     private javax.swing.JPanel jpStatisticsByMonth;

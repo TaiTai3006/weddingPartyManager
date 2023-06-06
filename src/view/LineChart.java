@@ -8,14 +8,26 @@ import dao.ChiTietBaoCaoDAO;
 import dao.BaoCaoDoanhThuDAO;
 import java.awt.Color;
 import java.util.ArrayList;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import model.ChiTietBaoCao;
 import model.BaoCaoDoanhThu;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.labels.ItemLabelAnchor;
+import org.jfree.chart.labels.ItemLabelPosition;
+import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PiePlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.ui.TextAnchor;
+import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
@@ -37,42 +49,155 @@ public class LineChart extends javax.swing.JInternalFrame {
             case 0:
             {
                 ArrayList<ChiTietBaoCao> ctbc = ChiTietBaoCaoDAO.getInstance().SelectByMonth(month, year);
-                DefaultPieDataset dataset = new DefaultPieDataset();
-
-                for(ChiTietBaoCao a0 : ctbc)
+                
+                if(ctbc.size() <= 10)
                 {
-                    System.out.println("abc: "+a0.getNgay().substring(a0.getNgay().length()-2));
-//                    dataset.addValue(a0.getDoanhThu()/1000000, "Thang 3", a0.getNgay().substring(a0.getNgay().length()-2));
-                    dataset.setValue("Ngày " + a0.getNgay().substring(a0.getNgay().length()-2), new Double(a0.getTiLe()*100));
-                }
 
-                JFreeChart chart = ChartFactory.createPieChart(
-                        "", dataset, true, true, false);
-                PiePlot plot = (PiePlot) chart.getPlot();
-                plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0}: ({2})"));
-                plot.setLabelBackgroundPaint(Color.PINK);
-                ChartPanel panel = new ChartPanel(chart);  
-                setContentPane(panel);
+                    DefaultPieDataset dataset = new DefaultPieDataset();
+                    for(ChiTietBaoCao a0 : ctbc)
+                    {   
+                        dataset.setValue("Ngày " + a0.getNgay().substring(a0.getNgay().length()-2), new Double(a0.getTiLe()*100));
+                    }
+                    JFreeChart chart = ChartFactory.createPieChart(
+                            "", dataset, true, true, false);
+                    PiePlot plot = (PiePlot) chart.getPlot();
+                    plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0}: ({2})"));
+                    plot.setLabelBackgroundPaint(Color.PINK);
+                    ChartPanel panel = new ChartPanel(chart);  
+                    setContentPane(panel);
+
+                }
+                else
+                {
+                    final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+                    for(ChiTietBaoCao a0 : ctbc)
+                    {
+                        dataset.addValue( Math.round(a0.getTiLe()*100*10)/10.0 , "Chi tiet bao cao", a0.getNgay().substring(a0.getNgay().length()-2));
+                    }
+                    JFreeChart barChart = ChartFactory.createBarChart(
+                    "",
+                    "Tháng", "Doanh thu (Triệu)",
+                    dataset, PlotOrientation.VERTICAL, false, false, false);
+
+                    CategoryPlot plot = barChart.getCategoryPlot();
+                    plot.setBackgroundPaint(new java.awt.Color(215, 212, 212));
+                    
+                    // Tăng kích thước khung plot
+                    plot.setInsets(new org.jfree.chart.ui.RectangleInsets(0, -5, 0, 0));
+
+    //                BarRenderer renderer = (BarRenderer) plot.getRenderer();
+
+    //                double max = getMaxValue(dataset);
+                    double max = 0;
+                    int rowCount = dataset.getRowCount();
+                    int columnCount = dataset.getColumnCount();
+
+                    for (int column = 0; column < columnCount; column++) {
+                        double value = dataset.getValue(0, column).doubleValue();
+                        if (value > max) {
+                            max = value;
+                        }
+                    }
+
+    //                // Tăng giới hạn giá trị của trục tung
+                    ValueAxis rangeAxis = plot.getRangeAxis();
+                    if(max == 0)
+                        rangeAxis.setRange(0, 1);
+                    else
+                        rangeAxis.setRange(0, max*1.1);
+                    
+                    CategoryAxis domainAxis = plot.getDomainAxis();
+//                    domainAxis.setLowerMargin(1.02); // Giảm 10% độ dài trục bên trái
+//                    domainAxis.setUpperMargin(1.02);
+
+                    BarRenderer renderer = (BarRenderer) plot.getRenderer();
+                    renderer.setDefaultItemLabelGenerator(new StandardCategoryItemLabelGenerator());
+                    renderer.setDefaultItemLabelsVisible(true);
+                    renderer.setSeriesPaint(0, new java.awt.Color(18,98,207));
+
+                    ChartPanel panel = new ChartPanel(barChart);
+                    setContentPane(panel);
+                }
+                
                 
                 break;
             }
             case 1:
             {
-                ArrayList<BaoCaoDoanhThu> bcdt = BaoCaoDoanhThuDAO.getInstance().SelectByYear(2023);
-                DefaultPieDataset dataset = new DefaultPieDataset();
-                for(BaoCaoDoanhThu a0 : bcdt)
-                {
-//                    dataset.addValue(a0.getDoanhThu()/1000000, "Thang 3", a0.getNgay().substring(a0.getNgay().length()-2));
-                    dataset.setValue("Tháng " + a0.getThang(), new Double(a0.getTongDoanhThu()/a0.getTongThang()*100));
-                }
+                ArrayList<BaoCaoDoanhThu> bcdt = BaoCaoDoanhThuDAO.getInstance().SelectByYear(year);
+//                DefaultPieDataset dataset = new DefaultPieDataset();
+//                for(BaoCaoDoanhThu a0 : bcdt)
+//                {
+////                    dataset.addValue(a0.getDoanhThu()/1000000, "Thang 3", a0.getNgay().substring(a0.getNgay().length()-2));
+//                    dataset.setValue("Tháng " + a0.getThang(), new Double(a0.getTongDoanhThu()/a0.getTongThang()*100));
+//                }
+//
+//                JFreeChart chart = ChartFactory.createPieChart(
+//                        "", dataset, true, true, false);
+//                PiePlot plot = (PiePlot) chart.getPlot();
+//                plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0}: ({2})"));
+//                plot.setLabelBackgroundPaint(Color.PINK);
+//                ChartPanel panel = new ChartPanel(chart);  
+//                setContentPane(panel);
+                final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+                int MonthValue = 1;
+                System.out.println("Số phần tử: " + bcdt.size());
+                if(bcdt.size() == 0)
+                    for(int i = 1; i < 13; i++)
+                    {
+                        dataset.addValue(0.0, "Bao cao thang", String.valueOf(i));
+                    }
+                else                    
+                    for(BaoCaoDoanhThu a0 : bcdt)
+                    {
+                        System.out.println("TEst: " + String.valueOf(a0.getThang()));
+                        while(MonthValue != a0.getThang() && MonthValue <= 12)
+                        {
+                            dataset.addValue(0.0, "Bao cao thang", String.valueOf(MonthValue));
+                            MonthValue++;
+                        }
+                        dataset.addValue(a0.getTongDoanhThu()/1000000.0, "Bao cao thang", String.valueOf(a0.getThang()));
+                        MonthValue++;
+                    }                
+                JFreeChart barChart = ChartFactory.createBarChart(
+                "",
+                "Tháng", "Doanh thu (Triệu)",
+                dataset, PlotOrientation.VERTICAL, false, false, false);
 
-                JFreeChart chart = ChartFactory.createPieChart(
-                        "", dataset, true, true, false);
-                PiePlot plot = (PiePlot) chart.getPlot();
-                plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0}: ({2})"));
-                plot.setLabelBackgroundPaint(Color.PINK);
-                ChartPanel panel = new ChartPanel(chart);  
+                CategoryPlot plot = barChart.getCategoryPlot();
+                plot.setBackgroundPaint(new java.awt.Color(215, 212, 212));
+                
+//                BarRenderer renderer = (BarRenderer) plot.getRenderer();
+
+//                double max = getMaxValue(dataset);
+                double max = 0;
+                int rowCount = dataset.getRowCount();
+                int columnCount = dataset.getColumnCount();
+
+                for (int column = 0; column < columnCount; column++) {
+                    double value = dataset.getValue(0, column).doubleValue();
+                    if (value > max) {
+                        max = value;
+                    }
+                }
+                
+//                // Tăng giới hạn giá trị của trục tung
+                ValueAxis rangeAxis = plot.getRangeAxis();
+                if(max == 0)
+                    rangeAxis.setRange(0, 1);
+                else
+                    rangeAxis.setRange(0, max*1.1);
+
+                BarRenderer renderer = (BarRenderer) plot.getRenderer();
+                renderer.setDefaultItemLabelGenerator(new StandardCategoryItemLabelGenerator());
+                renderer.setDefaultItemLabelsVisible(true);
+                renderer.setSeriesPaint(0, new java.awt.Color(18,98,207));
+                
+                ChartPanel panel = new ChartPanel(barChart);
                 setContentPane(panel);
+                
+                
+                
                 break;
             }
             case 2:
@@ -98,6 +223,14 @@ public class LineChart extends javax.swing.JInternalFrame {
                 throw new AssertionError();
         }
     }
+    
+    public void Message(String message, int messageType) {
+        JOptionPane jOptionPane = new JOptionPane(message, messageType);
+        JDialog dialog = jOptionPane.createDialog(null, "Message");
+        dialog.setAlwaysOnTop(true);
+        dialog.setVisible(true);
+    }
+    
     public LineChart() {
         initComponents();
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -115,7 +248,7 @@ public class LineChart extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         setBackground(new java.awt.Color(255, 255, 255));
-        setPreferredSize(new java.awt.Dimension(595, 320));
+        setPreferredSize(new java.awt.Dimension(635, 320));
         setRequestFocusEnabled(false);
         setVerifyInputWhenFocusTarget(false);
 
@@ -132,6 +265,10 @@ public class LineChart extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private double getMaxValue(DefaultCategoryDataset dataset) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
