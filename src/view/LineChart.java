@@ -202,20 +202,78 @@ public class LineChart extends javax.swing.JInternalFrame {
             }
             case 2:
             {
-                ArrayList<BaoCaoDoanhThu> bcdt = BaoCaoDoanhThuDAO.getInstance().SelectByFromY1toY2(2023, 2024);
-                DefaultPieDataset dataset = new DefaultPieDataset();
-                for(BaoCaoDoanhThu a0 : bcdt)
+                ArrayList<BaoCaoDoanhThu> bcdt = BaoCaoDoanhThuDAO.getInstance().SelectByFromY1toY2(year, year1);
+                final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+                if(bcdt.size() == 0)
+                    for(int i = year; i < year1; i++)
+                    {
+                        dataset.addValue(0.0, "Bao cao nam", String.valueOf(i));
+                    }
+                else
                 {
-//                    dataset.addValue(a0.getDoanhThu()/1000000, "Thang 3", a0.getNgay().substring(a0.getNgay().length()-2));
-                    dataset.setValue("Năm " + a0.getNam(), new Double(a0.getTongDoanhThu()/a0.getTongNam()*100));
+                    for(int i=year; i<=year1;i++)
+                    {
+                        for(BaoCaoDoanhThu a0 : bcdt)
+                        {
+                            while(i != a0.getNam() && i <= year1)
+                            {
+                                dataset.addValue(0.0, "Bao cao nam", String.valueOf(i));
+                                i++;
+                            }
+                            dataset.addValue(a0.getTongNam()/1000000.0, "Bao cao nam", String.valueOf(a0.getNam()));
+                            i++;
+                        }
+                        if(i<=year1)
+                            dataset.addValue(0.0, "Bao cao nam", String.valueOf(i));
+                    }
+//                    for(BaoCaoDoanhThu a0 : bcdt)
+//                    {
+////                        System.out.println("TEst: " + String.valueOf(a0.getNam()));
+//                        while(yearValue != a0.getNam() && yearValue <= year1)
+//                        {
+////                            System.out.println("TEst for: " + String.valueOf(yearValue));
+//                            dataset.addValue(0.0, "Bao cao nam", String.valueOf(yearValue));
+//                            yearValue++;
+//                        }
+//                        dataset.addValue(a0.getTongNam()/1000000.0, "Bao cao nam", String.valueOf(a0.getNam()));
+//                        yearValue++;
+//                    }
                 }
+                JFreeChart barChart = ChartFactory.createBarChart(
+                "",
+                "Năm", "Doanh thu (Triệu)",
+                dataset, PlotOrientation.VERTICAL, false, false, false);
 
-                JFreeChart chart = ChartFactory.createPieChart(
-                        "", dataset, true, true, false);
-                PiePlot plot = (PiePlot) chart.getPlot();
-                plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0}: ({2})"));
-                plot.setLabelBackgroundPaint(Color.PINK);
-                ChartPanel panel = new ChartPanel(chart);  
+                CategoryPlot plot = barChart.getCategoryPlot();
+                plot.setBackgroundPaint(new java.awt.Color(215, 212, 212));
+                
+//                BarRenderer renderer = (BarRenderer) plot.getRenderer();
+
+//                double max = getMaxValue(dataset);
+                double max = 0;
+                int rowCount = dataset.getRowCount();
+                int columnCount = dataset.getColumnCount();
+
+                for (int column = 0; column < columnCount; column++) {
+                    double value = dataset.getValue(0, column).doubleValue();
+                    if (value > max) {
+                        max = value;
+                    }
+                }
+                
+//                // Tăng giới hạn giá trị của trục tung
+                ValueAxis rangeAxis = plot.getRangeAxis();
+                if(max == 0)
+                    rangeAxis.setRange(0, 1);
+                else
+                    rangeAxis.setRange(0, max*1.1);
+
+                BarRenderer renderer = (BarRenderer) plot.getRenderer();
+                renderer.setDefaultItemLabelGenerator(new StandardCategoryItemLabelGenerator());
+                renderer.setDefaultItemLabelsVisible(true);
+                renderer.setSeriesPaint(0, new java.awt.Color(18,98,207));
+                
+                ChartPanel panel = new ChartPanel(barChart);
                 setContentPane(panel);
                 break;
             }               

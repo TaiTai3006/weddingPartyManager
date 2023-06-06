@@ -101,15 +101,15 @@ public class BaoCaoDoanhThuDAO {
             
             st.setInt(1, year1);
             st.setInt(2, year2);
-            st.setInt(3, year1);
-            st.setInt(4, year2);
+//            st.setInt(3, year1);
+//            st.setInt(4, year2);
             
             ResultSet kq = st.executeQuery();
 
 
             while (kq.next()) {
                 lstChiTietBaoCao.add(new BaoCaoDoanhThu("", 0,  kq.getInt("nam"),
-                        kq.getDouble("tongDoanhThuNam"), 0, kq.getDouble("Sum_tongDoanhThu")));
+                        kq.getDouble("tongDoanhThuNam"), 0, kq.getDouble("tongDoanhThuNam")));
             }
             JDBCUtil.closeConnection(con);
         } catch (Exception ex) {

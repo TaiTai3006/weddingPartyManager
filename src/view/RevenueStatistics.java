@@ -172,6 +172,7 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
         jLabel20 = new javax.swing.JLabel();
         jTextNam2_Nam = new javax.swing.JTextField();
         jButton7 = new javax.swing.JButton();
+        jL_ThongBao_Nam = new javax.swing.JLabel();
         jpChart = new javax.swing.JDesktopPane();
 
         addForm.setMinimumSize(new java.awt.Dimension(531, 490));
@@ -500,6 +501,8 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
             }
         });
 
+        jL_ThongBao_Nam.setForeground(new java.awt.Color(255, 0, 0));
+
         javax.swing.GroupLayout jpStatisticsByYearLayout = new javax.swing.GroupLayout(jpStatisticsByYear);
         jpStatisticsByYear.setLayout(jpStatisticsByYearLayout);
         jpStatisticsByYearLayout.setHorizontalGroup(
@@ -511,9 +514,10 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
                     .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jpStatisticsByYearLayout.createSequentialGroup()
-                        .addGap(115, 115, 115)
+                        .addGap(116, 116, 116)
                         .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(194, Short.MAX_VALUE))
+                .addContainerGap(113, Short.MAX_VALUE))
+            .addComponent(jL_ThongBao_Nam, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jpStatisticsByYearLayout.setVerticalGroup(
             jpStatisticsByYearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -526,9 +530,11 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
                 .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextNam2_Nam, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jL_ThongBao_Nam, javax.swing.GroupLayout.DEFAULT_SIZE, 16, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jLayeredPane1.setLayer(jpStatisticsByDay, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -812,7 +818,7 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
                         jpChart.setVisible(false);
                         if(year > currentYear)
                         {
-                            jl_ThongBao_Thang.setText("* Vui lòng nhập từ năm "+  currentYear + " trở về trước!");
+                            jl_ThongBao_Thang.setText("* Vui lòng nhập từ năm  "+  currentYear + " trở về trước!");
                             jTextNam_Thang.setText("");
                         }
                             
@@ -836,11 +842,57 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-        LineChart example = new LineChart(2, 0 , 2023, 2023);
-//        example.setVisible(true);
-//        example.setSize(400, 400);  
-        jpChart.removeAll();
-        jpChart.add(example).setVisible(true);
+        SetDataTableByYearNull();
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        String textYear1 = jTextNam1_Nam.getText();
+        String textYear2 = jTextNam2_Nam.getText();
+        
+        try {
+            int year1 = Integer.parseInt(textYear1);
+            int year2 = Integer.parseInt(textYear2);
+            if(year2 - year1 >= 1)
+            {
+                if(year1 < MinValueYear_BCDT || year2 > currentYear + 4)
+                {
+                    jpChart.setVisible(false);
+                    jL_ThongBao_Nam.setText("Vui lòng nhập từ năm " + MinValueYear_BCDT + " đến tối đa hơn 4 năm hiện tại!");
+                    jTextNam1_Nam.setText("");
+                    jTextNam2_Nam.setText("");
+                }
+                else
+                {
+                    jL_ThongBao_Nam.setText("");
+                    jpChart.setVisible(true);
+                    LineChart example = new LineChart(2, 0 , year1, year2);  
+                    jpChart.removeAll();
+                    jpChart.add(example).setVisible(true);
+                }
+            }
+            else
+            {
+                jpChart.setVisible(false);
+                if(year1 < MinValueYear_BCDT && year2 < currentYear + 5)
+                {
+                    jL_ThongBao_Nam.setText("Vui lòng nhập từ năm " + MinValueYear_BCDT + " đến tối đa hơn 4 năm hiện tại!");
+                    jTextNam1_Nam.setText("");
+                    jTextNam2_Nam.setText("");
+                }
+                else
+                {
+                    jL_ThongBao_Nam.setText("Vui lòng nhập đúng khoảng cách năm");
+                    jTextNam1_Nam.setText("");
+                    jTextNam2_Nam.setText("");
+                }                
+            }
+//                  
+                    // Số hợp lệ, xử lý tại đây
+        } catch (NumberFormatException ex) {
+            // Không phải số, xử lý tại đây
+            jpChart.setVisible(false);
+            jL_ThongBao_Nam.setText("* Vui lòng nhập năm hợp lệ!");
+            jTextNam1_Nam.setText("");
+            jTextNam2_Nam.setText("");
+        }
     }//GEN-LAST:event_jButton7ActionPerformed
 
 
@@ -854,6 +906,7 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLThongBao_Ngay;
+    private javax.swing.JLabel jL_ThongBao_Nam;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
