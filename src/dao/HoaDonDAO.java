@@ -124,8 +124,8 @@ public class HoaDonDAO implements DAOInterface<HoaDon> {
         try {
             Connection con = JDBCUtil.getConnection();
 
-            String sql = "SELECT * FROM PhieuDatTiecCuoi, HoaDon, NhanVien WHERE PhieuDatTiecCuoi.maTiecCuoi = HoaDon.maTiecCuoi"
-                                                                                 + " AND NhanVien.userName = HoaDon.userName ";
+            String sql = "SELECT * FROM PhieuDatTiecCuoi, HoaDon, TaiKhoan WHERE PhieuDatTiecCuoi.maTiecCuoi = HoaDon.maTiecCuoi"
+                                                                                 + " AND TaiKhoan.userName = HoaDon.userName ";
 
             PreparedStatement st = con.prepareStatement(sql);
 

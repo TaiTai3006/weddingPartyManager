@@ -35,7 +35,7 @@ public class NhanVienDAO implements DAOInterface<NhanVien> {
     public int Insert(NhanVien t) {
         try {
             Connection con = JDBCUtil.getConnection();
-            String sql = "INSERT INTO NhanVien (userName, passWord, maChucVu) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO TaiKhoan (userName, passWord, maChucVu) VALUES (?, ?, ?)";
 
             PreparedStatement st = con.prepareStatement(sql);
 
@@ -69,7 +69,7 @@ public class NhanVienDAO implements DAOInterface<NhanVien> {
         try {
             Connection con = JDBCUtil.getConnection();
 
-            String sql = "DELETE FROM NhanVien WHERE userName = ?";
+            String sql = "DELETE FROM TaiKhoan WHERE userName = ?";
 
             PreparedStatement st = con.prepareStatement(sql);
 
@@ -96,7 +96,7 @@ public class NhanVienDAO implements DAOInterface<NhanVien> {
         try {
             Connection con = JDBCUtil.getConnection();
 
-            String sql = "UPDATE NhanVien SET maChucVu = ? WHERE userName = ?";
+            String sql = "UPDATE TaiKhoan SET maChucVu = ? WHERE userName = ?";
 
             PreparedStatement st = con.prepareStatement(sql);
 
@@ -125,7 +125,7 @@ public class NhanVienDAO implements DAOInterface<NhanVien> {
         try {
             Connection con = JDBCUtil.getConnection();
 
-            String sql = "SELECT * FROM NhanVien, ChucVu WHERE NhanVien.maChucVu = ChucVu.maChucVu";
+            String sql = "SELECT * FROM TaiKhoan, ChucVu WHERE TaiKhoan.maChucVu = ChucVu.maChucVu";
 
             PreparedStatement st = con.prepareStatement(sql);
 
