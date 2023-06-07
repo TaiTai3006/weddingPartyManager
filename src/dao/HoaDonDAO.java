@@ -11,6 +11,8 @@ import database.JDBCUtil;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -23,15 +25,16 @@ public class HoaDonDAO implements DAOInterface<HoaDon> {
 
     @Override
     public int Insert(HoaDon t) {
+        DateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
             Connection con = JDBCUtil.getConnection();
-            
-            String sql = "INSERT INTO HoaDon (maHoaDon, maTiecCuoi, ngayThanhToan, tongTienDichVu, tienPhat, tongTienHoaDon, conLai, userName) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            System.out.println(t.getNgayThanhToan());
+            String sql = "INSERT INTO HoaDon (maHoaDon, maTiecCuoi, ngayThanhToan, tongTienDichVu, tienPhat, tongTienHoaDon, conLai, userName) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, t.getMaHoaDon());
             st.setString(2, t.getMaTiecCuoi());
-            st.setDate(3, (java.sql.Date) t.getNgayThanhToan());
+            st.setString(3, outputDateFormat.format(t.getNgayThanhToan()));
             st.setDouble(4, t.getTongTienDichVu());
             st.setDouble(5, t.getTienPhat());
             st.setDouble(6, t.getTongTienHoaDon());
