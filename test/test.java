@@ -6,9 +6,11 @@ import dao.CaDAO;
 import dao.LoaiSanhDAO;
 import dao.NhanVienDAO;
 import database.JDBCUtil;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,16 +55,17 @@ public class test {
 
         
         try {
-            Hashtable map = new Hashtable();
-            JasperReport rpt = JasperCompileManager.compileReport("src/report/rptPhieuDatTiec.jrxml");
-            Connection con = JDBCUtil.getConnection();
-            map.put("maTiecCuoi", "TC0010");
-            JasperPrint p = JasperFillManager.fillReport(rpt, map, con);
-            JasperViewer.viewReport(p,false);
-            
-        } catch (JRException ex) {
-            Logger.getLogger(test.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("test.main()");
-        }
+                HashMap<String, Object> map = new HashMap<>();
+                Connection con = JDBCUtil.getConnection();
+                map.put("maTiecCuoi", "TC0001");
+                
+                JasperPrint p = JasperFillManager.fillReport("src/report/rptPhieuDatTiec.jasper", map, con);
+                JasperViewer v = new JasperViewer(p, false);
+                v.setVisible(true);
+
+            } catch (JRException ex) {
+                System.out.println(ex);
+
+            }
     }
 }

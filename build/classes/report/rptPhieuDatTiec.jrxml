@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b7350a61-b25b-4d73-b9ed-30aa4a9ab39c">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="167"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="maTiecCuoi" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -106,7 +106,7 @@
 		<band height="90" splitType="Stretch">
 			<image>
 				<reportElement x="0" y="0" width="104" height="85" uuid="96c29c91-3ff0-4c70-b66d-552b66cf867c"/>
-				<imageExpression><![CDATA["/Users/macbookpro/UIT/Logo_UIT_updated.jpg"]]></imageExpression>
+				<imageExpression><![CDATA["../img/Logo.jpg"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="114" y="0" width="231" height="20" uuid="262fc613-35f3-4a4b-9eaf-a2ff01a2790c"/>
