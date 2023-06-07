@@ -3171,6 +3171,13 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             }
             if (kq != 0) {
                 Message("Thanh toán thành công.", JOptionPane.CLOSED_OPTION);
+                Page1.setVisible(true);
+                ReloadDataTable();
+                PageTTHDTT.setVisible(false);
+                PageTTHDH.setVisible(false);
+                PageThongTinDT.setVisible(false);
+                PageXNDV.setVisible(false);
+                TienMatForm.setVisible(false);
             } else {
                 Message("Lỗi!", JOptionPane.ERROR_MESSAGE);
             }
