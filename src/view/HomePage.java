@@ -4,6 +4,7 @@
  */
 package view;
 
+import java.util.Date;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
@@ -11,7 +12,7 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  * @author macbookpro
  */
 public class HomePage extends javax.swing.JInternalFrame {
-
+private Date today;
     /**
      * Creates new form HomePage
      */
@@ -23,6 +24,8 @@ public class HomePage extends javax.swing.JInternalFrame {
         home.setVisible(true);
         pageXemPhanCong.setVisible(false);
         pagePhanCong.setVisible(false);
+        today = calendar.getDate();
+        
     }
 
     /**
@@ -41,7 +44,7 @@ public class HomePage extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jComboBox1 = new javax.swing.JComboBox<>();
-        jCalendar1 = new com.toedter.calendar.JCalendar();
+        calendar = new com.toedter.calendar.JCalendar();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
@@ -153,10 +156,10 @@ public class HomePage extends javax.swing.JInternalFrame {
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
-        jCalendar1.setBackground(new java.awt.Color(255, 255, 255));
-        jCalendar1.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+        calendar.setBackground(new java.awt.Color(255, 255, 255));
+        calendar.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                jCalendar1PropertyChange(evt);
+                calendarPropertyChange(evt);
             }
         });
 
@@ -224,7 +227,7 @@ public class HomePage extends javax.swing.JInternalFrame {
                     .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCalendar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(calendar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -237,7 +240,7 @@ public class HomePage extends javax.swing.JInternalFrame {
                         .addComponent(jLabel1))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homeLayout.createSequentialGroup()
                         .addGap(85, 85, 85)
-                        .addComponent(jCalendar1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(calendar, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -768,7 +771,7 @@ public class HomePage extends javax.swing.JInternalFrame {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addComponent(home, javax.swing.GroupLayout.PREFERRED_SIZE, 736, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 6, Short.MAX_VALUE)))
+                    .addGap(0, 0, Short.MAX_VALUE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -791,21 +794,21 @@ public class HomePage extends javax.swing.JInternalFrame {
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jCheckBox1ActionPerformed
-
-    private void jCalendar1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jCalendar1PropertyChange
+    private int i = 0;
+    private void calendarPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_calendarPropertyChange
         // TODO add your handling code here:
-        System.out.println("view.HomePage.jCalendar1PropertyChange()");
-    }//GEN-LAST:event_jCalendar1PropertyChange
+        System.out.println(calendar.getDate() + " "+ (++i));
+    }//GEN-LAST:event_calendarPropertyChange
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.toedter.calendar.JCalendar calendar;
     private javax.swing.JPanel home;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private com.toedter.calendar.JCalendar jCalendar1;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
