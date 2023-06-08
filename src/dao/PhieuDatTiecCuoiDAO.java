@@ -118,6 +118,30 @@ public class PhieuDatTiecCuoiDAO implements DAOInterface<PhieuDatTiecCuoi>{
         return 0 ;
     }
     
+    public ArrayList<PhieuDatTiecCuoi> SelectById(String id) {
+        ArrayList<PhieuDatTiecCuoi> lstTiecCuoi = new ArrayList<PhieuDatTiecCuoi>();
+        try {
+            Connection con = JDBCUtil.getConnection();
+
+            String sql = "SELECT * FROM PhieuDatTiecCuoi WHERE PhieuDatTiecCuoi.maTiecCuoi = ?";
+
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, id);
+            ResultSet kq = st.executeQuery();
+
+            while (kq.next()) {
+                lstTiecCuoi.add(new PhieuDatTiecCuoi(kq.getString("maTiecCuoi"), kq.getString("ngayDat"), kq.getString("ngayDaiTiec"),
+                        kq.getInt("soLuongBan"),  kq.getInt("soLuongBanDuTru"), kq.getLong("donGiaBan"), kq.getLong("tongTienBan"), 
+                        kq.getLong("tongTienDichVu"), kq.getLong("tongTienDatTiec"), kq.getLong("tienDatCoc"), kq.getLong("conLai"), 
+                        kq.getString("tenCoDau"), kq.getString("tenChuRe"), kq.getString("sdt"), kq.getString("maCa"), kq.getString("maSanh"), kq.getString("userName")));
+            }
+            JDBCUtil.closeConnection(con);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return lstTiecCuoi;
+    }
+    
     @Override
     public int Delete(PhieuDatTiecCuoi t) {
      
