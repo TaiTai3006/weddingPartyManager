@@ -156,7 +156,7 @@ public class StaffList extends javax.swing.JInternalFrame {
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(69, 96, 134));
-        jLabel3.setText("Thêm nhân viên ");
+        jLabel3.setText("Thêm tài khoản ");
 
         jLabel5.setFont(new java.awt.Font("SansSerif", 2, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(153, 153, 153));
@@ -484,7 +484,7 @@ public class StaffList extends javax.swing.JInternalFrame {
 
         jLabel13.setFont(new java.awt.Font("Arial", 1, 35)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(69, 96, 134));
-        jLabel13.setText("DANH SÁCH NHÂN VIÊN");
+        jLabel13.setText("DANH SÁCH TÀI KHOẢN");
         jPanel5.add(jLabel13);
 
         btnAddStaff.setBackground(new java.awt.Color(99, 122, 48));
@@ -751,25 +751,17 @@ public class StaffList extends javax.swing.JInternalFrame {
     private javax.swing.JButton BackPage3;
     private javax.swing.JDialog addForm;
     private javax.swing.JButton btnAdd;
-    private javax.swing.JButton btnAdd1;
     private javax.swing.JButton btnAddStaff;
     private javax.swing.JButton btnCancel;
-    private javax.swing.JButton btnCancel1;
     private javax.swing.JButton btnCancelUD;
     private javax.swing.JButton btnDeleteStaff;
     private javax.swing.JButton btnUpdateStaff;
     private javax.swing.JButton btnUpdateUD;
     private javax.swing.JComboBox<String> cbQuyenAdd;
-    private javax.swing.JComboBox<String> cbQuyenAdd1;
     private javax.swing.JComboBox<String> cbQuyenUD;
     private javax.swing.JCheckBox chkbReset;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel20;
@@ -787,13 +779,11 @@ public class StaffList extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblStaff;
     private javax.swing.JTextField txtSearch;
     private javax.swing.JTextField txtUserNameAdd;
-    private javax.swing.JTextField txtUserNameAdd1;
     private javax.swing.JTextField txtUserNameUD;
     private javax.swing.JDialog updateForm;
     // End of variables declaration//GEN-END:variables
