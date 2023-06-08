@@ -35,10 +35,10 @@ public class HoaDonDAO implements DAOInterface<HoaDon> {
             st.setString(1, t.getMaHoaDon());
             st.setString(2, t.getMaTiecCuoi());
             st.setString(3, outputDateFormat.format(t.getNgayThanhToan()));
-            st.setDouble(4, t.getTongTienDichVu());
-            st.setDouble(5, t.getTienPhat());
-            st.setDouble(6, t.getTongTienHoaDon());
-            st.setDouble(7, t.getConLai());
+            st.setLong(4, (long) t.getTongTienDichVu());
+            st.setLong(5, (long)t.getTienPhat());
+            st.setLong(6, (long) t.getTongTienHoaDon());
+            st.setLong(7, (long) t.getConLai());
             st.setString(8, t.getUserName());
             
             System.out.println(st);
