@@ -23,6 +23,9 @@ public class Dashboard extends javax.swing.JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
         
+        jDesktopPane1.removeAll();
+        jDesktopPane1.add(new HomePage()).setVisible(true);
+        
         DefaultColor = new Color(251,247,244);
         ClickedColor = new Color(238,230,226);
         
@@ -141,6 +144,9 @@ public class Dashboard extends javax.swing.JFrame {
 
         TrangChu.setBackground(new java.awt.Color(251, 247, 244));
         TrangChu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TrangChuMouseClicked(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 TrangChuMousePressed(evt);
             }
@@ -491,6 +497,12 @@ public class Dashboard extends javax.swing.JFrame {
         jDesktopPane1.removeAll();
         jDesktopPane1.add(revenueStatistics).setVisible(true);
     }//GEN-LAST:event_ThongKeMouseClicked
+
+    private void TrangChuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TrangChuMouseClicked
+        // TODO add your handling code here:
+        jDesktopPane1.removeAll();
+        jDesktopPane1.add(new HomePage()).setVisible(true);
+    }//GEN-LAST:event_TrangChuMouseClicked
 
     
     /**
