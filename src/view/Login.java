@@ -37,7 +37,10 @@ public class Login extends javax.swing.JFrame {
         txtfUserName.setText("phanphuoc");
         txtfPassword.setText("uit123");
     }
-
+    
+    public String getUsername() {
+        return txtfUserName.getText();
+    }
     public void Message(String message, int messageType) {
         JOptionPane jOptionPane = new JOptionPane(message, messageType);
         JDialog dialog = jOptionPane.createDialog(null, "Thông báo");

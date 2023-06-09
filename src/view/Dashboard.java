@@ -4,11 +4,18 @@ package view;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
+import dao.NhanVienDAO;
 import dao.ThamSoDAO;
 import java.awt.Color;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import model.NhanVien;
 import model.ThamSo;
 
 /**
@@ -16,12 +23,15 @@ import model.ThamSo;
  * @author macbookpro
  */
 public class Dashboard extends javax.swing.JFrame {
+
     boolean selected = true;
 
     /**
      * Creates new form Dashboard
      */
     Color DefaultColor, ClickedColor;
+
+    private Login lg = new Login();
 
     public Dashboard() {
         initComponents();
@@ -39,10 +49,11 @@ public class Dashboard extends javax.swing.JFrame {
         NhanVien.setBackground(DefaultColor);
         TaiKhoan.setBackground(DefaultColor);
         ThongKe.setBackground(DefaultColor);
-        
+
         jDesktopPane1.removeAll();
         jDesktopPane1.add(new HomePage()).setVisible(true);
 
+        txtfUsernameChange.setText(lg.getUsername());
     }
 
     /**
@@ -73,13 +84,15 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel19 = new javax.swing.JLabel();
         fieldTGDaiTiec = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
-        btnCancel1 = new javax.swing.JButton();
-        btnSaveChange1 = new javax.swing.JButton();
+        btnResetPW = new javax.swing.JButton();
+        btnSaveNewPW = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        txtfUsernameChange = new javax.swing.JTextField();
+        jLabel20 = new javax.swing.JLabel();
+        txtfConfirm = new javax.swing.JPasswordField();
+        txtfPasswordChange = new javax.swing.JPasswordField();
         jPanel1 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         TaiKhoan = new javax.swing.JPanel();
@@ -245,27 +258,58 @@ public class Dashboard extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Thay đổi quy định", jPanel3);
 
-        btnCancel1.setBackground(new java.awt.Color(69, 96, 134));
-        btnCancel1.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        btnCancel1.setForeground(new java.awt.Color(255, 255, 255));
-        btnCancel1.setText("Hủy");
-        btnCancel1.setAutoscrolls(true);
+        jPanel5.setBackground(new java.awt.Color(238, 230, 226));
 
-        btnSaveChange1.setBackground(new java.awt.Color(132, 70, 133));
-        btnSaveChange1.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        btnSaveChange1.setForeground(new java.awt.Color(255, 255, 255));
-        btnSaveChange1.setText("Lưu");
+        btnResetPW.setBackground(new java.awt.Color(69, 96, 134));
+        btnResetPW.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        btnResetPW.setForeground(new java.awt.Color(255, 255, 255));
+        btnResetPW.setText("Làm mới");
+        btnResetPW.setAutoscrolls(true);
+        btnResetPW.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetPWActionPerformed(evt);
+            }
+        });
+
+        btnSaveNewPW.setBackground(new java.awt.Color(132, 70, 133));
+        btnSaveNewPW.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        btnSaveNewPW.setForeground(new java.awt.Color(255, 255, 255));
+        btnSaveNewPW.setText("Lưu");
+        btnSaveNewPW.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveNewPWActionPerformed(evt);
+            }
+        });
 
         jLabel15.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(69, 96, 134));
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel15.setText("Đổi mật khẩu");
 
-        jLabel16.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel16.setFont(new java.awt.Font("Arial", 2, 16)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(0, 0, 0));
         jLabel16.setText("Tên tài khoản");
 
-        jLabel17.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel17.setFont(new java.awt.Font("Arial", 2, 16)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(0, 0, 0));
         jLabel17.setText("Mật khẩu mới");
+
+        txtfUsernameChange.setEditable(false);
+        txtfUsernameChange.setBackground(new java.awt.Color(255, 230, 209));
+        txtfUsernameChange.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        txtfUsernameChange.setForeground(new java.awt.Color(0, 0, 0));
+
+        jLabel20.setFont(new java.awt.Font("Arial", 2, 16)); // NOI18N
+        jLabel20.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel20.setText("Xác nhận mật khẩu mới");
+
+        txtfConfirm.setBackground(new java.awt.Color(247, 235, 226));
+        txtfConfirm.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        txtfConfirm.setForeground(new java.awt.Color(0, 0, 0));
+
+        txtfPasswordChange.setBackground(new java.awt.Color(247, 235, 226));
+        txtfPasswordChange.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        txtfPasswordChange.setForeground(new java.awt.Color(0, 0, 0));
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -274,17 +318,22 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)
+                    .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(btnCancel1)
+                        .addComponent(btnResetPW, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSaveChange1))
+                        .addComponent(btnSaveNewPW, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField2))
+                    .addComponent(txtfUsernameChange)
+                    .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtfConfirm)
+                    .addComponent(txtfPasswordChange, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
+
+        jPanel5Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnResetPW, btnSaveNewPW});
+
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
@@ -292,18 +341,24 @@ public class Dashboard extends javax.swing.JFrame {
                 .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtfUsernameChange, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtfPasswordChange, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 190, Short.MAX_VALUE)
+                .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtfConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCancel1)
-                    .addComponent(btnSaveChange1))
+                    .addComponent(btnResetPW, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSaveNewPW))
                 .addContainerGap())
         );
+
+        jPanel5Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnResetPW, btnSaveNewPW});
 
         jTabbedPane1.addTab("Đổi mật khẩu", jPanel5);
 
@@ -816,6 +871,62 @@ public class Dashboard extends javax.swing.JFrame {
         jDesktopPane1.add(new HomePage()).setVisible(true);
     }//GEN-LAST:event_TrangChuMouseClicked
 
+    private void btnResetPWActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetPWActionPerformed
+        // TODO add your handling code here:
+        txtfUsernameChange.setText(lg.getUsername());
+        txtfPasswordChange.setText("");
+        txtfConfirm.setText("");
+    }//GEN-LAST:event_btnResetPWActionPerformed
+    // Chang password 
+    private ArrayList<NhanVien> lstTaiKhoan = NhanVienDAO.getInstance().SelectAll();
+
+    public void Message(String message, int messageType) {
+        JOptionPane jOptionPane = new JOptionPane(message, messageType);
+        JDialog dialog = jOptionPane.createDialog(null, "Message");
+        dialog.setAlwaysOnTop(true);
+        dialog.setVisible(true);
+    }
+
+    public static byte[] hashPassword(String password) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] encodedPassword = password.getBytes(StandardCharsets.UTF_8);
+        byte[] hashedPassword = digest.digest(encodedPassword);
+        return hashedPassword;
+    }
+
+    private void btnSaveNewPWActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveNewPWActionPerformed
+        // TODO add your handling code here:
+        String newPassword = txtfPasswordChange.getText();
+        String pwConfirm = txtfConfirm.getText();
+        if (!newPassword.equals(pwConfirm)) {
+            Message("Xác nhận mật khẩu chưa chính xác, vui lòng nhập lại", JOptionPane.ERROR_MESSAGE);
+            txtfPasswordChange.setText("");
+            txtfConfirm.setText("");
+        } else {
+            try {
+                byte[] hassMapPW = hashPassword(newPassword);
+                System.out.println(new String(hassMapPW));
+                int kq = 0;
+
+                for (NhanVien nv : lstTaiKhoan) {
+                    if (nv.getUserName().equals(lg.getUsername())) {
+                        kq = NhanVienDAO.getInstance().UpdatePassword(new NhanVien(nv.getUserName(), new String(hassMapPW), nv.getMaChucVu(), nv.getMaChucVu()));
+                    }
+                }
+
+                if (kq > 0) {
+                    Message("Đổi mật khẩu thành công!", JOptionPane.INFORMATION_MESSAGE);
+                    dialogThayDoiQuyDinh.setVisible(false);
+                } else {
+                    Message("Đổi mật khẩu thất bại!", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }//GEN-LAST:event_btnSaveNewPWActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -862,9 +973,9 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel TraCuu;
     private javax.swing.JPanel TrangChu;
     private javax.swing.JButton btnCancel;
-    private javax.swing.JButton btnCancel1;
+    private javax.swing.JButton btnResetPW;
     private javax.swing.JButton btnSaveChange;
-    private javax.swing.JButton btnSaveChange1;
+    private javax.swing.JButton btnSaveNewPW;
     private javax.swing.JCheckBox checkPhat;
     private javax.swing.JDialog dialogThayDoiQuyDinh;
     private javax.swing.JTextField fieldTGChiuPhat;
@@ -882,6 +993,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -896,10 +1008,11 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JButton showDialog;
     private javax.swing.JSpinner tileCoc;
     private javax.swing.JSpinner tilePhat;
+    private javax.swing.JPasswordField txtfConfirm;
+    private javax.swing.JPasswordField txtfPasswordChange;
+    private javax.swing.JTextField txtfUsernameChange;
     // End of variables declaration//GEN-END:variables
 }

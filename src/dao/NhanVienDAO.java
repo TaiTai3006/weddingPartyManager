@@ -41,7 +41,7 @@ public class NhanVienDAO implements DAOInterface<NhanVien> {
 
             String password = "uit123";
             byte[] hashedPassword = hashPassword(password);
-            
+
             st.setString(1, t.getUserName());
             st.setString(2, new String(hashedPassword));
             st.setString(3, t.getMaChucVu());
@@ -101,6 +101,33 @@ public class NhanVienDAO implements DAOInterface<NhanVien> {
             PreparedStatement st = con.prepareStatement(sql);
 
             st.setString(1, t.getMaChucVu());
+            st.setString(2, t.getUserName());
+
+            int kq = st.executeUpdate();
+
+            if (kq > 0) {
+                System.out.println("Cap nhat du lieu thanh cong!");
+            } else {
+                System.out.println("Cap nhat du lieu that bai!");
+            }
+
+            JDBCUtil.closeConnection(con);
+            return kq;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int UpdatePassword(NhanVien t) {
+        try {
+            Connection con = JDBCUtil.getConnection();
+
+            String sql = "UPDATE TaiKhoan SET password = ? WHERE userName = ?";
+
+            PreparedStatement st = con.prepareStatement(sql);
+
+            st.setString(1, t.getPassWord());
             st.setString(2, t.getUserName());
 
             int kq = st.executeUpdate();
