@@ -16,13 +16,7 @@ import model.ThamSo;
  * @author macbookpro
  */
 public class Dashboard extends javax.swing.JFrame {
-
-    public void Message(String message, int messageType) {
-        JOptionPane jOptionPane = new JOptionPane(message, messageType);
-        JDialog dialog = jOptionPane.createDialog(null, "Message");
-        dialog.setAlwaysOnTop(true);
-        dialog.setVisible(true);
-    }
+    boolean selected = true;
 
     /**
      * Creates new form Dashboard
@@ -770,12 +764,13 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void showDialogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showDialogActionPerformed
         // TODO add your handling code here:
+        boolean isPhat = ThamSoDAO.getInstance().isPhat();
         int tgDatTiec = ThamSoDAO.getInstance().GetThoiGianDatTiec();
         double tilePhatData = ThamSoDAO.getInstance().GetTyLePhat();
         double tileCocData = ThamSoDAO.getInstance().GetTyLeCoc();
         int tgChiuPhat = ThamSoDAO.getInstance().GetThoiGianPhat();
 
-        checkPhat.setSelected(true);
+        checkPhat.setSelected(isPhat);
         tileCoc.setValue(tileCocData);
         tilePhat.setValue(tilePhatData);
         fieldTGChiuPhat.setText(String.valueOf(tgChiuPhat));
@@ -787,19 +782,19 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void checkPhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkPhatActionPerformed
         // TODO add your handling code here:
-        boolean selected = checkPhat.isSelected();
+        selected = checkPhat.isSelected();
         System.out.println(selected);
     }//GEN-LAST:event_checkPhatActionPerformed
 
     private void btnSaveChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveChangeActionPerformed
         // TODO add your handling code here:
         try {
-//            ThamSoDAO.getInstance().Update(checkPhat.isSelected(), Double.parseDouble(String.valueOf(tilePhat.getValue())), Double.parseDouble(String.valueOf(tileCoc.getValue())), Integer.parseInt(fieldTGChiuPhat.getText()), Integer.parseInt(fieldTGDaiTiec.getText()));
+            ThamSoDAO.getInstance().Update(selected, Double.parseDouble(String.valueOf(tilePhat.getValue())), Double.parseDouble(String.valueOf(tileCoc.getValue())), Integer.parseInt(fieldTGChiuPhat.getText()), Integer.parseInt(fieldTGDaiTiec.getText()));
         } catch (Exception e) {
-            int ret = JOptionPane.showConfirmDialog(null, "Cap nhat du lieu khong thanh cong", "NOTIFICATION", JOptionPane.OK_OPTION);
+            int ret = JOptionPane.showConfirmDialog(null, "Cập nhật dữ liệu không thành công", "NOTIFICATION", JOptionPane.CLOSED_OPTION);
 
         }
-        int ret = JOptionPane.showConfirmDialog(null, "Cap nhat du lieu thanh cong", "NOTIFICATION", JOptionPane.OK_OPTION);
+        int ret = JOptionPane.showConfirmDialog(null, "Cập nhật dữ liệu thất bại", "NOTIFICATION", JOptionPane.CLOSED_OPTION);
         dialogThayDoiQuyDinh.setVisible(false);
     }//GEN-LAST:event_btnSaveChangeActionPerformed
 

@@ -1,15 +1,20 @@
+package dao;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package dao;
+
 
 import database.JDBCUtil;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.ThamSo;
 
 /**
@@ -25,10 +30,34 @@ public class ThamSoDAO implements DAOInterface<ThamSo> {
     public int Insert(ThamSo t) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
-    @Override
-    public int Update(ThamSo t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public int Update(boolean checkPhat, double tilePhat, double tileCoc, int tgPhatHuyTiec, int tgDatTiec) {
+        Connection con = JDBCUtil.getConnection();
+        
+        
+        try {
+            String sql = "UPDATE THAMSO SET KIEMTRAPHAT = ?, TILEPHAT = ?, TILEDATCOC = ?, TGPHATHUYTIEC = ?, thoiGianDatTiec = ?";
+            PreparedStatement st = con.prepareStatement(sql);
+            
+            st.setBoolean(1, checkPhat);
+            st.setDouble(2, tilePhat);
+            st.setDouble(3, tileCoc);
+            st.setInt(4,tgPhatHuyTiec);
+            st.setInt(5, tgDatTiec);
+            int kq = st.executeUpdate();
+            System.out.println(st);
+            if(kq > 0){
+                System.out.println("Cap nhat du lieu thanh cong!");
+            } else{
+                System.out.println("cap nhat du lieu that bai!");
+            }
+            
+            JDBCUtil.closeConnection(con);            
+        } catch (SQLException ex) {
+            Logger.getLogger(ThamSoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        return 0;
     }
 
     @Override
@@ -141,6 +170,28 @@ public class ThamSoDAO implements DAOInterface<ThamSo> {
             e.printStackTrace();
         }
         return 0;
+    }
+        public boolean isPhat(){
+        try{
+            Connection con = JDBCUtil.getConnection();
+            Statement st = con.createStatement();
+            String sql  = "SELECT `KiemTraPhat` FROM `ThamSo` ";
+            
+            ResultSet kq = st.executeQuery(sql);
+            
+            while(kq.next()){
+                return kq.getBoolean(1);
+            }
+            
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    @Override
+    public int Update(ThamSo t) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
 }
