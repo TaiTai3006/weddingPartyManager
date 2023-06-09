@@ -4,6 +4,11 @@
  */
 package view;
 
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
@@ -52,8 +57,24 @@ import model.MonAn;
 import model.ThamSo;
 import java.sql.Connection;
 import database.JDBCUtil;
+import java.awt.image.BufferedImage;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.TimeZone;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -65,7 +86,8 @@ import net.sf.jasperreports.view.JasperViewer;
  * @author macbookpro
  */
 public class WeddingPartyLookup extends javax.swing.JInternalFrame {
-    
+    SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
     private DefaultTableModel defaultTableModelSearch;
     private ArrayList<PhieuDatTiecCuoi> pdtcs = PhieuDatTiecCuoiDAO.getInstance().SelectAll();
     private ArrayList<Sanh> sanhcbb = SanhDAO.getInstance().SelectAll();
@@ -74,6 +96,12 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
     private Map<String, String> mapGio = new HashMap<>();
     private NumberFormat currencyFormatVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
     private int intKieuThanhToan;
+    private double tongTienHD = 0;
+    private double tienCoc = 0;
+    private String websiteCode = "2CWHQAYN";
+    private static final String API_URL = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"; // Đổi thành URL môi trường thực khi tích hợp
+    private static final String HASH_ALGORITHM = "SHA-256";
+    private static final String SECRET_KEY = "BYQDPJGHTPBNKGRTZXDACLWAFPOBTCFS"; 
         
 
     /**
@@ -353,7 +381,8 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         jSeparator2 = new javax.swing.JSeparator();
         btnThanhToanTT = new javax.swing.JButton();
         ChuyenKhoanForm = new javax.swing.JDialog();
-        jPanel30 = new javax.swing.JPanel();
+        btnDaThanhToan = new javax.swing.JButton();
+        btnCancel = new javax.swing.JButton();
         ThanhToanTienMat = new javax.swing.JDialog();
         jLabel64 = new javax.swing.JLabel();
         inputSoTienDaNhan = new javax.swing.JTextField();
@@ -779,29 +808,40 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 
             ChuyenKhoanForm.setModal(true);
 
-            jPanel30.setBackground(new java.awt.Color(255, 255, 255));
-            jPanel30.setMinimumSize(new java.awt.Dimension(450, 350));
+            btnDaThanhToan.setBackground(new java.awt.Color(132, 70, 133));
+            btnDaThanhToan.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+            btnDaThanhToan.setForeground(new java.awt.Color(255, 255, 255));
+            btnDaThanhToan.setText("Đã thanh toán");
+            btnDaThanhToan.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    btnDaThanhToanActionPerformed(evt);
+                }
+            });
 
-            javax.swing.GroupLayout jPanel30Layout = new javax.swing.GroupLayout(jPanel30);
-            jPanel30.setLayout(jPanel30Layout);
-            jPanel30Layout.setHorizontalGroup(
-                jPanel30Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGap(0, 450, Short.MAX_VALUE)
-            );
-            jPanel30Layout.setVerticalGroup(
-                jPanel30Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGap(0, 350, Short.MAX_VALUE)
-            );
+            btnCancel.setBackground(new java.awt.Color(69, 96, 134));
+            btnCancel.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+            btnCancel.setForeground(new java.awt.Color(255, 255, 255));
+            btnCancel.setText("Cancel");
 
             javax.swing.GroupLayout ChuyenKhoanFormLayout = new javax.swing.GroupLayout(ChuyenKhoanForm.getContentPane());
             ChuyenKhoanForm.getContentPane().setLayout(ChuyenKhoanFormLayout);
             ChuyenKhoanFormLayout.setHorizontalGroup(
                 ChuyenKhoanFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel30, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ChuyenKhoanFormLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 152, Short.MAX_VALUE)
+                    .addComponent(btnDaThanhToan)
+                    .addContainerGap())
             );
             ChuyenKhoanFormLayout.setVerticalGroup(
                 ChuyenKhoanFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel30, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ChuyenKhoanFormLayout.createSequentialGroup()
+                    .addContainerGap(349, Short.MAX_VALUE)
+                    .addGroup(ChuyenKhoanFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnDaThanhToan, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addContainerGap())
             );
 
             ThanhToanTienMat.setBackground(new java.awt.Color(255, 255, 255));
@@ -1258,6 +1298,8 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             PageThongTinDT.setBackground(new java.awt.Color(255, 255, 255));
             PageThongTinDT.setPreferredSize(new java.awt.Dimension(1170, 730));
 
+            jPanel8.setBackground(new java.awt.Color(255, 255, 255));
+
             jLabel2.setFont(new java.awt.Font("Arial", 1, 35)); // NOI18N
             jLabel2.setForeground(new java.awt.Color(69, 96, 134));
             jLabel2.setText("THÔNG TIN ĐẶT TIỆC");
@@ -1291,6 +1333,8 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 
             jLabel3.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
             jLabel3.setText("Thông tin khách hàng:");
+
+            jPanel10.setBackground(new java.awt.Color(255, 255, 255));
 
             jLabel7.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
             jLabel7.setText("Tên chú rể:");
@@ -1389,6 +1433,8 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 
             jLabel12.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
             jLabel12.setText("Thông tin tiêc cưới:");
+
+            lblsoLuongBan.setBackground(new java.awt.Color(255, 255, 255));
 
             jLabel13.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
             jLabel13.setText("Ngày đãi tiệc:");
@@ -1505,7 +1551,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                                 .addComponent(jLabel13))))
                     .addGroup(lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(lblsoLuongBanLayout.createSequentialGroup()
-                            .addGap(32, 32, 32)
+                            .addGap(19, 19, 19)
                             .addComponent(lblngayDaiTiec))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lblsoLuongBanLayout.createSequentialGroup()
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1653,6 +1699,8 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                 }
             });
 
+            jPanel14.setBackground(new java.awt.Color(255, 255, 255));
+
             jLabel16.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
             jLabel16.setText("Danh sách món ăn");
 
@@ -1756,7 +1804,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                             .addGroup(PageThongTinDTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblsoLuongBan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblsoLuongBan, javax.swing.GroupLayout.DEFAULT_SIZE, 1058, Short.MAX_VALUE)
                                 .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(PageThongTinDTLayout.createSequentialGroup()
                                     .addGroup(PageThongTinDTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1773,7 +1821,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                             .addGap(56, 56, 56))
                         .addGroup(PageThongTinDTLayout.createSequentialGroup()
                             .addComponent(jLabel12)
-                            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addContainerGap(964, Short.MAX_VALUE))))
                 .addGroup(PageThongTinDTLayout.createSequentialGroup()
                     .addGap(535, 535, 535)
                     .addComponent(BackPageTTDT, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1847,11 +1895,15 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                 .addGap(0, 30, Short.MAX_VALUE)
             );
 
+            jPanel7.setBackground(new java.awt.Color(255, 255, 255));
+
             jLabel10.setBackground(new java.awt.Color(255, 255, 255));
             jLabel10.setFont(new java.awt.Font("Arial", 1, 35)); // NOI18N
             jLabel10.setForeground(new java.awt.Color(69, 96, 134));
             jLabel10.setText("XÁC NHẬN THÔNG TIN HOÁ ĐƠN");
             jPanel7.add(jLabel10);
+
+            jPanel11.setBackground(new java.awt.Color(255, 255, 255));
 
             jLabel18.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
             jLabel18.setText("Tên chú rể:");
@@ -2026,6 +2078,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             DVHHTable.getTableHeader().setBackground(new Color(243,246,249));
             DVHHTable.setDefaultEditor(Object.class, null);
 
+            jPanel15.setBackground(new java.awt.Color(255, 255, 255));
             jPanel15.setPreferredSize(new java.awt.Dimension(1057, 131));
 
             TongTienDVValueTT.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
@@ -2141,10 +2194,13 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                     .addContainerGap())
             );
 
+            jPanel16.setBackground(new java.awt.Color(255, 255, 255));
+
             jLabel19.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
             jLabel19.setText("Phương thức thanh toán: ");
 
             cbPhuongThucTT.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+            cbPhuongThucTT.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tiền mặt", "Chuyển khoản" }));
 
             javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
             jPanel16.setLayout(jPanel16Layout);
@@ -2280,6 +2336,8 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                 .addGap(0, 50, Short.MAX_VALUE)
             );
 
+            jPanel20.setBackground(new java.awt.Color(255, 255, 255));
+
             jLabel20.setFont(new java.awt.Font("Arial", 1, 35)); // NOI18N
             jLabel20.setForeground(new java.awt.Color(69, 96, 134));
             jLabel20.setText("XÁC NHẬN DỊCH VỤ ĐÃ SỬ DỤNG");
@@ -2386,7 +2444,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                         .addComponent(btnDeleteXNDV, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGap(18, 18, 18)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
                     .addGroup(PageXNDVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(NextPageXNDV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(BackPageXNDV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -2435,10 +2493,14 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                 .addGap(0, 51, Short.MAX_VALUE)
             );
 
+            jPanel24.setBackground(new java.awt.Color(255, 255, 255));
+
             jLabel30.setFont(new java.awt.Font("Arial", 1, 35)); // NOI18N
             jLabel30.setForeground(new java.awt.Color(69, 96, 134));
             jLabel30.setText("XÁC NHẬN THÔNG TIN HOÁ ĐƠN");
             jPanel24.add(jLabel30);
+
+            jPanel25.setBackground(new java.awt.Color(255, 255, 255));
 
             jLabel37.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
             jLabel37.setText("Ngày huỷ:");
@@ -2555,6 +2617,8 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             );
 
+            jPanel26.setBackground(new java.awt.Color(255, 255, 255));
+
             TienCocValueH.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
             TienCocValueH.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 
@@ -2613,6 +2677,8 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                         .addComponent(ConLaiValueH, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addContainerGap())
             );
+
+            jPanel27.setBackground(new java.awt.Color(255, 255, 255));
 
             jLabel62.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
             jLabel62.setText("Phương thức thanh toán:");
@@ -2914,7 +2980,15 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                     lbltenChuRe.setText(pd.getTenChuRe());
                     lbltenCoDau.setText(pd.getTenCoDau());
                     lblSDT.setText(pd.getSdt());
-                    lblngayDaiTiec.setText(pd.getNgayDaiTiec());
+                    String ngayDaiTiec = pd.getNgayDaiTiec();
+                    try {
+                        Date date = inputFormat.parse(ngayDaiTiec);
+                        ngayDaiTiec = outputFormat.format(date);
+                        
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                }
+                    lblngayDaiTiec.setText(ngayDaiTiec);
                     for (Ca c : lstCa) {
                         if (c.getMaCa().equals(pd.getMaCa())) {
                             lblCa.setText(c.getTenCa());
@@ -2982,7 +3056,15 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                 lblTenCoDau.setText(pdtc.getTenCoDau());
                 lblSoLuongBan.setText(pdtc.getSoLuongBan()+"");
                 lblDonGiaBan.setText(currencyFormatVN.format(pdtc.getDonGiaBan()));
-                lblNgayDaiTiec.setText(pdtc.getNgayDaiTiec());
+                String ngayDaiTiec = pdtc.getNgayDaiTiec();
+                try {
+                    Date date = inputFormat.parse(ngayDaiTiec);
+                    ngayDaiTiec = outputFormat.format(date);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(ngayDaiTiec);
+                lblNgayDaiTiec.setText(ngayDaiTiec);
                 tongTienBan = pdtc.getTongTienBan();
                 lblTongTienBan.setText(currencyFormatVN.format(tongTienBan));
                 idTiecCuoi = pdtc.getMaTiecCuoi();
@@ -3021,10 +3103,11 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             tiLePhat = 0;
         jl_TienPhat.setText("Tiền phạt: ("+(long) tiLePhat+"%):");
         double tienPhat = (tiLePhat * sumDV)/100;
-        double tongTienHD = sumDV + tongTienBan + tienPhat;
-        double tienCoc = tongTienBan * tiLeDatCoc / 100;
+        tongTienHD = sumDV + tongTienBan + tienPhat;
+        tienCoc = tongTienBan * tiLeDatCoc / 100;
         
         lblTienPhat.setText(currencyFormatVN.format((long) tienPhat));
+        System.out.println("jfni" + currencyFormatVN.format((long) tienPhat));
         lblTongTienHoaDon.setText(currencyFormatVN.format((long) tongTienHD));
         lblTienCoc.setText(currencyFormatVN.format((long) tienCoc));
         lblSoTienThanhToan.setText(currencyFormatVN.format((long) tongTienHD - (long) tienCoc));
@@ -3269,7 +3352,113 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             }
         }
     }//GEN-LAST:event_btnXacNhanDVActionPerformed
+    public BufferedImage generateQRCode(String qrData) throws WriterException {
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        ErrorCorrectionLevel errorCorrectionLevel = ErrorCorrectionLevel.L;
 
+    //    // Set QR code encoding hints
+        Map<EncodeHintType, Object> hints = new Hashtable<>();
+        hints.put(EncodeHintType.ERROR_CORRECTION, errorCorrectionLevel);
+
+        // Generate QR code matrix
+        BitMatrix bitMatrix = qrCodeWriter.encode(qrData, com.google.zxing.BarcodeFormat.QR_CODE, 200, 200, (Hashtable) hints);
+//        System.out.print(bitMatrix);
+        // Convert QR code matrix to buffered image
+        int width = bitMatrix.getWidth();
+        int height = bitMatrix.getHeight();
+        BufferedImage qrImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                int rgb = bitMatrix.get(x, y) ? 0xFF000000 : 0xFFFFFFFF;
+                qrImage.setRGB(x, y, rgb);
+            }
+        }
+        return qrImage;
+    }
+    private String getIpAddress() {
+            // Lấy địa chỉ IP của người dùng
+        return "127.0.0.1"; // Thay bằng địa chỉ IP của người dùng
+    }
+    public String hmacSHA512(String key, String data) throws NoSuchAlgorithmException, InvalidKeyException {
+        Mac mac = Mac.getInstance("HmacSHA512");
+        SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "HmacSHA512");
+        mac.init(secretKey);
+        byte[] hmacData = mac.doFinal(data.getBytes(StandardCharsets.UTF_8));
+        StringBuilder sb = new StringBuilder();
+        for (byte b : hmacData) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
+    }
+    private String getCurrentDateTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("Etc/GMT+7"));
+        Date now = new Date();
+        return dateFormat.format(now);
+    }
+    
+    public String generatePaymentUrl(String bank_code, String websiteCode, String transactionCode, String amount, String orderDescription, String returnUrl) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException {
+        Map<String, String> parameters = new HashMap<>();
+        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+        cld.add(Calendar.MINUTE, 15);
+        String vnp_ExpireDate = formatter.format(cld.getTime());
+        //Add Params of 2.1.0 Version
+        System.out.println(amount);
+        parameters.put("vnp_ExpireDate", vnp_ExpireDate);
+        parameters.put("vnp_Version", "2.1.0");
+        parameters.put("vnp_Command", "pay");
+        parameters.put("vnp_TmnCode", websiteCode);
+        parameters.put("vnp_Amount", amount);
+        parameters.put("vnp_CurrCode", "VND");
+        if (bank_code != null && !bank_code.isEmpty()) {
+            parameters.put("vnp_BankCode", bank_code);
+        }
+        parameters.put("vnp_TxnRef", transactionCode);
+        parameters.put("vnp_OrderInfo", orderDescription);
+        parameters.put("vnp_OrderType", "other");
+        parameters.put("vnp_ReturnUrl", returnUrl);
+        parameters.put("vnp_IpAddr", getIpAddress());
+        parameters.put("vnp_CreateDate", getCurrentDateTime());
+        parameters.put("vnp_Locale", "vn");
+//        parameters.put("vnp_SecureHashType", "SHA256");
+//        parameters.put("vnp_SecureHash", generateSecureHash(parameters));
+        List fieldNames = new ArrayList(parameters.keySet());
+        Collections.sort(fieldNames);
+        StringBuilder hashData = new StringBuilder();
+        StringBuilder query = new StringBuilder();
+        Iterator itr = fieldNames.iterator();
+        while (itr.hasNext()) {
+            String fieldName = (String) itr.next();
+            String fieldValue = (String) parameters.get(fieldName);
+            if ((fieldValue != null) && (fieldValue.length() > 0)) {
+                //Build hash data
+                hashData.append(fieldName);
+                hashData.append('=');
+                hashData.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+                //Build query
+                query.append(URLEncoder.encode(fieldName, StandardCharsets.US_ASCII.toString()));
+                query.append('=');
+                query.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+                if (itr.hasNext()) {
+                    query.append('&');
+                    hashData.append('&');
+                }
+            }
+        }
+        String queryUrl = query.toString();
+        String vnp_SecureHash = hmacSHA512(SECRET_KEY, hashData.toString());
+        queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
+        String paymentUrl = API_URL + "?" + queryUrl;
+//        StringBuilder urlBuilder = new StringBuilder(API_URL);
+//        urlBuilder.append("?");
+//        for (Map.Entry<String, String> entry : parameters.entrySet()) {
+//            urlBuilder.append(entry.getKey()).append("=").append(entry.getValue()).append("&");
+//        }
+//
+//        return urlBuilder.toString();
+        return paymentUrl;
+    }    
     private void NextPageXNTTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextPageXNTTActionPerformed
         // TODO add your handling code here:
         if (cbPhuongThucTT.getSelectedItem().equals("Tiền mặt")) {
@@ -3285,9 +3474,37 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             }
             inputSoTienDaNhan.setText(a+"");
         } else {
-            ChuyenKhoanForm.setModal(true);
-            ChuyenKhoanForm.setLocationRelativeTo(null);
-            ChuyenKhoanForm.setVisible(true);
+            try {
+                JPanel pane = new JPanel();
+                String qrdata = "";
+                try {
+                    String paymentUrl = generatePaymentUrl("",websiteCode, getCurrentDateTime(), String.valueOf(((long)tongTienHD - (long)tienCoc)*100), "Thanh toan tiec cuoi", "https://courses.uit.edu.vn/course/view.php?id=10493#section-3");
+                     System.out.println(paymentUrl);
+                     qrdata = paymentUrl;
+                } catch (NoSuchAlgorithmException ex) {
+                    Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (InvalidKeyException ex) {
+                    Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (UnsupportedEncodingException ex) {
+                    Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                System.out.println(qrdata);
+                ImageIcon qrIcon = new ImageIcon(generateQRCode(qrdata));
+                System.out.println(qrIcon);
+                JLabel qrLabel = new JLabel(qrIcon);
+                ChuyenKhoanForm.setSize(400, 400);
+                pane.add(qrLabel);
+                pane.setSize(400,400);
+                pane.setBackground(Color.WHITE);
+                pane.setVisible(true);
+                ChuyenKhoanForm.add(pane);
+                ChuyenKhoanForm.setModal(true);
+                ChuyenKhoanForm.setLocationRelativeTo(null);
+                ChuyenKhoanForm.setVisible(true);
+            } catch (WriterException ex) {
+                Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_NextPageXNTTActionPerformed
 
@@ -3297,16 +3514,16 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             String maHD = String.valueOf(HoaDonDAO.getInstance().GetID() + 1);
             switch (maHD.length()) {
                 case 1:
-                    maHD = "LS000" + maHD;
+                    maHD = "HD000" + maHD;
                     break;
                 case 2:
-                    maHD = "LS00" + maHD;
+                    maHD = "HD00" + maHD;
                     break;
                 case 3:
                     maHD = "LS0" + maHD;
                     break;
                 case 4:
-                    maHD = "LS" + maHD;
+                    maHD = "HD" + maHD;
                     break;
             }
             Date ngayTT = new Date();
@@ -3376,14 +3593,50 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             long a = 0;
             try {
                 a = currencyFormatVN.parse(ConLaiValueH.getText()).longValue();
+                System.out.println(a);
             } catch (ParseException ex) {
                 Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
             }
             inputSoTienDaNhan.setText(a+"");
         } else {
-            ChuyenKhoanForm.setModal(true);
-            ChuyenKhoanForm.setLocationRelativeTo(null);
-            ChuyenKhoanForm.setVisible(true);
+            try {
+                JPanel pane = new JPanel();
+                String qrdata = "";
+            long a = 0;
+            try {
+                a = currencyFormatVN.parse(ConLaiValueH.getText()).longValue();
+                System.out.println(a);
+            } catch (ParseException ex) {
+                Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                try {
+                    String paymentUrl = generatePaymentUrl("",websiteCode, getCurrentDateTime(), String.valueOf(a*100), "Thanh toan tiec cuoi", "https://courses.uit.edu.vn/course/view.php?id=10493#section-3");
+                    System.out.println(paymentUrl);
+                    qrdata = paymentUrl;
+                } catch (NoSuchAlgorithmException ex) {
+                    Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (InvalidKeyException ex) {
+                    Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (UnsupportedEncodingException ex) {
+                    Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                System.out.println(qrdata);
+                ImageIcon qrIcon = new ImageIcon(generateQRCode(qrdata));
+                System.out.println(qrIcon);
+                JLabel qrLabel = new JLabel(qrIcon);
+                ChuyenKhoanForm.setSize(400, 400);
+                pane.add(qrLabel);
+                pane.setSize(400,400);
+                pane.setBackground(Color.WHITE);
+                pane.setVisible(true);
+                ChuyenKhoanForm.add(pane);
+                ChuyenKhoanForm.setModal(true);
+                ChuyenKhoanForm.setLocationRelativeTo(null);
+                ChuyenKhoanForm.setVisible(true);
+            } catch (WriterException ex) {
+                Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_NextPageXNDV1ActionPerformed
 
@@ -3659,6 +3912,143 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_btnXacNhanActionPerformed
 
+    private void btnDaThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDaThanhToanActionPerformed
+        // TODO add your handling code here:
+        if(intKieuThanhToan == 1)
+        {
+            //loại thanh toán tiệc cưới
+            String maHoaDon = String.valueOf(HoaDonDAO.getInstance().GetID() + 1);
+            switch (maHoaDon.length()) {
+                case 1:
+                maHoaDon = "HD000" + maHoaDon;
+                break;
+                case 2:
+                maHoaDon = "HD00" + maHoaDon;
+                break;
+                case 3:
+                maHoaDon = "HD0" + maHoaDon;
+                break;
+                case 4:
+                maHoaDon = "HD" + maHoaDon;
+                break;
+            }
+    //        LocalDate ngayTT = LocalDate.now();
+    //        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    //        String strNgayTT = ngayTT.format(formatter);
+            Calendar calendar = Calendar.getInstance();
+            Date ngayTT = calendar.getTime();
+            long tongTienDV = 0;
+            long tienPhat = 0;
+            long tongTienHoaDon = 0;
+            long conLai = 0;
+            try {
+                tongTienDV = currencyFormatVN.parse(String.valueOf(lblTongTienDichVu.getText())).intValue();
+                tienPhat = currencyFormatVN.parse(String.valueOf(lblTienPhat.getText())).intValue();
+                tongTienHoaDon = currencyFormatVN.parse(String.valueOf(lblTongTienHoaDon.getText())).intValue();
+                conLai = currencyFormatVN.parse(String.valueOf(lblSoTienThanhToan.getText())).intValue();
+            } catch (ParseException ex) {
+                Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+                String userName = "taitai";
+                    String maPDTC = String.valueOf(DatTiecTable.getValueAt(getSelectRow(), 1));
+                int kq = 0;
+
+                try {
+                    kq = HoaDonDAO.getInstance().Insert(new HoaDon(maHoaDon, maPDTC, ngayTT, tongTienDV, tienPhat, tongTienHoaDon, conLai, userName));
+                    if(kq != 0)
+                    {
+                        Message("Thanh toán thành công!", JOptionPane.INFORMATION_MESSAGE);
+                        ThanhToanTienMat.setVisible(false);
+                        Page1.setVisible(true);
+                        PageTTHDH.setVisible(false);
+                        PageTTHDTT.setVisible(false);
+                        PageThongTinDT.setVisible(false);
+                        ChuyenKhoanForm.setVisible(false);
+                        ReloadDataTable();
+                    }
+                    else
+                    {
+                        System.out.println("Thêm hóa đơn lỗi");
+                        Message("Thanh toán không thành công!", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    System.out.println("Cũng là lỗi! Thêm hóa đơn lỗi");
+                    Message("Thanh toán không thành công nha!", JOptionPane.ERROR_MESSAGE);
+                }
+
+        }
+        else
+        {
+            //loại hủy tiệc cưới
+            String maHoaDon = String.valueOf(HoaDonDAO.getInstance().GetID() + 1);
+            switch (maHoaDon.length()) {
+                case 1:
+                maHoaDon = "HD000" + maHoaDon;
+                break;
+                case 2:
+                maHoaDon = "HD00" + maHoaDon;
+                break;
+                case 3:
+                maHoaDon = "HD0" + maHoaDon;
+                break;
+                case 4:
+                maHoaDon = "HD" + maHoaDon;
+                break;
+            }
+    //        LocalDate ngayTT = LocalDate.now();
+    //        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    //        String strNgayTT = ngayTT.format(formatter);
+            Calendar calendar = Calendar.getInstance();
+            Date ngayTT = calendar.getTime();
+            long tongTienDV = 0;
+            long tienPhat = 0;
+            long tongTienHoaDon = 0;
+            long conLai = 0;
+            try {
+//                tienPhat = currencyFormatVN.parse(String.valueOf(lblTienPhat.getText())).longValue();
+                tongTienHoaDon = currencyFormatVN.parse(String.valueOf(TongTenHHValueH.getText())).longValue();
+                conLai = currencyFormatVN.parse(String.valueOf(ConLaiValueH.getText())).longValue();
+            } catch (ParseException ex) {
+                Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            {
+                String userName = "taitai";
+                    String maPDTC = String.valueOf(DatTiecTable.getValueAt(getSelectRow(), 1));
+                int kq = 0;
+
+                try {
+                    kq = HoaDonDAO.getInstance().Insert(new HoaDon(maHoaDon, maPDTC, ngayTT, tongTienDV, tienPhat, tongTienHoaDon, conLai, userName));
+                    if(kq != 0)
+                    {
+                        Message("Thanh toán thành công!", JOptionPane.INFORMATION_MESSAGE);
+                        ThanhToanTienMat.setVisible(false);
+                        Page1.setVisible(true);
+                        PageTTHDH.setVisible(false);
+                        PageTTHDTT.setVisible(false);
+                        PageThongTinDT.setVisible(false);
+                        ChuyenKhoanForm.setVisible(false);
+                        ReloadDataTable();
+                    }
+                    else
+                    {
+                        System.out.println("Thêm hóa đơn lỗi");
+                        Message("Thanh toán không thành công!", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    System.out.println("Cũng là lỗi! Thêm hóa đơn lỗi");
+                    Message("Thanh toán không thành công nha!", JOptionPane.ERROR_MESSAGE);
+                }
+
+            }
+
+        }
+        
+    }//GEN-LAST:event_btnDaThanhToanActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog AddSelectServices;
@@ -3738,6 +4128,8 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
     private javax.swing.JButton btn70tr;
     private javax.swing.JButton btn90tr;
     private javax.swing.JButton btnAddXNDV;
+    private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnDaThanhToan;
     private javax.swing.JButton btnDeleteXNDV;
     private javax.swing.JButton btnHuy;
     private javax.swing.JButton btnThanhToan;
@@ -3831,7 +4223,6 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel27;
     private javax.swing.JPanel jPanel28;
     private javax.swing.JPanel jPanel29;
-    private javax.swing.JPanel jPanel30;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
