@@ -13,13 +13,13 @@ public class Employee extends CongViec{
     private String maCongViec;
     private String tenNhanVien;
     private String gioiTinh;
-    private long sdt;
+    private String sdt;
     private String loaiNhanVien;
 
     public Employee() {
     }
 
-    public Employee(String maNhanVien, String maCongViec, String tenNhanVien, String gioiTinh, long sdt, String loaiNhanVien, String tenCongViec) {
+    public Employee(String maNhanVien, String maCongViec, String tenNhanVien, String gioiTinh, String sdt, String loaiNhanVien, String tenCongViec) {
         super(maCongViec, tenCongViec);
         this.maNhanVien = maNhanVien;
         this.maCongViec = maCongViec;
@@ -45,12 +45,11 @@ public class Employee extends CongViec{
         return gioiTinh;
     }
 
-    public long getSdt() {
+    public String getSdt() {
         return sdt;
     }
 
     public String getLoaiNhanVien() {
         return loaiNhanVien;
     }
-
 }

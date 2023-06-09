@@ -34,7 +34,7 @@ public class EmployeeDAO implements DAOInterface<Employee> {
             st.setString(2, t.getMaCongViec());
             st.setString(3, t.getTenNhanVien());
             st.setString(4, t.getGioiTinh());
-            st.setInt(5, Integer.parseInt(t.getSdt() + ""));
+            st.setString(5, t.getSdt());
             st.setString(6, t.getLoaiNhanVien());
 
             System.out.println(st);
@@ -66,7 +66,9 @@ public class EmployeeDAO implements DAOInterface<Employee> {
 
             st.setString(1, t.getTenNhanVien());
             st.setString(2, t.getGioiTinh());
-            st.setInt(3, Integer.parseInt(t.getSdt() + ""));
+            st.setString(3, t.getSdt());
+            st.setString(4, t.getLoaiNhanVien());
+            st.setString(5, t.getMaNhanVien());
 
             int kq = st.executeUpdate();
 
@@ -124,7 +126,7 @@ public class EmployeeDAO implements DAOInterface<Employee> {
             ResultSet kq = st.executeQuery();
 
             while (kq.next()) {
-                lstNhanVien.add(new Employee(kq.getString("maNhanVien"), kq.getString("maCongViec"), kq.getString("tenNhanVien"), kq.getString("gioiTinh"), kq.getInt("sdt"), kq.getString("loaiNhanVien"), kq.getString("tenCongViec")));
+                lstNhanVien.add(new Employee(kq.getString("maNhanVien"), kq.getString("maCongViec"), kq.getString("tenNhanVien"), kq.getString("gioiTinh"), kq.getString("sdt"), kq.getString("loaiNhanVien"), kq.getString("tenCongViec")));
             }
 
             JDBCUtil.closeConnection(con);
