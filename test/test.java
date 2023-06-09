@@ -54,12 +54,25 @@ public class test {
 //        }
 
         
+//        try {
+//                HashMap<String, Object> map = new HashMap<>();
+//                Connection con = JDBCUtil.getConnection();
+//                map.put("maTiecCuoi", "TC0001");
+//                
+//                JasperPrint p = JasperFillManager.fillReport("src/report/rptPhieuDatTiec.jasper", map, con);
+//                JasperViewer v = new JasperViewer(p, false);
+//                v.setVisible(true);
+//
+//            } catch (JRException ex) {
+//                System.out.println(ex);
+//
+//            }
         try {
                 HashMap<String, Object> map = new HashMap<>();
                 Connection con = JDBCUtil.getConnection();
-                map.put("maTiecCuoi", "TC0001");
+                map.put("maHD", "HD0001");
                 
-                JasperPrint p = JasperFillManager.fillReport("src/report/rptPhieuDatTiec.jasper", map, con);
+                JasperPrint p = JasperFillManager.fillReport("src/report/rptThanhToanHDH.jasper", map, con);
                 JasperViewer v = new JasperViewer(p, false);
                 v.setVisible(true);
 
