@@ -45,6 +45,9 @@ public class Dashboard extends javax.swing.JFrame {
         NhanVien.setBackground(DefaultColor);
         TaiKhoan.setBackground(DefaultColor);
         ThongKe.setBackground(DefaultColor);
+        
+        jDesktopPane1.removeAll();
+        jDesktopPane1.add(new HomePage()).setVisible(true);
 
     }
 
@@ -399,6 +402,9 @@ public class Dashboard extends javax.swing.JFrame {
 
         TrangChu.setBackground(new java.awt.Color(251, 247, 244));
         TrangChu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TrangChuMouseClicked(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 TrangChuMousePressed(evt);
             }
@@ -808,6 +814,12 @@ public class Dashboard extends javax.swing.JFrame {
         jDesktopPane1.removeAll();
         jDesktopPane1.add(staffList).setVisible(true);
     }//GEN-LAST:event_TaiKhoanMouseClicked
+
+    private void TrangChuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TrangChuMouseClicked
+        // TODO add your handling code here:
+        jDesktopPane1.removeAll();
+        jDesktopPane1.add(new HomePage()).setVisible(true);
+    }//GEN-LAST:event_TrangChuMouseClicked
 
     /**
      * @param args the command line arguments
