@@ -48,10 +48,10 @@ public class EmployeeList extends javax.swing.JInternalFrame {
         cbGioiTinh.addItem("Nu");
         cbGioiTinhUD.addItem("Nam");
         cbGioiTinhUD.addItem("Nu");
-        cbLoaiNV.addItem("thời vụ");
-        cbLoaiNV.addItem("toàn thời gian");
-        cbLoaiNVUD.addItem("thời vụ");
-        cbLoaiNVUD.addItem("toàn thời gian");
+        cbLoaiNV.addItem("Thời vụ");
+        cbLoaiNV.addItem("Toàn thời gian");
+        cbLoaiNVUD.addItem("Thời vụ");
+        cbLoaiNVUD.addItem("Toàn thời gian");
     }
 
     private void CreateTable() {
