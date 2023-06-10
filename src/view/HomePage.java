@@ -74,7 +74,7 @@ public class HomePage extends javax.swing.JInternalFrame {
      */
     public HomePage() {
         initComponents();
-        this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        this.setBorder(javax.swing.BorderFactory.createEmptyBorder(-5, -5, 0, 0));
         BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
         calendar.getCalendar().setFirstDayOfWeek(Calendar.MONDAY);
@@ -737,7 +737,8 @@ public void CreateBarChart(Date Day)
         jComboBox2 = new javax.swing.JComboBox<>();
         jLabel23 = new javax.swing.JLabel();
 
-        setPreferredSize(new java.awt.Dimension(1170, 730));
+        setPreferredSize(new java.awt.Dimension(1180, 730));
+        setSize(new java.awt.Dimension(1170, 730));
 
         pageXemPhanCong.setPreferredSize(new java.awt.Dimension(1170, 730));
 
@@ -1077,7 +1078,7 @@ public void CreateBarChart(Date Day)
                         .addComponent(jLabel8)
                         .addGap(18, 18, 18)
                         .addComponent(lbNgayDaiTiec)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
                         .addComponent(jLabel10)
                         .addGap(18, 18, 18)
                         .addComponent(lbCa)
@@ -1519,7 +1520,7 @@ public void CreateBarChart(Date Day)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(home, javax.swing.GroupLayout.PREFERRED_SIZE, 736, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(90, Short.MAX_VALUE)))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         pack();
