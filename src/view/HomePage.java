@@ -47,13 +47,17 @@ public class HomePage extends javax.swing.JInternalFrame {
     private String maTiecCuoi;
     private Date ngayDT;
     private String maCa;
+    private int slBan;
+    private int slNhanVienDaChon;
     private DefaultTableModel modelPC;
     private DefaultTableModel modelPCNV;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     private ArrayList<CongViec> congViecs = new ArrayList<>();
     private ArrayList<EmployeePC> employeePCs = new ArrayList<>();
     private Map<String, String> mapCongViec = new HashMap<>();
-    
+    private ArrayList<String> ListMaNV_DPC = new ArrayList<>();
+    private ArrayList<String> ListMaNV = new ArrayList<>();
+    private ArrayList<String> ListMaNV_Huy = new ArrayList<>();
 
     /**
      * Creates new form HomePage
@@ -99,7 +103,7 @@ public class HomePage extends javax.swing.JInternalFrame {
 
         LocalDate sunday = mondayOfNextWeek.plusDays(6);
         ngayKetThuc = Date.from(sunday.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        
+
         String dateString = dateFormat.format(ngayKetThuc);
         ngayKT.setText(dateString);
     }
@@ -172,8 +176,8 @@ public class HomePage extends javax.swing.JInternalFrame {
         jPanel25 = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
-        jLabel21 = new javax.swing.JLabel();
-        jLabel22 = new javax.swing.JLabel();
+        lbNhanVienDuocChon = new javax.swing.JLabel();
+        lbSoLuongNVcan = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
 
@@ -742,6 +746,7 @@ public class HomePage extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        TablePhanCongNV.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         TablePhanCongNV.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -765,7 +770,16 @@ public class HomePage extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        TablePhanCongNV.setRowHeight(25);
+        TablePhanCongNV.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TablePhanCongNVMouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(TablePhanCongNV);
+        TablePhanCongNV.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
+        TablePhanCongNV.getTableHeader().setOpaque(false);
+        TablePhanCongNV.getTableHeader().setBackground(new Color(243,246,249));
 
         jLabel18.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel18.setText("Số lượng nhân viên cần:");
@@ -773,11 +787,11 @@ public class HomePage extends javax.swing.JInternalFrame {
         jLabel19.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel19.setText("Số lượng nhân viên đã được chọn:");
 
-        jLabel21.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        jLabel21.setText("Số lượng nhân viên cần:");
+        lbNhanVienDuocChon.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        lbNhanVienDuocChon.setText("Số lượng nhân viên cần:");
 
-        jLabel22.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        jLabel22.setText("Số lượng nhân viên cần:");
+        lbSoLuongNVcan.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        lbSoLuongNVcan.setText("Số lượng nhân viên cần:");
 
         javax.swing.GroupLayout jPanel25Layout = new javax.swing.GroupLayout(jPanel25);
         jPanel25.setLayout(jPanel25Layout);
@@ -790,8 +804,8 @@ public class HomePage extends javax.swing.JInternalFrame {
                     .addComponent(jLabel18))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel22)
-                    .addComponent(jLabel21))
+                    .addComponent(lbSoLuongNVcan)
+                    .addComponent(lbNhanVienDuocChon))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel25Layout.setVerticalGroup(
@@ -800,11 +814,11 @@ public class HomePage extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel18)
-                    .addComponent(jLabel22))
+                    .addComponent(lbSoLuongNVcan))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel19)
-                    .addComponent(jLabel21))
+                    .addComponent(lbNhanVienDuocChon))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -950,11 +964,11 @@ public class HomePage extends javax.swing.JInternalFrame {
     private void btnTraCuuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTraCuuActionPerformed
         // TODO add your handling code here:
         if (ngayBD.getDate() != null) {
-            
+
             modelPC = (DefaultTableModel) TablePhanCongTC.getModel();
             modelPC.setRowCount(0);
             PhieuDatTiecCuoiDAO.getInstance().getPhanCong(ngayBD.getDate(), ngayKetThuc, modelPC);
-               System.out.println(modelPC.getColumnCount());
+            System.out.println(modelPC.getColumnCount());
         }
 
     }//GEN-LAST:event_btnTraCuuActionPerformed
@@ -962,7 +976,8 @@ public class HomePage extends javax.swing.JInternalFrame {
     private void btnPhanCongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPhanCongActionPerformed
         // TODO add your handling code here:
         int row = TablePhanCongTC.getSelectedRow();
-        if(row >= 0){
+        if (row >= 0) {
+            slNhanVienDaChon = 0;
             maTiecCuoi = TablePhanCongTC.getValueAt(row, 3).toString();
             try {
                 ngayDT = dateFormat.parse(TablePhanCongTC.getValueAt(row, 1).toString());
@@ -970,43 +985,104 @@ public class HomePage extends javax.swing.JInternalFrame {
                 Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
             }
             maCa = TablePhanCongTC.getValueAt(row, 2).toString();
+            slBan = Integer.parseInt(TablePhanCongTC.getValueAt(row, 5).toString());
             pageXemPhanCong.setVisible(false);
             pagePhanCong.setVisible(true);
             lbNgayDaiTiec.setText(TablePhanCongTC.getValueAt(row, 1).toString());
             lbCa.setText(maCa);
             lbMaTC.setText(maTiecCuoi);
             lbMaSanh.setText(TablePhanCongTC.getValueAt(row, 4).toString());
-            
+
             congViecs = CongViecDAO.getInstance().getCongViecPhanCong(maTiecCuoi);
-            
-            for(CongViec x : congViecs){
+
+            for (CongViec x : congViecs) {
                 mapCongViec.put(x.getTenCongViec(), x.getMaCongViec());
                 cbxCongViec.addItem(x.getTenCongViec());
             }
+            employeePCs = EmployeeDAO.getInstance().getNhanVienPC(ngayDT, maCa, maTiecCuoi);
+            ListMaNV.clear();
+            ListMaNV_DPC.clear();
+            ListMaNV_Huy.clear();
+            lbSoLuongNVcan.setText(String.valueOf(slBan));
+            for (EmployeePC x : employeePCs) {
+                if (x.isChon()) {
+                    ListMaNV_DPC.add(x.getMaNhanVien());
+                }
+            }
             CreateTablePC();
-            
+
         }
     }//GEN-LAST:event_btnPhanCongActionPerformed
 
     private void cbxCongViecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxCongViecActionPerformed
         // TODO add your handling code here:
-        
+
+        if (mapCongViec.get(cbxCongViec.getSelectedItem().toString()).equals("CVC001")) {
+            lbSoLuongNVcan.setText(String.valueOf(slBan));
+        } else if (mapCongViec.get(cbxCongViec.getSelectedItem().toString()).equals("CVC004")) {
+            lbSoLuongNVcan.setText(String.valueOf(slBan / 5));
+        } else if (mapCongViec.get(cbxCongViec.getSelectedItem().toString()).equals("CVC008")) {
+            lbSoLuongNVcan.setText(String.valueOf(1));
+        }else{
+            lbSoLuongNVcan.setText(String.valueOf(CongViecDAO.getInstance().getSoLuongCongViec(mapCongViec.get(cbxCongViec.getSelectedItem().toString()), maTiecCuoi)));
+
+        }
+        slNhanVienDaChon = 0;
         CreateTablePC();
     }//GEN-LAST:event_cbxCongViecActionPerformed
-    
-    public void CreateTablePC(){
-    employeePCs = EmployeeDAO.getInstance().getNhanVienPC(ngayDT, maCa, maTiecCuoi);
-    modelPCNV = (DefaultTableModel) TablePhanCongNV.getModel();
-    modelPCNV.setRowCount(0);
-    String maCV = mapCongViec.get(cbxCongViec.getSelectedItem().toString());
-    int i = 0;
-    for(EmployeePC x : employeePCs){
-        if(x.getMaCongViec().equals(maCV)){
-            
-            modelPCNV.addRow(new Object[]{++i, x.getMaNhanVien(), x.getMaNhanVien(),x.getGioiTinh(), x.getLoaiNhanVien(), x.getSdt(), x.isChon() });
+
+    private void TablePhanCongNVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablePhanCongNVMouseClicked
+        // TODO add your handling code here:
+        int row = TablePhanCongNV.getSelectedRow();
+        int col = TablePhanCongNV.getSelectedColumn();
+        if (col == 6) {
+            boolean chon = (boolean) TablePhanCongNV.getValueAt(row, col);
+            String maNV = TablePhanCongNV.getValueAt(row, 1).toString();
+            System.out.println(chon + " " + maNV);
+            for (EmployeePC x : employeePCs) {
+                if (x.getMaNhanVien().equals(maNV)) {
+                    x.setChon(chon);
+                    System.out.print(x.isChon());
+                }
+            }
+            if (!chon) {
+                if (ListMaNV_DPC.contains(maNV)) {
+                    ListMaNV_Huy.add(maNV);
+                } else {
+                    ListMaNV.remove(maNV);
+                }
+                slNhanVienDaChon -=1;
+                
+
+            } else {
+                if (ListMaNV_DPC.contains(maNV)) {
+                    ListMaNV_Huy.remove(maNV);
+                } else {
+                    ListMaNV.add(maNV);
+                }
+                slNhanVienDaChon +=1;
+            }
+            lbNhanVienDuocChon.setText(String.valueOf(slNhanVienDaChon));
+            System.out.println("List nv:" + ListMaNV);
+            System.out.println("List nvpc:" + ListMaNV_DPC);
+            System.out.println("List H:" + ListMaNV_DPC);
+
         }
+    }//GEN-LAST:event_TablePhanCongNVMouseClicked
+
+    public void CreateTablePC() {
+        modelPCNV = (DefaultTableModel) TablePhanCongNV.getModel();
+        modelPCNV.setRowCount(0);
+        String maCV = mapCongViec.get(cbxCongViec.getSelectedItem().toString());
+        int i = 0;
+        for (EmployeePC x : employeePCs) {
+            if (x.getMaCongViec().equals(maCV)) {
+                if(x.isChon()) slNhanVienDaChon +=1;
+                modelPCNV.addRow(new Object[]{++i, x.getMaNhanVien(), x.getMaNhanVien(), x.getGioiTinh(), x.getLoaiNhanVien(), x.getSdt(), x.isChon()});
+            }
+        }
+        lbNhanVienDuocChon.setText(String.valueOf(slNhanVienDaChon));
     }
-}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TablePhanCongNV;
@@ -1031,8 +1107,6 @@ public class HomePage extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1067,6 +1141,8 @@ public class HomePage extends javax.swing.JInternalFrame {
     private javax.swing.JLabel lbMaSanh;
     private javax.swing.JLabel lbMaTC;
     private javax.swing.JLabel lbNgayDaiTiec;
+    private javax.swing.JLabel lbNhanVienDuocChon;
+    private javax.swing.JLabel lbSoLuongNVcan;
     private com.toedter.calendar.JDateChooser ngayBD;
     private javax.swing.JTextField ngayKT;
     private javax.swing.JPanel pagePhanCong;

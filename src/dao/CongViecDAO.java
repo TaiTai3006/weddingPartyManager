@@ -154,6 +154,25 @@ public class CongViecDAO implements DAOInterface<CongViec> {
         }
         return congViecs;
     }
+    public int getSoLuongCongViec(String maCV, String maTC){
+        int sl = 0;
+        try {
+            Connection con = JDBCUtil.getConnection();
+            String sql = "SELECT SUM(ChiTietDichVu.soLuong) FROM CongViec, ChiTietDichVu "
+                    + "WHERE CongViec.maDichVu = ChiTietDichVu.maDichVu AND CongViec.maCongViec = ? AND ChiTietDichVu.maTiecCuoi = ?";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, maCV);
+             st.setString(2, maTC);
+             System.out.println(st);
+            ResultSet kq = st.executeQuery();
+            while (kq.next()) {
+                sl = kq.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CongViecDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return sl;
+    }
     @Override
     public CongViec SelectById(CongViec t) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
