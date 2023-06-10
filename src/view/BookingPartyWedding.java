@@ -95,7 +95,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     private String websiteCode = "2CWHQAYN";
     private static final String API_URL = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"; // Đổi thành URL môi trường thực khi tích hợp
     private static final String HASH_ALGORITHM = "SHA-256";
-    private static final String SECRET_KEY = "BYQDPJGHTPBNKGRTZXDACLWAFPOBTCFS"; 
+    private static final String SECRET_KEY = "BYQDPJGHTPBNKGRTZXDACLWAFPOBTCFS";
     private int SoLuongBanToiDa;
     private int donGiaBanToiThieu;
     private int tongDonBanHienTai = 0;
@@ -141,6 +141,26 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     }
 
     public void Page1() {
+        inputSanh.removeAllItems();
+        inputSanh.addItem("<Không có dữ liệu>");
+        tongDonBanHienTai = 0;
+        tongTienDV = 0;
+        thoiGianDatTiec = ThamSoDAO.getInstance().GetThoiGianDatTiec();
+        tyLePhat = ThamSoDAO.getInstance().GetTyLePhat();
+        thoiGianPhat = ThamSoDAO.getInstance().GetThoiGianPhat();
+        TiLeCoc = ThamSoDAO.getInstance().GetTyLeCoc();
+        mapMaSanh = new HashMap<>();
+        mapMaLoaiMA = new HashMap<>();
+        mapMaCa = new HashMap<>();
+        monAns = MonAnDAO.getInstance().SelectAll();
+        dTMonAns = new ArrayList<>();
+        dichVus = DichVuDAO.getInstance().SelectAll();
+        dTDichVus = new ArrayList<>();
+        sanhs = new ArrayList<>();
+        CTMonAns = new ArrayList<>();
+        CTDichVus = new ArrayList<>();
+        Cas = CaDAO.getInstance().SelectAll();
+        loaiMonAns = LoaiMonAnDAO.getInstance().SelectAll();
         inputTyLeTienCoc.setText(String.valueOf(TiLeCoc + "%"));
         inputNgayDatTiec.setDateFormatString("dd/MM/yyyy");
         inputNgayDatTiec.setDate(new java.util.Date());
@@ -225,7 +245,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
 
     public void Page2() {
         DonBanToiThieu.setText(String.valueOf(donGiaBanToiThieu));
-
+        TongDonBanHT.setText(String.valueOf(tongDonBanHienTai));
     }
 
     public void Page4() {
@@ -1106,12 +1126,9 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
             .addGroup(jPanel19Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel19Layout.createSequentialGroup()
-                        .addComponent(jLabel13)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel19Layout.createSequentialGroup()
-                        .addComponent(inputSoLuongBan)
-                        .addContainerGap())))
+                    .addComponent(inputSoLuongBan, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel13))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel19Layout.setVerticalGroup(
             jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2307,7 +2324,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         ErrorCorrectionLevel errorCorrectionLevel = ErrorCorrectionLevel.L;
 
-    //    // Set QR code encoding hints
+        //    // Set QR code encoding hints
         Map<EncodeHintType, Object> hints = new Hashtable<>();
         hints.put(EncodeHintType.ERROR_CORRECTION, errorCorrectionLevel);
 
@@ -2326,10 +2343,12 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         }
         return qrImage;
     }
+
     private String getIpAddress() {
-            // Lấy địa chỉ IP của người dùng
+        // Lấy địa chỉ IP của người dùng
         return "127.0.0.1"; // Thay bằng địa chỉ IP của người dùng
     }
+
     public String hmacSHA512(String key, String data) throws NoSuchAlgorithmException, InvalidKeyException {
         Mac mac = Mac.getInstance("HmacSHA512");
         SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "HmacSHA512");
@@ -2341,13 +2360,14 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         }
         return sb.toString();
     }
+
     private String getCurrentDateTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
         dateFormat.setTimeZone(TimeZone.getTimeZone("Etc/GMT+7"));
         Date now = new Date();
         return dateFormat.format(now);
     }
-    
+
     public String generatePaymentUrl(String bank_code, String websiteCode, String transactionCode, String amount, String orderDescription, String returnUrl) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException {
         Map<String, String> parameters = new HashMap<>();
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
@@ -2409,21 +2429,21 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
 //
 //        return urlBuilder.toString();
         return paymentUrl;
-    }    
+    }
     private void NextPage5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextPage5ActionPerformed
         // TODO add your handling code here:
         if (cbxPTTT.getSelectedItem().equals("Tiền mặt")) {
             ThanhToanTienMat.setLocationRelativeTo(null);
             ThanhToanTienMat.setVisible(true);
             inputSoTienDaNhan.setText(String.valueOf((int) tienCoc));
-        }else if(cbxPTTT.getSelectedItem().equals("Chuyển khoản")){
+        } else if (cbxPTTT.getSelectedItem().equals("Chuyển khoản")) {
             try {
                 JPanel pane = new JPanel();
                 String qrdata = "";
                 try {
-                    String paymentUrl = generatePaymentUrl("",websiteCode, getCurrentDateTime(), String.valueOf(((long)tienCoc)*100), "Thanh toan tiec cuoi", "https://courses.uit.edu.vn/course/view.php?id=10493#section-3");
-                     System.out.println(paymentUrl);
-                     qrdata = paymentUrl;
+                    String paymentUrl = generatePaymentUrl("", websiteCode, getCurrentDateTime(), String.valueOf(((long) tienCoc) * 100), "Thanh toan tiec cuoi", "https://courses.uit.edu.vn/course/view.php?id=10493#section-3");
+                    System.out.println(paymentUrl);
+                    qrdata = paymentUrl;
                 } catch (NoSuchAlgorithmException ex) {
                     Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (InvalidKeyException ex) {
@@ -2440,8 +2460,8 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                 qrLabel.setHorizontalAlignment(SwingConstants.CENTER); // Set horizontal alignment to center
                 pane.add(qrLabel, BorderLayout.CENTER); // Add the label to the center of the panel
                 pane.add(qrLabel);
-                
-                pane.setSize(400,400);
+
+                pane.setSize(400, 400);
                 pane.setBackground(Color.WHITE);
                 pane.setVisible(true);
                 ChuyenKhoanForm.add(pane);
@@ -2456,12 +2476,12 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
 
     private void NextPage2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextPage2ActionPerformed
         // TODO add your handling code here:
-        if (tongDonBanHienTai >= donGiaBanToiThieu) {
-            Page2.setVisible(false);
-            Page3.setVisible(true);
-        } else {
-            Message("Lỗi! Tổng đơn bàn hiện tại phải lớn hơn hoặc bằng đơn bàn tối thiểu.", JOptionPane.WARNING_MESSAGE);
-        }
+//        if (tongDonBanHienTai >= donGiaBanToiThieu) {
+        Page2.setVisible(false);
+        Page3.setVisible(true);
+//        } else {
+//            Message("Lỗi! Tổng đơn bàn hiện tại phải lớn hơn hoặc bằng đơn bàn tối thiểu.", JOptionPane.WARNING_MESSAGE);
+//        }
 
     }//GEN-LAST:event_NextPage2ActionPerformed
 
@@ -2739,6 +2759,116 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
 
     private void btnXacNhanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXacNhanActionPerformed
         // TODO add your handling code here:
+//        String maTiecCuoi = String.valueOf(PhieuDatTiecCuoiDAO.getInstance().GetID() + 1);
+//        switch (maTiecCuoi.length()) {
+//            case 1:
+//                maTiecCuoi = "TC000" + maTiecCuoi;
+//                break;
+//            case 2:
+//                maTiecCuoi = "TC00" + maTiecCuoi;
+//                break;
+//            case 3:
+//                maTiecCuoi = "TC0" + maTiecCuoi;
+//                break;
+//            case 4:
+//                maTiecCuoi = "TC" + maTiecCuoi;
+//                break;
+//        }
+//
+//        Date ngayDT = inputNgayDatTiec.getDate();
+//        Date ngayDTiec = inputNgayDaiTiec.getDate();
+//
+//        String ngayDat = (ngayDT.getYear() + 1900) + "-" + (ngayDT.getMonth() + 1) + "-" + ngayDT.getDate();
+//        String ngayDaiTiec = (ngayDTiec.getYear() + 1900) + "-" + (ngayDTiec.getMonth() + 1) + "-" + ngayDTiec.getDate();
+//
+//        int soLuongBan = Integer.parseInt(inputSoLuongBan.getValue().toString());
+//
+//        int soLuongBanDuTru = Integer.parseInt(inputSLDT.getValue().toString());
+//
+//        String tenCoDau = inputTenCoDau.getText();
+//
+//        String tenChuRe = inputTenChuRe.getText();
+//
+//        String sdt = inputSDT.getText();
+//
+//        String maCa = mapMaCa.get(inputCa.getSelectedItem().toString().split(" ")[0]);
+//
+//        String maSanh = mapMaSanh.get(inputSanh.getSelectedItem().toString());
+//
+//        String userName = "taitai";
+//
+//        int kq1 = PhieuDatTiecCuoiDAO.getInstance().Insert(new PhieuDatTiecCuoi(maTiecCuoi, ngayDat, ngayDaiTiec, soLuongBan, soLuongBanDuTru, tongDonBanHienTai, tongtienban,
+//                tongTienDV, tongtienHD, (int) tienCoc, conLai, tenCoDau, tenChuRe, sdt, maCa, maSanh, userName));
+//        int flag = 1;
+//        if (kq1 > 0) {
+//            int kq2 = 0;
+//            for (DTMonAn x : CTMonAns) {
+//                kq2 = ChiTietMonAnDAO.getInstance().Insert(new ChiTietMonAn(maTiecCuoi, x.getMaMonAn(), x.getDonGia(), tongSLB, x.getGhiChu()));
+//                if (kq2 == 0) {
+//                    flag = 0;
+//                    break;
+//                }
+//            }
+//            if (kq2 > 0) {
+//                int kq3 = 0;
+//                for (DTDichVu x : CTDichVus) {
+//                    int temp = x.getSoLuong() * x.getDonGia();
+//                    kq3 = ChiTietDichVuDAO.getInstance().Insert(new ChiTietDichVu(maTiecCuoi, x.getMaDichVu(), x.getSoLuong(), x.getDonGia(), temp));
+//                    if (kq3 == 0) {
+//                        flag = 0;
+//                        break;
+//                    }
+//                }
+//
+//            }
+//
+//        }
+//
+//        if (flag > 0) {
+//            File file = new File("src/report/rptPhieuDatTiec.jasper");
+//            String absolutePath = file.getAbsolutePath();
+//            try {
+//                HashMap<String, Object> map = new HashMap<>();
+//                Connection con = JDBCUtil.getConnection();
+//                map.put("maTiecCuoi", maTiecCuoi);
+//                map.put("tienKhachTra", Double.parseDouble(inputSoTienDaNhan.getText()));
+//                map.put("tienThua", Double.parseDouble(inputSoTienDaNhan.getText()) - tienCoc);
+//                map.put("tyLePhat", tyLePhat);
+//                map.put("thoiGianPhat", thoiGianPhat);
+//                System.out.println(maTiecCuoi);
+//                System.out.println(Double.parseDouble(inputSoTienDaNhan.getText()));
+//                System.out.println(Double.parseDouble(inputSoTienDaNhan.getText()) - tienCoc);
+//                System.out.println(tyLePhat);
+//                System.out.println(thoiGianPhat);
+//                JasperPrint p = JasperFillManager.fillReport(absolutePath, map, con);
+//                JasperViewer v = new JasperViewer(p, false);
+//                v.setVisible(true);
+//
+//            } catch (JRException ex) {
+//                System.out.println(ex);
+//
+//            }
+//        }
+//        
+
+        Page1.setVisible(true);
+        Page4.setVisible(false);
+        Page1();
+        inputTenChuRe.setText("");
+        inputTenCoDau.setText("");
+        inputSDT.setText("");
+        inputSoLuongBan.setValue(0);
+        inputSLDT.setValue(0);
+
+
+    }//GEN-LAST:event_btnXacNhanActionPerformed
+
+    private void cbxPTTTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxPTTTActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxPTTTActionPerformed
+
+    private void btnDaThanhToanCKFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDaThanhToanCKFormActionPerformed
+        // TODO add your handling code here:
         String maTiecCuoi = String.valueOf(PhieuDatTiecCuoiDAO.getInstance().GetID() + 1);
         switch (maTiecCuoi.length()) {
             case 1:
@@ -2779,108 +2909,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
 
         int kq1 = PhieuDatTiecCuoiDAO.getInstance().Insert(new PhieuDatTiecCuoi(maTiecCuoi, ngayDat, ngayDaiTiec, soLuongBan, soLuongBanDuTru, tongDonBanHienTai, tongtienban,
                 tongTienDV, tongtienHD, (int) tienCoc, conLai, tenCoDau, tenChuRe, sdt, maCa, maSanh, userName));
-        int flag = 1;
-        if (kq1 > 0) {
-            int kq2 = 0;
-            for (DTMonAn x : CTMonAns) {
-                kq2 = ChiTietMonAnDAO.getInstance().Insert(new ChiTietMonAn(maTiecCuoi, x.getMaMonAn(), x.getDonGia(), tongSLB, x.getGhiChu()));
-                if (kq2 == 0) {
-                    flag = 0;
-                    break;
-                }
-            }
-            if (kq2 > 0) {
-                int kq3 = 0;
-                for (DTDichVu x : CTDichVus) {
-                    int temp = x.getSoLuong() * x.getDonGia();
-                    kq3 = ChiTietDichVuDAO.getInstance().Insert(new ChiTietDichVu(maTiecCuoi, x.getMaDichVu(), x.getSoLuong(), x.getDonGia(), temp));
-                    if (kq3 == 0) {
-                        flag = 0;
-                        break;
-                    }
-                }
 
-            }
-
-        }
-
-        if (flag > 0) {
-            File file = new File("src/report/rptPhieuDatTiec.jasper");
-            String absolutePath = file.getAbsolutePath();
-            try {
-                HashMap<String, Object> map = new HashMap<>();
-                Connection con = JDBCUtil.getConnection();
-                map.put("maTiecCuoi", maTiecCuoi);
-                map.put("tienKhachTra", Double.parseDouble(inputSoTienDaNhan.getText()));
-                map.put("tienThua", Double.parseDouble(inputSoTienDaNhan.getText()) - tienCoc);
-                map.put("tyLePhat", tyLePhat);
-                map.put("thoiGianPhat", thoiGianPhat);
-                System.out.println(maTiecCuoi);
-                System.out.println(Double.parseDouble(inputSoTienDaNhan.getText()));
-                System.out.println(Double.parseDouble(inputSoTienDaNhan.getText()) - tienCoc);
-                System.out.println(tyLePhat);
-                System.out.println(thoiGianPhat);
-                JasperPrint p = JasperFillManager.fillReport(absolutePath, map, con);
-                JasperViewer v = new JasperViewer(p, false);
-                v.setVisible(true);
-
-            } catch (JRException ex) {
-                System.out.println(ex);
-
-            }
-        }
-        
-        
-
-    }//GEN-LAST:event_btnXacNhanActionPerformed
-
-    private void cbxPTTTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxPTTTActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbxPTTTActionPerformed
-
-    private void btnDaThanhToanCKFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDaThanhToanCKFormActionPerformed
-        // TODO add your handling code here:
-                String maTiecCuoi = String.valueOf(PhieuDatTiecCuoiDAO.getInstance().GetID() + 1);
-        switch (maTiecCuoi.length()) {
-            case 1:
-                maTiecCuoi = "TC000" + maTiecCuoi;
-                break;
-            case 2:
-                maTiecCuoi = "TC00" + maTiecCuoi;
-                break;
-            case 3:
-                maTiecCuoi = "TC0" + maTiecCuoi;
-                break;
-            case 4:
-                maTiecCuoi = "TC" + maTiecCuoi;
-                break;
-        }
-
-        Date ngayDT = inputNgayDatTiec.getDate();
-        Date ngayDTiec = inputNgayDaiTiec.getDate();
-
-        String ngayDat = (ngayDT.getYear() + 1900) + "-" + (ngayDT.getMonth() + 1) + "-" + ngayDT.getDate();
-        String ngayDaiTiec = (ngayDTiec.getYear() + 1900) + "-" + (ngayDTiec.getMonth() + 1) + "-" + ngayDTiec.getDate();
-
-        int soLuongBan = Integer.parseInt(inputSoLuongBan.getValue().toString());
-
-        int soLuongBanDuTru = Integer.parseInt(inputSLDT.getValue().toString());
-
-        String tenCoDau = inputTenCoDau.getText();
-
-        String tenChuRe = inputTenChuRe.getText();
-
-        String sdt = inputSDT.getText();
-
-        String maCa = mapMaCa.get(inputCa.getSelectedItem().toString().split(" ")[0]);
-
-        String maSanh = mapMaSanh.get(inputSanh.getSelectedItem().toString());
-
-        String userName = "taitai";
-
-        int kq1 = PhieuDatTiecCuoiDAO.getInstance().Insert(new PhieuDatTiecCuoi(maTiecCuoi, ngayDat, ngayDaiTiec, soLuongBan, soLuongBanDuTru, tongDonBanHienTai, tongtienban,
-                tongTienDV, tongtienHD, (int) tienCoc, conLai, tenCoDau, tenChuRe, sdt, maCa, maSanh, userName));
-        
         int flag = 1;
         if (kq1 > 0) {
             int kq2 = 0;
