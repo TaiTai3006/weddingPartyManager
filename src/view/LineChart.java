@@ -142,23 +142,34 @@ public class LineChart extends javax.swing.JInternalFrame {
                 final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
                 int MonthValue = 1;
                 System.out.println("Số phần tử: " + bcdt.size());
-                if(bcdt.size() == 0)
+                if(bcdt.isEmpty())
                     for(int i = 1; i < 13; i++)
                     {
                         dataset.addValue(0.0, "Bao cao thang", String.valueOf(i));
                     }
-                else                    
+                else            
+                {
+                    
+
                     for(BaoCaoDoanhThu a0 : bcdt)
                     {
                         System.out.println("TEst: " + String.valueOf(a0.getThang()));
                         while(MonthValue != a0.getThang() && MonthValue <= 12)
                         {
                             dataset.addValue(0.0, "Bao cao thang", String.valueOf(MonthValue));
+                            System.out.println("thêm tháng " + MonthValue);
                             MonthValue++;
                         }
                         dataset.addValue(a0.getTongDoanhThu()/1000000.0, "Bao cao thang", String.valueOf(a0.getThang()));
                         MonthValue++;
-                    }                
+                    }
+
+                    while (MonthValue <= 12) {
+                    dataset.addValue(0, "Bao cao thang", String.valueOf(MonthValue));
+                    MonthValue++;
+                    }
+                }
+                                   
                 JFreeChart barChart = ChartFactory.createBarChart(
                 "",
                 "Tháng", "Doanh thu (Triệu)",

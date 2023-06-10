@@ -19,7 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import model.NhanVien;
+import model.TaiKhoan;
 
 /**
  *
@@ -228,7 +228,7 @@ public class Login extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    private ArrayList<NhanVien> lstTaiKhoan = NhanVienDAO.getInstance().SelectAll();
+    private ArrayList<TaiKhoan> lstTaiKhoan = NhanVienDAO.getInstance().SelectAll();
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
         String userName = txtfUserName.getText();
@@ -236,7 +236,7 @@ public class Login extends javax.swing.JFrame {
         try {
             byte[] hash = hashPassword(passWord);
             boolean check = false;
-            for (NhanVien nv : lstTaiKhoan) {
+            for (TaiKhoan nv : lstTaiKhoan) {
                 if (nv.getUserName().equals(userName)) {
                     System.out.println(nv.getPassWord());
                     System.err.println(new String (hash));

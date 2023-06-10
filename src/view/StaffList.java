@@ -24,7 +24,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
 import model.ChucVu;
-import model.NhanVien;
+import model.TaiKhoan;
 
 /**
  *
@@ -33,7 +33,7 @@ import model.NhanVien;
 public class StaffList extends javax.swing.JInternalFrame {
 
     private DefaultTableModel defaultTableStaff;
-    private ArrayList<NhanVien> lstStaff = NhanVienDAO.getInstance().SelectAll();
+    private ArrayList<TaiKhoan> lstStaff = NhanVienDAO.getInstance().SelectAll();
     private ArrayList<ChucVu> lstChucVu = ChucVuDAO.getInstance().SelectAll();
     Map<String, String> mapTenChucVu = new HashMap();
     Map<String, String> mapTenTaiKhoan = new HashMap();
@@ -49,7 +49,7 @@ public class StaffList extends javax.swing.JInternalFrame {
         ui.setNorthPane(null);
         CreatDataTable();
 
-        for (NhanVien nv : lstStaff) {
+        for (TaiKhoan nv : lstStaff) {
             mapTenTaiKhoan.put(nv.getUserName(), nv.getPassWord());
         }
         for (ChucVu cv : lstChucVu) {
@@ -63,7 +63,7 @@ public class StaffList extends javax.swing.JInternalFrame {
     public void CreatDataTable() {
         defaultTableStaff = (DefaultTableModel) tblStaff.getModel();
         int i = 0;
-        for (NhanVien nv : lstStaff) {
+        for (TaiKhoan nv : lstStaff) {
             defaultTableStaff.addRow(new Object[]{++i, nv.getUserName(), nv.getTenChucVu()});
         }
     }
@@ -73,7 +73,7 @@ public class StaffList extends javax.swing.JInternalFrame {
         defaultTableStaff = (DefaultTableModel) tblStaff.getModel();
         int i = 0;
         String value = txtSearch.getText();
-        for (NhanVien x : lstStaff) {
+        for (TaiKhoan x : lstStaff) {
             System.out.println();
             if (x.getUserName().toLowerCase().contains(value.toLowerCase()) || x.getTenChucVu().toLowerCase().contains(value.toLowerCase())) {
                 defaultTableStaff.addRow(new Object[]{++i, x.getUserName(), x.getTenChucVu()});
@@ -624,7 +624,7 @@ public class StaffList extends javax.swing.JInternalFrame {
                     String tenChucVu = String.valueOf(tblStaff.getValueAt(row, 2));
                     String maChucVu = mapTenChucVu.get(tenChucVu);
                     try {
-                        kq = NhanVienDAO.getInstance().Delete(new NhanVien(tenTaiKhoan, matKhau, maChucVu, tenChucVu));
+                        kq = NhanVienDAO.getInstance().Delete(new TaiKhoan(tenTaiKhoan, matKhau, maChucVu, tenChucVu));
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -638,7 +638,7 @@ public class StaffList extends javax.swing.JInternalFrame {
                         String maChucVu = mapTenChucVu.get(tenChucVu);
 
                         try {
-                            kq = NhanVienDAO.getInstance().Delete(new NhanVien(tenTaiKhoan, matKhau, maChucVu, tenChucVu));
+                            kq = NhanVienDAO.getInstance().Delete(new TaiKhoan(tenTaiKhoan, matKhau, maChucVu, tenChucVu));
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -686,7 +686,7 @@ public class StaffList extends javax.swing.JInternalFrame {
                 String maChucVu = mapTenChucVu.get(tenChucVu);
 
                 boolean check = true;
-                for (NhanVien nv : lstStaff) {
+                for (TaiKhoan nv : lstStaff) {
                     if (nv.getUserName().equals(tenTaiKhoan)) {
                         check = false;
                     }
@@ -696,7 +696,7 @@ public class StaffList extends javax.swing.JInternalFrame {
                     txtUserNameAdd.setText("");
                     return;
                 } else {
-                    kq = NhanVienDAO.getInstance().Insert(new NhanVien(tenTaiKhoan, "", maChucVu, tenChucVu));
+                    kq = NhanVienDAO.getInstance().Insert(new TaiKhoan(tenTaiKhoan, "", maChucVu, tenChucVu));
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -735,7 +735,7 @@ public class StaffList extends javax.swing.JInternalFrame {
                 Logger.getLogger(StaffList.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        kq = NhanVienDAO.getInstance().Update(new NhanVien(tenTaiKhoan, matKhau, maChucVu, tenChucVu));
+        kq = NhanVienDAO.getInstance().Update(new TaiKhoan(tenTaiKhoan, matKhau, maChucVu, tenChucVu));
 
         if (kq > 0) {
             updateForm.setVisible(false);

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import model.Employee;
 import model.EmployeePC;
-import model.NhanVien;
+import model.TaiKhoan;
 
 /**
  *

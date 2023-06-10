@@ -10,7 +10,7 @@ import java.util.Date;
  *
  * @author Asus
  */
-public class HoaDon extends NhanVien{
+public class HoaDon extends TaiKhoan{
     private String maHoaDon;
     private String maTiecCuoi;
     private Date ngayThanhToan;

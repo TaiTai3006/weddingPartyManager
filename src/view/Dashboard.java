@@ -15,7 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import model.NhanVien;
+import model.TaiKhoan;
 import model.ThamSo;
 
 /**
@@ -875,7 +875,7 @@ public class Dashboard extends javax.swing.JFrame {
         txtfConfirm.setText("");
     }//GEN-LAST:event_btnResetPWActionPerformed
     // Chang password 
-    private ArrayList<NhanVien> lstTaiKhoan = NhanVienDAO.getInstance().SelectAll();
+    private ArrayList<TaiKhoan> lstTaiKhoan = NhanVienDAO.getInstance().SelectAll();
 
     public void Message(String message, int messageType) {
         JOptionPane jOptionPane = new JOptionPane(message, messageType);
@@ -905,9 +905,9 @@ public class Dashboard extends javax.swing.JFrame {
                 System.out.println(new String(hassMapPW));
                 int kq = 0;
 
-                for (NhanVien nv : lstTaiKhoan) {
+                for (TaiKhoan nv : lstTaiKhoan) {
                     if (nv.getUserName().equals(lg.getUsername())) {
-                        kq = NhanVienDAO.getInstance().UpdatePassword(new NhanVien(nv.getUserName(), new String(hassMapPW), nv.getMaChucVu(), nv.getMaChucVu()));
+                        kq = NhanVienDAO.getInstance().UpdatePassword(new TaiKhoan(nv.getUserName(), new String(hassMapPW), nv.getMaChucVu(), nv.getMaChucVu()));
                     }
                 }
 

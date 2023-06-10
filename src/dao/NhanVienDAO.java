@@ -9,7 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import model.NhanVien;
+import model.TaiKhoan;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,7 +19,7 @@ import java.util.Date;
  *
  * @author Asus
  */
-public class NhanVienDAO implements DAOInterface<NhanVien> {
+public class NhanVienDAO implements DAOInterface<TaiKhoan> {
 
     public static NhanVienDAO getInstance() {
         return new NhanVienDAO();
@@ -33,7 +33,7 @@ public class NhanVienDAO implements DAOInterface<NhanVien> {
     }
 
     @Override
-    public int Insert(NhanVien t) {
+    public int Insert(TaiKhoan t) {
         try {
             Connection con = JDBCUtil.getConnection();
             String sql = "INSERT INTO TaiKhoan (userName, passWord, maChucVu) VALUES (?, ?, ?)";
@@ -66,7 +66,7 @@ public class NhanVienDAO implements DAOInterface<NhanVien> {
     }
 
     @Override
-    public int Delete(NhanVien t) {
+    public int Delete(TaiKhoan t) {
         try {
             Connection con = JDBCUtil.getConnection();
 
@@ -93,7 +93,7 @@ public class NhanVienDAO implements DAOInterface<NhanVien> {
     }
 
     @Override
-    public int Update(NhanVien t) {
+    public int Update(TaiKhoan t) {
         try {
             Connection con = JDBCUtil.getConnection();
 
@@ -120,7 +120,7 @@ public class NhanVienDAO implements DAOInterface<NhanVien> {
         return 0;
     }
 
-    public int UpdatePassword(NhanVien t) {
+    public int UpdatePassword(TaiKhoan t) {
         try {
             Connection con = JDBCUtil.getConnection();
 
@@ -148,8 +148,8 @@ public class NhanVienDAO implements DAOInterface<NhanVien> {
     }
 
     @Override
-    public ArrayList<NhanVien> SelectAll() {
-        ArrayList<NhanVien> lstNhanVien = new ArrayList<NhanVien>();
+    public ArrayList<TaiKhoan> SelectAll() {
+        ArrayList<TaiKhoan> lstNhanVien = new ArrayList<TaiKhoan>();
         try {
             Connection con = JDBCUtil.getConnection();
 
@@ -160,7 +160,7 @@ public class NhanVienDAO implements DAOInterface<NhanVien> {
             ResultSet kq = st.executeQuery();
 
             while (kq.next()) {
-                lstNhanVien.add(new NhanVien(kq.getString("userName"), kq.getString("passWord"), kq.getString("maChucVu"), kq.getString("tenChucVu")));
+                lstNhanVien.add(new TaiKhoan(kq.getString("userName"), kq.getString("passWord"), kq.getString("maChucVu"), kq.getString("tenChucVu")));
             }
 
             JDBCUtil.closeConnection(con);
@@ -173,12 +173,12 @@ public class NhanVienDAO implements DAOInterface<NhanVien> {
     
 
     @Override
-    public NhanVien SelectById(NhanVien t) {
+    public TaiKhoan SelectById(TaiKhoan t) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public ArrayList<NhanVien> SelectByCondition(String condition) {
+    public ArrayList<TaiKhoan> SelectByCondition(String condition) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

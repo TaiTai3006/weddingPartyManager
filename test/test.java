@@ -17,7 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Ca;
 import model.LoaiSanh;
-import model.NhanVien;
+import model.TaiKhoan;
 import model.Sanh;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -47,10 +47,10 @@ public class test {
 //            System.out.println(x.toString());
 //        }
         
-//        NhanVien nv = new NhanVien("Sgg2003", "", "ST001", "Staff");
+//        TaiKhoan nv = new TaiKhoan("Sgg2003", "", "ST001", "Staff");
 //        NhanVienDAO.getInstance().Insert(nv);
 //        ArrayList<NhanVien> lstNhanVien = NhanVienDAO.getInstance().SelectAll();
-//        for (NhanVien x : lstNhanVien) {
+//        for (TaiKhoan x : lstNhanVien) {
 //            System.out.println(x.toString());
 //        }
 
