@@ -1707,24 +1707,19 @@
                       </Group>
                       <EmptySpace min="29" pref="29" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Group type="102" alignment="1" attributes="0">
-                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                  <Component id="lbltienConLai" pref="79" max="32767" attributes="0"/>
-                                  <Component id="lbltongTienDichVu" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="lblSoLuongBanDuTru" alignment="0" max="32767" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="128" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="ConLaiValue" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="TongTienDVValue" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel25" alignment="1" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                          <Component id="lblCa" pref="79" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="lbltienConLai" pref="79" max="32767" attributes="0"/>
+                              <Component id="lbltongTienDichVu" alignment="0" max="32767" attributes="0"/>
+                              <Component id="lblSoLuongBanDuTru" alignment="0" max="32767" attributes="0"/>
                           </Group>
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="lblCa" min="-2" pref="79" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="CaValue" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                      </Group>
+                      <EmptySpace min="-2" pref="128" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="ConLaiValue" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="TongTienDVValue" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel25" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="CaValue" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">

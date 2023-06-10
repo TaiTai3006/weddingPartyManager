@@ -1,8 +1,10 @@
+package view;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
-package view;
+
 
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
@@ -1601,20 +1603,17 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                         .addComponent(jLabel35))
                     .addGap(29, 29, 29)
                     .addGroup(lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(lblsoLuongBanLayout.createSequentialGroup()
-                            .addGroup(lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(lbltienConLai, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
-                                .addComponent(lbltongTienDichVu, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblSoLuongBanDuTru, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGap(128, 128, 128)
-                            .addGroup(lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(ConLaiValue)
-                                .addComponent(TongTienDVValue)
-                                .addComponent(jLabel25)))
-                        .addGroup(lblsoLuongBanLayout.createSequentialGroup()
-                            .addComponent(lblCa, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(CaValue)))
+                        .addComponent(lblCa, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
+                        .addGroup(lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(lbltienConLai, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
+                            .addComponent(lbltongTienDichVu, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblSoLuongBanDuTru, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGap(128, 128, 128)
+                    .addGroup(lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(ConLaiValue, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(TongTienDVValue, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel25, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(CaValue, javax.swing.GroupLayout.Alignment.TRAILING))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel31)
@@ -1832,7 +1831,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                             .addGroup(PageThongTinDTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblsoLuongBan, javax.swing.GroupLayout.PREFERRED_SIZE, 1058, Short.MAX_VALUE)
+                                .addComponent(lblsoLuongBan, javax.swing.GroupLayout.DEFAULT_SIZE, 1058, Short.MAX_VALUE)
                                 .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(PageThongTinDTLayout.createSequentialGroup()
                                     .addGroup(PageThongTinDTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2992,9 +2991,12 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                         ConLaiValueH.setText(String.valueOf(currencyFormatVN.format( tongTienBan0 - tienCoc)));
                     }
                          if(ChronoUnit.DAYS.between(dateNgayHuy, dateNgayDai) >= tgPhat){
+                            model.removeAllElements();
                             model.addElement("Tiền mặt");
                             jcb_PhuongThucTT.setModel(model);
+                            
                         }else{
+                            model.removeAllElements();
                             model.addElement("Tiền mặt");
                             model.addElement("Chuyển khoản");
                             jcb_PhuongThucTT.setModel(model);
@@ -3032,7 +3034,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             for (PhieuDatTiecCuoi pd : pdtcs) {
                 if (pd.getMaTiecCuoi().equals(maPDTC)) {
                     try {
-                        Date date = inputFormat.parse(pd.getNgayDaiTiec());
+                        Date date = inputFormat.parse(pd.getNgayDat());
                         String formattedDate = outputFormat.format(date);
                         lblngayDatTiec.setText(formattedDate);
                         System.out.println("Formatted Date: " + formattedDate);
@@ -3187,7 +3189,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             lblSoTienThanhToan.setText(currencyFormatVN.format((long) tongTienHD - (long) tienCoc));
         }
 
-        cbPhuongThucTT.removeAll();
+        cbPhuongThucTT.removeAllItems();
         cbPhuongThucTT.addItem("Tiền mặt");
         cbPhuongThucTT.addItem("Chuyển khoản");
         cbPhuongThucTT.setSelectedItem("Tiền mặt");
