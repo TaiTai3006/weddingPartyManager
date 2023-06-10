@@ -4,6 +4,7 @@
  */
 package view;
 
+import dao.CongViecDAO;
 import dao.PhieuDatTiecCuoiDAO;
 import dao.ThamSoDAO;
 import database.JDBCUtil;
@@ -23,9 +24,13 @@ import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
+import model.CongViec;
 
 /**
  *
@@ -36,8 +41,11 @@ public class HomePage extends javax.swing.JInternalFrame {
     private int ngayDatTiec = ThamSoDAO.getInstance().GetThoiGianDatTiec();
     private Date today;
     private Date ngayKetThuc;
+    private String maTiecCuoi;
     private DefaultTableModel modelPC;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    private ArrayList<CongViec> congViecs = new ArrayList<>();
+    private Map<String, String> mapCongViec = new HashMap<>();
 
     /**
      * Creates new form HomePage
@@ -128,7 +136,7 @@ public class HomePage extends javax.swing.JInternalFrame {
         btnTraCuu = new javax.swing.JButton();
         jPanel17 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        btnPhanCong = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         TablePhanCongTC = new javax.swing.JTable();
         jButton3 = new javax.swing.JButton();
@@ -138,18 +146,18 @@ public class HomePage extends javax.swing.JInternalFrame {
         jPanel22 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
+        lbNgayDaiTiec = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
+        lbCa = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
+        lbMaTC = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
+        lbMaSanh = new javax.swing.JLabel();
         jPanel23 = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
         jPanel24 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        cbxCongViec = new javax.swing.JComboBox<>();
         jCheckBox1 = new javax.swing.JCheckBox();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTable4 = new javax.swing.JTable();
@@ -481,12 +489,17 @@ public class HomePage extends javax.swing.JInternalFrame {
         jLabel6.setForeground(new java.awt.Color(69, 96, 134));
         jLabel6.setText("BẢNG TIỆC CƯỚI TRONG TUẦN");
 
-        jButton2.setBackground(new java.awt.Color(99, 122, 48));
-        jButton2.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Phân công");
-        jButton2.setPreferredSize(new java.awt.Dimension(100, 40));
-        jButton2.setSize(new java.awt.Dimension(800, 360));
+        btnPhanCong.setBackground(new java.awt.Color(99, 122, 48));
+        btnPhanCong.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        btnPhanCong.setForeground(new java.awt.Color(255, 255, 255));
+        btnPhanCong.setText("Phân công");
+        btnPhanCong.setPreferredSize(new java.awt.Dimension(100, 40));
+        btnPhanCong.setSize(new java.awt.Dimension(800, 360));
+        btnPhanCong.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPhanCongActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
         jPanel17.setLayout(jPanel17Layout);
@@ -496,7 +509,7 @@ public class HomePage extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel6)
                 .addGap(29, 29, 29)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnPhanCong, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(93, 93, 93))
         );
         jPanel17Layout.setVerticalGroup(
@@ -504,17 +517,14 @@ public class HomePage extends javax.swing.JInternalFrame {
             .addGroup(jPanel17Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnPhanCong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)))
         );
 
         TablePhanCongTC.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         TablePhanCongTC.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "STT", "Ngày", "Ca", "Mã tiệc cưới", "Mã sảnh", "Số lượng bàn", "Tình trạng"
@@ -613,26 +623,26 @@ public class HomePage extends javax.swing.JInternalFrame {
         jLabel8.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel8.setText("Ngày đãi tiệc:");
 
-        jLabel9.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        jLabel9.setText("Ngày đãi tiệc:");
+        lbNgayDaiTiec.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        lbNgayDaiTiec.setText("Ngày đãi tiệc:");
 
         jLabel10.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel10.setText("Ca:");
 
-        jLabel11.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        jLabel11.setText("Ca:");
+        lbCa.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        lbCa.setText("Ca:");
 
         jLabel12.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel12.setText("Mã tiệc cưới:");
 
-        jLabel13.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        jLabel13.setText("Mã tiệc cưới:");
+        lbMaTC.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        lbMaTC.setText("Mã tiệc cưới:");
 
         jLabel14.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel14.setText("Mã sảnh:");
 
-        jLabel15.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        jLabel15.setText("Mã sảnh:");
+        lbMaSanh.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        lbMaSanh.setText("Mã sảnh:");
 
         javax.swing.GroupLayout jPanel22Layout = new javax.swing.GroupLayout(jPanel22);
         jPanel22.setLayout(jPanel22Layout);
@@ -647,19 +657,19 @@ public class HomePage extends javax.swing.JInternalFrame {
                     .addGroup(jPanel22Layout.createSequentialGroup()
                         .addComponent(jLabel8)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel9)
+                        .addComponent(lbNgayDaiTiec)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
                         .addComponent(jLabel10)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel11)
+                        .addComponent(lbCa)
                         .addGap(154, 154, 154)
                         .addComponent(jLabel12)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel13)
+                        .addComponent(lbMaTC)
                         .addGap(114, 114, 114)
                         .addComponent(jLabel14)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel15))))
+                        .addComponent(lbMaSanh))))
         );
         jPanel22Layout.setVerticalGroup(
             jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -669,13 +679,13 @@ public class HomePage extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jLabel9)
+                    .addComponent(lbNgayDaiTiec)
                     .addComponent(jLabel10)
-                    .addComponent(jLabel11)
+                    .addComponent(lbCa)
                     .addComponent(jLabel12)
-                    .addComponent(jLabel13)
+                    .addComponent(lbMaTC)
                     .addComponent(jLabel14)
-                    .addComponent(jLabel15))
+                    .addComponent(lbMaSanh))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
@@ -685,8 +695,6 @@ public class HomePage extends javax.swing.JInternalFrame {
 
         jLabel17.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel17.setText("Công việc");
-
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jCheckBox1.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jCheckBox1.setText("Chọn nhân viên tự động");
@@ -704,7 +712,7 @@ public class HomePage extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jLabel17)
                 .addGap(18, 18, 18)
-                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cbxCongViec, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jCheckBox1)
                 .addContainerGap())
@@ -715,7 +723,7 @@ public class HomePage extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel24Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel17)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbxCongViec, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jCheckBox1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -925,27 +933,47 @@ public class HomePage extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_btnTraCuuActionPerformed
 
+    private void btnPhanCongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPhanCongActionPerformed
+        // TODO add your handling code here:
+        int row = TablePhanCongTC.getSelectedRow();
+        if(row >= 0){
+            maTiecCuoi = TablePhanCongTC.getValueAt(row, 3).toString();
+            pageXemPhanCong.setVisible(false);
+            pagePhanCong.setVisible(true);
+            lbNgayDaiTiec.setText(TablePhanCongTC.getValueAt(row, 1).toString());
+            lbCa.setText(TablePhanCongTC.getValueAt(row, 2).toString());
+            lbMaTC.setText(maTiecCuoi);
+            lbMaSanh.setText(TablePhanCongTC.getValueAt(row, 4).toString());
+            
+            congViecs = CongViecDAO.getInstance().getCongViecPhanCong(maTiecCuoi);
+            
+            for(CongViec x : congViecs){
+                mapCongViec.put(x.getTenCongViec(), x.getMaCongViec());
+                cbxCongViec.addItem(x.getTenCongViec());
+            }
+            
+            
+        }
+    }//GEN-LAST:event_btnPhanCongActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TablePhanCongTC;
+    private javax.swing.JButton btnPhanCong;
     private javax.swing.JButton btnTraCuu;
     private com.toedter.calendar.JCalendar calendar;
+    private javax.swing.JComboBox<String> cbxCongViec;
     private javax.swing.JPanel home;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
@@ -959,7 +987,6 @@ public class HomePage extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
@@ -985,6 +1012,10 @@ public class HomePage extends javax.swing.JInternalFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable4;
+    private javax.swing.JLabel lbCa;
+    private javax.swing.JLabel lbMaSanh;
+    private javax.swing.JLabel lbMaTC;
+    private javax.swing.JLabel lbNgayDaiTiec;
     private com.toedter.calendar.JDateChooser ngayBD;
     private javax.swing.JTextField ngayKT;
     private javax.swing.JPanel pagePhanCong;

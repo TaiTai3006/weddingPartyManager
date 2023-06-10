@@ -275,13 +275,13 @@ public class PhieuDatTiecCuoiDAO implements DAOInterface<PhieuDatTiecCuoi> {
     }
 
     public void getPhanCong(Date ngayBD, Date ngayKT, DefaultTableModel modelPC) {
-        
+
         try {
             Connection con = JDBCUtil.getConnection();
 
             String sql = "SELECT ngayDaiTiec, tenCa, maTiecCuoi, maSanh, (soLuongBan+soLuongBanDuTru) as SLBan, tinhTrangPhanCong  \n"
                     + "FROM `PhieuDatTiecCuoi`, Ca \n"
-                    + "WHERE PhieuDatTiecCuoi.maCa = ca.maCa AND ngayDaiTiec BETWEEN ? AND ? \n"
+                    + "WHERE PhieuDatTiecCuoi.maCa = ca.maCa AND (ngayDaiTiec BETWEEN ? AND ?) AND maTiecCuoi NOT IN (SELECT maTiecCuoi FROM HoaDon)  \n"
                     + "ORDER BY ngayDaiTiec ASC, tenCa ASC";
 
             PreparedStatement st = con.prepareStatement(sql);
@@ -293,26 +293,26 @@ public class PhieuDatTiecCuoiDAO implements DAOInterface<PhieuDatTiecCuoi> {
             int i = 0;
             String row[] = new String[7];
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            while(kq.next()){
-                    row[0] = String.valueOf(++i);
-                    row[1] = dateFormat.format(kq.getDate(1));
-                    row[2] = kq.getString(2);
-                    row[3] = kq.getString(3);
-                    row[4] = kq.getString(4);
-                    row[5] = kq.getString(5);
-                    if(kq.getInt(6) == 0){
-                        row[6] = "Chưa phân công";
-                    }else{
-                        row[6] = "Đã phân công";
-                    }
-                    modelPC.addRow(row);
+            while (kq.next()) {
+                row[0] = String.valueOf(++i);
+                row[1] = dateFormat.format(kq.getDate(1));
+                row[2] = kq.getString(2);
+                row[3] = kq.getString(3);
+                row[4] = kq.getString(4);
+                row[5] = kq.getString(5);
+                if (kq.getInt(6) == 0) {
+                    row[6] = "Chưa phân công";
+                } else {
+                    row[6] = "Đã phân công";
                 }
+                modelPC.addRow(row);
+            }
             JDBCUtil.closeConnection(con);
         } catch (Exception ex) {
             System.out.print("lỗi");
             ex.printStackTrace();
         }
-        
+
     }
 
     @Override

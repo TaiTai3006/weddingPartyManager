@@ -8,7 +8,10 @@ import database.JDBCUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.ChucVu;
 import model.CongViec;
 
@@ -133,7 +136,24 @@ public class CongViecDAO implements DAOInterface<CongViec> {
         }
         return lstCongViec;
     }
-
+    
+    public ArrayList<CongViec> getCongViecPhanCong(String maTC){
+         ArrayList<CongViec> congViecs = new ArrayList<>();
+        try {
+            Connection con = JDBCUtil.getConnection();
+            String sql = "SELECT maCongViec, `tenCongViec` FROM `CongViec` WHERE maDichVu IS null OR maDichVu IN (SELECT maDichVu FROM PhieuDatTiecCuoi, ChiTietDichVu "
+                    + "WHERE PhieuDatTiecCuoi.maTiecCuoi = ChiTietDichVu.maTiecCuoi AND PhieuDatTiecCuoi.maTiecCuoi = ?)";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, maTC);
+            ResultSet kq = st.executeQuery();
+            while (kq.next()) {
+                congViecs.add(new CongViec(kq.getString(1), kq.getString(2)));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CongViecDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return congViecs;
+    }
     @Override
     public CongViec SelectById(CongViec t) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
