@@ -23,22 +23,94 @@ public class CongViecDAO implements DAOInterface<CongViec> {
 
     @Override
     public int Insert(CongViec t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            Connection con = JDBCUtil.getConnection();
+            String sql = "INSERT INTO CongViec (maCongViec, tenCongViec, maDichVu) VALUES (?, ?, ?)";
+
+            PreparedStatement st = con.prepareStatement(sql);
+
+
+            st.setString(1, t.getMaCongViec());
+            st.setString(2, t.getTenCongViec());
+            st.setString(3, t.getMaDichVu());
+
+            System.out.println(st);
+
+            int kq = st.executeUpdate();
+
+            if (kq > 0) {
+                System.out.println("Them du lieu thanh cong!");
+            } else {
+                System.out.println("Them du lieu that bai!");
+            }
+
+            JDBCUtil.closeConnection(con);
+            return kq;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return 0;
     }
 
     @Override
     public int Update(CongViec t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            Connection con = JDBCUtil.getConnection();
+
+            String sql = "UPDATE CongViec SET tenCongViec = ?, maDichVu = ? WHERE maCongViec = ?";
+
+            PreparedStatement st = con.prepareStatement(sql);
+
+            st.setString(1, t.getTenCongViec());
+            st.setString(2, t.getMaDichVu());
+            st.setString(3, t.getMaCongViec());
+
+            int kq = st.executeUpdate();
+
+            if (kq > 0) {
+                System.out.println("Cap nhat du lieu thanh cong!");
+            } else {
+                System.out.println("Cap nhat du lieu that bai!");
+            }
+
+            JDBCUtil.closeConnection(con);
+            return kq;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return 0;
     }
 
     @Override
     public int Delete(CongViec t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            Connection con = JDBCUtil.getConnection();
+
+            String sql = "DELETE FROM CongViec WHERE maCongViec = ?";
+
+            PreparedStatement st = con.prepareStatement(sql);
+
+            st.setString(1, t.getMaCongViec());
+
+            int kq = st.executeUpdate();
+
+            if (kq > 0) {
+                System.out.println("Xoa du lieu thanh cong!");
+            } else {
+                System.out.println("Xoa du lieu that bai!");
+            }
+
+            JDBCUtil.closeConnection(con);
+            return kq;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return 0;
     }
 
     @Override
     public ArrayList<CongViec> SelectAll() {
-        ArrayList<CongViec> lstChucVu = new ArrayList<CongViec>();
+        ArrayList<CongViec> lstCongViec = new ArrayList<CongViec>();
         try {
             Connection con = JDBCUtil.getConnection();
 
@@ -51,15 +123,15 @@ public class CongViecDAO implements DAOInterface<CongViec> {
             while (kq.next()) {
                 String maCongViec = kq.getString("maCongViec");
                 String tenCongViec = kq.getString("tenCongViec");
+                String maDichVu = kq.getString("maDichVu");
 
-                lstChucVu.add(new CongViec(maCongViec, tenCongViec));
+                lstCongViec.add(new CongViec(maCongViec, tenCongViec, maDichVu));
             }
-
             JDBCUtil.closeConnection(con);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return lstChucVu;
+        return lstCongViec;
     }
 
     @Override

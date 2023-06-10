@@ -11,6 +11,7 @@ package model;
 public class CongViec {
     private String maCongViec;
     private String tenCongViec;
+    private String maDichVu;
 
     public CongViec() {
     }
@@ -19,6 +20,13 @@ public class CongViec {
         this.maCongViec = maCongViec;
         this.tenCongViec = tenCongViec;
     }
+
+    public CongViec(String maCongViec, String tenCongViec, String maDichVu) {
+        this.maCongViec = maCongViec;
+        this.tenCongViec = tenCongViec;
+        this.maDichVu = maDichVu;
+    }
+    
     
     public String getMaCongViec() {
         return maCongViec;
@@ -27,4 +35,10 @@ public class CongViec {
     public String getTenCongViec() {
         return tenCongViec;
     }
+
+    public String getMaDichVu() {
+        return maDichVu;
+    }
+    
+    
 }
