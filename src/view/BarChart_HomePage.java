@@ -193,7 +193,7 @@ public class BarChart_HomePage extends javax.swing.JInternalFrame {
 //        dataset.addValue( 40 , "Chi tiet bao cao", "d");
         JFreeChart barChart = ChartFactory.createBarChart(
         "",
-        "Tháng", "Số lượng tiệc cưới",
+        "Ngày" + " (Tháng " + month + ")", "Số lượng tiệc cưới",
         dataset, PlotOrientation.VERTICAL, false, false, false);
 
         CategoryPlot plot = barChart.getCategoryPlot();
@@ -260,7 +260,7 @@ public class BarChart_HomePage extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         setBackground(new java.awt.Color(255, 255, 255));
-        setPreferredSize(new java.awt.Dimension(729, 229));
+        setPreferredSize(new java.awt.Dimension(729, 232));
         setRequestFocusEnabled(false);
         setVerifyInputWhenFocusTarget(false);
 

@@ -13,6 +13,7 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -28,12 +29,17 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import model.CongViec;
 import model.EmployeePC;
+
+
+
 
 /**
  *
@@ -58,6 +64,10 @@ public class HomePage extends javax.swing.JInternalFrame {
     private ArrayList<String> ListMaNV_DPC = new ArrayList<>();
     private ArrayList<String> ListMaNV = new ArrayList<>();
     private ArrayList<String> ListMaNV_Huy = new ArrayList<>();
+    
+    private DefaultTableModel defaultTableModel_PhanCong;
+    private DefaultTableModel defaultTableModel_SLTiec;
+    private SimpleDateFormat formatDay = new SimpleDateFormat("yyyy-MM-dd");
 
     /**
      * Creates new form HomePage
@@ -67,11 +77,19 @@ public class HomePage extends javax.swing.JInternalFrame {
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
+        calendar.getCalendar().setFirstDayOfWeek(Calendar.MONDAY);
         home.setVisible(false);
         pageXemPhanCong.setVisible(true);
         pagePhanCong.setVisible(false);
         today = calendar.getDate();
         Page2();
+        pageXemPhanCong.setVisible(false);
+        home.setVisible(true);
+
+
+        SetModelTable_PhanCong_Ngay();
+        SetModelTable_SLTiec();
+        CreateBarChart(today);
     }
 
     /**
@@ -114,23 +132,545 @@ public class HomePage extends javax.swing.JInternalFrame {
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
         return dayOfWeek == Calendar.MONDAY;
     }
+    
+    private String strNgayCalendar;
+    
+    private Date getDayOfWeek(Calendar calendar, int dayOfWeek) {
+        calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
+        return calendar.getTime();
+    }
+    
+    private String formatDate(Date date, SimpleDateFormat dateFormat) {
+        return dateFormat.format(date);
+    }
+    
+    
+    public void SetModelTable_PhanCong_Ngay()
+    {
+        defaultTableModel_PhanCong = (DefaultTableModel) Table_PhanCong.getModel();
+        Table_PhanCong.setFont(new java.awt.Font("Arial", 0, 16));
+        Table_PhanCong.setModel(new javax.swing.table.DefaultTableModel(
+        new Object [][] {
+            },
+        new String [] {
+            "STT","Tên nhân viên", "Công việc", "Ca", "Sảnh"
+        }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        
+        Table_PhanCong.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        
+        Table_PhanCong.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
+        Table_PhanCong.getTableHeader().setOpaque(false);
+        Table_PhanCong.getTableHeader().setBackground(new Color(243,246,249));
+        Table_PhanCong.setDefaultEditor(Object.class, null);
+
+    }
+    
+    public void SetModelTable_PhanCong_Tuan(String ngayChonn)
+    {
+        String ngayChon = strNgayCalendar;
+                System.out.println(ngayChon);
+                String monDay = formatDate(getDayOfWeek(calendar.getCalendar(), Calendar.MONDAY), formatDay);
+                String sunDay = "";
+                String t3 = "";
+                String t4 = "";
+                String t5 = "";
+                String t6 = "";
+                String t7 = "";
+                try {
+                    Date date = formatDay.parse(monDay);
+
+                    Calendar calendar1 = Calendar.getInstance();
+                    Calendar calendar2 = Calendar.getInstance();
+                    Calendar calendar3 = Calendar.getInstance();
+                    Calendar calendar4 = Calendar.getInstance();
+                    Calendar calendar5 = Calendar.getInstance();
+                    Calendar calendar6 = Calendar.getInstance();
+                    calendar1.setTime(date);
+                    calendar2.setTime(date);
+                    calendar3.setTime(date);
+                    calendar4.setTime(date);
+                    calendar5.setTime(date);
+                    calendar6.setTime(date);
+                    calendar1.add(Calendar.DAY_OF_MONTH, 1);
+                    calendar2.add(Calendar.DAY_OF_MONTH, 2);
+                    calendar3.add(Calendar.DAY_OF_MONTH, 3);
+                    calendar4.add(Calendar.DAY_OF_MONTH, 4);
+                    calendar5.add(Calendar.DAY_OF_MONTH, 5);
+                    calendar6.add(Calendar.DAY_OF_MONTH, 6);
+
+                    Date resultDate1 = calendar1.getTime();
+                    Date resultDate2 = calendar2.getTime();
+                    Date resultDate3 = calendar3.getTime();
+                    Date resultDate4 = calendar4.getTime();
+                    Date resultDate5 = calendar5.getTime();
+                    Date resultDate6 = calendar6.getTime();
+                    
+                    sunDay = formatDay.format(resultDate6);
+                    t3 = formatDay.format(resultDate1);
+                    t4 = formatDay.format(resultDate2);
+                    t5 = formatDay.format(resultDate3);
+                    t6 = formatDay.format(resultDate4);
+                    t7 = formatDay.format(resultDate5);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+//                ArrayList<PhanCong> lstPhanCong = PhanCongDAO.getInstance().SelectAll();
+                System.out.print(monDay);
+                System.out.print(sunDay);
+        defaultTableModel_PhanCong = (DefaultTableModel) Table_PhanCong.getModel();
+        Table_PhanCong.setFont(new java.awt.Font("Arial", 0, 15));
+        Table_PhanCong.setModel(new javax.swing.table.DefaultTableModel(
+        new Object [][] {
+            },
+        new String [] {
+            "STT", "Tên nhân viên", "Công việc", monDay, t3, t4, t5, t6, t7, sunDay
+//            "Tên nhân viên", "Công việc", "t2", "t3", "t4", "t5", "t6", "t7", "sunDay"
+        }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+//        Table_PhanCong.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        Table_PhanCong.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        jScrollPane1.setViewportView(Table_PhanCong);
+
+        Table_PhanCong.getColumnModel().getColumn(0).setPreferredWidth(60);
+        Table_PhanCong.getColumnModel().getColumn(1).setPreferredWidth(150);
+        Table_PhanCong.getColumnModel().getColumn(2).setPreferredWidth(155);
+        Table_PhanCong.getColumnModel().getColumn(3).setPreferredWidth(165);
+        Table_PhanCong.getColumnModel().getColumn(4).setPreferredWidth(165);
+        Table_PhanCong.getColumnModel().getColumn(5).setPreferredWidth(165);
+        Table_PhanCong.getColumnModel().getColumn(6).setPreferredWidth(165);
+        Table_PhanCong.getColumnModel().getColumn(7).setPreferredWidth(165);
+        Table_PhanCong.getColumnModel().getColumn(8).setPreferredWidth(165);
+        Table_PhanCong.getColumnModel().getColumn(9).setPreferredWidth(165);
+        
+        Table_PhanCong.getTableHeader().setFont(new Font("Arial", Font.BOLD, 15));
+        Table_PhanCong.getTableHeader().setOpaque(false);
+        Table_PhanCong.getTableHeader().setBackground(new Color(243,246,249));
+        Table_PhanCong.setDefaultEditor(Object.class, null);
+
+    }
+    
+    public void SetModelTable_SLTiec(){
+        defaultTableModel_SLTiec = (DefaultTableModel) Table_SLTiec.getModel();
+        Table_SLTiec.setFont(new java.awt.Font("Arial", 0, 16));
+        Table_SLTiec.setModel(new javax.swing.table.DefaultTableModel(
+        new Object [][] {
+            },
+        new String [] {
+            "Ca", "Số lượng tiệc cưới"
+        }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        
+        Table_SLTiec.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
+        Table_SLTiec.getTableHeader().setOpaque(false);
+        Table_SLTiec.getTableHeader().setBackground(new Color(243,246,249));
+        Table_SLTiec.setDefaultEditor(Object.class, null);
+    }
+    
+    public String getData_Ngay(String maNhanVien, String ngay){
+        List<String[]> results1 = new ArrayList<>();
+                try 
+                {
+                    Connection con = JDBCUtil.getConnection();
+
+                    String sql = "SELECT  nhanvien.maNhanVien, nhanvien.tenNhanVien, CONCAT('full: ', GROUP_CONCAT(phieudattieccuoi.maSanh SEPARATOR ', '))"
+                            + "FROM nhanvien, phancong, phieudattieccuoi, ca, congviec, sanh "
+                            + "WHERE phancong.maNhanVien = nhanvien.maNhanVien and phieudattieccuoi.maTiecCuoi = phancong.maTiecCuoi"
+                            + " and phieudattieccuoi.maCa = ca.maCa and phieudattieccuoi.maSanh = sanh.maSanh and nhanvien.maCongViec = congviec.maCongViec"
+                            + " and phieudattieccuoi.ngayDaiTiec = ? and nhanvien.maNhanVien = ? GROUP BY nhanvien.maNhanVien, nhanvien.tenNhanVien HAVING COUNT(*) = 2";
+
+                    PreparedStatement st = con.prepareStatement(sql);
+                    st.setString(1, ngay);
+                    st.setString(2, maNhanVien);
+                    ResultSet kq = st.executeQuery();
+                    System.out.println(kq);
+                    defaultTableModel_PhanCong = (DefaultTableModel) Table_PhanCong.getModel();
+                    while (kq.next()) {
+                        String[] row = {kq.getString("CONCAT('full: ', GROUP_CONCAT(phieudattieccuoi.maSanh SEPARATOR ', '))")};
+                        results1.add(row);
+                        System.out.println(kq.getString("CONCAT('full: ', GROUP_CONCAT(phieudattieccuoi.maSanh SEPARATOR ', '))"));
+                        
+                    }
+                    JDBCUtil.closeConnection(con);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    System.out.println("loi o day");
+                }
+                
+                try 
+                {
+                    Connection con = JDBCUtil.getConnection();
+
+                    String sql = "SELECT  nhanvien.maNhanVien, nhanvien.tenNhanVien, ca.tenCa, sanh.maSanh, CONCAT(ca.tenCa, ': ', sanh.maSanh) "
+                            + "FROM nhanvien, phancong, phieudattieccuoi, ca, congviec, sanh "
+                            + "WHERE phancong.maNhanVien = nhanvien.maNhanVien and phieudattieccuoi.maTiecCuoi = phancong.maTiecCuoi"
+                            + " and phieudattieccuoi.maCa = ca.maCa and phieudattieccuoi.maSanh = sanh.maSanh and nhanvien.maCongViec = congviec.maCongViec"
+                            + " and phieudattieccuoi.ngayDaiTiec = ? and nhanvien.maNhanVien = ? and nhanvien.maNhanVien not in "
+                            + "(SELECT nhanvien.maNhanVien FROM nhanvien, phancong, phieudattieccuoi, ca, congviec, sanh "
+                            + "WHERE phancong.maNhanVien = nhanvien.maNhanVien and phieudattieccuoi.maTiecCuoi = phancong.maTiecCuoi "
+                            + "and phieudattieccuoi.maCa = ca.maCa and phieudattieccuoi.maSanh = sanh.maSanh and "
+                            + "nhanvien.maCongViec = congviec.maCongViec GROUP BY nhanvien.maNhanVien, nhanvien.tenNhanVien, phieudattieccuoi.ngayDaiTiec HAVING COUNT(*) = 2)";
+
+                    PreparedStatement st = con.prepareStatement(sql);
+                    st.setString(1, ngay);
+                    st.setString(2, maNhanVien);
+//                    st.setString(2, sunDay);
+                    ResultSet kq = st.executeQuery();
+//                    defaultTableModel_PhanCong = (DefaultTableModel) Table_PhanCong.getModel();
+                    while (kq.next()) {
+                        String[] row = {kq.getString("CONCAT(ca.tenCa, ': ', sanh.maSanh)")};
+                        results1.add(row);
+//                        System.out.println(kq.getString("maNhanVien") + kq.getString("tenNhanVien") + "         adfadfadfadf");
+                    }
+                    JDBCUtil.closeConnection(con);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    System.out.println("loi o day");
+                }
+                
+//                for(int i = 0; i < results1.size(); i++)
+//                {
+//                    defaultTableModel_PhanCong = (DefaultTableModel) Table_PhanCong.getModel();
+//                    defaultTableModel_PhanCong.addRow(results1.get(i));
+//                }
+                String str = " ";
+                if(!results1.isEmpty())
+                {
+                    return results1.get(0)[0];
+                }
+                    
+                System.out.println("Chuoi can co: " + str);
+        return str;
+    }
+    
+    
+    
+    public void CreateDataTable_PhanCong(int type, String ngayChon){
+        switch (type) {
+            case 0:
+            {
+//                defaultTableModel_PhanCong.setRowCount(0);
+                int dem = 1;
+                SetModelTable_PhanCong_Ngay();
+                
+//                String ngayChon = formatDay.format(day.getTime());
+                System.out.println("Ngay duoc chon khi phan cong ngay" + ngayChon);
+                List<String[]> results1 = new ArrayList<>();
+                try 
+                {
+                    Connection con = JDBCUtil.getConnection();
+
+                    String sql = "SELECT  nhanvien.maNhanVien, nhanvien.tenNhanVien, GROUP_CONCAT(phieudattieccuoi.maSanh SEPARATOR ', ')"
+                            + "FROM nhanvien, phancong, phieudattieccuoi, ca, congviec, sanh "
+                            + "WHERE phancong.maNhanVien = nhanvien.maNhanVien and phieudattieccuoi.maTiecCuoi = phancong.maTiecCuoi"
+                            + " and phieudattieccuoi.maCa = ca.maCa and phieudattieccuoi.maSanh = sanh.maSanh and nhanvien.maCongViec = congviec.maCongViec"
+                            + " and phieudattieccuoi.ngayDaiTiec = ? GROUP BY nhanvien.maNhanVien, nhanvien.tenNhanVien HAVING COUNT(*) = 2";
+
+                    PreparedStatement st = con.prepareStatement(sql);
+                    st.setString(1, ngayChon);
+//                    st.setString(2, sunDay);
+                    ResultSet kq = st.executeQuery();
+                    System.out.println(kq);
+                    defaultTableModel_PhanCong = (DefaultTableModel) Table_PhanCong.getModel();
+                    while (kq.next()) {
+                        String[] row = {String.valueOf(dem++), kq.getString("maNhanVien"), kq.getString("tenNhanVien"), "full", kq.getString("GROUP_CONCAT(phieudattieccuoi.maSanh SEPARATOR ', ')")};
+                        results1.add(row);
+                        System.out.println(kq.getString("maNhanVien") + kq.getString("tenNhanVien") + kq.getString("GROUP_CONCAT(phieudattieccuoi.maSanh SEPARATOR ', ')"));
+                        
+                    }
+                    JDBCUtil.closeConnection(con);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                
+                try 
+                {
+                    Connection con = JDBCUtil.getConnection();
+
+                    String sql = "SELECT  nhanvien.maNhanVien, nhanvien.tenNhanVien, ca.tenCa, sanh.maSanh "
+                            + "FROM nhanvien, phancong, phieudattieccuoi, ca, congviec, sanh "
+                            + "WHERE phancong.maNhanVien = nhanvien.maNhanVien and phieudattieccuoi.maTiecCuoi = phancong.maTiecCuoi"
+                            + " and phieudattieccuoi.maCa = ca.maCa and phieudattieccuoi.maSanh = sanh.maSanh and nhanvien.maCongViec = congviec.maCongViec"
+                            + " and phieudattieccuoi.ngayDaiTiec = ? and nhanvien.maNhanVien not in "
+                            + "(SELECT nhanvien.maNhanVien FROM nhanvien, phancong, phieudattieccuoi, ca, congviec, sanh "
+                            + "WHERE phancong.maNhanVien = nhanvien.maNhanVien and phieudattieccuoi.maTiecCuoi = phancong.maTiecCuoi "
+                            + "and phieudattieccuoi.maCa = ca.maCa and phieudattieccuoi.maSanh = sanh.maSanh and "
+                            + "nhanvien.maCongViec = congviec.maCongViec GROUP BY nhanvien.maNhanVien, nhanvien.tenNhanVien, phieudattieccuoi.ngayDaiTiec HAVING COUNT(*) = 2)";
+
+                    PreparedStatement st = con.prepareStatement(sql);
+                    st.setString(1, ngayChon);
+//                    st.setString(2, sunDay);
+                    ResultSet kq = st.executeQuery();
+//                    defaultTableModel_PhanCong = (DefaultTableModel) Table_PhanCong.getModel();
+                    while (kq.next()) {
+                        String[] row = {String.valueOf(dem++), kq.getString("maNhanVien"), kq.getString("tenNhanVien"), kq.getString("tenCa"), kq.getString("maSanh")};
+                        results1.add(row);
+                        System.out.println(kq.getString("maNhanVien") + kq.getString("tenNhanVien") + "         adfadfadfadf");
+                    }
+                    JDBCUtil.closeConnection(con);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                
+                for(int i = 0; i < results1.size(); i++)
+                {
+                    defaultTableModel_PhanCong = (DefaultTableModel) Table_PhanCong.getModel();
+                    defaultTableModel_PhanCong.addRow(results1.get(i));
+                }
+                break;
+            }
+            case 1:
+            {
+                int dem = 1;
+                defaultTableModel_PhanCong.setRowCount(0);
+                SetModelTable_PhanCong_Tuan(ngayChon);
+                
+//                defaultTableModel_PhanCong.setRowCount(0);
+                String monDay = formatDate(getDayOfWeek(calendar.getCalendar(), Calendar.MONDAY), formatDay);
+                String sunDay = "";
+                String t3 = "";
+                String t4 = "";
+                String t5 = "";
+                String t6 = "";
+                String t7 = "";
+                try {
+                    Date date = formatDay.parse(monDay);
+
+                    Calendar calendar1 = Calendar.getInstance();
+                    Calendar calendar2 = Calendar.getInstance();
+                    Calendar calendar3 = Calendar.getInstance();
+                    Calendar calendar4 = Calendar.getInstance();
+                    Calendar calendar5 = Calendar.getInstance();
+                    Calendar calendar6 = Calendar.getInstance();
+                    calendar1.setTime(date);
+                    calendar2.setTime(date);
+                    calendar3.setTime(date);
+                    calendar4.setTime(date);
+                    calendar5.setTime(date);
+                    calendar6.setTime(date);
+                    
+                    calendar1.add(Calendar.DAY_OF_MONTH, 1);
+                    calendar2.add(Calendar.DAY_OF_MONTH, 2);
+                    calendar3.add(Calendar.DAY_OF_MONTH, 3);
+                    calendar4.add(Calendar.DAY_OF_MONTH, 4);
+                    calendar5.add(Calendar.DAY_OF_MONTH, 5);
+                    calendar6.add(Calendar.DAY_OF_MONTH, 6);
+
+                    Date resultDate1 = calendar1.getTime();
+                    Date resultDate2 = calendar2.getTime();
+                    Date resultDate3 = calendar3.getTime();
+                    Date resultDate4 = calendar4.getTime();
+                    Date resultDate5 = calendar5.getTime();
+                    Date resultDate6 = calendar6.getTime();
+                    
+                    sunDay = formatDay.format(resultDate6);
+                    t3 = formatDay.format(resultDate1);
+                    t4 = formatDay.format(resultDate2);
+                    t5 = formatDay.format(resultDate3);
+                    t6 = formatDay.format(resultDate4);
+                    t7 = formatDay.format(resultDate5);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.out.println("loi o day");
+                }
+                
+//                List<String[]> results1 = new ArrayList<>();
+//                List<String[]> results2 = new ArrayList<>();
+                try 
+                {
+                    Connection con = JDBCUtil.getConnection();
+
+                    String sql = "SELECT nhanvien.maNhanVien, nhanvien.tenNhanVien, congviec.tenCongViec "
+                            + "FROM phancong, phieudattieccuoi, nhanvien, sanh, ca, congviec WHERE phancong.maNhanVien = nhanvien.maNhanVien "
+                            + "and phieudattieccuoi.maTiecCuoi = phancong.maTiecCuoi and phieudattieccuoi.maCa = ca.maCa and phieudattieccuoi.maSanh = sanh.maSanh "
+                            + "and nhanvien.maCongViec = congviec.maCongViec and phieudattieccuoi.ngayDaiTiec >= ? and phieudattieccuoi.ngayDaiTiec <= ?"
+                            + "GROUP BY nhanvien.maNhanVien, nhanvien.tenNhanVien ORDER BY nhanvien.maNhanVien  ASC";
+
+                    PreparedStatement st = con.prepareStatement(sql);
+                    st.setString(1, monDay);
+                    st.setString(2, sunDay);
+                    ResultSet kq = st.executeQuery();
+//                    defaultTableModel_PhanCong1 = (DefaultTableModel) Table_PhanCong.getModel();
+//                    defaultTableModel_PhanCong1.setRowCount(0);
+                    SetModelTable_PhanCong_Tuan(ngayChon);                    
+                    while (kq.next()) {
+                        String maNhanVien = kq.getString("maNhanVien");
+                        System.out.println("kajdhfkajdfakjdfakd: "+ maNhanVien);
+                        String t2 = getData_Ngay(maNhanVien, monDay);
+                        String thu3 = getData_Ngay(maNhanVien, t3);
+                        String thu4 = getData_Ngay(maNhanVien, t4);
+                        String thu5 = getData_Ngay(maNhanVien, t5);
+                        String thu6 = getData_Ngay(maNhanVien, t6);
+                        String thu7 = getData_Ngay(maNhanVien, t7);
+                        String cn = getData_Ngay(maNhanVien, sunDay);
+                        System.out.println("Chuoi o day t2: " + t2);
+                        System.out.println("Chuoi o day t3: " + thu3);
+                        System.out.println("Chuoi o day t4: " + thu4);
+                        System.out.println("Chuoi o day t5: " + thu5);
+                        System.out.println("Chuoi o day t6: " + thu6);
+                        System.out.println("Chuoi o day t7: " + thu7);
+                        System.out.println("Chuoi o day cn: " + cn);
+//                        defaultTableModel_PhanCong.addRow(new Object[] {kq.getString("maNhanVien"), kq.getString("tenCongViec"), "t2", "t3", "t4", "t5", "t6", "t7", "cn"});
+                        defaultTableModel_PhanCong = (DefaultTableModel) Table_PhanCong.getModel();
+                        defaultTableModel_PhanCong.addRow(new Object[] {dem++ ,kq.getString("tenNhanVien"), kq.getString("tenCongViec"), t2, thu3, thu4, thu5, thu6, thu7, cn });
+                    }
+                    Date ngayChonn = calendar.getDate();
+                    String strNgayChon = formatDay.format(ngayChonn);
+                    System.out.println("Ngay chọn sau khi xuat bang tuan:" + strNgayChon);
+                    JDBCUtil.closeConnection(con);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    System.out.println("loi o day");
+                }                
+                    break;
+            }                
+            default:
+                throw new AssertionError();
+        }
+    }
+    
+public void CreateDataTable_SLTiec(){
+
+        switch (jComboBox2.getSelectedIndex()) {
+            case 0:
+            {
+               
+                try 
+                {
+                    Connection con = JDBCUtil.getConnection();
+
+                    String sql = "SELECT phieudattieccuoi.ngayDaiTiec, ca.tenCa, COUNT(*) FROM phancong, phieudattieccuoi, nhanvien, sanh, ca, congviec "
+                            + "WHERE phancong.maNhanVien = nhanvien.maNhanVien and phieudattieccuoi.maTiecCuoi = phancong.maTiecCuoi "
+                            + "and phieudattieccuoi.maCa = ca.maCa and phieudattieccuoi.maSanh = sanh.maSanh and nhanvien.maCongViec = congviec.maCongViec and phieudattieccuoi.ngayDaiTiec = ? "
+                            + " GROUP BY phieudattieccuoi.ngayDaiTiec, ca.tenCa";
+
+                    PreparedStatement st = con.prepareStatement(sql);
+                            st.setString(1, strNgayCalendar);
+                    ResultSet kq = st.executeQuery();
+                    System.out.println(kq);
+                    SetModelTable_SLTiec();
+                    defaultTableModel_SLTiec.setRowCount(0);
+                    defaultTableModel_SLTiec = (DefaultTableModel) Table_SLTiec.getModel();
+                    while (kq.next()) {
+                        String[] row = {kq.getString("tenCa"),kq.getString("COUNT(*)")};
+        //              de          results1.add(row);
+                        
+
+                        defaultTableModel_SLTiec.addRow(row);
+        //                System.out.println(kq.getString("CONCAT('full: ', GROUP_CONCAT(phieudattieccuoi.maCa SEPARATOR ', '))"));
+                    }
+                    JDBCUtil.closeConnection(con);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    System.out.println("loi o day");
+                }
+                break;
+            }
+            case 1:
+            {
+                String monDay = formatDate(getDayOfWeek(calendar.getCalendar(), Calendar.MONDAY), formatDay);
+                String sunDay = formatDate(getDayOfWeek(calendar.getCalendar(), Calendar.SUNDAY), formatDay);
+                System.out.println("Thứ 2: " + monDay + ",     Thứ 3: " + sunDay);
+                try 
+                {
+                    Connection con = JDBCUtil.getConnection();
+
+                    String sql = "SELECT phieudattieccuoi.ngayDaiTiec, ca.tenCa, COUNT(*) FROM phancong, phieudattieccuoi, nhanvien, sanh, ca, congviec "
+                            + "WHERE phancong.maNhanVien = nhanvien.maNhanVien and phieudattieccuoi.maTiecCuoi = phancong.maTiecCuoi "
+                            + "and phieudattieccuoi.maCa = ca.maCa and phieudattieccuoi.maSanh = sanh.maSanh and nhanvien.maCongViec = congviec.maCongViec and phieudattieccuoi.ngayDaiTiec >= ? "
+                            + "and phieudattieccuoi.ngayDaiTiec <= ?"
+                            + " GROUP BY ca.tenCa";
+
+                    PreparedStatement st = con.prepareStatement(sql);
+                    st.setString(1, monDay);
+                    st.setString(2, sunDay);        
+                    ResultSet kq = st.executeQuery();
+                    System.out.println(kq);
+                    SetModelTable_SLTiec();
+//                    defaultTableModel_SLTiec.setRowCount(0);
+                    defaultTableModel_SLTiec = (DefaultTableModel) Table_SLTiec.getModel();
+                    while (kq.next()) {
+                        String[] row = {kq.getString("tenCa"),kq.getString("COUNT(*)")};
+                        defaultTableModel_SLTiec.addRow(row);
+                    }
+                    JDBCUtil.closeConnection(con);
+                    
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+//                    System.out.println("loi o day");
+                }
+                break;
+            }                
+            default:
+                throw new AssertionError();
+        }
+        
+        
+    }
+    
+public void CreateBarChart(Date Day)
+    {
+        String ngay = formatDay.format(Day);
+        String[] parts = ngay.split("-");
+        BarChart_HomePage example = new BarChart_HomePage(Integer.parseInt(parts[0]), Integer.parseInt(parts[1])); 
+
+        jBarChar.removeAll();
+        jBarChar.add(example).setVisible(true);
+
+    }
+    
+    
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        home = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jPanel6 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        calendar = new com.toedter.calendar.JCalendar();
-        jPanel5 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
-        jLabel3 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
         pageXemPhanCong = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
@@ -180,154 +720,24 @@ public class HomePage extends javax.swing.JInternalFrame {
         lbSoLuongNVcan = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        home = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        Table_PhanCong = new javax.swing.JTable();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jLabel20 = new javax.swing.JLabel();
+        jBarChar = new javax.swing.JDesktopPane();
+        calendar = new com.toedter.calendar.JCalendar();
+        jPanel5 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        Table_SLTiec = new javax.swing.JTable();
+        jLabel3 = new javax.swing.JLabel();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        jLabel23 = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(1170, 730));
-        setSize(new java.awt.Dimension(1170, 730));
-
-        home.setBackground(new java.awt.Color(255, 255, 255));
-        home.setPreferredSize(new java.awt.Dimension(1170, 730));
-        home.setSize(new java.awt.Dimension(1170, 730));
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/home.png"))); // NOI18N
-
-        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel2.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
-        jLabel2.setText("Lịch phân công công việc");
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
-
-        jComboBox1.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ngày", "Tuần" }));
-
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 714, Short.MAX_VALUE)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
-        );
-
-        calendar.setBackground(new java.awt.Color(255, 255, 255));
-        calendar.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                calendarPropertyChange(evt);
-            }
-        });
-
-        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
-
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane2.setViewportView(jTable2);
-
-        jLabel3.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
-        jLabel3.setText("Số lượng tiệc trong ");
-
-        jComboBox2.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ngày", "Tuần" }));
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(18, 18, 18)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 70, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addGap(7, 7, 7)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout homeLayout = new javax.swing.GroupLayout(home);
-        home.setLayout(homeLayout);
-        homeLayout.setHorizontalGroup(
-            homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(homeLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(calendar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        homeLayout.setVerticalGroup(
-            homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(homeLayout.createSequentialGroup()
-                .addGroup(homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(homeLayout.createSequentialGroup()
-                        .addGap(56, 56, 56)
-                        .addComponent(jLabel1))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homeLayout.createSequentialGroup()
-                        .addGap(85, 85, 85)
-                        .addComponent(calendar, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(203, Short.MAX_VALUE))
-        );
 
         pageXemPhanCong.setPreferredSize(new java.awt.Dimension(1170, 730));
 
@@ -461,7 +871,6 @@ public class HomePage extends javax.swing.JInternalFrame {
         btnTraCuu.setForeground(new java.awt.Color(255, 255, 255));
         btnTraCuu.setText("Tra cứu");
         btnTraCuu.setPreferredSize(new java.awt.Dimension(100, 40));
-        btnTraCuu.setSize(new java.awt.Dimension(800, 360));
         btnTraCuu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTraCuuActionPerformed(evt);
@@ -506,7 +915,6 @@ public class HomePage extends javax.swing.JInternalFrame {
         btnPhanCong.setForeground(new java.awt.Color(255, 255, 255));
         btnPhanCong.setText("Phân công");
         btnPhanCong.setPreferredSize(new java.awt.Dimension(100, 40));
-        btnPhanCong.setSize(new java.awt.Dimension(800, 360));
         btnPhanCong.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPhanCongActionPerformed(evt);
@@ -561,7 +969,6 @@ public class HomePage extends javax.swing.JInternalFrame {
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("Quay lại");
         jButton3.setPreferredSize(new java.awt.Dimension(100, 40));
-        jButton3.setSize(new java.awt.Dimension(800, 360));
 
         javax.swing.GroupLayout pageXemPhanCongLayout = new javax.swing.GroupLayout(pageXemPhanCong);
         pageXemPhanCong.setLayout(pageXemPhanCongLayout);
@@ -670,7 +1077,7 @@ public class HomePage extends javax.swing.JInternalFrame {
                         .addComponent(jLabel8)
                         .addGap(18, 18, 18)
                         .addComponent(lbNgayDaiTiec)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                         .addComponent(jLabel10)
                         .addGap(18, 18, 18)
                         .addComponent(lbCa)
@@ -827,14 +1234,12 @@ public class HomePage extends javax.swing.JInternalFrame {
         jButton4.setForeground(new java.awt.Color(255, 255, 255));
         jButton4.setText("Quay lại");
         jButton4.setPreferredSize(new java.awt.Dimension(100, 40));
-        jButton4.setSize(new java.awt.Dimension(800, 360));
 
         jButton5.setBackground(new java.awt.Color(132, 70, 133));
         jButton5.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jButton5.setForeground(new java.awt.Color(255, 255, 255));
         jButton5.setText("Xác nhận");
         jButton5.setPreferredSize(new java.awt.Dimension(100, 40));
-        jButton5.setSize(new java.awt.Dimension(800, 360));
 
         javax.swing.GroupLayout pagePhanCongLayout = new javax.swing.GroupLayout(pagePhanCong);
         pagePhanCong.setLayout(pagePhanCongLayout);
@@ -882,14 +1287,206 @@ public class HomePage extends javax.swing.JInternalFrame {
                 .addGap(0, 13, Short.MAX_VALUE))
         );
 
+        home.setBackground(new java.awt.Color(255, 255, 255));
+        home.setPreferredSize(new java.awt.Dimension(1170, 730));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/home.png"))); // NOI18N
+
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel2.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
+        jLabel2.setText("Lịch phân công công việc");
+
+        jScrollPane1.setViewportView(null);
+
+        Table_PhanCong.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        Table_PhanCong.setToolTipText("");
+        jScrollPane1.setViewportView(Table_PhanCong);
+
+        jComboBox1.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ngày", "Tuần" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+
+        jLabel20.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel20.setForeground(new java.awt.Color(255, 0, 0));
+
+        jBarChar.setPreferredSize(new java.awt.Dimension(729, 232));
+
+        javax.swing.GroupLayout jBarCharLayout = new javax.swing.GroupLayout(jBarChar);
+        jBarChar.setLayout(jBarCharLayout);
+        jBarCharLayout.setHorizontalGroup(
+            jBarCharLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 729, Short.MAX_VALUE)
+        );
+        jBarCharLayout.setVerticalGroup(
+            jBarCharLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 232, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 714, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel20)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addComponent(jBarChar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jBarChar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(16, Short.MAX_VALUE))
+        );
+
+        calendar.setBackground(new java.awt.Color(255, 255, 255));
+        calendar.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                calendarAncestorAdded(evt);
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+        calendar.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                calendarPropertyChange(evt);
+            }
+        });
+
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+
+        Table_SLTiec.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Ca", "Số lượng tiệc cưới"
+            }
+        ));
+        jScrollPane2.setViewportView(Table_SLTiec);
+
+        jLabel3.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
+        jLabel3.setText("Số lượng tiệc trong ");
+
+        jComboBox2.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ngày", "Tuần" }));
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
+
+        jLabel23.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel23.setForeground(new java.awt.Color(255, 0, 51));
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel23)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addGap(7, 7, 7)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel23))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(27, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout homeLayout = new javax.swing.GroupLayout(home);
+        home.setLayout(homeLayout);
+        homeLayout.setHorizontalGroup(
+            homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(homeLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(calendar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        homeLayout.setVerticalGroup(
+            homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(homeLayout.createSequentialGroup()
+                .addGroup(homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(homeLayout.createSequentialGroup()
+                        .addGap(56, 56, 56)
+                        .addComponent(jLabel1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homeLayout.createSequentialGroup()
+                        .addGap(85, 85, 85)
+                        .addComponent(calendar, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 1170, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(home, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
                     .addComponent(pageXemPhanCong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -899,42 +1496,39 @@ public class HomePage extends javax.swing.JInternalFrame {
                     .addGap(0, 0, Short.MAX_VALUE)
                     .addComponent(pagePhanCong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(home, javax.swing.GroupLayout.DEFAULT_SIZE, 1158, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 742, Short.MAX_VALUE)
+            .addGap(0, 832, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addComponent(home, javax.swing.GroupLayout.PREFERRED_SIZE, 736, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addGap(0, 51, Short.MAX_VALUE)
                     .addComponent(pageXemPhanCong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGap(0, 51, Short.MAX_VALUE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addGap(0, 51, Short.MAX_VALUE)
                     .addComponent(pagePhanCong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGap(0, 51, Short.MAX_VALUE)))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(home, javax.swing.GroupLayout.PREFERRED_SIZE, 736, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(90, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ActionPerformed
-
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jCheckBox1ActionPerformed
-    private int i = 0;
-    private void calendarPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_calendarPropertyChange
-        // TODO add your handling code here:
-        System.out.println(calendar.getDate() + " " + (++i));
-    }//GEN-LAST:event_calendarPropertyChange
-    public void Message(String message, int messageType) {
+    private int i = 0;    public void Message(String message, int messageType) {
         JOptionPane jOptionPane = new JOptionPane(message, messageType);
         JDialog dialog = jOptionPane.createDialog(null, "Message");
         dialog.setAlwaysOnTop(true);
@@ -1070,6 +1664,97 @@ public class HomePage extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_TablePhanCongNVMouseClicked
 
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+
+        System.out.println("Ngay chon khi thay doi jcombobox: " + strNgayCalendar);
+        switch (jComboBox1.getSelectedIndex()) {
+            case 0:
+            {
+                //                SetModelTable_PhanCong_Ngay();
+                //                defaultTableModel_PhanCong.setRowCount(0);
+                System.out.println("Ts: " + strNgayCalendar);
+
+                CreateDataTable_PhanCong(0, strNgayCalendar);
+                break;
+            }
+            case 1:
+            {
+                //                SetModelTable_PhanCong_Tuan(calendar.getCalendar());
+                //                defaultTableModel_PhanCong.setRowCount(0);
+                CreateDataTable_PhanCong(1, strNgayCalendar);
+                break;
+            }
+            default:
+            throw new AssertionError();
+        }
+        if(Table_PhanCong.getRowCount() == 0)
+        {
+            jScrollPane1.setVisible(false);
+            jLabel20.setText("Lịch phân công trống!");
+        }
+        else
+        {
+            jScrollPane1.setVisible(true);
+            jLabel20.setText("");
+        }
+
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void calendarAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_calendarAncestorAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_calendarAncestorAdded
+
+    private void calendarPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_calendarPropertyChange
+        // TODO add your handling code here:
+        //        System.out.println(calendar.getDate() + " "+ (++i));
+        Date ngayChonn = calendar.getDate();
+//        this.ngayChon = calendar.getCalendar();
+        strNgayCalendar = formatDay.format(ngayChonn);
+        System.out.println("sdfsdf: " + i);
+        System.out.println("Ngay chon khi thay doi jcalendar: " + strNgayCalendar);
+            CreateDataTable_PhanCong(jComboBox1.getSelectedIndex(), strNgayCalendar);
+            CreateDataTable_SLTiec();
+        
+        if(Table_PhanCong.getRowCount() == 0)
+        {
+            jScrollPane1.setVisible(false);
+            jLabel20.setText("Lịch phân công trống!");
+        }
+        else
+        {
+            jScrollPane1.setVisible(true);
+            jLabel20.setText("");
+        }
+        if(Table_SLTiec.getRowCount() == 0)
+        {
+            jScrollPane2.setVisible(false);
+            jLabel23.setText("NULL!");
+        }
+        else
+        {
+            jScrollPane2.setVisible(true);
+            jLabel23.setText("");
+        }
+        CreateBarChart(ngayChonn);
+    }//GEN-LAST:event_calendarPropertyChange
+
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        // TODO add your handling code here:
+        //        sfgsdfg
+        //        System.out.println("Ngay chon khi thay doi jcombobox: " + strNgayCalendar);
+        CreateDataTable_SLTiec();
+        if(Table_SLTiec.getRowCount() == 0)
+        {
+            jScrollPane2.setVisible(false);
+            jLabel23.setText("NULL!");
+        }
+        else
+        {
+            jScrollPane2.setVisible(true);
+            jLabel23.setText("");
+        }
+    }//GEN-LAST:event_jComboBox2ActionPerformed
+
     public void CreateTablePC() {
         modelPCNV = (DefaultTableModel) TablePhanCongNV.getModel();
         modelPCNV.setRowCount(0);
@@ -1087,11 +1772,14 @@ public class HomePage extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TablePhanCongNV;
     private javax.swing.JTable TablePhanCongTC;
+    private javax.swing.JTable Table_PhanCong;
+    private javax.swing.JTable Table_SLTiec;
     private javax.swing.JButton btnPhanCong;
     private javax.swing.JButton btnTraCuu;
     private com.toedter.calendar.JCalendar calendar;
     private javax.swing.JComboBox<String> cbxCongViec;
     private javax.swing.JPanel home;
+    private javax.swing.JDesktopPane jBarChar;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
@@ -1107,6 +1795,8 @@ public class HomePage extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1135,8 +1825,6 @@ public class HomePage extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JLabel lbCa;
     private javax.swing.JLabel lbMaSanh;
     private javax.swing.JLabel lbMaTC;
@@ -1148,4 +1836,5 @@ public class HomePage extends javax.swing.JInternalFrame {
     private javax.swing.JPanel pagePhanCong;
     private javax.swing.JPanel pageXemPhanCong;
     // End of variables declaration//GEN-END:variables
+
 }
