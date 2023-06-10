@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 import dao.CaDAO;
+import dao.EmployeeDAO;
 import dao.LoaiSanhDAO;
 import dao.NhanVienDAO;
 import database.JDBCUtil;
@@ -67,18 +68,19 @@ public class test {
 //                System.out.println(ex);
 //
 //            }
-        try {
-                HashMap<String, Object> map = new HashMap<>();
-                Connection con = JDBCUtil.getConnection();
-                map.put("maHD", "HD0001");
-                
-                JasperPrint p = JasperFillManager.fillReport("src/report/rptThanhToanHDH.jasper", map, con);
-                JasperViewer v = new JasperViewer(p, false);
-                v.setVisible(true);
+//        try {
+//                HashMap<String, Object> map = new HashMap<>();
+//                Connection con = JDBCUtil.getConnection();
+//                map.put("maHD", "HD0001");
+//                
+//                JasperPrint p = JasperFillManager.fillReport("src/report/rptThanhToanHDH.jasper", map, con);
+//                JasperViewer v = new JasperViewer(p, false);
+//                v.setVisible(true);
+//
+//            } catch (JRException ex) {
+//                System.out.println(ex);
+//
+//         
 
-            } catch (JRException ex) {
-                System.out.println(ex);
-
-            }
     }
 }

@@ -349,7 +349,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         btnXoa = new javax.swing.JButton();
         btnXacNhan = new javax.swing.JButton();
         ChuyenKhoanForm = new javax.swing.JDialog();
-        btnDaThanhToanCKForm = new javax.swing.JButton();
+        btnDaThanhToan = new javax.swing.JButton();
         btnCancelCKForm = new javax.swing.JButton();
         Page1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -765,13 +765,13 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                 .addGap(0, 50, Short.MAX_VALUE))
         );
 
-        btnDaThanhToanCKForm.setBackground(new java.awt.Color(132, 70, 133));
-        btnDaThanhToanCKForm.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
-        btnDaThanhToanCKForm.setForeground(new java.awt.Color(255, 255, 255));
-        btnDaThanhToanCKForm.setText("Đã thanh toán");
-        btnDaThanhToanCKForm.addActionListener(new java.awt.event.ActionListener() {
+        btnDaThanhToan.setBackground(new java.awt.Color(132, 70, 133));
+        btnDaThanhToan.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        btnDaThanhToan.setForeground(new java.awt.Color(255, 255, 255));
+        btnDaThanhToan.setText("Đã thanh toán");
+        btnDaThanhToan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDaThanhToanCKFormActionPerformed(evt);
+                btnDaThanhToanActionPerformed(evt);
             }
         });
 
@@ -791,7 +791,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(btnCancelCKForm, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 147, Short.MAX_VALUE)
-                .addComponent(btnDaThanhToanCKForm)
+                .addComponent(btnDaThanhToan)
                 .addContainerGap())
         );
         ChuyenKhoanFormLayout.setVerticalGroup(
@@ -799,7 +799,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ChuyenKhoanFormLayout.createSequentialGroup()
                 .addContainerGap(254, Short.MAX_VALUE)
                 .addGroup(ChuyenKhoanFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnDaThanhToanCKForm, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDaThanhToan, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancelCKForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -2475,13 +2475,13 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_NextPage5ActionPerformed
 
     private void NextPage2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextPage2ActionPerformed
-        // TODO add your handling code here:
-//        if (tongDonBanHienTai >= donGiaBanToiThieu) {
+
+        if (tongDonBanHienTai >= donGiaBanToiThieu) {
         Page2.setVisible(false);
         Page3.setVisible(true);
-//        } else {
-//            Message("Lỗi! Tổng đơn bàn hiện tại phải lớn hơn hoặc bằng đơn bàn tối thiểu.", JOptionPane.WARNING_MESSAGE);
-//        }
+        } else {
+            Message("Lỗi! Tổng đơn bàn hiện tại phải lớn hơn hoặc bằng đơn bàn tối thiểu.", JOptionPane.WARNING_MESSAGE);
+        }
 
     }//GEN-LAST:event_NextPage2ActionPerformed
 
@@ -2758,98 +2758,97 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btn500trActionPerformed
 
     private void btnXacNhanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXacNhanActionPerformed
-        // TODO add your handling code here:
-//        String maTiecCuoi = String.valueOf(PhieuDatTiecCuoiDAO.getInstance().GetID() + 1);
-//        switch (maTiecCuoi.length()) {
-//            case 1:
-//                maTiecCuoi = "TC000" + maTiecCuoi;
-//                break;
-//            case 2:
-//                maTiecCuoi = "TC00" + maTiecCuoi;
-//                break;
-//            case 3:
-//                maTiecCuoi = "TC0" + maTiecCuoi;
-//                break;
-//            case 4:
-//                maTiecCuoi = "TC" + maTiecCuoi;
-//                break;
-//        }
-//
-//        Date ngayDT = inputNgayDatTiec.getDate();
-//        Date ngayDTiec = inputNgayDaiTiec.getDate();
-//
-//        String ngayDat = (ngayDT.getYear() + 1900) + "-" + (ngayDT.getMonth() + 1) + "-" + ngayDT.getDate();
-//        String ngayDaiTiec = (ngayDTiec.getYear() + 1900) + "-" + (ngayDTiec.getMonth() + 1) + "-" + ngayDTiec.getDate();
-//
-//        int soLuongBan = Integer.parseInt(inputSoLuongBan.getValue().toString());
-//
-//        int soLuongBanDuTru = Integer.parseInt(inputSLDT.getValue().toString());
-//
-//        String tenCoDau = inputTenCoDau.getText();
-//
-//        String tenChuRe = inputTenChuRe.getText();
-//
-//        String sdt = inputSDT.getText();
-//
-//        String maCa = mapMaCa.get(inputCa.getSelectedItem().toString().split(" ")[0]);
-//
-//        String maSanh = mapMaSanh.get(inputSanh.getSelectedItem().toString());
-//
-//        String userName = "taitai";
-//
-//        int kq1 = PhieuDatTiecCuoiDAO.getInstance().Insert(new PhieuDatTiecCuoi(maTiecCuoi, ngayDat, ngayDaiTiec, soLuongBan, soLuongBanDuTru, tongDonBanHienTai, tongtienban,
-//                tongTienDV, tongtienHD, (int) tienCoc, conLai, tenCoDau, tenChuRe, sdt, maCa, maSanh, userName));
-//        int flag = 1;
-//        if (kq1 > 0) {
-//            int kq2 = 0;
-//            for (DTMonAn x : CTMonAns) {
-//                kq2 = ChiTietMonAnDAO.getInstance().Insert(new ChiTietMonAn(maTiecCuoi, x.getMaMonAn(), x.getDonGia(), tongSLB, x.getGhiChu()));
-//                if (kq2 == 0) {
-//                    flag = 0;
-//                    break;
-//                }
-//            }
-//            if (kq2 > 0) {
-//                int kq3 = 0;
-//                for (DTDichVu x : CTDichVus) {
-//                    int temp = x.getSoLuong() * x.getDonGia();
-//                    kq3 = ChiTietDichVuDAO.getInstance().Insert(new ChiTietDichVu(maTiecCuoi, x.getMaDichVu(), x.getSoLuong(), x.getDonGia(), temp));
-//                    if (kq3 == 0) {
-//                        flag = 0;
-//                        break;
-//                    }
-//                }
-//
-//            }
-//
-//        }
-//
-//        if (flag > 0) {
-//            File file = new File("src/report/rptPhieuDatTiec.jasper");
-//            String absolutePath = file.getAbsolutePath();
-//            try {
-//                HashMap<String, Object> map = new HashMap<>();
-//                Connection con = JDBCUtil.getConnection();
-//                map.put("maTiecCuoi", maTiecCuoi);
-//                map.put("tienKhachTra", Double.parseDouble(inputSoTienDaNhan.getText()));
-//                map.put("tienThua", Double.parseDouble(inputSoTienDaNhan.getText()) - tienCoc);
-//                map.put("tyLePhat", tyLePhat);
-//                map.put("thoiGianPhat", thoiGianPhat);
-//                System.out.println(maTiecCuoi);
-//                System.out.println(Double.parseDouble(inputSoTienDaNhan.getText()));
-//                System.out.println(Double.parseDouble(inputSoTienDaNhan.getText()) - tienCoc);
-//                System.out.println(tyLePhat);
-//                System.out.println(thoiGianPhat);
-//                JasperPrint p = JasperFillManager.fillReport(absolutePath, map, con);
-//                JasperViewer v = new JasperViewer(p, false);
-//                v.setVisible(true);
-//
-//            } catch (JRException ex) {
-//                System.out.println(ex);
-//
-//            }
-//        }
-//        
+
+        String maTiecCuoi = String.valueOf(PhieuDatTiecCuoiDAO.getInstance().GetID() + 1);
+        switch (maTiecCuoi.length()) {
+            case 1:
+                maTiecCuoi = "TC000" + maTiecCuoi;
+                break;
+            case 2:
+                maTiecCuoi = "TC00" + maTiecCuoi;
+                break;
+            case 3:
+                maTiecCuoi = "TC0" + maTiecCuoi;
+                break;
+            case 4:
+                maTiecCuoi = "TC" + maTiecCuoi;
+                break;
+        }
+
+        Date ngayDT = inputNgayDatTiec.getDate();
+        Date ngayDTiec = inputNgayDaiTiec.getDate();
+
+        String ngayDat = (ngayDT.getYear() + 1900) + "-" + (ngayDT.getMonth() + 1) + "-" + ngayDT.getDate();
+        String ngayDaiTiec = (ngayDTiec.getYear() + 1900) + "-" + (ngayDTiec.getMonth() + 1) + "-" + ngayDTiec.getDate();
+
+        int soLuongBan = Integer.parseInt(inputSoLuongBan.getValue().toString());
+
+        int soLuongBanDuTru = Integer.parseInt(inputSLDT.getValue().toString());
+
+        String tenCoDau = inputTenCoDau.getText();
+
+        String tenChuRe = inputTenChuRe.getText();
+
+        String sdt = inputSDT.getText();
+
+        String maCa = mapMaCa.get(inputCa.getSelectedItem().toString().split(" ")[0]);
+
+        String maSanh = mapMaSanh.get(inputSanh.getSelectedItem().toString());
+
+        String userName = "taitai";
+
+        int kq1 = PhieuDatTiecCuoiDAO.getInstance().Insert(new PhieuDatTiecCuoi(maTiecCuoi, ngayDat, ngayDaiTiec, soLuongBan, soLuongBanDuTru, tongDonBanHienTai, tongtienban,
+                tongTienDV, tongtienHD, (int) tienCoc, conLai, tenCoDau, tenChuRe, sdt, maCa, maSanh, userName));
+        int flag = 1;
+        if (kq1 > 0) {
+            int kq2 = 0;
+            for (DTMonAn x : CTMonAns) {
+                kq2 = ChiTietMonAnDAO.getInstance().Insert(new ChiTietMonAn(maTiecCuoi, x.getMaMonAn(), x.getDonGia(), tongSLB, x.getGhiChu()));
+                if (kq2 == 0) {
+                    flag = 0;
+                    break;
+                }
+            }
+            if (kq2 > 0) {
+                int kq3 = 0;
+                for (DTDichVu x : CTDichVus) {
+                    int temp = x.getSoLuong() * x.getDonGia();
+                    kq3 = ChiTietDichVuDAO.getInstance().Insert(new ChiTietDichVu(maTiecCuoi, x.getMaDichVu(), x.getSoLuong(), x.getDonGia(), temp));
+                    if (kq3 == 0) {
+                        flag = 0;
+                        break;
+                    }
+                }
+
+            }
+
+        }
+
+        if (flag > 0) {
+            File file = new File("src/report/rptPhieuDatTiec.jasper");
+            String absolutePath = file.getAbsolutePath();
+            try {
+                HashMap<String, Object> map = new HashMap<>();
+                Connection con = JDBCUtil.getConnection();
+                map.put("maTiecCuoi", maTiecCuoi);
+                map.put("tienKhachTra", Double.parseDouble(inputSoTienDaNhan.getText()));
+                map.put("tienThua", Double.parseDouble(inputSoTienDaNhan.getText()) - tienCoc);
+                map.put("tyLePhat", tyLePhat);
+                map.put("thoiGianPhat", thoiGianPhat);
+                System.out.println(maTiecCuoi);
+                System.out.println(Double.parseDouble(inputSoTienDaNhan.getText()));
+                System.out.println(Double.parseDouble(inputSoTienDaNhan.getText()) - tienCoc);
+                System.out.println(tyLePhat);
+                System.out.println(thoiGianPhat);
+                JasperPrint p = JasperFillManager.fillReport(absolutePath, map, con);
+                JasperViewer v = new JasperViewer(p, false);
+                v.setVisible(true);
+
+            } catch (JRException ex) {
+                System.out.println(ex);
+
+            }
+        }
 
         Page1.setVisible(true);
         Page4.setVisible(false);
@@ -2859,6 +2858,8 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         inputSDT.setText("");
         inputSoLuongBan.setValue(0);
         inputSLDT.setValue(0);
+        inputNgayDaiTiec.setDate(null);
+        ThanhToanTienMat.setVisible(false);
 
 
     }//GEN-LAST:event_btnXacNhanActionPerformed
@@ -2867,7 +2868,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbxPTTTActionPerformed
 
-    private void btnDaThanhToanCKFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDaThanhToanCKFormActionPerformed
+    private void btnDaThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDaThanhToanActionPerformed
         // TODO add your handling code here:
         String maTiecCuoi = String.valueOf(PhieuDatTiecCuoiDAO.getInstance().GetID() + 1);
         switch (maTiecCuoi.length()) {
@@ -2960,8 +2961,17 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
 
             }
         }
+        Page1.setVisible(true);
+        Page4.setVisible(false);
+        Page1();
+        inputTenChuRe.setText("");
+        inputTenCoDau.setText("");
+        inputSDT.setText("");
+        inputSoLuongBan.setValue(0);
+        inputSLDT.setValue(0);
+        inputNgayDaiTiec.setDate(null);
         ChuyenKhoanForm.setVisible(false);
-    }//GEN-LAST:event_btnDaThanhToanCKFormActionPerformed
+    }//GEN-LAST:event_btnDaThanhToanActionPerformed
 
     public void UpdateChonDV(boolean chon, int soluong, int row) {
         for (DTDichVu x : dTDichVus) {
@@ -3035,7 +3045,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     private javax.swing.JButton btn70tr;
     private javax.swing.JButton btn90tr;
     private javax.swing.JButton btnCancelCKForm;
-    private javax.swing.JButton btnDaThanhToanCKForm;
+    private javax.swing.JButton btnDaThanhToan;
     private javax.swing.JButton btnXacNhan;
     private javax.swing.JButton btnXoa;
     private javax.swing.JButton btnhaiMuoiTrieu;

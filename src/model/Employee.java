@@ -8,7 +8,8 @@ package model;
  *
  * @author Asus
  */
-public class Employee extends CongViec{
+public class Employee extends CongViec {
+
     private String maNhanVien;
     private String maCongViec;
     private String tenNhanVien;
@@ -17,6 +18,16 @@ public class Employee extends CongViec{
     private String loaiNhanVien;
 
     public Employee() {
+    }
+
+    public Employee(String maNhanVien, String maCongViec, String tenNhanVien, String gioiTinh, String sdt, String loaiNhanVien) {
+        super(maCongViec);
+        this.maNhanVien = maNhanVien;
+        this.maCongViec = maCongViec;
+        this.tenNhanVien = tenNhanVien;
+        this.gioiTinh = gioiTinh;
+        this.sdt = sdt;
+        this.loaiNhanVien = loaiNhanVien;
     }
 
     public Employee(String maNhanVien, String maCongViec, String tenNhanVien, String gioiTinh, String sdt, String loaiNhanVien, String tenCongViec) {
@@ -28,7 +39,7 @@ public class Employee extends CongViec{
         this.sdt = sdt;
         this.loaiNhanVien = loaiNhanVien;
     }
-    
+
     public String getMaNhanVien() {
         return maNhanVien;
     }
@@ -36,7 +47,7 @@ public class Employee extends CongViec{
     public String getMaCongViec() {
         return maCongViec;
     }
-    
+
     public String getTenNhanVien() {
         return tenNhanVien;
     }

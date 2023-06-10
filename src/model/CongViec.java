@@ -15,6 +15,10 @@ public class CongViec {
 
     public CongViec() {
     }
+      public CongViec(String maCongViec) {
+        this.maCongViec = maCongViec;
+
+    }
 
     public CongViec(String maCongViec, String tenCongViec) {
         this.maCongViec = maCongViec;

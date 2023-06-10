@@ -13,6 +13,7 @@ import model.NhanVien;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Date;
 
 /**
  *
@@ -168,6 +169,8 @@ public class NhanVienDAO implements DAOInterface<NhanVien> {
         }
         return lstNhanVien;
     }
+    
+    
 
     @Override
     public NhanVien SelectById(NhanVien t) {

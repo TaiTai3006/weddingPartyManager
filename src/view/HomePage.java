@@ -5,6 +5,7 @@
 package view;
 
 import dao.CongViecDAO;
+import dao.EmployeeDAO;
 import dao.PhieuDatTiecCuoiDAO;
 import dao.ThamSoDAO;
 import database.JDBCUtil;
@@ -24,6 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +33,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import model.CongViec;
+import model.EmployeePC;
 
 /**
  *
@@ -42,10 +45,15 @@ public class HomePage extends javax.swing.JInternalFrame {
     private Date today;
     private Date ngayKetThuc;
     private String maTiecCuoi;
+    private Date ngayDT;
+    private String maCa;
     private DefaultTableModel modelPC;
+    private DefaultTableModel modelPCNV;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     private ArrayList<CongViec> congViecs = new ArrayList<>();
+    private ArrayList<EmployeePC> employeePCs = new ArrayList<>();
     private Map<String, String> mapCongViec = new HashMap<>();
+    
 
     /**
      * Creates new form HomePage
@@ -160,7 +168,7 @@ public class HomePage extends javax.swing.JInternalFrame {
         cbxCongViec = new javax.swing.JComboBox<>();
         jCheckBox1 = new javax.swing.JCheckBox();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable4 = new javax.swing.JTable();
+        TablePhanCongNV = new javax.swing.JTable();
         jPanel25 = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
@@ -696,6 +704,12 @@ public class HomePage extends javax.swing.JInternalFrame {
         jLabel17.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel17.setText("Công việc");
 
+        cbxCongViec.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxCongViecActionPerformed(evt);
+            }
+        });
+
         jCheckBox1.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jCheckBox1.setText("Chọn nhân viên tự động");
         jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
@@ -728,18 +742,30 @@ public class HomePage extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+        TablePhanCongNV.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "STT", "Mã nhân viên", "Họ tên", "Giới tính", "Loại nhân viên", "Số điện thoại", "Chọn"
             }
-        ));
-        jScrollPane4.setViewportView(jTable4);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, true, true, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane4.setViewportView(TablePhanCongNV);
 
         jLabel18.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel18.setText("Số lượng nhân viên cần:");
@@ -938,10 +964,16 @@ public class HomePage extends javax.swing.JInternalFrame {
         int row = TablePhanCongTC.getSelectedRow();
         if(row >= 0){
             maTiecCuoi = TablePhanCongTC.getValueAt(row, 3).toString();
+            try {
+                ngayDT = dateFormat.parse(TablePhanCongTC.getValueAt(row, 1).toString());
+            } catch (ParseException ex) {
+                Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            maCa = TablePhanCongTC.getValueAt(row, 2).toString();
             pageXemPhanCong.setVisible(false);
             pagePhanCong.setVisible(true);
             lbNgayDaiTiec.setText(TablePhanCongTC.getValueAt(row, 1).toString());
-            lbCa.setText(TablePhanCongTC.getValueAt(row, 2).toString());
+            lbCa.setText(maCa);
             lbMaTC.setText(maTiecCuoi);
             lbMaSanh.setText(TablePhanCongTC.getValueAt(row, 4).toString());
             
@@ -951,13 +983,33 @@ public class HomePage extends javax.swing.JInternalFrame {
                 mapCongViec.put(x.getTenCongViec(), x.getMaCongViec());
                 cbxCongViec.addItem(x.getTenCongViec());
             }
-            
+            CreateTablePC();
             
         }
     }//GEN-LAST:event_btnPhanCongActionPerformed
 
+    private void cbxCongViecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxCongViecActionPerformed
+        // TODO add your handling code here:
+        
+        CreateTablePC();
+    }//GEN-LAST:event_cbxCongViecActionPerformed
+    
+    public void CreateTablePC(){
+    employeePCs = EmployeeDAO.getInstance().getNhanVienPC(ngayDT, maCa, maTiecCuoi);
+    modelPCNV = (DefaultTableModel) TablePhanCongNV.getModel();
+    modelPCNV.setRowCount(0);
+    String maCV = mapCongViec.get(cbxCongViec.getSelectedItem().toString());
+    int i = 0;
+    for(EmployeePC x : employeePCs){
+        if(x.getMaCongViec().equals(maCV)){
+            
+            modelPCNV.addRow(new Object[]{++i, x.getMaNhanVien(), x.getMaNhanVien(),x.getGioiTinh(), x.getLoaiNhanVien(), x.getSdt(), x.isChon() });
+        }
+    }
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable TablePhanCongNV;
     private javax.swing.JTable TablePhanCongTC;
     private javax.swing.JButton btnPhanCong;
     private javax.swing.JButton btnTraCuu;
@@ -1011,7 +1063,6 @@ public class HomePage extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable4;
     private javax.swing.JLabel lbCa;
     private javax.swing.JLabel lbMaSanh;
     private javax.swing.JLabel lbMaTC;

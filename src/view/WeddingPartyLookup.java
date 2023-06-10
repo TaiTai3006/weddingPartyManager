@@ -1119,7 +1119,6 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             });
 
             jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-            jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
             jLabel23.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
             jLabel23.setText("Mã tiệc cưới:");
@@ -2297,7 +2296,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                             .addGroup(PageTTHDTTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, 1065, Short.MAX_VALUE)
+                                .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, 1072, Short.MAX_VALUE)
                                 .addComponent(jPanel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING))
                             .addGap(0, 0, Short.MAX_VALUE)))

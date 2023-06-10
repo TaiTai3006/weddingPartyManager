@@ -469,7 +469,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnCancelCKForm" min="-2" pref="105" max="-2" attributes="0"/>
                   <EmptySpace pref="147" max="32767" attributes="0"/>
-                  <Component id="btnDaThanhToanCKForm" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnDaThanhToan" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -479,7 +479,7 @@
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace pref="254" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="btnDaThanhToanCKForm" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
+                      <Component id="btnDaThanhToan" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
                       <Component id="btnCancelCKForm" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -488,7 +488,7 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JButton" name="btnDaThanhToanCKForm">
+        <Component class="javax.swing.JButton" name="btnDaThanhToan">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="85" green="46" red="84" type="rgb"/>
@@ -502,7 +502,7 @@
             <Property name="text" type="java.lang.String" value="&#x110;&#xe3; thanh to&#xe1;n"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDaThanhToanCKFormActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDaThanhToanActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnCancelCKForm">

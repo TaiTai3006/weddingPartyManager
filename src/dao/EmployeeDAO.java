@@ -9,7 +9,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Date;
 import model.Employee;
+import model.EmployeePC;
 import model.NhanVien;
 
 /**
@@ -127,6 +129,62 @@ public class EmployeeDAO implements DAOInterface<Employee> {
 
             while (kq.next()) {
                 lstNhanVien.add(new Employee(kq.getString("maNhanVien"), kq.getString("maCongViec"), kq.getString("tenNhanVien"), kq.getString("gioiTinh"), kq.getString("sdt"), kq.getString("loaiNhanVien"), kq.getString("tenCongViec")));
+            }
+
+            JDBCUtil.closeConnection(con);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return lstNhanVien;
+    }
+
+    public boolean checkPC(String maNV, String maTC) {
+        boolean flag = false;
+        try {
+            Connection con = JDBCUtil.getConnection();
+
+            String sql = "SELECT COUNT(*) FROM NhanVien WHERE NhanVien.maNhanVien = ? "
+                    + "AND  NhanVien.maNhanVien IN (SELECT maNhanVien FROM PhieuDatTiecCuoi, PhanCong "
+                    + "WHERE PhieuDatTiecCuoi.maTiecCuoi = PhanCong.maTiecCuoi AND PhieuDatTiecCuoi.maTiecCuoi = ?)";
+
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, maNV);
+            st.setString(2, maTC);
+            ResultSet kq = st.executeQuery();
+
+            while (kq.next()) {
+                int res = kq.getInt(1);
+                if(res > 0) flag = true;
+            }
+
+            JDBCUtil.closeConnection(con);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return flag;
+    }
+
+    public ArrayList<EmployeePC> getNhanVienPC(Date ngayDT, String maCa, String maTC) {
+        ArrayList<EmployeePC> lstNhanVien = new ArrayList<EmployeePC>();
+        try {
+            Connection con = JDBCUtil.getConnection();
+
+            String sql = "SELECT * FROM NhanVien WHERE NhanVien.maNhanVien NOT IN "
+                    + "(SELECT maNhanVien FROM PhieuDatTiecCuoi, PhanCong WHERE PhieuDatTiecCuoi.maTiecCuoi = PhanCong.maTiecCuoi AND PhieuDatTiecCuoi.ngayDaiTiec = ? AND PhieuDatTiecCuoi.maCa = ?) "
+                    + "OR NhanVien.maNhanVien IN "
+                    + "(SELECT maNhanVien FROM PhieuDatTiecCuoi, PhanCong WHERE PhieuDatTiecCuoi.maTiecCuoi = PhanCong.maTiecCuoi AND PhieuDatTiecCuoi.maTiecCuoi = ?)";
+
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setDate(1, new java.sql.Date(ngayDT.getTime()));
+            st.setString(2, maCa);
+            st.setString(3, maTC);
+            ResultSet kq = st.executeQuery();
+
+            while (kq.next()) {
+                lstNhanVien.add(new EmployeePC(checkPC(kq.getString("maNhanVien"), maTC),kq.getString("maNhanVien"),
+                        kq.getString("maCongViec"), kq.getString("tenNhanVien"),
+                        kq.getString("gioiTinh"), kq.getString("sdt"),
+                        kq.getString("loaiNhanVien")));
             }
 
             JDBCUtil.closeConnection(con);
