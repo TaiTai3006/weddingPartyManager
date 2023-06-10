@@ -77,6 +77,7 @@ public class HomePage extends javax.swing.JInternalFrame {
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
+        calendar.getCalendar().setFirstDayOfWeek(Calendar.MONDAY);
         home.setVisible(false);
         pageXemPhanCong.setVisible(true);
         pagePhanCong.setVisible(false);
@@ -616,6 +617,7 @@ public void CreateDataTable_SLTiec(){
             {
                 String monDay = formatDate(getDayOfWeek(calendar.getCalendar(), Calendar.MONDAY), formatDay);
                 String sunDay = formatDate(getDayOfWeek(calendar.getCalendar(), Calendar.SUNDAY), formatDay);
+                System.out.println("Thứ 2: " + monDay + ",     Thứ 3: " + sunDay);
                 try 
                 {
                     Connection con = JDBCUtil.getConnection();
