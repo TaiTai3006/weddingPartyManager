@@ -10,29 +10,32 @@ import java.sql.Connection;
 import database.JDBCUtil;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author macbookpro
  */
-public class PhieuDatTiecCuoiDAO implements DAOInterface<PhieuDatTiecCuoi>{
-    
-    public static PhieuDatTiecCuoiDAO getInstance(){
+public class PhieuDatTiecCuoiDAO implements DAOInterface<PhieuDatTiecCuoi> {
+
+    public static PhieuDatTiecCuoiDAO getInstance() {
         return new PhieuDatTiecCuoiDAO();
     }
 
     @Override
     public int Insert(PhieuDatTiecCuoi t) {
-        
+
         try {
             Connection con = JDBCUtil.getConnection();
-            
-            String sql = "INSERT INTO PhieuDatTiecCuoi (maTiecCuoi, ngayDat, ngayDaiTiec, soLuongBan, soLuongBanDuTru," + 
-                    "donGiaBan, tongTienBan, tongTienDichVu, tongTienDatTiec, tienDatCoc, conLai, tenCoDau, tenChuRe," +
-                    "sdt, maCa, maSanh, userName) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            
+
+            String sql = "INSERT INTO PhieuDatTiecCuoi (maTiecCuoi, ngayDat, ngayDaiTiec, soLuongBan, soLuongBanDuTru,"
+                    + "donGiaBan, tongTienBan, tongTienDichVu, tongTienDatTiec, tienDatCoc, conLai, tenCoDau, tenChuRe,"
+                    + "sdt, maCa, maSanh, userName) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
             PreparedStatement st = con.prepareStatement(sql);
-            
+
             st.setString(1, t.getMaTiecCuoi());
             st.setString(2, t.getNgayDat());
             st.setString(3, t.getNgayDaiTiec());
@@ -50,41 +53,40 @@ public class PhieuDatTiecCuoiDAO implements DAOInterface<PhieuDatTiecCuoi>{
             st.setString(15, t.getMaCa());
             st.setString(16, t.getMaSanh());
             st.setString(17, t.getUserName());
-            
+
             System.out.println(st);
-            
+
             int kq = st.executeUpdate();
-            
-            if(kq > 0){
+
+            if (kq > 0) {
                 System.out.println("Them du lieu thanh cong!");
-            } else{
+            } else {
                 System.out.println("Them du lieu that bai!");
             }
-            
+
             JDBCUtil.closeConnection(con);
-            
+
             return kq;
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return 0 ;
+        return 0;
     }
 
     @Override
     public int Update(PhieuDatTiecCuoi t) {
-        
-     try {
+
+        try {
             Connection con = JDBCUtil.getConnection();
-            
-            String sql = "UPDATE PhieuDatTiecCuoi SET " +
-                    "ngayDaiTiec=?, soLuongBan=?, soLuongBanDuTru=?," + 
-                    "donGiaBan=?, tongTienBan=?, tongTienDichVu=?, tongTienDatTiec=?," +
-                    "tienDatCoc=?, conLai=?, tenCoDau=?, tenChuRe=?," +
-                    "sdt=?, maCa=?, maSanh=? " +
-                    "WHERE maTiecCuoi =?";
-            
+
+            String sql = "UPDATE PhieuDatTiecCuoi SET "
+                    + "ngayDaiTiec=?, soLuongBan=?, soLuongBanDuTru=?,"
+                    + "donGiaBan=?, tongTienBan=?, tongTienDichVu=?, tongTienDatTiec=?,"
+                    + "tienDatCoc=?, conLai=?, tenCoDau=?, tenChuRe=?,"
+                    + "sdt=?, maCa=?, maSanh=? "
+                    + "WHERE maTiecCuoi =?";
+
             PreparedStatement st = con.prepareStatement(sql);
-            
 
             st.setString(1, t.getNgayDaiTiec());
             st.setInt(2, t.getSoLuongBan());
@@ -96,28 +98,28 @@ public class PhieuDatTiecCuoiDAO implements DAOInterface<PhieuDatTiecCuoi>{
             st.setLong(8, t.getTienDatCoc());
             st.setLong(9, t.getConLai());
             st.setString(10, t.getTenCoDau());
-            st.setString( 11, t.getTenChuRe());
+            st.setString(11, t.getTenChuRe());
             st.setString(12, t.getSdt());
             st.setString(13, t.getMaCa());
             st.setString(14, t.getMaSanh());
             st.setString(15, t.getMaTiecCuoi());
-            
+
             int kq = st.executeUpdate();
-            
-            if(kq > 0){
+
+            if (kq > 0) {
                 System.out.println("Cap nhat du lieu thanh cong!");
-            } else{
+            } else {
                 System.out.println("cap nhat du lieu that bai!");
             }
-            
+
             JDBCUtil.closeConnection(con);
             return kq;
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return 0 ;
+        return 0;
     }
-    
+
     public ArrayList<PhieuDatTiecCuoi> SelectById(String id) {
         ArrayList<PhieuDatTiecCuoi> lstTiecCuoi = new ArrayList<PhieuDatTiecCuoi>();
         try {
@@ -131,8 +133,8 @@ public class PhieuDatTiecCuoiDAO implements DAOInterface<PhieuDatTiecCuoi>{
 
             while (kq.next()) {
                 lstTiecCuoi.add(new PhieuDatTiecCuoi(kq.getString("maTiecCuoi"), kq.getString("ngayDat"), kq.getString("ngayDaiTiec"),
-                        kq.getInt("soLuongBan"),  kq.getInt("soLuongBanDuTru"), kq.getLong("donGiaBan"), kq.getLong("tongTienBan"), 
-                        kq.getLong("tongTienDichVu"), kq.getLong("tongTienDatTiec"), kq.getLong("tienDatCoc"), kq.getLong("conLai"), 
+                        kq.getInt("soLuongBan"), kq.getInt("soLuongBanDuTru"), kq.getLong("donGiaBan"), kq.getLong("tongTienBan"),
+                        kq.getLong("tongTienDichVu"), kq.getLong("tongTienDatTiec"), kq.getLong("tienDatCoc"), kq.getLong("conLai"),
                         kq.getString("tenCoDau"), kq.getString("tenChuRe"), kq.getString("sdt"), kq.getString("maCa"), kq.getString("maSanh"), kq.getString("userName")));
             }
             JDBCUtil.closeConnection(con);
@@ -141,135 +143,176 @@ public class PhieuDatTiecCuoiDAO implements DAOInterface<PhieuDatTiecCuoi>{
         }
         return lstTiecCuoi;
     }
-    
+
     @Override
     public int Delete(PhieuDatTiecCuoi t) {
-     
-    try {
+
+        try {
             Connection con = JDBCUtil.getConnection();
- 
-            
-            String sql = "DELETE FROM PhieuDatTiecCuoi " +
-                    "WHERE maTiecCuoi = ?";
-            
+
+            String sql = "DELETE FROM PhieuDatTiecCuoi "
+                    + "WHERE maTiecCuoi = ?";
+
             PreparedStatement st = con.prepareStatement(sql);
-            
-             st.setString(1, t.getMaTiecCuoi());
-            
+
+            st.setString(1, t.getMaTiecCuoi());
+
             int kq = st.executeUpdate();
-            
-            if(kq > 0){
+
+            if (kq > 0) {
                 System.out.println("Xoa du lieu thanh cong!");
-            } else{
+            } else {
                 System.out.println("Xoa du lieu that bai!");
             }
-            
+
             JDBCUtil.closeConnection(con);
-            
+
             return kq;
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return 0 ;
+        return 0;
     }
-    
-    public int GetID(){
+
+    public int GetID() {
         int key = 0;
-         try {
+        try {
             Connection con = JDBCUtil.getConnection();
-            
+
             String sql = "SELECT * FROM PhieuDatTiecCuoi ORDER BY maTiecCuoi DESC LIMIT 1";
-            
+
             PreparedStatement st = con.prepareStatement(sql);
-            
+
             ResultSet kq = st.executeQuery();
-            
-            while(kq.next()){
-                if(kq.getString("maTiecCuoi").length() != 0)
-                    key = Integer.parseInt(kq.getString("maTiecCuoi").substring(2));   
+
+            while (kq.next()) {
+                if (kq.getString("maTiecCuoi").length() != 0) {
+                    key = Integer.parseInt(kq.getString("maTiecCuoi").substring(2));
+                }
             }
-            
+
             JDBCUtil.closeConnection(con);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-         return key;
+        return key;
     }
 
     @Override
     public ArrayList<PhieuDatTiecCuoi> SelectAll() {
         ArrayList<PhieuDatTiecCuoi> phieuDatTiecCuois = new ArrayList<PhieuDatTiecCuoi>();
-       try {
+        try {
             Connection con = JDBCUtil.getConnection();
-            
+
             String sql = "SELECT * FROM PhieuDatTiecCuoi WHERE maTiecCuoi not in (SELECT hoadon.maTiecCuoi FROM hoadon)";
-            
+
             PreparedStatement st = con.prepareStatement(sql);
-            
+
             ResultSet kq = st.executeQuery();
-            
-            while(kq.next()){
+
+            while (kq.next()) {
                 phieuDatTiecCuois.add(new PhieuDatTiecCuoi(kq.getString("maTiecCuoi"), kq.getString("ngayDat"), kq.getString("ngayDaiTiec"),
-                        kq.getInt("soLuongBan"), kq.getInt("soLuongBanDuTru"), kq.getLong("donGiaBan"), kq.getLong("tongTienBan"), 
-                        kq.getLong("tongTienDichVu"), kq.getLong("tongTienDatTiec"), kq.getLong("tienDatCoc"), kq.getLong("conLai"), 
+                        kq.getInt("soLuongBan"), kq.getInt("soLuongBanDuTru"), kq.getLong("donGiaBan"), kq.getLong("tongTienBan"),
+                        kq.getLong("tongTienDichVu"), kq.getLong("tongTienDatTiec"), kq.getLong("tienDatCoc"), kq.getLong("conLai"),
                         kq.getString("tenCoDau"), kq.getString("tenChuRe"), kq.getString("sdt"), kq.getString("maCa"), kq.getString("maSanh"), kq.getString("userName")));
             }
-            
+
             JDBCUtil.closeConnection(con);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return phieuDatTiecCuois;
     }
-    
+
     public ArrayList<PhieuDatTiecCuoi> SelectDesc() {
         ArrayList<PhieuDatTiecCuoi> phieuDatTiecCuois = new ArrayList<PhieuDatTiecCuoi>();
-       try {
+        try {
             Connection con = JDBCUtil.getConnection();
-            
+
             String sql = "SELECT * FROM PhieuDatTiecCuoi WHERE maTiecCuoi not in (SELECT hoadon.maTiecCuoi FROM hoadon) ORDER by soLuongBan DESC";
-            
+
             PreparedStatement st = con.prepareStatement(sql);
-            
+
             ResultSet kq = st.executeQuery();
-            
-            while(kq.next()){
+
+            while (kq.next()) {
                 phieuDatTiecCuois.add(new PhieuDatTiecCuoi(kq.getString("maTiecCuoi"), kq.getString("ngayDat"), kq.getString("ngayDaiTiec"),
-                        kq.getInt("soLuongBan"), kq.getInt("soLuongBanDuTru"), kq.getLong("donGiaBan"), kq.getLong("tongTienBan"), 
-                        kq.getLong("tongTienDichVu"), kq.getLong("tongTienDatTiec"), kq.getLong("tienDatCoc"), kq.getLong("conLai"), 
+                        kq.getInt("soLuongBan"), kq.getInt("soLuongBanDuTru"), kq.getLong("donGiaBan"), kq.getLong("tongTienBan"),
+                        kq.getLong("tongTienDichVu"), kq.getLong("tongTienDatTiec"), kq.getLong("tienDatCoc"), kq.getLong("conLai"),
                         kq.getString("tenCoDau"), kq.getString("tenChuRe"), kq.getString("sdt"), kq.getString("maCa"), kq.getString("maSanh"), kq.getString("userName")));
             }
-            
+
             JDBCUtil.closeConnection(con);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return phieuDatTiecCuois;
     }
-    
+
     public ArrayList<PhieuDatTiecCuoi> SelectAsc() {
         ArrayList<PhieuDatTiecCuoi> phieuDatTiecCuois = new ArrayList<PhieuDatTiecCuoi>();
-       try {
+        try {
             Connection con = JDBCUtil.getConnection();
-            
+
             String sql = "SELECT * FROM PhieuDatTiecCuoi WHERE maTiecCuoi not in (SELECT hoadon.maTiecCuoi FROM hoadon) ORDER by soLuongBan ASC";
-            
+
             PreparedStatement st = con.prepareStatement(sql);
-            
+
             ResultSet kq = st.executeQuery();
-            
-            while(kq.next()){
+
+            while (kq.next()) {
                 phieuDatTiecCuois.add(new PhieuDatTiecCuoi(kq.getString("maTiecCuoi"), kq.getString("ngayDat"), kq.getString("ngayDaiTiec"),
-                        kq.getInt("soLuongBan"), kq.getInt("soLuongBanDuTru"), kq.getLong("donGiaBan"), kq.getLong("tongTienBan"), 
-                        kq.getLong("tongTienDichVu"), kq.getLong("tongTienDatTiec"), kq.getLong("tienDatCoc"), kq.getLong("conLai"), 
+                        kq.getInt("soLuongBan"), kq.getInt("soLuongBanDuTru"), kq.getLong("donGiaBan"), kq.getLong("tongTienBan"),
+                        kq.getLong("tongTienDichVu"), kq.getLong("tongTienDatTiec"), kq.getLong("tienDatCoc"), kq.getLong("conLai"),
                         kq.getString("tenCoDau"), kq.getString("tenChuRe"), kq.getString("sdt"), kq.getString("maCa"), kq.getString("maSanh"), kq.getString("userName")));
             }
-            
+
             JDBCUtil.closeConnection(con);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return phieuDatTiecCuois;
+    }
+
+    public void getPhanCong(Date ngayBD, Date ngayKT, DefaultTableModel modelPC) {
+        
+        try {
+            Connection con = JDBCUtil.getConnection();
+
+            String sql = "SELECT ngayDaiTiec, tenCa, maTiecCuoi, maSanh, (soLuongBan+soLuongBanDuTru) as SLBan, tinhTrangPhanCong  \n"
+                    + "FROM `PhieuDatTiecCuoi`, Ca \n"
+                    + "WHERE PhieuDatTiecCuoi.maCa = ca.maCa AND ngayDaiTiec BETWEEN ? AND ? \n"
+                    + "ORDER BY ngayDaiTiec ASC, tenCa ASC";
+
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setDate(1, new java.sql.Date(ngayBD.getTime()));
+            st.setDate(2, new java.sql.Date(ngayKT.getTime()));
+            System.out.println(st);
+
+            ResultSet kq = st.executeQuery();
+            int i = 0;
+            String row[] = new String[7];
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            while(kq.next()){
+                    row[0] = String.valueOf(++i);
+                    row[1] = dateFormat.format(kq.getDate(1));
+                    row[2] = kq.getString(2);
+                    row[3] = kq.getString(3);
+                    row[4] = kq.getString(4);
+                    row[5] = kq.getString(5);
+                    if(kq.getInt(6) == 0){
+                        row[6] = "Chưa phân công";
+                    }else{
+                        row[6] = "Đã phân công";
+                    }
+                    modelPC.addRow(row);
+                }
+            JDBCUtil.closeConnection(con);
+        } catch (Exception ex) {
+            System.out.print("lỗi");
+            ex.printStackTrace();
+        }
+        
     }
 
     @Override
@@ -281,5 +324,5 @@ public class PhieuDatTiecCuoiDAO implements DAOInterface<PhieuDatTiecCuoi>{
     public ArrayList<PhieuDatTiecCuoi> SelectByCondition(String condition) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
 }
