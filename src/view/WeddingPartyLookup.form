@@ -439,9 +439,6 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Cancel"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelActionPerformed"/>
-          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -569,6 +566,9 @@
               </Border>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="inputSoTienDaNhanActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnmuoiTrieu">
           <Properties>
@@ -3248,7 +3248,7 @@
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jScrollPane5" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="69" max="32767" attributes="0"/>
+                  <EmptySpace pref="65" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="NextPageXNDV" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="BackPageXNDV" alignment="3" min="-2" max="-2" attributes="0"/>

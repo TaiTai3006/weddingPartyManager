@@ -21,6 +21,43 @@ public class ChiTiet_DV_ThanhToanDAO implements DAOInterface<ChiTiet_DV_ThanhToa
         return new ChiTiet_DV_ThanhToanDAO();
     }
 
+
+    public int InsertData(String MaHD, String maDichVu, String soLuong, long donGiaDichVu) {
+        long sl = Long.parseLong(soLuong);
+//        long donGia = Long.parseLong(donGiaDichVu);
+        try {
+            java.sql.Connection con = JDBCUtil.getConnection();
+            
+            String sql = "INSERT INTO `chitiet_dv_thanhtoan`(`maHoaDon`, `maDichVu`, `soLuong`, `donGiaDichVu`, `thanhTien`, `ghiChu`) VALUES (? , ?, ?, ?, ?, ?)";
+            
+            PreparedStatement st = con.prepareStatement(sql);
+            
+            st.setString(1, MaHD);
+            st.setString(2, maDichVu);
+            st.setLong(3, sl);
+            st.setLong(4, donGiaDichVu);
+            st.setLong(5, sl*donGiaDichVu);
+            st.setString(6, "");
+        
+            
+            System.out.println(st);
+            
+            int kq = st.executeUpdate();
+            
+            if(kq > 0){
+                System.out.println("Them du lieu thanh cong!");
+            } else{
+                System.out.println("Them du lieu that bai!");
+            }
+            
+            JDBCUtil.closeConnection(con);
+            return kq;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return 0 ;
+    }
+    
     @Override
     public int Insert(ChiTiet_DV_ThanhToan t) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

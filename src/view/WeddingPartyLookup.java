@@ -78,6 +78,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import net.sf.jasperreports.engine.JRException;
@@ -374,6 +375,47 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             }
         }
         
+    }
+    
+    private List<String[]> ArrDichVuSuDung = new ArrayList<>();
+
+    public List<String[]> getDataFromTableDVHD() {
+        List<String[]> list = new ArrayList<>();
+
+        int rowCount = DVHHTable.getRowCount();
+        int columnCount = DVHHTable.getColumnCount();
+
+        for (int row = 0; row < rowCount; row++) {
+            String[] rowData = new String[columnCount];
+            for (int column = 0; column < columnCount; column++) {
+                Object value = DVHHTable.getValueAt(row, column);
+                if (value != null) {
+                    rowData[column] = value.toString();
+                } else {
+                    rowData[column] = "";
+                }
+            }
+            list.add(rowData);
+        }
+
+        return list;
+    }
+    
+    public long longValueStringVN(String currencyString) {
+//        String currencyString = "92.810.000₫";
+
+        // Loại bỏ các ký tự không cần thiết khỏi chuỗi số tiền
+        String cleanedString = currencyString.replaceAll("[^0-9]", "");
+
+        // Chuyển đổi chuỗi thành số
+        long a = 0;
+        try {
+            a = Long.parseLong(cleanedString);
+            System.out.println("Số: " + a);
+        } catch (NumberFormatException e) {
+            System.out.println("Không thể chuyển đổi chuỗi thành số.");
+        }
+        return a; 
     }
 
     /**
@@ -845,11 +887,6 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             btnCancel.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
             btnCancel.setForeground(new java.awt.Color(255, 255, 255));
             btnCancel.setText("Cancel");
-            btnCancel.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    btnCancelActionPerformed(evt);
-                }
-            });
 
             javax.swing.GroupLayout ChuyenKhoanFormLayout = new javax.swing.GroupLayout(ChuyenKhoanForm.getContentPane());
             ChuyenKhoanForm.getContentPane().setLayout(ChuyenKhoanFormLayout);
@@ -882,6 +919,11 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             inputSoTienDaNhan.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
             inputSoTienDaNhan.setText("0");
             inputSoTienDaNhan.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
+            inputSoTienDaNhan.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    inputSoTienDaNhanActionPerformed(evt);
+                }
+            });
 
             btnmuoiTrieu.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
             btnmuoiTrieu.setText("10.000.000");
@@ -2478,7 +2520,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                         .addComponent(btnDeleteXNDV, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGap(18, 18, 18)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
                     .addGroup(PageXNDVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(NextPageXNDV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(BackPageXNDV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -3101,7 +3143,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 
     private void NextPageXNDVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextPageXNDVActionPerformed
         // TODO add your handling code here:
-        
+//        ArrDichVuSuDung = getDataFromTableSNDV();
         NumberFormat currencyFormatVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
         PageXNDV.setVisible(false);
         PageTTHDTT.setVisible(true);
@@ -3549,15 +3591,28 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 //            TienMatForm.setLocationRelativeTo(null);
 //            TienMatForm.setVisible(true);
             ThanhToanTienMat.setVisible(true);
-            ThanhToanTienMat.setLocationRelativeTo(null);
-            long a = 0;
-            try {
-                a = currencyFormatVN.parse(lblSoTienThanhToan.getText()).longValue();
-            } catch (ParseException ex) {
-                Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            String currencyString = lblSoTienThanhToan.getText();
+
+        // Loại bỏ các ký tự không cần thiết khỏi chuỗi số tiền
+                    long a = 0;
+        String cleanedString = currencyString.replaceAll("[^0-9]", "");
+
+        // Chuyển đổi chuỗi thành số
+        try {
+            a  = Long.parseLong(cleanedString);
+            System.out.println("Số: " + a);
+        } catch (NumberFormatException e) {
+            System.out.println("Không thể chuyển đổi chuỗi thành số.");
+        }
+
+//            try {
+//                a = currencyFormatVN.parse(lblSoTienThanhToan.getText()).longValue();
+//            } catch (ParseException ex) {
+//                System.out.println("ầdsfadsfasdfs");
+//                Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
+//            }
             inputSoTienDaNhan.setText(a+"");
-        } else if(cbPhuongThucTT.getSelectedItem().equals("Chuyển khoản")) {
+        } else {
             try {
                 JPanel pane = new JPanel();
                 String qrdata = "";
@@ -3593,53 +3648,53 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_NextPageXNTTActionPerformed
 
     private void btnThanhToanTTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThanhToanTTActionPerformed
-        // TODO add your handling code here
-        LocalDate currentDate = LocalDate.now();
-        String ngayHienTai = currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        if (Long.parseLong(String.valueOf(lblTienDuTT.getText())) >= 0) {
-            String maHD = String.valueOf(HoaDonDAO.getInstance().GetID() + 1);
-            switch (maHD.length()) {
-                case 1:
-                    maHD = "HD000" + maHD;
-                    break;
-                case 2:
-                    maHD = "HD00" + maHD;
-                    break;
-                case 3:
-                    maHD = "LS0" + maHD;
-                    break;
-                case 4:
-                    maHD = "HD" + maHD;
-                    break;
-            }
-            Date ngayTT = new Date();
-            try {
-                ngayTT = new SimpleDateFormat("yyyy-MM-dd").parse(ngayHienTai);
-            } catch (ParseException ex) {
-                Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-            int kq = 0;
-            try {
-                kq = HoaDonDAO.getInstance().Insert(new HoaDon(maHD, idTiecCuoi, ngayTT, Double.parseDouble(lblTongTienDichVu.getText()), Double.parseDouble(lblTienPhat.getText()),
-                        Double.parseDouble(lblTongTienHoaDon.getText()), Double.parseDouble(lblSoTienThanhToan.getText()), "sontran"));
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-            if (kq != 0) {
-                Message("Thanh toán thành công.", JOptionPane.CLOSED_OPTION);
-                Page1.setVisible(true);
-                ReloadDataTable();
-                PageTTHDTT.setVisible(false);
-                PageTTHDH.setVisible(false);
-                PageThongTinDT.setVisible(false);
-                PageXNDV.setVisible(false);
-                TienMatForm.setVisible(false);
-            } else {
-                Message("Lỗi!", JOptionPane.ERROR_MESSAGE);
-            }
-        } else
-            Message("Lỗi! Không đủ tiền thanh toán! Vui lòng thanh toán lại", JOptionPane.ERROR_MESSAGE);
+//        // TODO add your handling code here
+//        LocalDate currentDate = LocalDate.now();
+//        String ngayHienTai = currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+//        if (Long.parseLong(String.valueOf(lblTienDuTT.getText())) >= 0) {
+//            String maHD = String.valueOf(HoaDonDAO.getInstance().GetID() + 1);
+//            switch (maHD.length()) {
+//                case 1:
+//                    maHD = "HD000" + maHD;
+//                    break;
+//                case 2:
+//                    maHD = "HD00" + maHD;
+//                    break;
+//                case 3:
+//                    maHD = "LS0" + maHD;
+//                    break;
+//                case 4:
+//                    maHD = "HD" + maHD;
+//                    break;
+//            }
+//            Date ngayTT = new Date();
+//            try {
+//                ngayTT = new SimpleDateFormat("yyyy-MM-dd").parse(ngayHienTai);
+//            } catch (ParseException ex) {
+//                Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//            
+//            int kq = 0;
+//            try {
+//                kq = HoaDonDAO.getInstance().Insert(new HoaDon(maHD, idTiecCuoi, ngayTT, Double.parseDouble(lblTongTienDichVu.getText()), Double.parseDouble(lblTienPhat.getText()),
+//                        Double.parseDouble(lblTongTienHoaDon.getText()), Double.parseDouble(lblSoTienThanhToan.getText()), "sontran"));
+//            } catch (Exception ex) {
+//                ex.printStackTrace();
+//            }
+//            if (kq != 0) {
+//                Message("Thanh toán thành công.", JOptionPane.CLOSED_OPTION);
+//                Page1.setVisible(true);
+//                ReloadDataTable();
+//                PageTTHDTT.setVisible(false);
+//                PageTTHDH.setVisible(false);
+//                PageThongTinDT.setVisible(false);
+//                PageXNDV.setVisible(false);
+//                TienMatForm.setVisible(false);
+//            } else {
+//                Message("Lỗi!", JOptionPane.ERROR_MESSAGE);
+//            }
+//        } else
+//            Message("Lỗi! Không đủ tiền thanh toán! Vui lòng thanh toán lại", JOptionPane.ERROR_MESSAGE);
     }//GEN-LAST:event_btnThanhToanTTActionPerformed
 
     private void txtTienNhanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTienNhanActionPerformed
@@ -3647,35 +3702,13 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtTienNhanActionPerformed
 
     private void NextPageXNDV1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextPageXNDV1ActionPerformed
-        // TODO add your handling code here:
-//        if (jcb_PhuongThucTT.getSelectedItem().equals("Tiền mặt")) {
-//
-//            long TongTienCanTT = 0;
-//            try {
-//            NumberFormat currencyFormatVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
-//            Number amount = currencyFormatVN.parse(String.valueOf(ConLaiValueH.getText()));
-//            TongTienCanTT = amount.longValue();
-//            System.out.println("Numeric amount: " + 0);
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-////            long numericAmount = amount.longValue();
-//            System.out.println("Tessdfasf:" + ConLaiValueH.getText());
-//            lblTongTienTT.setText(String.valueOf(TongTienCanTT));
-//            lblTienDuTT.setText("-" + lblTongTienTT.getText());
-//            TienMatForm.setModal(true);
-//            TienMatForm.setLocationRelativeTo(null);
-//            TienMatForm.setVisible(true);
-//        } else {
-//            ChuyenKhoanForm.setModal(true);
-//            ChuyenKhoanForm.setLocationRelativeTo(null);
-//            ChuyenKhoanForm.setVisible(true);
-//        }
+
             long a = 0;
             try {
                 a = currencyFormatVN.parse(ConLaiValueH.getText()).longValue();
                 System.out.println(a);
             } catch (ParseException ex) {
+                System.out.println("Lỗi ở đây");
                 Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
             }
             System.out.println(a);
@@ -3832,7 +3865,69 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                         PageTTHDTT.setVisible(false);
                         PageThongTinDT.setVisible(false);
                         ReloadDataTable();
+                        ArrDichVuSuDung = getDataFromTableDVHD();
+                        
+
+        // Chuyển đổi chuỗi thành số
+                        
+                        int check = 0;
+                        try {
+                            for(int i = 0; i < ArrDichVuSuDung.size(); i++)
+                            {
+                                long donGia = 0;
+                                String currencyString = ArrDichVuSuDung.get(i)[4];
+
+        // Loại bỏ các ký tự không cần thiết khỏi chuỗi số tiền
+                                String cleanedString = currencyString.replaceAll("[^0-9]", "");
+                                try {
+                                    donGia = Long.parseLong(cleanedString);
+//                                    System.out.println("Số: " + value);
+                                } catch (NumberFormatException e) {
+                                    System.out.println("Không thể chuyển đổi chuỗi thành số.");
+                                }
+                                check = ChiTiet_DV_ThanhToanDAO.getInstance().InsertData(maHoaDon,  ArrDichVuSuDung.get(i)[1] , ArrDichVuSuDung.get(i)[3] , donGia  );
+                            }
+                            
+                            if(check != 0)
+                            {
+                                
+                            }
+                            else
+                            {
+                                System.out.println("không thêm dv thanh toán được");
+                            }
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                            System.out.println("Cũng là lỗi! Thêm hóa đơn lỗi");
+                            Message("Thanh toán không thành công nha!", JOptionPane.ERROR_MESSAGE);
+                        }
+                        
+
+                        File file = new File("src/report/rptThanhToanHD.jasper");
+                        String absolutePath = file.getAbsolutePath();
+                        try {
+                            HashMap<String, Object> map = new HashMap<>();
+                            Connection con = JDBCUtil.getConnection();
+                            map.put("maHD", maHoaDon);
+                            map.put("tienKhachTra", Double.parseDouble(inputSoTienDaNhan.getText()));
+                            map.put("tienThua", Double.parseDouble(inputSoTienDaNhan.getText()) - conLai);
+//                            map.put("tyLePhat", tyLePhat);
+//                            map.put("thoiGianPhat", thoiGianPhat);
+                            System.out.println(maHoaDon);
+                            System.out.println(Long.parseLong(inputSoTienDaNhan.getText()));
+                            System.out.println(Long.parseLong(inputSoTienDaNhan.getText()) - conLai);
+//                            System.out.println(tyLePhat);
+//                            System.out.println(thoiGianPhat);
+                            JasperPrint p = JasperFillManager.fillReport(absolutePath, map, con);
+                            JasperViewer v = new JasperViewer(p, false);
+                            v.setVisible(true);
+
+                        } catch (JRException ex) {
+                            System.out.println(ex);
+
+                        }
                     }
+                    
                     else
                     {
                         System.out.println("Thêm hóa đơn lỗi");
@@ -3843,6 +3938,8 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                     System.out.println("Cũng là lỗi! Thêm hóa đơn lỗi");
                     Message("Thanh toán không thành công nha!", JOptionPane.ERROR_MESSAGE);
                 }
+                
+                
 
             }
             else
@@ -3902,6 +3999,30 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                         PageTTHDTT.setVisible(false);
                         PageThongTinDT.setVisible(false);
                         ReloadDataTable();
+                        
+                        File file = new File("src/report/rptThanhToanHDH.jasper");
+                        String absolutePath = file.getAbsolutePath();
+                        try {
+                            HashMap<String, Object> map = new HashMap<>();
+                            Connection con = JDBCUtil.getConnection();
+                            map.put("maHD", maHoaDon);
+                            map.put("tienKhachTra", Double.parseDouble(inputSoTienDaNhan.getText()));
+                            map.put("tienThua", Double.parseDouble(inputSoTienDaNhan.getText()) - conLai);
+//                            map.put("tyLePhat", tyLePhat);
+//                            map.put("thoiGianPhat", thoiGianPhat);
+                            System.out.println(maHoaDon);
+                            System.out.println(Long.parseLong(inputSoTienDaNhan.getText()));
+                            System.out.println(Long.parseLong(inputSoTienDaNhan.getText()) - conLai);
+//                            System.out.println(tyLePhat);
+//                            System.out.println(thoiGianPhat);
+                            JasperPrint p = JasperFillManager.fillReport(absolutePath, map, con);
+                            JasperViewer v = new JasperViewer(p, false);
+                            v.setVisible(true);
+
+                        } catch (JRException ex) {
+                            System.out.println(ex);
+
+                        }
                     }
                     else
                     {
@@ -4113,6 +4234,11 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                         PageThongTinDT.setVisible(false);
                         ChuyenKhoanForm.setVisible(false);
                         ReloadDataTable();
+                        
+                        
+                        
+                        
+//                        adsfadfa
                     }
                     else
                     {
@@ -4135,10 +4261,9 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jcb_PhuongThucTTActionPerformed
 
-    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+    private void inputSoTienDaNhanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputSoTienDaNhanActionPerformed
         // TODO add your handling code here:
-        ChuyenKhoanForm.setVisible(false);
-    }//GEN-LAST:event_btnCancelActionPerformed
+    }//GEN-LAST:event_inputSoTienDaNhanActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
