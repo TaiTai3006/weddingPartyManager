@@ -60,10 +60,11 @@ public class BarChart_HomePage extends javax.swing.JInternalFrame {
     public void CreateBarChart(int year, int month){
         final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         List<String[]> results1 = new ArrayList<>();
+        System.out.println(month);
         try {
             Connection con = JDBCUtil.getConnection();
 
-            String sql = "SELECT phieudattieccuoi.ngayDaiTiec, COUNT(*) FROM phieudattieccuoi WHERE YEAR(phieudattieccuoi.ngayDaiTiec) = ? and MONTH(phieudattieccuoi.ngayDaiTiec) = ? GROUP BY phieudattieccuoi.ngayDaiTiec, phieudattieccuoi.maTiecCuoi";
+            String sql = "SELECT phieudattieccuoi.ngayDaiTiec, COUNT(*) FROM phieudattieccuoi WHERE YEAR(phieudattieccuoi.ngayDaiTiec) = ? and MONTH(phieudattieccuoi.ngayDaiTiec) = ? GROUP BY phieudattieccuoi.ngayDaiTiec";
 
             PreparedStatement st = con.prepareStatement(sql);
 
@@ -75,7 +76,9 @@ public class BarChart_HomePage extends javax.swing.JInternalFrame {
             while (kq.next()) {
                 String[] row = {kq.getString("ngayDaiTiec"),kq.getString("COUNT(*)")};
                 results1.add(row);
+                
             }
+            System.out.println(results1);
 
             JDBCUtil.closeConnection(con);
         } catch (Exception ex) {
@@ -97,10 +100,13 @@ public class BarChart_HomePage extends javax.swing.JInternalFrame {
                     {
                         LocalDate date = LocalDate.parse(results1.get(j)[0], DateTimeFormatter.ISO_DATE);
                         int dayOfMonth = date.getDayOfMonth();
+                        System.out.println(results1.get(j)[0]);
 //                        System.out.println("TEst: " + String.valueOf(a0.getThang()));
                         while(ngay != dayOfMonth && dayOfMonth <= 31)
                         {
+                            
                             dataset.addValue(0, "Bao cao thang", String.valueOf(ngay));
+                            
                             System.out.println("thêm tháng " + ngay);
                             ngay++;
                         }
