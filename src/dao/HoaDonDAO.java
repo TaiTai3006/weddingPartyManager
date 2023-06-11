@@ -115,7 +115,29 @@ public class HoaDonDAO implements DAOInterface<HoaDon> {
 
     @Override
     public int Delete(HoaDon t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+         try {
+            Connection con = JDBCUtil.getConnection();
+
+            String sql = "DELETE FROM HoaDon WHERE maHoaDon = ?";
+
+            PreparedStatement st = con.prepareStatement(sql);
+
+            st.setString(1, t.getMaHoaDon());
+
+            int kq = st.executeUpdate();
+
+            if (kq > 0) {
+                System.out.println("Xoa du lieu thanh cong!");
+            } else {
+                System.out.println("Xoa du lieu that bai!");
+            }
+
+            JDBCUtil.closeConnection(con);
+            return kq;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return 0;
     }
 
     @Override
