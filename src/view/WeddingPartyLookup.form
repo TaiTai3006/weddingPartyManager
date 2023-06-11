@@ -439,6 +439,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Cancel"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -1708,11 +1711,9 @@
                       <EmptySpace min="29" pref="29" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
                           <Component id="lblCa" pref="79" max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="lbltienConLai" pref="79" max="32767" attributes="0"/>
-                              <Component id="lbltongTienDichVu" alignment="0" max="32767" attributes="0"/>
-                              <Component id="lblSoLuongBanDuTru" alignment="0" max="32767" attributes="0"/>
-                          </Group>
+                          <Component id="lbltienConLai" pref="79" max="32767" attributes="0"/>
+                          <Component id="lbltongTienDichVu" alignment="0" max="32767" attributes="0"/>
+                          <Component id="lblSoLuongBanDuTru" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="128" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
