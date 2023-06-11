@@ -3717,7 +3717,10 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 //            TienMatForm.setModal(true);
 //            TienMatForm.setLocationRelativeTo(null);
 //            TienMatForm.setVisible(true);
+            
             ThanhToanTienMat.setVisible(true);
+            ThanhToanTienMat.setModal(true);
+            ThanhToanTienMat.setLocationRelativeTo(null);
 
             inputSoTienDaNhan.setText(a+"");
         } else {
