@@ -13,6 +13,10 @@ import database.JDBCUtil;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.text.SimpleDateFormat;
@@ -39,9 +43,11 @@ import javax.swing.table.DefaultTableModel;
 import model.CongViec;
 import model.EmployeePC;
 import model.PhanCong;
-
-
-
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.CellType;
 
 /**
  *
@@ -66,7 +72,7 @@ public class HomePage extends javax.swing.JInternalFrame {
     private ArrayList<String> ListMaNV_DPC = new ArrayList<>();
     private ArrayList<String> ListMaNV = new ArrayList<>();
     private ArrayList<String> ListMaNV_Huy = new ArrayList<>();
-    
+
     private DefaultTableModel defaultTableModel_PhanCong;
     private DefaultTableModel defaultTableModel_SLTiec;
     private SimpleDateFormat formatDay = new SimpleDateFormat("yyyy-MM-dd");
@@ -80,18 +86,15 @@ public class HomePage extends javax.swing.JInternalFrame {
         BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
         calendar.getCalendar().setFirstDayOfWeek(Calendar.MONDAY);
-        home.setVisible(false);
-        pageXemPhanCong.setVisible(true);
+        home.setVisible(true);
+        pageXemPhanCong.setVisible(false);
         pagePhanCong.setVisible(false);
         today = calendar.getDate();
         SetModelTable_PhanCong_Ngay();
         SetModelTable_SLTiec();
         CreateBarChart(today);
         Page2();
-        
 
-
-        
     }
 
     /**
@@ -126,6 +129,10 @@ public class HomePage extends javax.swing.JInternalFrame {
 
         String dateString = dateFormat.format(ngayKetThuc);
         ngayKT.setText(dateString);
+        
+        
+
+      
     }
 
     private static boolean isMonday(Date date) {
@@ -134,131 +141,126 @@ public class HomePage extends javax.swing.JInternalFrame {
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
         return dayOfWeek == Calendar.MONDAY;
     }
-    
+
     private String strNgayCalendar;
-    
+
     private Date getDayOfWeek(Calendar calendar, int dayOfWeek) {
         calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
         return calendar.getTime();
     }
-    
+
     private String formatDate(Date date, SimpleDateFormat dateFormat) {
         return dateFormat.format(date);
     }
-    
-    
-    public void SetModelTable_PhanCong_Ngay()
-    {
+
+    public void SetModelTable_PhanCong_Ngay() {
         defaultTableModel_PhanCong = (DefaultTableModel) Table_PhanCong.getModel();
         Table_PhanCong.setFont(new java.awt.Font("Arial", 0, 16));
         Table_PhanCong.setModel(new javax.swing.table.DefaultTableModel(
-        new Object [][] {
-            },
-        new String [] {
-            "STT","Tên nhân viên", "Công việc", "Ca", "Sảnh"
-        }
+                new Object[][]{},
+                new String[]{
+                    "STT", "Tên nhân viên", "Công việc", "Ca", "Sảnh"
+                }
         ) {
-            Class[] types = new Class [] {
+            Class[] types = new Class[]{
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
-            boolean[] canEdit = new boolean [] {
+            boolean[] canEdit = new boolean[]{
                 false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+                return types[columnIndex];
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                return canEdit[columnIndex];
             }
         });
-        
+
         Table_PhanCong.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-        
+
         Table_PhanCong.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
         Table_PhanCong.getTableHeader().setOpaque(false);
-        Table_PhanCong.getTableHeader().setBackground(new Color(243,246,249));
+        Table_PhanCong.getTableHeader().setBackground(new Color(243, 246, 249));
         Table_PhanCong.setDefaultEditor(Object.class, null);
 
     }
-    
-    public void SetModelTable_PhanCong_Tuan(String ngayChonn)
-    {
+
+    public void SetModelTable_PhanCong_Tuan(String ngayChonn) {
         String ngayChon = strNgayCalendar;
-                System.out.println(ngayChon);
-                String monDay = formatDate(getDayOfWeek(calendar.getCalendar(), Calendar.MONDAY), formatDay);
-                String sunDay = "";
-                String t3 = "";
-                String t4 = "";
-                String t5 = "";
-                String t6 = "";
-                String t7 = "";
-                try {
-                    Date date = formatDay.parse(monDay);
+        System.out.println(ngayChon);
+        String monDay = formatDate(getDayOfWeek(calendar.getCalendar(), Calendar.MONDAY), formatDay);
+        String sunDay = "";
+        String t3 = "";
+        String t4 = "";
+        String t5 = "";
+        String t6 = "";
+        String t7 = "";
+        try {
+            Date date = formatDay.parse(monDay);
 
-                    Calendar calendar1 = Calendar.getInstance();
-                    Calendar calendar2 = Calendar.getInstance();
-                    Calendar calendar3 = Calendar.getInstance();
-                    Calendar calendar4 = Calendar.getInstance();
-                    Calendar calendar5 = Calendar.getInstance();
-                    Calendar calendar6 = Calendar.getInstance();
-                    calendar1.setTime(date);
-                    calendar2.setTime(date);
-                    calendar3.setTime(date);
-                    calendar4.setTime(date);
-                    calendar5.setTime(date);
-                    calendar6.setTime(date);
-                    calendar1.add(Calendar.DAY_OF_MONTH, 1);
-                    calendar2.add(Calendar.DAY_OF_MONTH, 2);
-                    calendar3.add(Calendar.DAY_OF_MONTH, 3);
-                    calendar4.add(Calendar.DAY_OF_MONTH, 4);
-                    calendar5.add(Calendar.DAY_OF_MONTH, 5);
-                    calendar6.add(Calendar.DAY_OF_MONTH, 6);
+            Calendar calendar1 = Calendar.getInstance();
+            Calendar calendar2 = Calendar.getInstance();
+            Calendar calendar3 = Calendar.getInstance();
+            Calendar calendar4 = Calendar.getInstance();
+            Calendar calendar5 = Calendar.getInstance();
+            Calendar calendar6 = Calendar.getInstance();
+            calendar1.setTime(date);
+            calendar2.setTime(date);
+            calendar3.setTime(date);
+            calendar4.setTime(date);
+            calendar5.setTime(date);
+            calendar6.setTime(date);
+            calendar1.add(Calendar.DAY_OF_MONTH, 1);
+            calendar2.add(Calendar.DAY_OF_MONTH, 2);
+            calendar3.add(Calendar.DAY_OF_MONTH, 3);
+            calendar4.add(Calendar.DAY_OF_MONTH, 4);
+            calendar5.add(Calendar.DAY_OF_MONTH, 5);
+            calendar6.add(Calendar.DAY_OF_MONTH, 6);
 
-                    Date resultDate1 = calendar1.getTime();
-                    Date resultDate2 = calendar2.getTime();
-                    Date resultDate3 = calendar3.getTime();
-                    Date resultDate4 = calendar4.getTime();
-                    Date resultDate5 = calendar5.getTime();
-                    Date resultDate6 = calendar6.getTime();
-                    
-                    sunDay = formatDay.format(resultDate6);
-                    t3 = formatDay.format(resultDate1);
-                    t4 = formatDay.format(resultDate2);
-                    t5 = formatDay.format(resultDate3);
-                    t6 = formatDay.format(resultDate4);
-                    t7 = formatDay.format(resultDate5);
+            Date resultDate1 = calendar1.getTime();
+            Date resultDate2 = calendar2.getTime();
+            Date resultDate3 = calendar3.getTime();
+            Date resultDate4 = calendar4.getTime();
+            Date resultDate5 = calendar5.getTime();
+            Date resultDate6 = calendar6.getTime();
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            sunDay = formatDay.format(resultDate6);
+            t3 = formatDay.format(resultDate1);
+            t4 = formatDay.format(resultDate2);
+            t5 = formatDay.format(resultDate3);
+            t6 = formatDay.format(resultDate4);
+            t7 = formatDay.format(resultDate5);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 //                ArrayList<PhanCong> lstPhanCong = PhanCongDAO.getInstance().SelectAll();
-                System.out.print(monDay);
-                System.out.print(sunDay);
+        System.out.print(monDay);
+        System.out.print(sunDay);
         defaultTableModel_PhanCong = (DefaultTableModel) Table_PhanCong.getModel();
         Table_PhanCong.setFont(new java.awt.Font("Arial", 0, 15));
         Table_PhanCong.setModel(new javax.swing.table.DefaultTableModel(
-        new Object [][] {
-            },
-        new String [] {
-            "STT", "Tên nhân viên", "Công việc", monDay, t3, t4, t5, t6, t7, sunDay
+                new Object[][]{},
+                new String[]{
+                    "STT", "Tên nhân viên", "Công việc", monDay, t3, t4, t5, t6, t7, sunDay
 //            "Tên nhân viên", "Công việc", "t2", "t3", "t4", "t5", "t6", "t7", "sunDay"
-        }
+                }
         ) {
-            Class[] types = new Class [] {
+            Class[] types = new Class[]{
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
-            boolean[] canEdit = new boolean [] {
+            boolean[] canEdit = new boolean[]{
                 false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+                return types[columnIndex];
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                return canEdit[columnIndex];
             }
         });
 //        Table_PhanCong.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
@@ -275,137 +277,129 @@ public class HomePage extends javax.swing.JInternalFrame {
         Table_PhanCong.getColumnModel().getColumn(7).setPreferredWidth(165);
         Table_PhanCong.getColumnModel().getColumn(8).setPreferredWidth(165);
         Table_PhanCong.getColumnModel().getColumn(9).setPreferredWidth(165);
-        
+
         Table_PhanCong.getTableHeader().setFont(new Font("Arial", Font.BOLD, 15));
         Table_PhanCong.getTableHeader().setOpaque(false);
-        Table_PhanCong.getTableHeader().setBackground(new Color(243,246,249));
+        Table_PhanCong.getTableHeader().setBackground(new Color(243, 246, 249));
         Table_PhanCong.setDefaultEditor(Object.class, null);
 
     }
-    
-    public void SetModelTable_SLTiec(){
+
+    public void SetModelTable_SLTiec() {
         defaultTableModel_SLTiec = (DefaultTableModel) Table_SLTiec.getModel();
         Table_SLTiec.setFont(new java.awt.Font("Arial", 0, 16));
         Table_SLTiec.setModel(new javax.swing.table.DefaultTableModel(
-        new Object [][] {
-            },
-        new String [] {
-            "Ca", "Số lượng tiệc cưới"
-        }
+                new Object[][]{},
+                new String[]{
+                    "Ca", "Số lượng tiệc cưới"
+                }
         ) {
-            Class[] types = new Class [] {
+            Class[] types = new Class[]{
                 java.lang.String.class, java.lang.String.class
             };
-            boolean[] canEdit = new boolean [] {
+            boolean[] canEdit = new boolean[]{
                 false, false
             };
 
             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+                return types[columnIndex];
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                return canEdit[columnIndex];
             }
         });
-        
+
         Table_SLTiec.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
         Table_SLTiec.getTableHeader().setOpaque(false);
-        Table_SLTiec.getTableHeader().setBackground(new Color(243,246,249));
+        Table_SLTiec.getTableHeader().setBackground(new Color(243, 246, 249));
         Table_SLTiec.setDefaultEditor(Object.class, null);
     }
-    
-    public String getData_Ngay(String maNhanVien, String ngay){
+
+    public String getData_Ngay(String maNhanVien, String ngay) {
         List<String[]> results1 = new ArrayList<>();
-                try 
-                {
-                    Connection con = JDBCUtil.getConnection();
+        try {
+            Connection con = JDBCUtil.getConnection();
 
-                    String sql = "SELECT  nhanvien.maNhanVien, nhanvien.tenNhanVien, CONCAT('full: ', GROUP_CONCAT(phieudattieccuoi.maSanh SEPARATOR ', '))"
-                            + "FROM nhanvien, phancong, phieudattieccuoi, ca, congviec, sanh "
-                            + "WHERE phancong.maNhanVien = nhanvien.maNhanVien and phieudattieccuoi.maTiecCuoi = phancong.maTiecCuoi"
-                            + " and phieudattieccuoi.maCa = ca.maCa and phieudattieccuoi.maSanh = sanh.maSanh and nhanvien.maCongViec = congviec.maCongViec"
-                            + " and phieudattieccuoi.ngayDaiTiec = ? and nhanvien.maNhanVien = ? GROUP BY nhanvien.maNhanVien, nhanvien.tenNhanVien HAVING COUNT(*) = 2";
+            String sql = "SELECT  nhanvien.maNhanVien, nhanvien.tenNhanVien, CONCAT('full: ', GROUP_CONCAT(phieudattieccuoi.maSanh SEPARATOR ', '))"
+                    + "FROM nhanvien, phancong, phieudattieccuoi, ca, congviec, sanh "
+                    + "WHERE phancong.maNhanVien = nhanvien.maNhanVien and phieudattieccuoi.maTiecCuoi = phancong.maTiecCuoi"
+                    + " and phieudattieccuoi.maCa = ca.maCa and phieudattieccuoi.maSanh = sanh.maSanh and nhanvien.maCongViec = congviec.maCongViec"
+                    + " and phieudattieccuoi.ngayDaiTiec = ? and nhanvien.maNhanVien = ? GROUP BY nhanvien.maNhanVien, nhanvien.tenNhanVien HAVING COUNT(*) = 2";
 
-                    PreparedStatement st = con.prepareStatement(sql);
-                    st.setString(1, ngay);
-                    st.setString(2, maNhanVien);
-                    ResultSet kq = st.executeQuery();
-                    System.out.println(kq);
-                    defaultTableModel_PhanCong = (DefaultTableModel) Table_PhanCong.getModel();
-                    while (kq.next()) {
-                        String[] row = {kq.getString("CONCAT('full: ', GROUP_CONCAT(phieudattieccuoi.maSanh SEPARATOR ', '))")};
-                        results1.add(row);
-                        System.out.println(kq.getString("CONCAT('full: ', GROUP_CONCAT(phieudattieccuoi.maSanh SEPARATOR ', '))"));
-                        
-                    }
-                    JDBCUtil.closeConnection(con);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    System.out.println("loi o day");
-                }
-                
-                try 
-                {
-                    Connection con = JDBCUtil.getConnection();
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, ngay);
+            st.setString(2, maNhanVien);
+            ResultSet kq = st.executeQuery();
+            System.out.println(kq);
+            defaultTableModel_PhanCong = (DefaultTableModel) Table_PhanCong.getModel();
+            while (kq.next()) {
+                String[] row = {kq.getString("CONCAT('full: ', GROUP_CONCAT(phieudattieccuoi.maSanh SEPARATOR ', '))")};
+                results1.add(row);
+                System.out.println(kq.getString("CONCAT('full: ', GROUP_CONCAT(phieudattieccuoi.maSanh SEPARATOR ', '))"));
 
-                    String sql = "SELECT  nhanvien.maNhanVien, nhanvien.tenNhanVien, ca.tenCa, sanh.maSanh, CONCAT(ca.tenCa, ': ', sanh.maSanh) "
-                            + "FROM nhanvien, phancong, phieudattieccuoi, ca, congviec, sanh "
-                            + "WHERE phancong.maNhanVien = nhanvien.maNhanVien and phieudattieccuoi.maTiecCuoi = phancong.maTiecCuoi"
-                            + " and phieudattieccuoi.maCa = ca.maCa and phieudattieccuoi.maSanh = sanh.maSanh and nhanvien.maCongViec = congviec.maCongViec"
-                            + " and phieudattieccuoi.ngayDaiTiec = ? and nhanvien.maNhanVien = ? and nhanvien.maNhanVien not in "
-                            + "(SELECT nhanvien.maNhanVien FROM nhanvien, phancong, phieudattieccuoi, ca, congviec, sanh "
-                            + "WHERE phancong.maNhanVien = nhanvien.maNhanVien and phieudattieccuoi.maTiecCuoi = phancong.maTiecCuoi "
-                            + "and phieudattieccuoi.maCa = ca.maCa and phieudattieccuoi.maSanh = sanh.maSanh and "
-                            + "nhanvien.maCongViec = congviec.maCongViec GROUP BY nhanvien.maNhanVien, nhanvien.tenNhanVien, phieudattieccuoi.ngayDaiTiec HAVING COUNT(*) = 2)";
+            }
+            JDBCUtil.closeConnection(con);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println("loi o day");
+        }
 
-                    PreparedStatement st = con.prepareStatement(sql);
-                    st.setString(1, ngay);
-                    st.setString(2, maNhanVien);
+        try {
+            Connection con = JDBCUtil.getConnection();
+
+            String sql = "SELECT  nhanvien.maNhanVien, nhanvien.tenNhanVien, ca.tenCa, sanh.maSanh, CONCAT(ca.tenCa, ': ', sanh.maSanh) "
+                    + "FROM nhanvien, phancong, phieudattieccuoi, ca, congviec, sanh "
+                    + "WHERE phancong.maNhanVien = nhanvien.maNhanVien and phieudattieccuoi.maTiecCuoi = phancong.maTiecCuoi"
+                    + " and phieudattieccuoi.maCa = ca.maCa and phieudattieccuoi.maSanh = sanh.maSanh and nhanvien.maCongViec = congviec.maCongViec"
+                    + " and phieudattieccuoi.ngayDaiTiec = ? and nhanvien.maNhanVien = ? and nhanvien.maNhanVien not in "
+                    + "(SELECT nhanvien.maNhanVien FROM nhanvien, phancong, phieudattieccuoi, ca, congviec, sanh "
+                    + "WHERE phancong.maNhanVien = nhanvien.maNhanVien and phieudattieccuoi.maTiecCuoi = phancong.maTiecCuoi "
+                    + "and phieudattieccuoi.maCa = ca.maCa and phieudattieccuoi.maSanh = sanh.maSanh and "
+                    + "nhanvien.maCongViec = congviec.maCongViec GROUP BY nhanvien.maNhanVien, nhanvien.tenNhanVien, phieudattieccuoi.ngayDaiTiec HAVING COUNT(*) = 2)";
+
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, ngay);
+            st.setString(2, maNhanVien);
 //                    st.setString(2, sunDay);
-                    ResultSet kq = st.executeQuery();
+            ResultSet kq = st.executeQuery();
 //                    defaultTableModel_PhanCong = (DefaultTableModel) Table_PhanCong.getModel();
-                    while (kq.next()) {
-                        String[] row = {kq.getString("CONCAT(ca.tenCa, ': ', sanh.maSanh)")};
-                        results1.add(row);
+            while (kq.next()) {
+                String[] row = {kq.getString("CONCAT(ca.tenCa, ': ', sanh.maSanh)")};
+                results1.add(row);
 //                        System.out.println(kq.getString("maNhanVien") + kq.getString("tenNhanVien") + "         adfadfadfadf");
-                    }
-                    JDBCUtil.closeConnection(con);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    System.out.println("loi o day");
-                }
-                
+            }
+            JDBCUtil.closeConnection(con);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println("loi o day");
+        }
+
 //                for(int i = 0; i < results1.size(); i++)
 //                {
 //                    defaultTableModel_PhanCong = (DefaultTableModel) Table_PhanCong.getModel();
 //                    defaultTableModel_PhanCong.addRow(results1.get(i));
 //                }
-                String str = " ";
-                if(!results1.isEmpty())
-                {
-                    return results1.get(0)[0];
-                }
-                    
-                System.out.println("Chuoi can co: " + str);
+        String str = " ";
+        if (!results1.isEmpty()) {
+            return results1.get(0)[0];
+        }
+
+        System.out.println("Chuoi can co: " + str);
         return str;
     }
-    
-    
-    
-    public void CreateDataTable_PhanCong(int type, String ngayChon){
+
+    public void CreateDataTable_PhanCong(int type, String ngayChon) {
         switch (type) {
-            case 0:
-            {
+            case 0: {
 //                defaultTableModel_PhanCong.setRowCount(0);
                 int dem = 1;
                 SetModelTable_PhanCong_Ngay();
-                
+
 //                String ngayChon = formatDay.format(day.getTime());
                 System.out.println("Ngay duoc chon khi phan cong ngay" + ngayChon);
                 List<String[]> results1 = new ArrayList<>();
-                try 
-                {
+                try {
                     Connection con = JDBCUtil.getConnection();
 
                     String sql = "SELECT  nhanvien.maNhanVien, nhanvien.tenNhanVien, GROUP_CONCAT(phieudattieccuoi.maSanh SEPARATOR ', ')"
@@ -424,15 +418,14 @@ public class HomePage extends javax.swing.JInternalFrame {
                         String[] row = {String.valueOf(dem++), kq.getString("maNhanVien"), kq.getString("tenNhanVien"), "full", kq.getString("GROUP_CONCAT(phieudattieccuoi.maSanh SEPARATOR ', ')")};
                         results1.add(row);
                         System.out.println(kq.getString("maNhanVien") + kq.getString("tenNhanVien") + kq.getString("GROUP_CONCAT(phieudattieccuoi.maSanh SEPARATOR ', ')"));
-                        
+
                     }
                     JDBCUtil.closeConnection(con);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-                
-                try 
-                {
+
+                try {
                     Connection con = JDBCUtil.getConnection();
 
                     String sql = "SELECT  nhanvien.maNhanVien, nhanvien.tenNhanVien, ca.tenCa, sanh.maSanh "
@@ -459,20 +452,18 @@ public class HomePage extends javax.swing.JInternalFrame {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-                
-                for(int i = 0; i < results1.size(); i++)
-                {
+
+                for (int i = 0; i < results1.size(); i++) {
                     defaultTableModel_PhanCong = (DefaultTableModel) Table_PhanCong.getModel();
                     defaultTableModel_PhanCong.addRow(results1.get(i));
                 }
                 break;
             }
-            case 1:
-            {
+            case 1: {
                 int dem = 1;
                 defaultTableModel_PhanCong.setRowCount(0);
                 SetModelTable_PhanCong_Tuan(ngayChon);
-                
+
 //                defaultTableModel_PhanCong.setRowCount(0);
                 String monDay = formatDate(getDayOfWeek(calendar.getCalendar(), Calendar.MONDAY), formatDay);
                 String sunDay = "";
@@ -496,7 +487,7 @@ public class HomePage extends javax.swing.JInternalFrame {
                     calendar4.setTime(date);
                     calendar5.setTime(date);
                     calendar6.setTime(date);
-                    
+
                     calendar1.add(Calendar.DAY_OF_MONTH, 1);
                     calendar2.add(Calendar.DAY_OF_MONTH, 2);
                     calendar3.add(Calendar.DAY_OF_MONTH, 3);
@@ -510,7 +501,7 @@ public class HomePage extends javax.swing.JInternalFrame {
                     Date resultDate4 = calendar4.getTime();
                     Date resultDate5 = calendar5.getTime();
                     Date resultDate6 = calendar6.getTime();
-                    
+
                     sunDay = formatDay.format(resultDate6);
                     t3 = formatDay.format(resultDate1);
                     t4 = formatDay.format(resultDate2);
@@ -522,11 +513,10 @@ public class HomePage extends javax.swing.JInternalFrame {
                     e.printStackTrace();
                     System.out.println("loi o day");
                 }
-                
+
 //                List<String[]> results1 = new ArrayList<>();
 //                List<String[]> results2 = new ArrayList<>();
-                try 
-                {
+                try {
                     Connection con = JDBCUtil.getConnection();
 
                     String sql = "SELECT nhanvien.maNhanVien, nhanvien.tenNhanVien, congviec.tenCongViec "
@@ -541,10 +531,10 @@ public class HomePage extends javax.swing.JInternalFrame {
                     ResultSet kq = st.executeQuery();
 //                    defaultTableModel_PhanCong1 = (DefaultTableModel) Table_PhanCong.getModel();
 //                    defaultTableModel_PhanCong1.setRowCount(0);
-                    SetModelTable_PhanCong_Tuan(ngayChon);                    
+                    SetModelTable_PhanCong_Tuan(ngayChon);
                     while (kq.next()) {
                         String maNhanVien = kq.getString("maNhanVien");
-                        System.out.println("kajdhfkajdfakjdfakd: "+ maNhanVien);
+                        System.out.println("kajdhfkajdfakjdfakd: " + maNhanVien);
                         String t2 = getData_Ngay(maNhanVien, monDay);
                         String thu3 = getData_Ngay(maNhanVien, t3);
                         String thu4 = getData_Ngay(maNhanVien, t4);
@@ -561,7 +551,7 @@ public class HomePage extends javax.swing.JInternalFrame {
                         System.out.println("Chuoi o day cn: " + cn);
 //                        defaultTableModel_PhanCong.addRow(new Object[] {kq.getString("maNhanVien"), kq.getString("tenCongViec"), "t2", "t3", "t4", "t5", "t6", "t7", "cn"});
                         defaultTableModel_PhanCong = (DefaultTableModel) Table_PhanCong.getModel();
-                        defaultTableModel_PhanCong.addRow(new Object[] {dem++ ,kq.getString("tenNhanVien"), kq.getString("tenCongViec"), t2, thu3, thu4, thu5, thu6, thu7, cn });
+                        defaultTableModel_PhanCong.addRow(new Object[]{dem++, kq.getString("tenNhanVien"), kq.getString("tenCongViec"), t2, thu3, thu4, thu5, thu6, thu7, cn});
                     }
                     Date ngayChonn = calendar.getDate();
                     String strNgayChon = formatDay.format(ngayChonn);
@@ -570,22 +560,20 @@ public class HomePage extends javax.swing.JInternalFrame {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     System.out.println("loi o day");
-                }                
-                    break;
-            }                
+                }
+                break;
+            }
             default:
                 throw new AssertionError();
         }
     }
-    
-public void CreateDataTable_SLTiec(){
+
+    public void CreateDataTable_SLTiec() {
 
         switch (jComboBox2.getSelectedIndex()) {
-            case 0:
-            {
-               
-                try 
-                {
+            case 0: {
+
+                try {
                     Connection con = JDBCUtil.getConnection();
 
                     String sql = "SELECT phieudattieccuoi.ngayDaiTiec, ca.tenCa, COUNT(*) FROM phancong, phieudattieccuoi, nhanvien, sanh, ca, congviec "
@@ -594,19 +582,18 @@ public void CreateDataTable_SLTiec(){
                             + " GROUP BY phieudattieccuoi.ngayDaiTiec, ca.tenCa";
 
                     PreparedStatement st = con.prepareStatement(sql);
-                            st.setString(1, strNgayCalendar);
+                    st.setString(1, strNgayCalendar);
                     ResultSet kq = st.executeQuery();
                     System.out.println(kq);
                     SetModelTable_SLTiec();
                     defaultTableModel_SLTiec.setRowCount(0);
                     defaultTableModel_SLTiec = (DefaultTableModel) Table_SLTiec.getModel();
                     while (kq.next()) {
-                        String[] row = {kq.getString("tenCa"),kq.getString("COUNT(*)")};
-        //              de          results1.add(row);
-                        
+                        String[] row = {kq.getString("tenCa"), kq.getString("COUNT(*)")};
+                        //              de          results1.add(row);
 
                         defaultTableModel_SLTiec.addRow(row);
-        //                System.out.println(kq.getString("CONCAT('full: ', GROUP_CONCAT(phieudattieccuoi.maCa SEPARATOR ', '))"));
+                        //                System.out.println(kq.getString("CONCAT('full: ', GROUP_CONCAT(phieudattieccuoi.maCa SEPARATOR ', '))"));
                     }
                     JDBCUtil.closeConnection(con);
                 } catch (Exception ex) {
@@ -615,13 +602,11 @@ public void CreateDataTable_SLTiec(){
                 }
                 break;
             }
-            case 1:
-            {
+            case 1: {
                 String monDay = formatDate(getDayOfWeek(calendar.getCalendar(), Calendar.MONDAY), formatDay);
                 String sunDay = formatDate(getDayOfWeek(calendar.getCalendar(), Calendar.SUNDAY), formatDay);
                 System.out.println("Thứ 2: " + monDay + ",     Thứ 3: " + sunDay);
-                try 
-                {
+                try {
                     Connection con = JDBCUtil.getConnection();
 
                     String sql = "SELECT phieudattieccuoi.ngayDaiTiec, ca.tenCa, COUNT(*) FROM phancong, phieudattieccuoi, nhanvien, sanh, ca, congviec "
@@ -632,43 +617,40 @@ public void CreateDataTable_SLTiec(){
 
                     PreparedStatement st = con.prepareStatement(sql);
                     st.setString(1, monDay);
-                    st.setString(2, sunDay);        
+                    st.setString(2, sunDay);
                     ResultSet kq = st.executeQuery();
                     System.out.println(kq);
                     SetModelTable_SLTiec();
 //                    defaultTableModel_SLTiec.setRowCount(0);
                     defaultTableModel_SLTiec = (DefaultTableModel) Table_SLTiec.getModel();
                     while (kq.next()) {
-                        String[] row = {kq.getString("tenCa"),kq.getString("COUNT(*)")};
+                        String[] row = {kq.getString("tenCa"), kq.getString("COUNT(*)")};
                         defaultTableModel_SLTiec.addRow(row);
                     }
                     JDBCUtil.closeConnection(con);
-                    
+
                 } catch (Exception ex) {
                     ex.printStackTrace();
 //                    System.out.println("loi o day");
                 }
                 break;
-            }                
+            }
             default:
                 throw new AssertionError();
         }
-        
-        
+
     }
-    
-public void CreateBarChart(Date Day)
-    {
+
+    public void CreateBarChart(Date Day) {
         String ngay = formatDay.format(Day);
         String[] parts = ngay.split("-");
-        BarChart_HomePage example = new BarChart_HomePage(Integer.parseInt(parts[0]), Integer.parseInt(parts[1])); 
+        BarChart_HomePage example = new BarChart_HomePage(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
 
         jBarChar.removeAll();
         jBarChar.add(example).setVisible(true);
 
     }
-    
-    
+
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -724,7 +706,7 @@ public void CreateBarChart(Date Day)
         jComboBox1 = new javax.swing.JComboBox<>();
         jLabel20 = new javax.swing.JLabel();
         jBarChar = new javax.swing.JDesktopPane();
-        jLabel9 = new javax.swing.JLabel();
+        export = new javax.swing.JLabel();
         calendar = new com.toedter.calendar.JCalendar();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -1266,8 +1248,13 @@ public void CreateBarChart(Date Day)
             .addGap(0, 225, Short.MAX_VALUE)
         );
 
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/import.png"))); // NOI18N
-        jLabel9.setToolTipText("");
+        export.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/import.png"))); // NOI18N
+        export.setToolTipText("");
+        export.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                exportMousePressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -1285,7 +1272,7 @@ public void CreateBarChart(Date Day)
                             .addGap(18, 18, 18)
                             .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(253, 253, 253)
-                            .addComponent(jLabel9)))
+                            .addComponent(export)))
                     .addComponent(jBarChar, javax.swing.GroupLayout.PREFERRED_SIZE, 723, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -1300,7 +1287,7 @@ public void CreateBarChart(Date Day)
                         .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel9)))
+                        .addComponent(export)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1444,7 +1431,7 @@ public void CreateBarChart(Date Day)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(home, javax.swing.GroupLayout.PREFERRED_SIZE, 1158, Short.MAX_VALUE)
+                    .addComponent(home, javax.swing.GroupLayout.DEFAULT_SIZE, 1158, Short.MAX_VALUE)
                     .addContainerGap()))
         );
         layout.setVerticalGroup(
@@ -1472,28 +1459,32 @@ public void CreateBarChart(Date Day)
 
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
         // TODO add your handling code here:
-        if(jCheckBox1.isSelected()){
-            int slPhaiChon = Integer.parseInt( lbSoLuongNVcan.getText());
+        if (jCheckBox1.isSelected()) {
+            int slPhaiChon = Integer.parseInt(lbSoLuongNVcan.getText());
             int slDaChon = Integer.parseInt(lbNhanVienDuocChon.getText());
-            int sl =  slPhaiChon - slDaChon;
+            int sl = slPhaiChon - slDaChon;
             String maCV = mapCongViec.get(cbxCongViec.getSelectedItem().toString());
-            System.out.println(slPhaiChon + " "+ slDaChon + " " + sl + " "+ slNhanVienDaChon);
-            for(EmployeePC x : employeePCs){
-                if(!x.isChon() && x.getMaCongViec().equals(maCV)){
+            System.out.println(slPhaiChon + " " + slDaChon + " " + sl + " " + slNhanVienDaChon);
+            for (EmployeePC x : employeePCs) {
+                if (!x.isChon() && x.getMaCongViec().equals(maCV)) {
                     x.setChon(true);
                     sl--;
                     slNhanVienDaChon++;
                     ListMaNV.add(x.getMaNhanVien());
-                    System.out.println(sl + " "+ slNhanVienDaChon);
+                    System.out.println(sl + " " + slNhanVienDaChon);
                 }
-                if(sl == 0) break;
+                if (sl == 0) {
+                    break;
+                }
             }
-            
+
             slNhanVienDaChon = 0;
             CreateTablePC();
         }
     }//GEN-LAST:event_jCheckBox1ActionPerformed
-    private int i = 0;    public void Message(String message, int messageType) {
+    private int i = 0;
+
+    public void Message(String message, int messageType) {
         JOptionPane jOptionPane = new JOptionPane(message, messageType);
         JDialog dialog = jOptionPane.createDialog(null, "Message");
         dialog.setAlwaysOnTop(true);
@@ -1582,7 +1573,7 @@ public void CreateBarChart(Date Day)
             lbSoLuongNVcan.setText(String.valueOf(slBan / 5));
         } else if (mapCongViec.get(cbxCongViec.getSelectedItem().toString()).equals("CVC008")) {
             lbSoLuongNVcan.setText(String.valueOf(1));
-        }else{
+        } else {
             lbSoLuongNVcan.setText(String.valueOf(CongViecDAO.getInstance().getSoLuongCongViec(mapCongViec.get(cbxCongViec.getSelectedItem().toString()), maTiecCuoi)));
 
         }
@@ -1611,8 +1602,7 @@ public void CreateBarChart(Date Day)
                 } else {
                     ListMaNV.remove(maNV);
                 }
-                slNhanVienDaChon -=1;
-                
+                slNhanVienDaChon -= 1;
 
             } else {
                 if (ListMaNV_DPC.contains(maNV)) {
@@ -1620,7 +1610,7 @@ public void CreateBarChart(Date Day)
                 } else {
                     ListMaNV.add(maNV);
                 }
-                slNhanVienDaChon +=1;
+                slNhanVienDaChon += 1;
             }
             lbNhanVienDuocChon.setText(String.valueOf(slNhanVienDaChon));
             System.out.println("List nv:" + ListMaNV);
@@ -1634,8 +1624,7 @@ public void CreateBarChart(Date Day)
 
         System.out.println("Ngay chon khi thay doi jcombobox: " + strNgayCalendar);
         switch (jComboBox1.getSelectedIndex()) {
-            case 0:
-            {
+            case 0: {
                 //                SetModelTable_PhanCong_Ngay();
                 //                defaultTableModel_PhanCong.setRowCount(0);
                 System.out.println("Ts: " + strNgayCalendar);
@@ -1643,23 +1632,19 @@ public void CreateBarChart(Date Day)
                 CreateDataTable_PhanCong(0, strNgayCalendar);
                 break;
             }
-            case 1:
-            {
+            case 1: {
                 //                SetModelTable_PhanCong_Tuan(calendar.getCalendar());
                 //                defaultTableModel_PhanCong.setRowCount(0);
                 CreateDataTable_PhanCong(1, strNgayCalendar);
                 break;
             }
             default:
-            throw new AssertionError();
+                throw new AssertionError();
         }
-        if(Table_PhanCong.getRowCount() == 0)
-        {
+        if (Table_PhanCong.getRowCount() == 0) {
             jScrollPane1.setVisible(false);
             jLabel20.setText("Lịch phân công trống!");
-        }
-        else
-        {
+        } else {
             jScrollPane1.setVisible(true);
             jLabel20.setText("");
         }
@@ -1678,26 +1663,20 @@ public void CreateBarChart(Date Day)
         strNgayCalendar = formatDay.format(ngayChonn);
         System.out.println("sdfsdf: " + i);
         System.out.println("Ngay chon khi thay doi jcalendar: " + strNgayCalendar);
-            CreateDataTable_PhanCong(jComboBox1.getSelectedIndex(), strNgayCalendar);
-            CreateDataTable_SLTiec();
-        
-        if(Table_PhanCong.getRowCount() == 0)
-        {
+        CreateDataTable_PhanCong(jComboBox1.getSelectedIndex(), strNgayCalendar);
+        CreateDataTable_SLTiec();
+
+        if (Table_PhanCong.getRowCount() == 0) {
             jScrollPane1.setVisible(false);
             jLabel20.setText("Lịch phân công trống!");
-        }
-        else
-        {
+        } else {
             jScrollPane1.setVisible(true);
             jLabel20.setText("");
         }
-        if(Table_SLTiec.getRowCount() == 0)
-        {
+        if (Table_SLTiec.getRowCount() == 0) {
             jScrollPane2.setVisible(false);
             jLabel23.setText("NULL!");
-        }
-        else
-        {
+        } else {
             jScrollPane2.setVisible(true);
             jLabel23.setText("");
         }
@@ -1709,13 +1688,10 @@ public void CreateBarChart(Date Day)
         //        sfgsdfg
         //        System.out.println("Ngay chon khi thay doi jcombobox: " + strNgayCalendar);
         CreateDataTable_SLTiec();
-        if(Table_SLTiec.getRowCount() == 0)
-        {
+        if (Table_SLTiec.getRowCount() == 0) {
             jScrollPane2.setVisible(false);
             jLabel23.setText("NULL!");
-        }
-        else
-        {
+        } else {
             jScrollPane2.setVisible(true);
             jLabel23.setText("");
         }
@@ -1725,19 +1701,19 @@ public void CreateBarChart(Date Day)
         // TODO add your handling code here:
         home.setVisible(false);
         pageXemPhanCong.setVisible(true);
-        
+
     }//GEN-LAST:event_jLabel11MousePressed
 
     private void btnXacNhanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXacNhanActionPerformed
         // TODO add your handling code here:
-        if(!ListMaNV.isEmpty()){
-            for(String x : ListMaNV){
+        if (!ListMaNV.isEmpty()) {
+            for (String x : ListMaNV) {
                 PhanCongDAO.getInstance().Insert(new PhanCong(x, maTiecCuoi));
             }
             PhieuDatTiecCuoiDAO.getInstance().UpdateTinhTrang(maTiecCuoi);
         }
-        if(!ListMaNV_Huy.isEmpty()){
-            for(String x : ListMaNV_Huy){
+        if (!ListMaNV_Huy.isEmpty()) {
+            for (String x : ListMaNV_Huy) {
                 PhanCongDAO.getInstance().Delete(new PhanCong(x, maTiecCuoi));
             }
         }
@@ -1753,6 +1729,70 @@ public void CreateBarChart(Date Day)
         pagePhanCong.setVisible(false);
     }//GEN-LAST:event_btnQuayLaiActionPerformed
 
+    private void exportMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exportMousePressed
+
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet("Danh sach");
+        XSSFRow row = null;
+        Cell cell = null;
+        
+        row = sheet.createRow(1);
+        
+        int columnCount = defaultTableModel_PhanCong.getColumnCount();
+
+       
+        for (int columnIndex = 0; columnIndex < columnCount; columnIndex++) {
+            String columnName = defaultTableModel_PhanCong.getColumnName(columnIndex);
+             cell = row.createCell(columnIndex, CellType.STRING);
+             cell.setCellValue(columnName);
+        }
+
+        int rowCount = defaultTableModel_PhanCong.getRowCount();
+        int colCount = defaultTableModel_PhanCong.getColumnCount();
+
+        for (int i = 0; i < rowCount; i++) {
+            
+            row = sheet.createRow(2 + i);
+            
+            for(int j = 0; j < colCount; j++){
+                cell = row.createCell(j, CellType.STRING);
+                cell.setCellValue(defaultTableModel_PhanCong.getValueAt(i, j).toString());
+               
+            }
+
+        }
+        String filePath;
+
+        // Kiểm tra hệ điều hành
+        String os = System.getProperty("os.name").toLowerCase();
+        if (os.contains("win")) {
+            // Hệ điều hành Windows
+            filePath = "D:\\path_to_file.xlsx";
+        } else {
+            // Hệ điều hành macOS
+            filePath = "/Users/macbookpro/path_to_file.xlsx";
+        }
+
+        File f = new File(filePath);
+        try {
+            FileOutputStream fileOut = new FileOutputStream(f);
+            workbook.write(fileOut);
+            fileOut.close();
+            Message("Xuất file thành công", JOptionPane.INFORMATION_MESSAGE);
+        } catch (FileNotFoundException ex) {
+            Message("Xuất file thất bại", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+
+        } catch (IOException ex) {
+            Message("Xuất file thất bại", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+
+        }
+
+
+
+    }//GEN-LAST:event_exportMousePressed
+
     public void CreateTablePC() {
         modelPCNV = (DefaultTableModel) TablePhanCongNV.getModel();
         modelPCNV.setRowCount(0);
@@ -1760,7 +1800,9 @@ public void CreateBarChart(Date Day)
         int i = 0;
         for (EmployeePC x : employeePCs) {
             if (x.getMaCongViec().equals(maCV)) {
-                if(x.isChon()) slNhanVienDaChon +=1;
+                if (x.isChon()) {
+                    slNhanVienDaChon += 1;
+                }
                 modelPCNV.addRow(new Object[]{++i, x.getMaNhanVien(), x.getTenNhanVien(), x.getGioiTinh(), x.getLoaiNhanVien(), x.getSdt(), x.isChon()});
             }
         }
@@ -1778,6 +1820,7 @@ public void CreateBarChart(Date Day)
     private javax.swing.JButton btnXacNhan;
     private com.toedter.calendar.JCalendar calendar;
     private javax.swing.JComboBox<String> cbxCongViec;
+    private javax.swing.JLabel export;
     private javax.swing.JPanel home;
     private javax.swing.JDesktopPane jBarChar;
     private javax.swing.JButton jButton3;
@@ -1802,7 +1845,6 @@ public void CreateBarChart(Date Day)
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
