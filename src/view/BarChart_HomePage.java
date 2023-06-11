@@ -107,7 +107,7 @@ public class BarChart_HomePage extends javax.swing.JInternalFrame {
                             
                             dataset.addValue(0, "Bao cao thang", String.valueOf(ngay));
                             
-                            System.out.println("thêm tháng " + ngay);
+//                            System.out.println("thêm tháng " + ngay);
                             ngay++;
                         }
                         dataset.addValue(Integer.parseInt(results1.get(j)[1]), "Bao cao thang", String.valueOf(dayOfMonth));
@@ -142,7 +142,7 @@ public class BarChart_HomePage extends javax.swing.JInternalFrame {
                         while(ngay != dayOfMonth && dayOfMonth <= 30)
                         {
                             dataset.addValue(0, "Bao cao thang", String.valueOf(ngay));
-                            System.out.println("thêm tháng " + ngay);
+//                            System.out.println("thêm tháng " + ngay);
                             ngay++;
                         }
                         dataset.addValue(Integer.parseInt(results1.get(j)[1]), "Bao cao thang", String.valueOf(dayOfMonth));
@@ -179,7 +179,7 @@ public class BarChart_HomePage extends javax.swing.JInternalFrame {
                         while(ngay != dayOfMonth && dayOfMonth <= daysInFebruary)
                         {
                             dataset.addValue(0, "Bao cao thang", String.valueOf(ngay));
-                            System.out.println("thêm tháng " + ngay);
+//                            System.out.println("thêm tháng " + ngay);
                             ngay++;
                         }
                         dataset.addValue(Integer.parseInt(results1.get(j)[1]), "Bao cao thang", String.valueOf(dayOfMonth));

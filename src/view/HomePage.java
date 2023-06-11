@@ -4,6 +4,7 @@
  */
 package view;
 
+import com.toedter.calendar.JDateChooser;
 import dao.CongViecDAO;
 import dao.EmployeeDAO;
 import dao.PhanCongDAO;
@@ -32,12 +33,14 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import model.CongViec;
@@ -85,13 +88,15 @@ public class HomePage extends javax.swing.JInternalFrame {
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(-5, -5, 0, 0));
         BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
-        calendar.getCalendar().setFirstDayOfWeek(Calendar.MONDAY);
+        calendar0.getCalendar().setFirstDayOfWeek(Calendar.MONDAY);
         home.setVisible(true);
         pageXemPhanCong.setVisible(false);
         pagePhanCong.setVisible(false);
-        today = calendar.getDate();
+        today = calendar0.getDate();
         SetModelTable_PhanCong_Ngay();
+        CreateDataTable_PhanCong(0, maCa);
         SetModelTable_SLTiec();
+        CreateDataTable_SLTiec();
         CreateBarChart(today);
         Page2();
 
@@ -190,7 +195,7 @@ public class HomePage extends javax.swing.JInternalFrame {
     public void SetModelTable_PhanCong_Tuan(String ngayChonn) {
         String ngayChon = strNgayCalendar;
         System.out.println(ngayChon);
-        String monDay = formatDate(getDayOfWeek(calendar.getCalendar(), Calendar.MONDAY), formatDay);
+        String monDay = formatDate(getDayOfWeek(calendar0.getCalendar(), Calendar.MONDAY), formatDay);
         String sunDay = "";
         String t3 = "";
         String t4 = "";
@@ -465,8 +470,10 @@ public class HomePage extends javax.swing.JInternalFrame {
                 SetModelTable_PhanCong_Tuan(ngayChon);
 
 //                defaultTableModel_PhanCong.setRowCount(0);
-                String monDay = formatDate(getDayOfWeek(calendar.getCalendar(), Calendar.MONDAY), formatDay);
-                String sunDay = "";
+                String strMonDaySunDay = GetMonDaySunDay();
+                String[] parts = strMonDaySunDay.split(" ");
+                String monDay = parts[0];
+                String sunDay = parts[1];
                 String t3 = "";
                 String t4 = "";
                 String t5 = "";
@@ -553,7 +560,7 @@ public class HomePage extends javax.swing.JInternalFrame {
                         defaultTableModel_PhanCong = (DefaultTableModel) Table_PhanCong.getModel();
                         defaultTableModel_PhanCong.addRow(new Object[]{dem++, kq.getString("tenNhanVien"), kq.getString("tenCongViec"), t2, thu3, thu4, thu5, thu6, thu7, cn});
                     }
-                    Date ngayChonn = calendar.getDate();
+                    Date ngayChonn = calendar0.getDate();
                     String strNgayChon = formatDay.format(ngayChonn);
                     System.out.println("Ngay chọn sau khi xuat bang tuan:" + strNgayChon);
                     JDBCUtil.closeConnection(con);
@@ -567,6 +574,29 @@ public class HomePage extends javax.swing.JInternalFrame {
                 throw new AssertionError();
         }
     }
+    
+    public String GetMonDaySunDay()
+    {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date = LocalDate.parse(strNgayCalendar, formatter);
+
+        // Tìm ngày thứ 2 trong tuần
+        LocalDate monday = date;
+        while (monday.getDayOfWeek() != DayOfWeek.MONDAY) {
+            monday = monday.minusDays(1);
+        }
+
+        // Tìm ngày chủ nhật trong tuần
+        LocalDate sunday = date;
+        while (sunday.getDayOfWeek() != DayOfWeek.SUNDAY) {
+            sunday = sunday.plusDays(1);
+        }
+
+        // Định dạng ngày thứ 2 và ngày chủ nhật thành chuỗi "yyyy-MM-dd"
+        String monDay = monday.format(formatter);
+        String sunDay = sunday.format(formatter);
+        return monDay + " " + sunDay;
+    }
 
     public void CreateDataTable_SLTiec() {
 
@@ -576,15 +606,12 @@ public class HomePage extends javax.swing.JInternalFrame {
                 try {
                     Connection con = JDBCUtil.getConnection();
 
-                    String sql = "SELECT phieudattieccuoi.ngayDaiTiec, ca.tenCa, COUNT(*) FROM phancong, phieudattieccuoi, nhanvien, sanh, ca, congviec "
-                            + "WHERE phancong.maNhanVien = nhanvien.maNhanVien and phieudattieccuoi.maTiecCuoi = phancong.maTiecCuoi "
-                            + "and phieudattieccuoi.maCa = ca.maCa and phieudattieccuoi.maSanh = sanh.maSanh and nhanvien.maCongViec = congviec.maCongViec and phieudattieccuoi.ngayDaiTiec = ? "
-                            + " GROUP BY phieudattieccuoi.ngayDaiTiec, ca.tenCa";
+                    String sql = "SELECT ca.tenCa, COUNT(*) FROM phieudattieccuoi, ca WHERE phieudattieccuoi.ngayDaiTiec = ? GROUP BY  ca.tenCa ";
 
                     PreparedStatement st = con.prepareStatement(sql);
                     st.setString(1, strNgayCalendar);
                     ResultSet kq = st.executeQuery();
-                    System.out.println(kq);
+                    System.out.println(strNgayCalendar);
                     SetModelTable_SLTiec();
                     defaultTableModel_SLTiec.setRowCount(0);
                     defaultTableModel_SLTiec = (DefaultTableModel) Table_SLTiec.getModel();
@@ -603,25 +630,24 @@ public class HomePage extends javax.swing.JInternalFrame {
                 break;
             }
             case 1: {
-                String monDay = formatDate(getDayOfWeek(calendar.getCalendar(), Calendar.MONDAY), formatDay);
-                String sunDay = formatDate(getDayOfWeek(calendar.getCalendar(), Calendar.SUNDAY), formatDay);
-                System.out.println("Thứ 2: " + monDay + ",     Thứ 3: " + sunDay);
+                String strMonDaySunDay = GetMonDaySunDay();
+                String[] parts = strMonDaySunDay.split(" ");
+                String monDay = parts[0];
+                String sunDay = parts[1];
+                System.out.println("Thứ 2: " + monDay + ",     Thứ 6: " + sunDay);
                 try {
                     Connection con = JDBCUtil.getConnection();
 
-                    String sql = "SELECT phieudattieccuoi.ngayDaiTiec, ca.tenCa, COUNT(*) FROM phancong, phieudattieccuoi, nhanvien, sanh, ca, congviec "
-                            + "WHERE phancong.maNhanVien = nhanvien.maNhanVien and phieudattieccuoi.maTiecCuoi = phancong.maTiecCuoi "
-                            + "and phieudattieccuoi.maCa = ca.maCa and phieudattieccuoi.maSanh = sanh.maSanh and nhanvien.maCongViec = congviec.maCongViec and phieudattieccuoi.ngayDaiTiec >= ? "
-                            + "and phieudattieccuoi.ngayDaiTiec <= ?"
-                            + " GROUP BY ca.tenCa";
+                    String sql = "SELECT ca.tenCa, COUNT(*) FROM phieudattieccuoi, ca WHERE phieudattieccuoi.ngayDaiTiec >= ? and phieudattieccuoi.ngayDaiTiec<= ? GROUP BY  ca.tenCa ";
 
                     PreparedStatement st = con.prepareStatement(sql);
                     st.setString(1, monDay);
                     st.setString(2, sunDay);
                     ResultSet kq = st.executeQuery();
-                    System.out.println(kq);
-                    SetModelTable_SLTiec();
-//                    defaultTableModel_SLTiec.setRowCount(0);
+                    System.out.println("adfadsf" + strNgayCalendar);
+
+//                    SetModelTable_SLTiec();
+                    defaultTableModel_SLTiec.setRowCount(0);
                     defaultTableModel_SLTiec = (DefaultTableModel) Table_SLTiec.getModel();
                     while (kq.next()) {
                         String[] row = {kq.getString("tenCa"), kq.getString("COUNT(*)")};
@@ -707,7 +733,7 @@ public class HomePage extends javax.swing.JInternalFrame {
         jLabel20 = new javax.swing.JLabel();
         jBarChar = new javax.swing.JDesktopPane();
         export = new javax.swing.JLabel();
-        calendar = new com.toedter.calendar.JCalendar();
+        calendar0 = new com.toedter.calendar.JCalendar();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         Table_SLTiec = new javax.swing.JTable();
@@ -717,7 +743,6 @@ public class HomePage extends javax.swing.JInternalFrame {
         jLabel11 = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(1170, 730));
-        setSize(new java.awt.Dimension(1170, 730));
 
         pageXemPhanCong.setBackground(new java.awt.Color(255, 255, 255));
         pageXemPhanCong.setPreferredSize(new java.awt.Dimension(1170, 730));
@@ -965,7 +990,7 @@ public class HomePage extends javax.swing.JInternalFrame {
                         .addComponent(jLabel8)
                         .addGap(18, 18, 18)
                         .addComponent(lbNgayDaiTiec)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                         .addComponent(jLabel10)
                         .addGap(18, 18, 18)
                         .addComponent(lbCa)
@@ -1188,7 +1213,6 @@ public class HomePage extends javax.swing.JInternalFrame {
 
         home.setBackground(new java.awt.Color(255, 255, 255));
         home.setPreferredSize(new java.awt.Dimension(1170, 730));
-        home.setSize(new java.awt.Dimension(1170, 730));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/home.png"))); // NOI18N
 
@@ -1295,19 +1319,19 @@ public class HomePage extends javax.swing.JInternalFrame {
                 .addContainerGap(17, Short.MAX_VALUE))
         );
 
-        calendar.setBackground(new java.awt.Color(255, 255, 255));
-        calendar.addAncestorListener(new javax.swing.event.AncestorListener() {
+        calendar0.setBackground(new java.awt.Color(255, 255, 255));
+        calendar0.addAncestorListener(new javax.swing.event.AncestorListener() {
             public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
-                calendarAncestorAdded(evt);
+                calendar0AncestorAdded(evt);
             }
             public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
             }
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
             }
         });
-        calendar.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+        calendar0.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                calendarPropertyChange(evt);
+                calendar0PropertyChange(evt);
             }
         });
 
@@ -1387,7 +1411,7 @@ public class HomePage extends javax.swing.JInternalFrame {
                     .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(calendar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(calendar0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homeLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -1405,7 +1429,7 @@ public class HomePage extends javax.swing.JInternalFrame {
                         .addContainerGap()
                         .addComponent(jLabel11)
                         .addGap(18, 18, 18)
-                        .addComponent(calendar, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(calendar0, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1651,16 +1675,21 @@ public class HomePage extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
-    private void calendarAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_calendarAncestorAdded
+    private void calendar0AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_calendar0AncestorAdded
         // TODO add your handling code here:
-    }//GEN-LAST:event_calendarAncestorAdded
+    }//GEN-LAST:event_calendar0AncestorAdded
 
-    private void calendarPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_calendarPropertyChange
+    private void calendar0PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_calendar0PropertyChange
         // TODO add your handling code here:
         //        System.out.println(calendar.getDate() + " "+ (++i));
-        Date ngayChonn = calendar.getDate();
+        JDateChooser dateChooser = new JDateChooser();
+        dateChooser.setDate(calendar0.getDate());
+        Date ngayChonn = dateChooser.getDate();
+        SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
+//        String dateString = dateFormat.format(ngayChon);
+//        Date ngayChonn = calendar.getDate();
 //        this.ngayChon = calendar.getCalendar();
-        strNgayCalendar = formatDay.format(ngayChonn);
+        strNgayCalendar = dateFormat1.format(ngayChonn);
         System.out.println("sdfsdf: " + i);
         System.out.println("Ngay chon khi thay doi jcalendar: " + strNgayCalendar);
         CreateDataTable_PhanCong(jComboBox1.getSelectedIndex(), strNgayCalendar);
@@ -1681,7 +1710,7 @@ public class HomePage extends javax.swing.JInternalFrame {
             jLabel23.setText("");
         }
         CreateBarChart(ngayChonn);
-    }//GEN-LAST:event_calendarPropertyChange
+    }//GEN-LAST:event_calendar0PropertyChange
 
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
         // TODO add your handling code here:
@@ -1818,7 +1847,7 @@ public class HomePage extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnQuayLai;
     private javax.swing.JButton btnTraCuu;
     private javax.swing.JButton btnXacNhan;
-    private com.toedter.calendar.JCalendar calendar;
+    private com.toedter.calendar.JCalendar calendar0;
     private javax.swing.JComboBox<String> cbxCongViec;
     private javax.swing.JLabel export;
     private javax.swing.JPanel home;
