@@ -222,8 +222,10 @@ public class ServiceList extends javax.swing.JInternalFrame {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
+        add_dichvu_field.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+
         jLabel1.setBackground(new java.awt.Color(69, 96, 134));
-        jLabel1.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jLabel1.setText("Tên dịch vụ");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -251,9 +253,10 @@ public class ServiceList extends javax.swing.JInternalFrame {
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel3.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jLabel3.setText("Đơn giá");
 
+        add_dongia_field.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         add_dongia_field.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 add_dongia_fieldActionPerformed(evt);
@@ -361,9 +364,9 @@ public class ServiceList extends javax.swing.JInternalFrame {
             jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel21Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
-                .addComponent(delete_dichvu_dialog_btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 200, Short.MAX_VALUE)
-                .addComponent(add_dich_dialog_btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(delete_dichvu_dialog_btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 187, Short.MAX_VALUE)
+                .addComponent(add_dich_dialog_btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(11, 11, 11))
         );
         jPanel21Layout.setVerticalGroup(
@@ -418,18 +421,21 @@ public class ServiceList extends javax.swing.JInternalFrame {
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel4.setBackground(new java.awt.Color(69, 96, 134));
-        jLabel4.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jLabel4.setText("Tên dịch vụ");
+
+        update_dichvu_field1.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
 
+        update_dongia_field1.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         update_dongia_field1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 update_dongia_field1ActionPerformed(evt);
             }
         });
 
-        jLabel5.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jLabel5.setText("Đơn giá");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -523,6 +529,11 @@ public class ServiceList extends javax.swing.JInternalFrame {
         BackPage3.setForeground(new java.awt.Color(255, 255, 255));
         BackPage3.setText("Quay lại");
         BackPage3.setPreferredSize(new java.awt.Dimension(90, 40));
+        BackPage3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BackPage3ActionPerformed(evt);
+            }
+        });
 
         table_service_list.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         table_service_list.setModel(new javax.swing.table.DefaultTableModel(
@@ -954,6 +965,10 @@ public class ServiceList extends javax.swing.JInternalFrame {
     private void update_dongia_field1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_update_dongia_field1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_update_dongia_field1ActionPerformed
+
+    private void BackPage3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackPage3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BackPage3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
