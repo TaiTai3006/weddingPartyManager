@@ -845,6 +845,11 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             btnCancel.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
             btnCancel.setForeground(new java.awt.Color(255, 255, 255));
             btnCancel.setText("Cancel");
+            btnCancel.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    btnCancelActionPerformed(evt);
+                }
+            });
 
             javax.swing.GroupLayout ChuyenKhoanFormLayout = new javax.swing.GroupLayout(ChuyenKhoanForm.getContentPane());
             ChuyenKhoanForm.getContentPane().setLayout(ChuyenKhoanFormLayout);
@@ -1604,10 +1609,9 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                     .addGap(29, 29, 29)
                     .addGroup(lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(lblCa, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
-                        .addGroup(lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(lbltienConLai, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
-                            .addComponent(lbltongTienDichVu, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblSoLuongBanDuTru, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(lbltienConLai, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
+                        .addComponent(lbltongTienDichVu, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblSoLuongBanDuTru, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGap(128, 128, 128)
                     .addGroup(lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(ConLaiValue, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -3545,6 +3549,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 //            TienMatForm.setLocationRelativeTo(null);
 //            TienMatForm.setVisible(true);
             ThanhToanTienMat.setVisible(true);
+            ThanhToanTienMat.setLocationRelativeTo(null);
             long a = 0;
             try {
                 a = currencyFormatVN.parse(lblSoTienThanhToan.getText()).longValue();
@@ -3552,7 +3557,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                 Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
             }
             inputSoTienDaNhan.setText(a+"");
-        } else {
+        } else if(cbPhuongThucTT.getSelectedItem().equals("Chuyển khoản")) {
             try {
                 JPanel pane = new JPanel();
                 String qrdata = "";
@@ -4129,6 +4134,11 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
     private void jcb_PhuongThucTTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcb_PhuongThucTTActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jcb_PhuongThucTTActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        // TODO add your handling code here:
+        ChuyenKhoanForm.setVisible(false);
+    }//GEN-LAST:event_btnCancelActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
