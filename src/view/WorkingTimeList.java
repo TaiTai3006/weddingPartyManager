@@ -152,15 +152,15 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
         jLabel4.setForeground(new java.awt.Color(69, 96, 134));
         jLabel4.setText("Thêm ca làm ");
 
-        jLabel5.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jLabel5.setText("Tên ca làm");
 
-        txtTenCaAdd.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtTenCaAdd.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
 
-        jLabel7.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jLabel7.setText("Giờ bắt đầu");
 
-        jLabel9.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel9.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jLabel9.setText("Giờ kết thúc");
 
         btnCancel.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
@@ -259,15 +259,15 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
         jLabel11.setForeground(new java.awt.Color(69, 96, 134));
         jLabel11.setText("Cập nhật ca làm");
 
-        jLabel12.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel12.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jLabel12.setText("Tên ca làm");
 
         txtTenCaUD.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
 
-        jLabel33.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel33.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jLabel33.setText("Giờ bắt đầu");
 
-        jLabel36.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel36.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jLabel36.setText("Giờ kết thúc");
 
         btnCancelUD.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
