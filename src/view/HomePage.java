@@ -6,6 +6,7 @@ package view;
 
 import dao.CongViecDAO;
 import dao.EmployeeDAO;
+import dao.PhanCongDAO;
 import dao.PhieuDatTiecCuoiDAO;
 import dao.ThamSoDAO;
 import database.JDBCUtil;
@@ -37,6 +38,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import model.CongViec;
 import model.EmployeePC;
+import model.PhanCong;
 
 
 
@@ -78,8 +80,8 @@ public class HomePage extends javax.swing.JInternalFrame {
         BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
         calendar.getCalendar().setFirstDayOfWeek(Calendar.MONDAY);
-        home.setVisible(true);
-        pageXemPhanCong.setVisible(false);
+        home.setVisible(false);
+        pageXemPhanCong.setVisible(true);
         pagePhanCong.setVisible(false);
         today = calendar.getDate();
         SetModelTable_PhanCong_Ngay();
@@ -711,8 +713,8 @@ public void CreateBarChart(Date Day)
         jLabel19 = new javax.swing.JLabel();
         lbNhanVienDuocChon = new javax.swing.JLabel();
         lbSoLuongNVcan = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnQuayLai = new javax.swing.JButton();
+        btnXacNhan = new javax.swing.JButton();
         home = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
@@ -1140,17 +1142,27 @@ public void CreateBarChart(Date Day)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jButton4.setBackground(new java.awt.Color(69, 96, 134));
-        jButton4.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(255, 255, 255));
-        jButton4.setText("Quay lại");
-        jButton4.setPreferredSize(new java.awt.Dimension(100, 40));
+        btnQuayLai.setBackground(new java.awt.Color(69, 96, 134));
+        btnQuayLai.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        btnQuayLai.setForeground(new java.awt.Color(255, 255, 255));
+        btnQuayLai.setText("Quay lại");
+        btnQuayLai.setPreferredSize(new java.awt.Dimension(100, 40));
+        btnQuayLai.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnQuayLaiActionPerformed(evt);
+            }
+        });
 
-        jButton5.setBackground(new java.awt.Color(132, 70, 133));
-        jButton5.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(255, 255, 255));
-        jButton5.setText("Xác nhận");
-        jButton5.setPreferredSize(new java.awt.Dimension(100, 40));
+        btnXacNhan.setBackground(new java.awt.Color(132, 70, 133));
+        btnXacNhan.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        btnXacNhan.setForeground(new java.awt.Color(255, 255, 255));
+        btnXacNhan.setText("Xác nhận");
+        btnXacNhan.setPreferredSize(new java.awt.Dimension(100, 40));
+        btnXacNhan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXacNhanActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pagePhanCongLayout = new javax.swing.GroupLayout(pagePhanCong);
         pagePhanCong.setLayout(pagePhanCongLayout);
@@ -1167,9 +1179,9 @@ public void CreateBarChart(Date Day)
                         .addComponent(jPanel25, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(106, 106, 106))
                     .addGroup(pagePhanCongLayout.createSequentialGroup()
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnQuayLai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnXacNhan, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(106, 106, 106))
         );
         pagePhanCongLayout.setVerticalGroup(
@@ -1187,8 +1199,8 @@ public void CreateBarChart(Date Day)
                 .addComponent(jPanel25, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(pagePhanCongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnQuayLai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnXacNhan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 13, Short.MAX_VALUE))
         );
 
@@ -1432,7 +1444,7 @@ public void CreateBarChart(Date Day)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(home, javax.swing.GroupLayout.DEFAULT_SIZE, 1158, Short.MAX_VALUE)
+                    .addComponent(home, javax.swing.GroupLayout.PREFERRED_SIZE, 1158, Short.MAX_VALUE)
                     .addContainerGap()))
         );
         layout.setVerticalGroup(
@@ -1460,6 +1472,26 @@ public void CreateBarChart(Date Day)
 
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
         // TODO add your handling code here:
+        if(jCheckBox1.isSelected()){
+            int slPhaiChon = Integer.parseInt( lbSoLuongNVcan.getText());
+            int slDaChon = Integer.parseInt(lbNhanVienDuocChon.getText());
+            int sl =  slPhaiChon - slDaChon;
+            String maCV = mapCongViec.get(cbxCongViec.getSelectedItem().toString());
+            System.out.println(slPhaiChon + " "+ slDaChon + " " + sl + " "+ slNhanVienDaChon);
+            for(EmployeePC x : employeePCs){
+                if(!x.isChon() && x.getMaCongViec().equals(maCV)){
+                    x.setChon(true);
+                    sl--;
+                    slNhanVienDaChon++;
+                    ListMaNV.add(x.getMaNhanVien());
+                    System.out.println(sl + " "+ slNhanVienDaChon);
+                }
+                if(sl == 0) break;
+            }
+            
+            slNhanVienDaChon = 0;
+            CreateTablePC();
+        }
     }//GEN-LAST:event_jCheckBox1ActionPerformed
     private int i = 0;    public void Message(String message, int messageType) {
         JOptionPane jOptionPane = new JOptionPane(message, messageType);
@@ -1554,6 +1586,7 @@ public void CreateBarChart(Date Day)
             lbSoLuongNVcan.setText(String.valueOf(CongViecDAO.getInstance().getSoLuongCongViec(mapCongViec.get(cbxCongViec.getSelectedItem().toString()), maTiecCuoi)));
 
         }
+        jCheckBox1.setSelected(false);
         slNhanVienDaChon = 0;
         CreateTablePC();
     }//GEN-LAST:event_cbxCongViecActionPerformed
@@ -1695,6 +1728,31 @@ public void CreateBarChart(Date Day)
         
     }//GEN-LAST:event_jLabel11MousePressed
 
+    private void btnXacNhanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXacNhanActionPerformed
+        // TODO add your handling code here:
+        if(!ListMaNV.isEmpty()){
+            for(String x : ListMaNV){
+                PhanCongDAO.getInstance().Insert(new PhanCong(x, maTiecCuoi));
+            }
+            PhieuDatTiecCuoiDAO.getInstance().UpdateTinhTrang(maTiecCuoi);
+        }
+        if(!ListMaNV_Huy.isEmpty()){
+            for(String x : ListMaNV_Huy){
+                PhanCongDAO.getInstance().Delete(new PhanCong(x, maTiecCuoi));
+            }
+        }
+        modelPC.setRowCount(0);
+        PhieuDatTiecCuoiDAO.getInstance().getPhanCong(ngayBD.getDate(), ngayKetThuc, modelPC);
+        pageXemPhanCong.setVisible(true);
+        pagePhanCong.setVisible(false);
+    }//GEN-LAST:event_btnXacNhanActionPerformed
+
+    private void btnQuayLaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuayLaiActionPerformed
+        // TODO add your handling code here:
+        pageXemPhanCong.setVisible(true);
+        pagePhanCong.setVisible(false);
+    }//GEN-LAST:event_btnQuayLaiActionPerformed
+
     public void CreateTablePC() {
         modelPCNV = (DefaultTableModel) TablePhanCongNV.getModel();
         modelPCNV.setRowCount(0);
@@ -1703,7 +1761,7 @@ public void CreateBarChart(Date Day)
         for (EmployeePC x : employeePCs) {
             if (x.getMaCongViec().equals(maCV)) {
                 if(x.isChon()) slNhanVienDaChon +=1;
-                modelPCNV.addRow(new Object[]{++i, x.getMaNhanVien(), x.getMaNhanVien(), x.getGioiTinh(), x.getLoaiNhanVien(), x.getSdt(), x.isChon()});
+                modelPCNV.addRow(new Object[]{++i, x.getMaNhanVien(), x.getTenNhanVien(), x.getGioiTinh(), x.getLoaiNhanVien(), x.getSdt(), x.isChon()});
             }
         }
         lbNhanVienDuocChon.setText(String.valueOf(slNhanVienDaChon));
@@ -1715,14 +1773,14 @@ public void CreateBarChart(Date Day)
     private javax.swing.JTable Table_PhanCong;
     private javax.swing.JTable Table_SLTiec;
     private javax.swing.JButton btnPhanCong;
+    private javax.swing.JButton btnQuayLai;
     private javax.swing.JButton btnTraCuu;
+    private javax.swing.JButton btnXacNhan;
     private com.toedter.calendar.JCalendar calendar;
     private javax.swing.JComboBox<String> cbxCongViec;
     private javax.swing.JPanel home;
     private javax.swing.JDesktopPane jBarChar;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;

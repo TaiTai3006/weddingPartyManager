@@ -119,6 +119,32 @@ public class PhieuDatTiecCuoiDAO implements DAOInterface<PhieuDatTiecCuoi> {
         }
         return 0;
     }
+    
+    public void UpdateTinhTrang(String maTC){
+        try {
+            Connection con = JDBCUtil.getConnection();
+
+            String sql = "UPDATE PhieuDatTiecCuoi SET `tinhTrangPhanCong` = 1 WHERE maTiecCuoi =?";
+
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, maTC);
+           
+
+            int kq = st.executeUpdate();
+
+            if (kq > 0) {
+                System.out.println("Cap nhat du lieu tinh trang thanh cong!");
+            } else {
+                System.out.println("cap nhat du lieu tinh trang that bai!");
+            }
+
+            JDBCUtil.closeConnection(con);
+            
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+       
+    }
 
     public ArrayList<PhieuDatTiecCuoi> SelectById(String id) {
         ArrayList<PhieuDatTiecCuoi> lstTiecCuoi = new ArrayList<PhieuDatTiecCuoi>();

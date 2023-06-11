@@ -61,7 +61,32 @@ public class PhanCongDAO implements DAOInterface<PhanCong> {
 
     @Override
     public int Delete(PhanCong t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+      try {
+            Connection con = JDBCUtil.getConnection();
+            String sql = "DELETE FROM `PhanCong` WHERE `maNhanVien`= ? AND `maTiecCuoi` = ?";            
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, t.getMaNhanVien());
+            st.setString(2, t.getMaTC());
+//            st.setString(3, t.getCa());
+//            st.setString(4, t.getMaSanh());
+            
+            System.out.println(st);
+            
+            int kq = st.executeUpdate();
+            
+            if(kq > 0){
+                System.out.println("Xoa du lieu thanh cong!");
+            } else{
+                System.out.println("Xoa du lieu that bai!");
+            }
+            
+            JDBCUtil.closeConnection(con);
+            
+            return kq;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return 0 ;
     }
 
     public ArrayList<PhanCong> SelectAll() {

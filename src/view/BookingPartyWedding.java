@@ -1081,6 +1081,11 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
 
         inputSLDT.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         inputSLDT.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
+        inputSLDT.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                inputSLDTStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
         jPanel17.setLayout(jPanel17Layout);
@@ -2972,6 +2977,18 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         inputNgayDaiTiec.setDate(null);
         ChuyenKhoanForm.setVisible(false);
     }//GEN-LAST:event_btnDaThanhToanActionPerformed
+
+    private void inputSLDTStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_inputSLDTStateChanged
+        // TODO add your handling code here:
+           if (SoLuongBanToiDa != 0) {
+               int limit = SoLuongBanToiDa - Integer.parseInt(inputSoLuongBan.getValue().toString());
+            if (Integer.parseInt( inputSLDT.getValue().toString()) > limit) {
+               inputSLDT.setValue(limit);
+            }
+        } else {
+            inputSLDT.setValue(0);
+        }
+    }//GEN-LAST:event_inputSLDTStateChanged
 
     public void UpdateChonDV(boolean chon, int soluong, int row) {
         for (DTDichVu x : dTDichVus) {
