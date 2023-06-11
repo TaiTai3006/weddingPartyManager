@@ -1205,6 +1205,7 @@ public void CreateBarChart(Date Day)
 
         jScrollPane1.setViewportView(null);
 
+        Table_PhanCong.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         Table_PhanCong.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -1225,6 +1226,7 @@ public void CreateBarChart(Date Day)
             }
         });
         Table_PhanCong.setToolTipText("");
+        Table_PhanCong.setRowHeight(25);
         jScrollPane1.setViewportView(Table_PhanCong);
 
         jComboBox1.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
@@ -1312,6 +1314,7 @@ public void CreateBarChart(Date Day)
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
 
+        Table_SLTiec.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         Table_SLTiec.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -1320,6 +1323,7 @@ public void CreateBarChart(Date Day)
                 "Ca", "Số lượng tiệc cưới"
             }
         ));
+        Table_SLTiec.setRowHeight(25);
         jScrollPane2.setViewportView(Table_SLTiec);
 
         jLabel3.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
@@ -1428,7 +1432,7 @@ public void CreateBarChart(Date Day)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(home, javax.swing.GroupLayout.PREFERRED_SIZE, 1158, Short.MAX_VALUE)
+                    .addComponent(home, javax.swing.GroupLayout.DEFAULT_SIZE, 1158, Short.MAX_VALUE)
                     .addContainerGap()))
         );
         layout.setVerticalGroup(
