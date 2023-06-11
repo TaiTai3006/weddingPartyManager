@@ -740,6 +740,8 @@ public void CreateBarChart(Date Day)
 
         jPanel13.setBackground(new java.awt.Color(255, 255, 255));
 
+        jPanel11.setBackground(new java.awt.Color(255, 255, 255));
+
         ngayBD.setDateFormatString("dd/MM/yyyy");
         ngayBD.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
@@ -770,6 +772,8 @@ public void CreateBarChart(Date Day)
                 .addComponent(ngayBD, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
+
+        jPanel12.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel5.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jLabel5.setText("Ngày kết thúc");
