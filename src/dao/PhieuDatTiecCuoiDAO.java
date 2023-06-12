@@ -249,6 +249,31 @@ public class PhieuDatTiecCuoiDAO implements DAOInterface<PhieuDatTiecCuoi> {
         }
         return phieuDatTiecCuois;
     }
+    
+    public ArrayList<PhieuDatTiecCuoi> SelectAllTC() {
+        ArrayList<PhieuDatTiecCuoi> phieuDatTiecCuois = new ArrayList<PhieuDatTiecCuoi>();
+        try {
+            Connection con = JDBCUtil.getConnection();
+
+            String sql = "SELECT * FROM PhieuDatTiecCuoi";
+
+            PreparedStatement st = con.prepareStatement(sql);
+
+            ResultSet kq = st.executeQuery();
+
+            while (kq.next()) {
+                phieuDatTiecCuois.add(new PhieuDatTiecCuoi(kq.getString("maTiecCuoi"), kq.getString("ngayDat"), kq.getString("ngayDaiTiec"),
+                        kq.getInt("soLuongBan"), kq.getInt("soLuongBanDuTru"), kq.getLong("donGiaBan"), kq.getLong("tongTienBan"),
+                        kq.getLong("tongTienDichVu"), kq.getLong("tongTienDatTiec"), kq.getLong("tienDatCoc"), kq.getLong("conLai"),
+                        kq.getString("tenCoDau"), kq.getString("tenChuRe"), kq.getString("sdt"), kq.getString("maCa"), kq.getString("maSanh"), kq.getString("userName")));
+            }
+
+            JDBCUtil.closeConnection(con);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return phieuDatTiecCuois;
+    }
 
     public ArrayList<PhieuDatTiecCuoi> SelectDesc() {
         ArrayList<PhieuDatTiecCuoi> phieuDatTiecCuois = new ArrayList<PhieuDatTiecCuoi>();

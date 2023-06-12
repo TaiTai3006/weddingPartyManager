@@ -29,7 +29,7 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
     private DefaultTableModel defaulTablePDTC;
     private DefaultTableModel defaultTableCTDV;
     private DefaultTableModel defaultTableCTMA;
-    private ArrayList<PhieuDatTiecCuoi> lstPDTC = PhieuDatTiecCuoiDAO.getInstance().SelectAll();
+    private ArrayList<PhieuDatTiecCuoi> lstPDTC = PhieuDatTiecCuoiDAO.getInstance().SelectAllTC();
     private ArrayList<ChiTietDichVu> lstCTDV = ChiTietDichVuDAO.getInstance().SelectAll();
     private ArrayList<ChiTietMonAn> lstCTMA = ChiTietMonAnDAO.getInstance().SelectAll();
 
@@ -53,7 +53,7 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
     }
 
     public void ReloadTablePDTC() {
-        lstPDTC = PhieuDatTiecCuoiDAO.getInstance().SelectAll();
+        lstPDTC = PhieuDatTiecCuoiDAO.getInstance().SelectAllTC();
         defaulTablePDTC.setRowCount(0);
         CreateTablePDTC();
     }
