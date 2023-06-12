@@ -254,7 +254,7 @@ public class Login extends javax.swing.JFrame {
                 txtfUserName.setText("");
                 txtfPassword.setText("");
             } else {
-                systemDAO.getInstance().Update(1);
+                systemDAO.getInstance().Update(1,userName, NhanVienDAO.getInstance().getMaCV(userName));
                 Dashboard dashboard = new Dashboard();
                 dashboard.show();
                 dispose();

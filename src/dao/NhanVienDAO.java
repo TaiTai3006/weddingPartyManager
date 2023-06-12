@@ -170,7 +170,27 @@ public class NhanVienDAO implements DAOInterface<TaiKhoan> {
         return lstNhanVien;
     }
     
-    
+    public String getMaCV(String user){
+        String macv = "";
+        try {
+            Connection con = JDBCUtil.getConnection();
+
+            String sql = "SELECT  `maChucVu` FROM `TaiKhoan` WHERE `userName` = ?";
+
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, user);
+            ResultSet kq = st.executeQuery();
+
+            while (kq.next()) {
+               macv = kq.getString(1);
+            }
+
+            JDBCUtil.closeConnection(con);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return macv;
+    }
 
     @Override
     public TaiKhoan SelectById(TaiKhoan t) {
