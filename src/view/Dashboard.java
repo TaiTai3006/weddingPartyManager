@@ -34,7 +34,7 @@ public class Dashboard extends javax.swing.JFrame {
      */
     Color DefaultColor, ClickedColor;
 
-    private Login lg = new Login();
+    
 
     public Dashboard() {
         if (systemDAO.getInstance().getTinhTrang()) {
@@ -59,7 +59,7 @@ public class Dashboard extends javax.swing.JFrame {
             jDesktopPane1.removeAll();
             jDesktopPane1.add(new HomePage()).setVisible(true);
 
-            
+            txtfUsernameChange.setText(user);
         } else {
             Login login = new Login();
             login.show();
@@ -1185,7 +1185,7 @@ public class Dashboard extends javax.swing.JFrame {
                 int kq = 0;
 
                 for (TaiKhoan nv : lstTaiKhoan) {
-                    if (nv.getUserName().equals(lg.getUsername())) {
+                    if (nv.getUserName().equals(user)) {
                         kq = NhanVienDAO.getInstance().UpdatePassword(new TaiKhoan(nv.getUserName(), new String(hassMapPW), nv.getMaChucVu(), nv.getMaChucVu()));
                     }
                 }
