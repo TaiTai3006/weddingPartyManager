@@ -25,6 +25,8 @@ import model.ThamSo;
  */
 public class Dashboard extends javax.swing.JFrame {
 
+    private String maCV;
+    private String user;
     boolean selected = true;
 
     /**
@@ -35,9 +37,11 @@ public class Dashboard extends javax.swing.JFrame {
     private Login lg = new Login();
 
     public Dashboard() {
-//        if (systemDAO.getInstance().getTinhTrang()) {
+        if (systemDAO.getInstance().getTinhTrang()) {
             initComponents();
-
+            maCV = systemDAO.getInstance().getChucVu();
+            user = systemDAO.getInstance().getUser();
+            System.out.println(user);
             setResizable(false);
             setLocationRelativeTo(null);
 
@@ -55,13 +59,12 @@ public class Dashboard extends javax.swing.JFrame {
             jDesktopPane1.removeAll();
             jDesktopPane1.add(new HomePage()).setVisible(true);
 
-            txtfUsernameChange.setText(lg.getUsername());
-//        }
-//        else{
-//        Login login = new Login();
-//        login.show();
-//        dispose();
-//        }
+            
+        } else {
+            Login login = new Login();
+            login.show();
+            dispose();
+        }
     }
 
     /**
@@ -977,13 +980,16 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void DanhMucMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DanhMucMousePressed
         // TODO add your handling code here:
-        TrangChu.setBackground(DefaultColor);
-        DatTiec.setBackground(DefaultColor);
-        TraCuu.setBackground(DefaultColor);
-        DanhMuc.setBackground(ClickedColor);
-        NhanVien.setBackground(DefaultColor);
-        TaiKhoan.setBackground(DefaultColor);
-        ThongKe.setBackground(DefaultColor);
+        if (maCV.equals("CV0001")) {
+            TrangChu.setBackground(DefaultColor);
+            DatTiec.setBackground(DefaultColor);
+            TraCuu.setBackground(DefaultColor);
+            DanhMuc.setBackground(ClickedColor);
+            NhanVien.setBackground(DefaultColor);
+            TaiKhoan.setBackground(DefaultColor);
+            ThongKe.setBackground(DefaultColor);
+        }
+
     }//GEN-LAST:event_DanhMucMousePressed
 
     private void ThongKeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ThongKeMousePressed
@@ -999,28 +1005,36 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void NhanVienMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NhanVienMousePressed
         // TODO add your handling code here:
-        TrangChu.setBackground(DefaultColor);
-        DatTiec.setBackground(DefaultColor);
-        TraCuu.setBackground(DefaultColor);
-        DanhMuc.setBackground(DefaultColor);
-        NhanVien.setBackground(ClickedColor);
-        TaiKhoan.setBackground(DefaultColor);
-        ThongKe.setBackground(DefaultColor);
+        if (maCV.equals("CV0001")) {
+            TrangChu.setBackground(DefaultColor);
+            DatTiec.setBackground(DefaultColor);
+            TraCuu.setBackground(DefaultColor);
+            DanhMuc.setBackground(DefaultColor);
+            NhanVien.setBackground(ClickedColor);
+            TaiKhoan.setBackground(DefaultColor);
+            ThongKe.setBackground(DefaultColor);
+        }
+
     }//GEN-LAST:event_NhanVienMousePressed
 
     private void TaiKhoanMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TaiKhoanMousePressed
         // TODO add your handling code here:
-        TrangChu.setBackground(DefaultColor);
-        DatTiec.setBackground(DefaultColor);
-        TraCuu.setBackground(DefaultColor);
-        DanhMuc.setBackground(DefaultColor);
-        NhanVien.setBackground(DefaultColor);
-        TaiKhoan.setBackground(ClickedColor);
-        ThongKe.setBackground(DefaultColor);
+
+        if (maCV.equals("CV0001")) {
+            TrangChu.setBackground(DefaultColor);
+            DatTiec.setBackground(DefaultColor);
+            TraCuu.setBackground(DefaultColor);
+            DanhMuc.setBackground(DefaultColor);
+            NhanVien.setBackground(DefaultColor);
+            TaiKhoan.setBackground(ClickedColor);
+            ThongKe.setBackground(DefaultColor);
+        }
+
     }//GEN-LAST:event_TaiKhoanMousePressed
 
     private void TrangChuMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TrangChuMousePressed
         // TODO add your handling code here:
+
         TrangChu.setBackground(ClickedColor);
         DatTiec.setBackground(DefaultColor);
         TraCuu.setBackground(DefaultColor);
@@ -1032,7 +1046,7 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void DangXuatMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DangXuatMousePressed
         // TODO add your handling code here:
-//        systemDAO.getInstance().Update(0);
+        systemDAO.getInstance().Update(0, "", "");
         Login login = new Login();
         login.show();
         dispose();
@@ -1046,9 +1060,14 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_DatTiecMouseClicked
 
     private void NhanVienMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NhanVienMouseClicked
-        EmployeeList employee = new EmployeeList();
-        jDesktopPane1.removeAll();
-        jDesktopPane1.add(employee).setVisible(true);
+
+        if (maCV.equals("CV0001")) {
+            EmployeeList employee = new EmployeeList();
+            jDesktopPane1.removeAll();
+            jDesktopPane1.add(employee).setVisible(true);
+        } else {
+            Message("Lỗi! Bạn không được cấp quyền truy cập.", JOptionPane.WARNING_MESSAGE);
+        }
 //    PartyHallList staffList = new PartyHallList();
 ////    PartyHallTypeList staffList = new PartyHallTypeList();
 //       jDesktopPane1.removeAll();
@@ -1057,9 +1076,14 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void DanhMucMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DanhMucMouseClicked
         // TODO add your handling code here:
-        ListTable listTable = new ListTable();
-        jDesktopPane1.removeAll();
-        jDesktopPane1.add(listTable).setVisible(true);
+        if (maCV.equals("CV0001")) {
+            ListTable listTable = new ListTable();
+            jDesktopPane1.removeAll();
+            jDesktopPane1.add(listTable).setVisible(true);
+        } else {
+            Message("Lỗi! Bạn không được cấp quyền truy cập.", JOptionPane.WARNING_MESSAGE);
+        }
+
     }//GEN-LAST:event_DanhMucMouseClicked
 
     private void TraCuuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TraCuuMouseClicked
@@ -1084,14 +1108,19 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void btnSaveChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveChangeActionPerformed
         // TODO add your handling code here:
-        try {
-            ThamSoDAO.getInstance().Update(selected, Double.parseDouble(String.valueOf(tilePhat.getValue())), Double.parseDouble(String.valueOf(tileCoc.getValue())), Integer.parseInt(fieldTGChiuPhat.getText()), Integer.parseInt(fieldTGDaiTiec.getText()));
-        } catch (Exception e) {
-            int ret = JOptionPane.showConfirmDialog(null, "Cập nhật dữ liệu không thành công", "NOTIFICATION", JOptionPane.CLOSED_OPTION);
+        if (maCV.equals("CV0001")) {
+            try {
+                ThamSoDAO.getInstance().Update(selected, Double.parseDouble(String.valueOf(tilePhat.getValue())), Double.parseDouble(String.valueOf(tileCoc.getValue())), Integer.parseInt(fieldTGChiuPhat.getText()), Integer.parseInt(fieldTGDaiTiec.getText()));
+                Message("Cập nhật thành công!", JOptionPane.INFORMATION_MESSAGE);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
+        } else {
+            Message("Lỗi! bạn không có quyền thay đổi dữ liệu.", JOptionPane.WARNING_MESSAGE);
         }
-        int ret = JOptionPane.showConfirmDialog(null, "Cập nhật dữ liệu thất bại", "NOTIFICATION", JOptionPane.CLOSED_OPTION);
         dialogThayDoiQuyDinh.setVisible(false);
+
     }//GEN-LAST:event_btnSaveChangeActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
@@ -1101,9 +1130,14 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void TaiKhoanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TaiKhoanMouseClicked
         // TODO add your handling code here:
-        StaffList staffList = new StaffList();
-        jDesktopPane1.removeAll();
-        jDesktopPane1.add(staffList).setVisible(true);
+
+        if (maCV.equals("CV0001")) {
+            StaffList staffList = new StaffList();
+            jDesktopPane1.removeAll();
+            jDesktopPane1.add(staffList).setVisible(true);
+        } else {
+            Message("Lỗi! Bạn không được cấp quyền truy cập.", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_TaiKhoanMouseClicked
 
     private void TrangChuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TrangChuMouseClicked
@@ -1114,7 +1148,7 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void btnResetPWActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetPWActionPerformed
         // TODO add your handling code here:
-        txtfUsernameChange.setText(lg.getUsername());
+        txtfUsernameChange.setText(user);
         txtfPasswordChange.setText("");
         txtfConfirm.setText("");
     }//GEN-LAST:event_btnResetPWActionPerformed
@@ -1139,6 +1173,7 @@ public class Dashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
         String newPassword = txtfPasswordChange.getText();
         String pwConfirm = txtfConfirm.getText();
+        txtfUsernameChange.setText(user);
         if (!newPassword.equals(pwConfirm)) {
             Message("Xác nhận mật khẩu chưa chính xác, vui lòng nhập lại", JOptionPane.ERROR_MESSAGE);
             txtfPasswordChange.setText("");
@@ -1170,6 +1205,7 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void jLabel21MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel21MousePressed
         // TODO add your handling code here:
+
         boolean isPhat = ThamSoDAO.getInstance().isPhat();
         int tgDatTiec = ThamSoDAO.getInstance().GetThoiGianDatTiec();
         double tilePhatData = ThamSoDAO.getInstance().GetTyLePhat();
@@ -1184,6 +1220,8 @@ public class Dashboard extends javax.swing.JFrame {
         dialogThayDoiQuyDinh.setSize(500, 700);
         dialogThayDoiQuyDinh.setLocationRelativeTo(null);
         dialogThayDoiQuyDinh.setVisible(true);
+
+
     }//GEN-LAST:event_jLabel21MousePressed
 
     private void jLabel22MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel22MousePressed
