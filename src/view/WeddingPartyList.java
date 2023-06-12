@@ -10,6 +10,8 @@ import dao.PhieuDatTiecCuoiDAO;
 import java.util.ArrayList;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
@@ -35,7 +37,26 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
 
     public WeddingPartyList() {
         initComponents();
+
         CreateTablePDTC();
+        DatTiecTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        DatTiecTable.getColumnModel().getColumn(0).setPreferredWidth(50);
+        DatTiecTable.getColumnModel().getColumn(1).setPreferredWidth(80);
+        DatTiecTable.getColumnModel().getColumn(2).setPreferredWidth(165);
+        DatTiecTable.getColumnModel().getColumn(3).setPreferredWidth(165);
+        DatTiecTable.getColumnModel().getColumn(4).setPreferredWidth(165);
+        DatTiecTable.getColumnModel().getColumn(5).setPreferredWidth(165);
+        DatTiecTable.getColumnModel().getColumn(6).setPreferredWidth(165);
+        DatTiecTable.getColumnModel().getColumn(7).setPreferredWidth(165);
+        DatTiecTable.getColumnModel().getColumn(8).setPreferredWidth(165);
+        DatTiecTable.getColumnModel().getColumn(9).setPreferredWidth(165);
+        DatTiecTable.getColumnModel().getColumn(10).setPreferredWidth(165);
+        DatTiecTable.getColumnModel().getColumn(11).setPreferredWidth(165);
+        DatTiecTable.getColumnModel().getColumn(12).setPreferredWidth(165);
+        DatTiecTable.getColumnModel().getColumn(13).setPreferredWidth(165);
+        DatTiecTable.getColumnModel().getColumn(14).setPreferredWidth(165);
+        DatTiecTable.getColumnModel().getColumn(15).setPreferredWidth(165);
+        DatTiecTable.getColumnModel().getColumn(16).setPreferredWidth(165);
     }
 
     public void CreateTablePDTC() {
@@ -43,6 +64,7 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
         String[] tieuDe = {"Mã tiệc cưới", "Ngày đặt", "Ngày đãi tiệc", "Số lượng bàn", "Số bàn dự trữ",
             "Đơn giá bàn", "Tổng tiền bàn", "Tổng tiền dịch vụ", "Tổng tiền đặt tiệc", "Tiền đặt cọc", "Còn lại", "Tên cô dâu", "Tên chú rể",
             "SĐT", "Mã ca", "Mã sảnh", "Username"};
+
         defaulTablePDTC.setColumnIdentifiers(tieuDe);
         int i = 0;
         for (PhieuDatTiecCuoi pd : lstPDTC) {
@@ -138,6 +160,7 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
                 "STT", "Mã tiệc cưới", "Tên chú rể", "Tên cô dâu", "Tên Sảnh", "Ngày đãi tiệc", "Giờ", "Số lượng bàn", "UserName"
             }
         ));
+        DatTiecTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         DatTiecTable.setFocusable(false);
         DatTiecTable.setRowHeight(25);
         DatTiecTable.setSelectionBackground(new java.awt.Color(69, 96, 134));
