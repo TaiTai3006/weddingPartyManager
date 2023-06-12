@@ -106,19 +106,20 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
         int i = 0;
         for (ChiTietDichVu ctdv : lstCTDV) {
             if (ctdv.getMaTiecCuoi().equals(maPDTC)) {
-                defaultTableCTDV.addRow(new Object[]{++i, ctdv.getMaDichVu(), ctdv.getSoLuong(), ctdv.getDonGiaDichVu(), currencyFormatVN.format(ctdv.getThanhTien())});
+                defaultTableCTDV.addRow(new Object[]{++i, ctdv.getMaDichVu(), ctdv.getSoLuong(), currencyFormatVN.format(ctdv.getDonGiaDichVu()), currencyFormatVN.format(ctdv.getThanhTien())});
             }
         }
     }
 
     public void CreateTableCTMA() {
+        NumberFormat currencyFormatVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
         int row = DatTiecTable.getSelectedRow();
         String maPDTC = String.valueOf(DatTiecTable.getValueAt(row, 1));
         defaultTableCTMA = (DefaultTableModel) tblCTMA.getModel();
         int i = 0;
         for (ChiTietMonAn ctma : lstCTMA) {
             if (ctma.getMaTiecCuoi().equals(maPDTC)) {
-                defaultTableCTMA.addRow(new Object[]{++i, ctma.getMaMonAn(), ctma.getDonGiaMonAn(), ctma.getSoLuong(), ctma.getGhiChu()});
+                defaultTableCTMA.addRow(new Object[]{++i, ctma.getMaMonAn(), currencyFormatVN.format(ctma.getDonGiaMonAn()), ctma.getSoLuong(), ctma.getGhiChu()});
             }
         }
     }
@@ -258,6 +259,7 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
                 "STT", "Mã món ăn ", "Đơn giá món ăn", "Số lượng ", "Ghi chú"
             }
         ));
+        tblCTMA.setRowHeight(25);
         jScrollPane2.setViewportView(tblCTMA);
 
         tblCTDV.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
@@ -269,6 +271,7 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
                 "STT", "Mã dịch vụ", "Số lượng ", "Đơn giá dịch vụ", "Thành tiền "
             }
         ));
+        tblCTDV.setRowHeight(25);
         jScrollPane3.setViewportView(tblCTDV);
 
         javax.swing.GroupLayout Page1Layout = new javax.swing.GroupLayout(Page1);

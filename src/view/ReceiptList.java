@@ -208,6 +208,7 @@ public class ReceiptList extends javax.swing.JInternalFrame {
                 "STT", "Mã hóa đơn ", "Mã dịch vụ", "Số lượng", "Đơn giá dịch vụ", "Thành tiền ", "Ghi chú"
             }
         ));
+        tblCTDVTT.setRowHeight(25);
         jScrollPane3.setViewportView(tblCTDVTT);
 
         javax.swing.GroupLayout Page1Layout = new javax.swing.GroupLayout(Page1);
