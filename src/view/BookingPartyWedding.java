@@ -18,6 +18,7 @@ import dao.MonAnDAO;
 import dao.PhieuDatTiecCuoiDAO;
 import dao.SanhDAO;
 import dao.ThamSoDAO;
+import dao.systemDAO;
 import database.JDBCUtil;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -2800,7 +2801,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
 
         String maSanh = mapMaSanh.get(inputSanh.getSelectedItem().toString());
 
-        String userName = "taitai";
+        String userName = systemDAO.getInstance().getUser();
 
         int kq1 = PhieuDatTiecCuoiDAO.getInstance().Insert(new PhieuDatTiecCuoi(maTiecCuoi, ngayDat, ngayDaiTiec, soLuongBan, soLuongBanDuTru, tongDonBanHienTai, tongtienban,
                 tongTienDV, tongtienHD, (int) tienCoc, conLai, tenCoDau, tenChuRe, sdt, maCa, maSanh, userName));

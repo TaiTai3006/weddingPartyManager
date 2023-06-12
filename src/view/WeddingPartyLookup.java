@@ -29,6 +29,7 @@ import dao.MonAnDAO;
 import dao.SanhDAO;
 import dao.PhieuDatTiecCuoiDAO;
 import dao.ThamSoDAO;
+import dao.systemDAO;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.NumberFormat;
@@ -3854,7 +3855,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 
             if(Long.parseLong(inputSoTienDaNhan.getText()) >= conLai)
             {
-                String userName = "taitai";
+                String userName = systemDAO.getInstance().getUser();
                     String maPDTC = String.valueOf(DatTiecTable.getValueAt(getSelectRow(), 1));
                 int kq = 0;
 
@@ -3988,7 +3989,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 
             if(Long.parseLong(inputSoTienDaNhan.getText()) >= conLai)
             {
-                String userName = "taitai";
+                String userName = systemDAO.getInstance().getUser();
                     String maPDTC = String.valueOf(DatTiecTable.getValueAt(getSelectRow(), 1));
                 int kq = 0;
 
@@ -4154,7 +4155,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                 Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-                String userName = "taitai";
+                String userName = systemDAO.getInstance().getUser();
                     String maPDTC = String.valueOf(DatTiecTable.getValueAt(getSelectRow(), 1));
                 int kq = 0;
 
@@ -4219,7 +4220,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             }
 
             {
-                String userName = "taitai";
+                String userName = systemDAO.getInstance().getUser();
                     String maPDTC = String.valueOf(DatTiecTable.getValueAt(getSelectRow(), 1));
                 int kq = 0;
 
