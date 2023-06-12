@@ -607,7 +607,7 @@ public class HomePage extends javax.swing.JInternalFrame {
                 try {
                     Connection con = JDBCUtil.getConnection();
 
-                    String sql = "SELECT ca.tenCa, COUNT(*) FROM phieudattieccuoi, ca WHERE phieudattieccuoi.ngayDaiTiec = ? GROUP BY  ca.tenCa ";
+                    String sql = "SELECT ca.tenCa, COUNT(*) FROM phieudattieccuoi, ca WHERE phieudattieccuoi.ngayDaiTiec = ? and phieudattieccuoi.maCa = ca.maCa GROUP BY phieudattieccuoi.ngayDaiTiec, ca.tenCa ";
 
                     PreparedStatement st = con.prepareStatement(sql);
                     st.setString(1, strNgayCalendar);
@@ -639,7 +639,7 @@ public class HomePage extends javax.swing.JInternalFrame {
                 try {
                     Connection con = JDBCUtil.getConnection();
 
-                    String sql = "SELECT ca.tenCa, COUNT(*) FROM phieudattieccuoi, ca WHERE phieudattieccuoi.ngayDaiTiec >= ? and phieudattieccuoi.ngayDaiTiec<= ? GROUP BY  ca.tenCa ";
+                    String sql = "SELECT ca.tenCa, COUNT(*) FROM phieudattieccuoi, ca WHERE phieudattieccuoi.maCa = ca.maCa and phieudattieccuoi.ngayDaiTiec >= ? and phieudattieccuoi.ngayDaiTiec<= ? GROUP BY  ca.tenCa ";
 
                     PreparedStatement st = con.prepareStatement(sql);
                     st.setString(1, monDay);
@@ -1270,7 +1270,7 @@ public class HomePage extends javax.swing.JInternalFrame {
         );
         jBarCharLayout.setVerticalGroup(
             jBarCharLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 225, Short.MAX_VALUE)
+            .addGap(0, 234, Short.MAX_VALUE)
         );
 
         export.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/import.png"))); // NOI18N
@@ -1315,9 +1315,9 @@ public class HomePage extends javax.swing.JInternalFrame {
                         .addComponent(export)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jBarChar, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addGap(0, 0, 0)
+                .addComponent(jBarChar, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         calendar0.setBackground(new java.awt.Color(255, 255, 255));
@@ -1705,7 +1705,7 @@ public class HomePage extends javax.swing.JInternalFrame {
         }
         if (Table_SLTiec.getRowCount() == 0) {
             jScrollPane2.setVisible(false);
-            jLabel23.setText("NULL!");
+//            jLabel23.setText("NULL!");
         } else {
             jScrollPane2.setVisible(true);
             jLabel23.setText("");
@@ -1720,7 +1720,7 @@ public class HomePage extends javax.swing.JInternalFrame {
         CreateDataTable_SLTiec();
         if (Table_SLTiec.getRowCount() == 0) {
             jScrollPane2.setVisible(false);
-            jLabel23.setText("NULL!");
+//            jLabel23.setText("NULL!");
         } else {
             jScrollPane2.setVisible(true);
             jLabel23.setText("");

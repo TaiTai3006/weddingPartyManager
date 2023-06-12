@@ -266,7 +266,7 @@ public class BarChart_HomePage extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         setBackground(new java.awt.Color(255, 255, 255));
-        setPreferredSize(new java.awt.Dimension(729, 232));
+        setPreferredSize(new java.awt.Dimension(729, 235));
         setRequestFocusEnabled(false);
         setVerifyInputWhenFocusTarget(false);
 
