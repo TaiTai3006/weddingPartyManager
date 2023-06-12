@@ -628,20 +628,44 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
         int row = Table_Hall_Type.getSelectedRow();
         String maLoaiSanh = String.valueOf(Table_Hall_Type.getValueAt(row, 1));
         int kq = 0;
-        if (!tenLoaiSanhValue.getText().equals(String.valueOf(Table_Hall_Type.getValueAt(row, 2)))
-                || !donGiaToiThieuValue.getText().equals(String.valueOf(Table_Hall_Type.getValueAt(row, 3)))) {
-            kq = LoaiSanhDAO.getInstance().Update(new LoaiSanh(maLoaiSanh, tenLoaiSanhValue.getText(), Integer.parseInt(donGiaToiThieuValue.getText())));
-        }
-        if (kq > 0) {
-            Edit_HallType_List_Dialog.setVisible(false);
-            ReloadDataTable();
-            tenLoaiSanhValue.setText("");
-            donGiaToiThieuValue.setText("");
-        } else {
-            Edit_HallType_List_Dialog.setVisible(false);
-            Message("Chỉnh sửa dữ liệu thất bại!", JOptionPane.ERROR_MESSAGE);
+        
+        if (tenLoaiSanhValue.getText().equals("") || donGiaToiThieuValue.getText().equals("")) {
+            Message("Vui lòng không để để dữ liệu trống!", JOptionPane.WARNING_MESSAGE);
+        } 
+         else
+        {
+            if (!tenLoaiSanhValue.getText().equals(String.valueOf(Table_Hall_Type.getValueAt(row, 2)))
+                || !donGiaToiThieuValue.getText().equals(String.valueOf(Table_Hall_Type.getValueAt(row, 3))) ) 
+            {
+                try {
+                    int check = Integer.parseInt(donGiaToiThieuValue.getText());
+                    if(check <= 0)
+                        Message("Vui lòng nhập đơn giá tối thiểu lớn hơn 0!", JOptionPane.WARNING_MESSAGE);
+                    else
+                    {
+                        kq = LoaiSanhDAO.getInstance().Update(new LoaiSanh(maLoaiSanh,  tenLoaiSanhValue.getText(), Integer.parseInt(donGiaToiThieuValue.getText())));
+                        if (kq > 0) {
+                            Edit_HallType_List_Dialog.setVisible(false);
+                            ReloadDataTable();
+                            tenLoaiSanhValue.setText("");
+                            donGiaToiThieuValue.setText("");
+                        }
+                        else 
+                        {
+                            Edit_HallType_List_Dialog.setVisible(false);
+                            Message("Chỉnh sửa dữ liệu thất bại!", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                } catch (Exception ex) {
+                ex.printStackTrace();
+                     Message("Vui lòng nhập đơn giá tối thiểu là một số nguyên", JOptionPane.WARNING_MESSAGE);
 
-        }
+                }
+         
+            }
+            else
+                 Message("Vui lòng thay đổi dữ liệu để cập nhật", JOptionPane.WARNING_MESSAGE);
+        }            
     }//GEN-LAST:event_btnUpdateHallTypeActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -652,40 +676,67 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
     private void addHallTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addHallTypeActionPerformed
         // TODO add your handling code here:
         if (txftenLoaiSanh.getText().equals("") || txfdonGiaToiThieu.getText().equals("")) {
+
             Message("Vui lòng nhập dữ liệu!", JOptionPane.WARNING_MESSAGE);
         } else {
-            String maLS = String.valueOf(LoaiSanhDAO.getInstance().GetID() + 1);
-            switch (maLS.length()) {
-                case 1:
-                    maLS = "LS000" + maLS;
-                    break;
-                case 2:
-                    maLS = "LS00" + maLS;
-                    break;
-                case 3:
-                    maLS = "LS0" + maLS;
-                    break;
-                case 4:
-                    maLS = "LS" + maLS;
-                    break;
-            }
-            int kq = 0;
-            try {
-                kq = LoaiSanhDAO.getInstance().Insert(new LoaiSanh(maLS, txftenLoaiSanh.getText(),
-                        Integer.parseInt(txfdonGiaToiThieu.getText())));
-            } catch (Exception ex) {
+//                int check = 0;
+                try {
+                    int check = Integer.parseInt(txfdonGiaToiThieu.getText());
+                    if(check <= 0)
+                        Message("Vui lòng nhập đơn giá tối thiểu lớn hơn 0!", JOptionPane.WARNING_MESSAGE);
+                    else
+                    {
+                        String maLS = String.valueOf(LoaiSanhDAO.getInstance().GetID() + 1);
+                        switch (maLS.length()) {
+                            case 1:
+                                maLS = "LS000" + maLS;
+                                break;
+                            case 2:
+                                maLS = "LS00" + maLS;
+                                break;
+                            case 3:
+                                maLS = "LS0" + maLS;
+                                break;
+                            case 4:
+                                maLS = "LS" + maLS;
+                                break;
+                        }
+                        int kq = 0;
+                        try {
+                            kq = LoaiSanhDAO.getInstance().Insert(new LoaiSanh(maLS, txftenLoaiSanh.getText(),
+                                   Integer.parseInt(txfdonGiaToiThieu.getText())));
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                        if (kq != 0) {
+                            Add_HallType_List_Dialog.setVisible(false);
+                            ReloadDataTable();
+                            txftenLoaiSanh.setText("");
+                            txfdonGiaToiThieu.setText("");
+                        } else {
+                            Message("Lỗi! Thêm dữ liệu thất bại. Vui lòng nhập lại dữ liệu.", JOptionPane.ERROR_MESSAGE);
+                            txftenLoaiSanh.setText("");
+                            txfdonGiaToiThieu.setText("");
+                        }
+                    }
+                } catch (Exception ex) {
                 ex.printStackTrace();
-            }
-            if (kq != 0) {
-                Add_HallType_List_Dialog.setVisible(false);
-                ReloadDataTable();
-                txftenLoaiSanh.setText("");
-                txfdonGiaToiThieu.setText("");
-            } else {
-                Message("Lỗi! Thêm dữ liệu thất bại. Vui lòng nhập lại dữ liệu.", JOptionPane.ERROR_MESSAGE);
-                txftenLoaiSanh.setText("");
-                txfdonGiaToiThieu.setText("");
-            }
+                    Message("Vui lòng nhập đơn giá tối thiểu là một số nguyên", JOptionPane.WARNING_MESSAGE);
+                }
+//                try {
+//                    int check = Integer.parseInt(txfdonGiaToiThieu.getText());
+//                    if(check <= 0)
+//                        Message("Vui lòng nhập đơn giá tối thiểu lớn hơn 0!", JOptionPane.WARNING_MESSAGE);
+//                    else
+//                    {
+//                        
+//                    }
+//                } catch (Exception ex) {
+//                ex.printStackTrace();
+//                }
+                
+            
+            
         }
     }//GEN-LAST:event_addHallTypeActionPerformed
 
