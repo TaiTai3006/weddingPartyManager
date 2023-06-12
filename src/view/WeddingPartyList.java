@@ -35,7 +35,7 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
 
     public WeddingPartyList() {
         initComponents();
-        CreateTablePDTC();
+//        CreateTablePDTC();
     }
 
     public void CreateTablePDTC() {
