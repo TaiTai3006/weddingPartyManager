@@ -1747,6 +1747,7 @@ public class HomePage extends javax.swing.JInternalFrame {
                 PhanCongDAO.getInstance().Delete(new PhanCong(x, maTiecCuoi));
             }
         }
+        jCheckBox1.setSelected(false);
         modelPC.setRowCount(0);
         PhieuDatTiecCuoiDAO.getInstance().getPhanCong(ngayBD.getDate(), ngayKetThuc, modelPC);
         pageXemPhanCong.setVisible(true);
@@ -1757,6 +1758,7 @@ public class HomePage extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         pageXemPhanCong.setVisible(true);
         pagePhanCong.setVisible(false);
+        jCheckBox1.setSelected(false);
     }//GEN-LAST:event_btnQuayLaiActionPerformed
 
     private void exportMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exportMousePressed
