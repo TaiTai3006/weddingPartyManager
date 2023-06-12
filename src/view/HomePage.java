@@ -42,6 +42,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JTable;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import model.CongViec;
 import model.EmployeePC;
@@ -1760,64 +1761,108 @@ public class HomePage extends javax.swing.JInternalFrame {
 
     private void exportMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exportMousePressed
 
+        String nameSheet = "";
+      
+
+     
+        String MonSun =GetMonDaySunDay();
+        String[] parts = MonSun.split(" ");
+        String strMonDay = parts[0];
+        String strSunDay = parts[1];
+        String Day_MonDay = strMonDay.substring(strSunDay.length()-2);
+        String Day_SunDay = strMonDay.substring(strMonDay.length()-2);
+        SimpleDateFormat inputF = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat outputF = new SimpleDateFormat("dd/MM/yyyy");
+        String formattedMon = "";
+        String formattedSun = "";
+        try {
+            Date dateMon = inputF.parse(strMonDay);
+            Date dateSun = inputF.parse(strSunDay);
+            formattedMon = outputF.format(dateMon);
+            formattedSun = outputF.format(dateSun);
+//            System.out.println(formattedDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if(defaultTableModel_PhanCong.getColumnCount() == 5){
+            
+               
+                nameSheet = "Danh sách phân công nhân viên ngày " + strNgayCalendar;
+            
+        } else{
+            nameSheet = "Danh sách phân công nhân viên ngày " + formattedMon + " - " + formattedSun ; 
+        }
         XSSFWorkbook workbook = new XSSFWorkbook();
-        XSSFSheet sheet = workbook.createSheet("Danh sach");
+        XSSFSheet sheet = workbook.createSheet( strNgayCalendar);
         XSSFRow row = null;
         Cell cell = null;
-        
+
         row = sheet.createRow(1);
-        
+
         int columnCount = defaultTableModel_PhanCong.getColumnCount();
 
-       
         for (int columnIndex = 0; columnIndex < columnCount; columnIndex++) {
             String columnName = defaultTableModel_PhanCong.getColumnName(columnIndex);
-             cell = row.createCell(columnIndex, CellType.STRING);
-             cell.setCellValue(columnName);
+            cell = row.createCell(columnIndex, CellType.STRING);
+            cell.setCellValue(columnName);
         }
 
         int rowCount = defaultTableModel_PhanCong.getRowCount();
         int colCount = defaultTableModel_PhanCong.getColumnCount();
 
         for (int i = 0; i < rowCount; i++) {
-            
+
             row = sheet.createRow(2 + i);
-            
-            for(int j = 0; j < colCount; j++){
+
+            for (int j = 0; j < colCount; j++) {
                 cell = row.createCell(j, CellType.STRING);
                 cell.setCellValue(defaultTableModel_PhanCong.getValueAt(i, j).toString());
-               
+
             }
 
         }
-        String filePath;
+//        String filePath;
+//
+//        // Kiểm tra hệ điều hành
+//        String os = System.getProperty("os.name").toLowerCase();
+//        if (os.contains("win")) {
+//            // Hệ điều hành Windows
+//            filePath = "D:\\path_to_file.xlsx";
+//        } else {
+//            // Hệ điều hành macOS
+//            filePath = "/Users/macbookpro/path_to_file.xlsx";
+//        }
 
-        // Kiểm tra hệ điều hành
-        String os = System.getProperty("os.name").toLowerCase();
-        if (os.contains("win")) {
-            // Hệ điều hành Windows
-            filePath = "D:\\path_to_file.xlsx";
-        } else {
-            // Hệ điều hành macOS
-            filePath = "/Users/macbookpro/path_to_file.xlsx";
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Chọn nơi lưu file");
+
+        // Thiết lập filter cho file Excel
+        FileNameExtensionFilter excelFilter = new FileNameExtensionFilter("Excel Files", "xlsx");
+        fileChooser.setFileFilter(excelFilter);
+        fileChooser.setSelectedFile(new File(nameSheet + ".xlsx"));
+        // Hiển thị hộp thoại lưu file và lấy kết quả
+        int userSelection = fileChooser.showSaveDialog(home);
+
+//        File f = new File(filePath);
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = fileChooser.getSelectedFile();
+            try {
+                FileOutputStream fileOut = new FileOutputStream(fileToSave);
+                workbook.write(fileOut);
+                fileOut.close();
+                Message("Xuất file thành công", JOptionPane.INFORMATION_MESSAGE);
+            } catch (FileNotFoundException ex) {
+                Message("Xuất file thất bại", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
+
+            } catch (IOException ex) {
+                Message("Xuất file thất bại", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
+
+            }
+        } else if (userSelection == JFileChooser.CANCEL_OPTION) {
+           
         }
-
-        File f = new File(filePath);
-        try {
-            FileOutputStream fileOut = new FileOutputStream(f);
-            workbook.write(fileOut);
-            fileOut.close();
-            Message("Xuất file thành công", JOptionPane.INFORMATION_MESSAGE);
-        } catch (FileNotFoundException ex) {
-            Message("Xuất file thất bại", JOptionPane.ERROR_MESSAGE);
-            ex.printStackTrace();
-
-        } catch (IOException ex) {
-            Message("Xuất file thất bại", JOptionPane.ERROR_MESSAGE);
-            ex.printStackTrace();
-
-        }
-
 
 
     }//GEN-LAST:event_exportMousePressed
