@@ -112,6 +112,7 @@ public class ListTable extends javax.swing.JInternalFrame {
 
         setPreferredSize(new java.awt.Dimension(1170, 730));
 
+        listTable2.setBackground(new java.awt.Color(255, 255, 255));
         listTable2.setPreferredSize(new java.awt.Dimension(1170, 730));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
