@@ -1877,7 +1877,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                             .addGroup(PageThongTinDTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblsoLuongBan, javax.swing.GroupLayout.PREFERRED_SIZE, 1036, Short.MAX_VALUE)
+                                .addComponent(lblsoLuongBan, javax.swing.GroupLayout.DEFAULT_SIZE, 1036, Short.MAX_VALUE)
                                 .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(PageThongTinDTLayout.createSequentialGroup()
                                     .addGroup(PageThongTinDTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -3588,9 +3588,10 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         if (cbPhuongThucTT.getSelectedItem().equals("Tiền mặt")) {
 //            TienMatForm.setModal(true);
-//            TienMatForm.setLocationRelativeTo(null);
+            ThanhToanTienMat.setLocationRelativeTo(null);
 //            TienMatForm.setVisible(true);
             ThanhToanTienMat.setVisible(true);
+            
             String currencyString = lblSoTienThanhToan.getText();
 
         // Loại bỏ các ký tự không cần thiết khỏi chuỗi số tiền
@@ -3719,7 +3720,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 //            TienMatForm.setVisible(true);
             
             ThanhToanTienMat.setVisible(true);
-            ThanhToanTienMat.setModal(true);
+//            ThanhToanTienMat.setModal(true);
             ThanhToanTienMat.setLocationRelativeTo(null);
 
             inputSoTienDaNhan.setText(a+"");
@@ -3996,11 +3997,13 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                     if(kq != 0)
                     {
                         Message("Thanh toán thành công!", JOptionPane.INFORMATION_MESSAGE);
+                        
                         ThanhToanTienMat.setVisible(false);
-                        Page1.setVisible(true);
+
                         PageTTHDH.setVisible(false);
-                        PageTTHDTT.setVisible(false);
-                        PageThongTinDT.setVisible(false);
+//                        PageTTHDTT.setVisible(false);
+//                        PageThongTinDT.setVisible(false);
+                        Page1.setVisible(true);
                         ReloadDataTable();
                         
                         File file = new File("src/report/rptThanhToanHDH.jasper");
@@ -4011,16 +4014,11 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                             map.put("maHD", maHoaDon);
                             map.put("tienKhachTra", Double.parseDouble(inputSoTienDaNhan.getText()));
                             map.put("tienThua", Double.parseDouble(inputSoTienDaNhan.getText()) - conLai);
-//                            map.put("tyLePhat", tyLePhat);
-//                            map.put("thoiGianPhat", thoiGianPhat);
-                            System.out.println(maHoaDon);
-                            System.out.println(Long.parseLong(inputSoTienDaNhan.getText()));
-                            System.out.println(Long.parseLong(inputSoTienDaNhan.getText()) - conLai);
-//                            System.out.println(tyLePhat);
-//                            System.out.println(thoiGianPhat);
+
                             JasperPrint p = JasperFillManager.fillReport(absolutePath, map, con);
                             JasperViewer v = new JasperViewer(p, false);
                             v.setVisible(true);
+                            
 
                         } catch (JRException ex) {
                             System.out.println(ex);
