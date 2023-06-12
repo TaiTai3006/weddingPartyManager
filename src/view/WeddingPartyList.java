@@ -7,7 +7,9 @@ package view;
 import dao.ChiTietDichVuDAO;
 import dao.ChiTietMonAnDAO;
 import dao.PhieuDatTiecCuoiDAO;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
@@ -62,6 +64,7 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
     }
 
     public void CreateTablePDTC() {
+        NumberFormat currencyFormatVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
         defaulTablePDTC = (DefaultTableModel) DatTiecTable.getModel();
         String[] tieuDe = {"STT", "Mã tiệc cưới", "Ngày đặt", "Ngày đãi tiệc", "Số lượng bàn", "Số bàn dự trữ",
             "Đơn giá bàn", "Tổng tiền bàn", "Tổng tiền dịch vụ", "Tổng tiền đặt tiệc", "Tiền đặt cọc", "Còn lại", "Tên cô dâu", "Tên chú rể",
@@ -71,7 +74,7 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
         int i = 0;
         for (PhieuDatTiecCuoi pd : lstPDTC) {
             defaulTablePDTC.addRow(new Object[]{++i, pd.getMaTiecCuoi(), pd.getNgayDat(), pd.getNgayDaiTiec(), pd.getSoLuongBan(), pd.getSoLuongBanDuTru(),
-                pd.getDonGiaBan(), pd.getTongTienBan(), pd.getTongTienDichVu(), pd.getTongTienDatTiec(), pd.getTienDatCoc(), pd.getConLai(), pd.getTenCoDau(), pd.getTenChuRe(),
+                currencyFormatVN.format(pd.getDonGiaBan()), currencyFormatVN.format(pd.getTongTienBan()), currencyFormatVN.format(pd.getTongTienDichVu()), currencyFormatVN.format(pd.getTongTienDatTiec()), currencyFormatVN.format(pd.getTienDatCoc()), currencyFormatVN.format(pd.getConLai()), pd.getTenCoDau(), pd.getTenChuRe(),
                 pd.getSdt(), pd.getMaCa(), pd.getMaSanh(), pd.getUserName()});
         }
     }
