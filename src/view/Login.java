@@ -5,6 +5,7 @@
 package view;
 
 import dao.NhanVienDAO;
+import dao.systemDAO;
 import database.JDBCUtil;
 import java.beans.Statement;
 import java.nio.charset.StandardCharsets;
@@ -34,13 +35,13 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         setResizable(false);
         setLocationRelativeTo(null);
-        txtfUserName.setText("phanphuoc");
-        txtfPassword.setText("uit123");
+        
     }
-    
+
     public String getUsername() {
         return txtfUserName.getText();
     }
+
     public void Message(String message, int messageType) {
         JOptionPane jOptionPane = new JOptionPane(message, messageType);
         JDialog dialog = jOptionPane.createDialog(null, "Thông báo");
@@ -239,7 +240,7 @@ public class Login extends javax.swing.JFrame {
             for (TaiKhoan nv : lstTaiKhoan) {
                 if (nv.getUserName().equals(userName)) {
                     System.out.println(nv.getPassWord());
-                    System.err.println(new String (hash));
+                    System.err.println(new String(hash));
                     if (nv.getPassWord().equals(new String(hash))) {
                         dispose();
                         Dashboard dashboard = new Dashboard();
@@ -252,6 +253,11 @@ public class Login extends javax.swing.JFrame {
                 Message("username or password wrong..", JOptionPane.ERROR_MESSAGE);
                 txtfUserName.setText("");
                 txtfPassword.setText("");
+            } else {
+                systemDAO.getInstance().Update(1);
+                Dashboard dashboard = new Dashboard();
+                dashboard.show();
+                dispose();
             }
 
         } catch (Exception e) {
