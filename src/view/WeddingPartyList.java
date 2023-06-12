@@ -32,8 +32,8 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
     private DefaultTableModel defaultTableCTDV;
     private DefaultTableModel defaultTableCTMA;
     private ArrayList<PhieuDatTiecCuoi> lstPDTC = PhieuDatTiecCuoiDAO.getInstance().SelectAllTC();
-    private ArrayList<ChiTietDichVu> lstCTDV = ChiTietDichVuDAO.getInstance().SelectAll();
-    private ArrayList<ChiTietMonAn> lstCTMA = ChiTietMonAnDAO.getInstance().SelectAll();
+    private ArrayList<ChiTietDichVu> lstCTDV = ChiTietDichVuDAO.getInstance().SelectAllDV();
+    private ArrayList<ChiTietMonAn> lstCTMA = ChiTietMonAnDAO.getInstance().SelectAllMA();
 
     public WeddingPartyList() {
         initComponents();
@@ -57,11 +57,13 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
         DatTiecTable.getColumnModel().getColumn(14).setPreferredWidth(165);
         DatTiecTable.getColumnModel().getColumn(15).setPreferredWidth(165);
         DatTiecTable.getColumnModel().getColumn(16).setPreferredWidth(165);
+        DatTiecTable.getColumnModel().getColumn(17).setPreferredWidth(165);
+
     }
 
     public void CreateTablePDTC() {
         defaulTablePDTC = (DefaultTableModel) DatTiecTable.getModel();
-        String[] tieuDe = {"Mã tiệc cưới", "Ngày đặt", "Ngày đãi tiệc", "Số lượng bàn", "Số bàn dự trữ",
+        String[] tieuDe = {"STT", "Mã tiệc cưới", "Ngày đặt", "Ngày đãi tiệc", "Số lượng bàn", "Số bàn dự trữ",
             "Đơn giá bàn", "Tổng tiền bàn", "Tổng tiền dịch vụ", "Tổng tiền đặt tiệc", "Tiền đặt cọc", "Còn lại", "Tên cô dâu", "Tên chú rể",
             "SĐT", "Mã ca", "Mã sảnh", "Username"};
 
@@ -70,7 +72,7 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
         for (PhieuDatTiecCuoi pd : lstPDTC) {
             defaulTablePDTC.addRow(new Object[]{++i, pd.getMaTiecCuoi(), pd.getNgayDat(), pd.getNgayDaiTiec(), pd.getSoLuongBan(), pd.getSoLuongBanDuTru(),
                 pd.getDonGiaBan(), pd.getTongTienBan(), pd.getTongTienDichVu(), pd.getTongTienDatTiec(), pd.getTienDatCoc(), pd.getConLai(), pd.getTenCoDau(), pd.getTenChuRe(),
-                pd.getSdt(), pd.getMaCa(), pd.getMaSanh()});
+                pd.getSdt(), pd.getMaCa(), pd.getMaSanh(), pd.getUserName()});
         }
     }
 
@@ -114,7 +116,7 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
             if (pd.getUserName().toLowerCase().contains(value.toLowerCase()) || pd.getTenChuRe().toLowerCase().contains(value.toLowerCase()) || pd.getTenCoDau().toLowerCase().contains(value.toLowerCase())) {
                 defaulTablePDTC.addRow(new Object[]{++i, pd.getMaTiecCuoi(), pd.getNgayDat(), pd.getNgayDaiTiec(), pd.getSoLuongBan(), pd.getSoLuongBanDuTru(),
                     pd.getDonGiaBan(), pd.getTongTienBan(), pd.getTongTienDichVu(), pd.getTongTienDatTiec(), pd.getTienDatCoc(), pd.getConLai(), pd.getTenCoDau(), pd.getTenChuRe(),
-                    pd.getSdt(), pd.getMaCa(), pd.getMaSanh()});
+                    pd.getSdt(), pd.getMaCa(), pd.getMaSanh(), pd.getUserName()});
             }
         }
     }
@@ -370,6 +372,20 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
                     String tmp16 = String.valueOf(DatTiecTable.getValueAt(row, 16));
                     String tmp17 = String.valueOf(DatTiecTable.getValueAt(row, 17));
 
+                    int kq1 = 0;
+                    for (ChiTietDichVu ctdv : lstCTDV) {
+                        if (ctdv.getMaTiecCuoi().equals(tmp1)) {
+                            kq1 = ChiTietDichVuDAO.getInstance().Delete(ctdv);
+                        }
+                    }
+
+                    int kq2 = 0;
+                    for (ChiTietMonAn ctma : lstCTMA) {
+                        if (ctma.getMaTiecCuoi().equals(tmp1)) {
+                            kq2 = ChiTietMonAnDAO.getInstance().Delete(ctma);
+                        }
+                    }
+
                     try {
                         kq = PhieuDatTiecCuoiDAO.getInstance().Delete(new PhieuDatTiecCuoi(tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7,
                                 tmp8, tmp9, tmp10, tmp11, tmp12, tmp13, tmp14, tmp15, tmp16, tmp17));
@@ -398,6 +414,20 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
                         String tmp16 = String.valueOf(DatTiecTable.getValueAt(r, 16));
                         String tmp17 = String.valueOf(DatTiecTable.getValueAt(r, 17));
 
+                        int kq1 = 0;
+                        for (ChiTietDichVu ctdv : lstCTDV) {
+                            if (ctdv.getMaTiecCuoi().equals(tmp1)) {
+                                kq1 = ChiTietDichVuDAO.getInstance().Delete(ctdv);
+                            }
+                        }
+
+                        int kq2 = 0;
+                        for (ChiTietMonAn ctma : lstCTMA) {
+                            if (ctma.getMaTiecCuoi().equals(tmp1)) {
+                                kq2 = ChiTietMonAnDAO.getInstance().Delete(ctma);
+                            }
+                        }
+
                         try {
                             kq = PhieuDatTiecCuoiDAO.getInstance().Delete(new PhieuDatTiecCuoi(tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7,
                                     tmp8, tmp9, tmp10, tmp11, tmp12, tmp13, tmp14, tmp15, tmp16, tmp17));
@@ -413,6 +443,8 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
                 }
                 if (kq > 0) {
                     ReloadTablePDTC();
+                    defaultTableCTDV.setRowCount(0);
+                    defaultTableCTMA.setRowCount(0);
                 } else {
                     Message("Xoá dữ liệu thất bại!", JOptionPane.ERROR_MESSAGE);
                 }

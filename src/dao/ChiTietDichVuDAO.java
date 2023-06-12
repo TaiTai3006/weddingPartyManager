@@ -113,6 +113,8 @@ public class ChiTietDichVuDAO implements DAOInterface<ChiTietDichVu>{
         }
         return 0 ;
     }
+    
+    
 
     @Override
     public ArrayList<ChiTietDichVu> SelectAll() {
@@ -122,6 +124,29 @@ public class ChiTietDichVuDAO implements DAOInterface<ChiTietDichVu>{
 
             String sql = "SELECT * FROM PhieuDatTiecCuoi, ChiTietDichVu, DichVu WHERE PhieuDatTiecCuoi.maTiecCuoi = ChiTietDichVu.maTiecCuoi"
                                                                                  + " AND ChiTietDichVu.maDichVu = DichVu.maDichVu ";
+
+            PreparedStatement st = con.prepareStatement(sql);
+
+            ResultSet kq = st.executeQuery();
+
+            while (kq.next()) {
+                lstDetailServices.add(new ChiTietDichVu(kq.getString("maTiecCuoi"), kq.getString("maDichVu"), kq.getInt("soLuong"), 
+                        kq.getInt("donGiaDichVu"), kq.getDouble("thanhTien"), kq.getString("tenDichVu")));
+            }
+
+            JDBCUtil.closeConnection(con);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return lstDetailServices;
+    }
+    
+    public ArrayList<ChiTietDichVu> SelectAllDV() {
+         ArrayList<ChiTietDichVu> lstDetailServices = new ArrayList<ChiTietDichVu>();
+        try {
+            Connection con = JDBCUtil.getConnection();
+
+            String sql = "SELECT * FROM ChiTietDichVu CTDV, DichVu DV WHERE CTDV.maDichVu = DV.maDichVu";
 
             PreparedStatement st = con.prepareStatement(sql);
 

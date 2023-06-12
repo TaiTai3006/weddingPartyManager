@@ -295,6 +295,13 @@ public class ReceiptList extends javax.swing.JInternalFrame {
                     double tmp7 = Double.parseDouble(String.valueOf(HoaDonTable.getValueAt(row, 7)));
                     String tmp8 = String.valueOf(HoaDonTable.getValueAt(row, 8));
 
+                    int kq1 = 0;
+                    for (ChiTiet_DV_ThanhToan ctdvtt : lstCTDVTT) {
+                        if (ctdvtt.getMaHoaDon().equals(tmp1)) {
+                            kq1 = ChiTiet_DV_ThanhToanDAO.getInstance().Delete(ctdvtt);
+                        }
+                    }
+
                     try {
                         kq = HoaDonDAO.getInstance().Delete(new HoaDon(tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7, tmp8));
 
@@ -313,6 +320,13 @@ public class ReceiptList extends javax.swing.JInternalFrame {
                         double tmp7 = Double.parseDouble(String.valueOf(HoaDonTable.getValueAt(r, 7)));
                         String tmp8 = String.valueOf(HoaDonTable.getValueAt(r, 8));
 
+                        int kq1 = 0;
+                        for (ChiTiet_DV_ThanhToan ctdvtt : lstCTDVTT) {
+                            if (ctdvtt.getMaHoaDon().equals(tmp1)) {
+                                kq1 = ChiTiet_DV_ThanhToanDAO.getInstance().Delete(ctdvtt);
+                            }
+                        }
+
                         try {
                             kq = HoaDonDAO.getInstance().Delete(new HoaDon(tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7, tmp8));
 
@@ -327,6 +341,7 @@ public class ReceiptList extends javax.swing.JInternalFrame {
                 }
                 if (kq > 0) {
                     ReloadTableHD();
+                    defaultTableCTDVTT.setRowCount(0);
                 } else {
                     Message("Xoá dữ liệu thất bại!", JOptionPane.ERROR_MESSAGE);
                 }

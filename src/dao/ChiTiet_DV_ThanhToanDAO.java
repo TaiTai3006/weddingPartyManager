@@ -70,7 +70,31 @@ public class ChiTiet_DV_ThanhToanDAO implements DAOInterface<ChiTiet_DV_ThanhToa
 
     @Override
     public int Delete(ChiTiet_DV_ThanhToan t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            Connection con = JDBCUtil.getConnection();
+ 
+            
+            String sql = "DELETE FROM `chitiet_dv_thanhtoan` WHERE maDichVu = ?";
+            
+            PreparedStatement st = con.prepareStatement(sql);
+            
+             st.setString(1, t.getMaDichVu());
+            
+            int kq = st.executeUpdate();
+            
+            if(kq > 0){
+                System.out.println("Xoa du lieu thanh cong!");
+            } else{
+                System.out.println("Xoa du lieu that bai!");
+            }
+            
+            JDBCUtil.closeConnection(con);
+            
+            return kq;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return 0 ;
     }
 
     @Override

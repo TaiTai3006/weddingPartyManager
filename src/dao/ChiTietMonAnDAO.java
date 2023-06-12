@@ -62,7 +62,31 @@ public class ChiTietMonAnDAO implements DAOInterface<ChiTietMonAn> {
 
     @Override
     public int Delete(ChiTietMonAn t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+         try {
+            Connection con = JDBCUtil.getConnection();
+ 
+            
+            String sql = "DELETE FROM `ChiTietMonAn` WHERE maMonAn = ?";
+            
+            PreparedStatement st = con.prepareStatement(sql);
+            
+             st.setString(1, t.getMaMonAn());
+            
+            int kq = st.executeUpdate();
+            
+            if(kq > 0){
+                System.out.println("Xoa du lieu thanh cong!");
+            } else{
+                System.out.println("Xoa du lieu that bai!");
+            }
+            
+            JDBCUtil.closeConnection(con);
+            
+            return kq;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return 0 ;
     }
 
     @Override
@@ -73,6 +97,29 @@ public class ChiTietMonAnDAO implements DAOInterface<ChiTietMonAn> {
 
             String sql = "SELECT * FROM PhieuDatTiecCuoi pd, ChiTietMonAn ctma, MonAn ma"
                     + " WHERE pd.maTiecCuoi = ctma.maTiecCuoi AND ctma.maMonAn = ma.maMonAn";
+
+            PreparedStatement st = con.prepareStatement(sql);
+
+            ResultSet kq = st.executeQuery();
+
+            while (kq.next()) {
+                lstDetailFoods.add(new ChiTietMonAn(kq.getString("maTiecCuoi"), kq.getString("maMonAn"), kq.getLong("donGiaMonAn"), kq.getInt("soLuong"),
+                        kq.getString("ghiChu"), kq.getString("tenMonAn"), kq.getString("maLoaiMonAn")));
+            }
+
+            JDBCUtil.closeConnection(con);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return lstDetailFoods;
+    }
+    
+    public ArrayList<ChiTietMonAn> SelectAllMA() {
+        ArrayList<ChiTietMonAn> lstDetailFoods = new ArrayList<ChiTietMonAn>();
+        try {
+            Connection con = JDBCUtil.getConnection();
+
+            String sql = "SELECT * FROM ChiTietMonAn CTMA, MonAn MA WHERE CTMA.maMonAn = MA.maMonAn";
 
             PreparedStatement st = con.prepareStatement(sql);
 
