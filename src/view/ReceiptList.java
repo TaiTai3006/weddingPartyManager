@@ -8,6 +8,8 @@ import dao.ChiTiet_DV_ThanhToanDAO;
 import dao.HoaDonDAO;
 import java.util.ArrayList;
 import java.sql.Date;
+import java.text.NumberFormat;
+import java.util.Locale;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
@@ -40,10 +42,11 @@ public class ReceiptList extends javax.swing.JInternalFrame {
     private ArrayList<ChiTiet_DV_ThanhToan> lstCTDVTT = ChiTiet_DV_ThanhToanDAO.getInstance().SelectAll();
 
     public void CreateTableHD() {
+        NumberFormat currencyFormatVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
         defaultTableHD = (DefaultTableModel) HoaDonTable.getModel();
         int i = 0;
         for (HoaDon hd : lstHoaDon) {
-            defaultTableHD.addRow(new Object[]{++i, hd.getMaHoaDon(), hd.getMaTiecCuoi(), hd.getNgayThanhToan(), hd.getTongTienDichVu(), hd.getTienPhat(), hd.getTongTienHoaDon(), hd.getConLai(), hd.getUserName()});
+            defaultTableHD.addRow(new Object[]{++i, hd.getMaHoaDon(), hd.getMaTiecCuoi(), hd.getNgayThanhToan(), currencyFormatVN.format(hd.getTongTienDichVu()), currencyFormatVN.format(hd.getTienPhat()), currencyFormatVN.format(hd.getTongTienHoaDon()), currencyFormatVN.format(hd.getConLai()), hd.getUserName()});
         }
     }
 
@@ -308,7 +311,6 @@ public class ReceiptList extends javax.swing.JInternalFrame {
 
                     try {
                         kq = HoaDonDAO.getInstance().Delete(new HoaDon(tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7, tmp8));
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
