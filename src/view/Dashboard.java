@@ -1032,7 +1032,7 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void DangXuatMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DangXuatMousePressed
         // TODO add your handling code here:
-        systemDAO.getInstance().Update(0);
+//        systemDAO.getInstance().Update(0);
         Login login = new Login();
         login.show();
         dispose();

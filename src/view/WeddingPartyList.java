@@ -99,13 +99,14 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
     }
 
     public void CreateTableCTDV() {
+        NumberFormat currencyFormatVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
         int row = DatTiecTable.getSelectedRow();
         String maPDTC = String.valueOf(DatTiecTable.getValueAt(row, 1));
         defaultTableCTDV = (DefaultTableModel) tblCTDV.getModel();
         int i = 0;
         for (ChiTietDichVu ctdv : lstCTDV) {
             if (ctdv.getMaTiecCuoi().equals(maPDTC)) {
-                defaultTableCTDV.addRow(new Object[]{++i, ctdv.getMaDichVu(), ctdv.getSoLuong(), ctdv.getDonGiaDichVu(), ctdv.getThanhTien()});
+                defaultTableCTDV.addRow(new Object[]{++i, ctdv.getMaDichVu(), ctdv.getSoLuong(), ctdv.getDonGiaDichVu(), currencyFormatVN.format(ctdv.getThanhTien())});
             }
         }
     }

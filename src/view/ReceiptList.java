@@ -66,13 +66,14 @@ public class ReceiptList extends javax.swing.JInternalFrame {
     }
 
     public void CreateTableCTDVTT() {
+        NumberFormat currencyFormatVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
         int row = HoaDonTable.getSelectedRow();
         String maHD = String.valueOf(HoaDonTable.getValueAt(row, 1));
         defaultTableCTDVTT = (DefaultTableModel) tblCTDVTT.getModel();
         int i = 0;
         for (ChiTiet_DV_ThanhToan ctdvtt : lstCTDVTT) {
             if (ctdvtt.getMaHoaDon().equals(maHD)) {
-                defaultTableCTDVTT.addRow(new Object[]{++i, ctdvtt.getMaHoaDon(), ctdvtt.getMaDichVu(), ctdvtt.getSoLuong(), ctdvtt.getDonGiaDichVu(), ctdvtt.getThanhTien(), ctdvtt.getGhichu()});
+                defaultTableCTDVTT.addRow(new Object[]{++i, ctdvtt.getMaHoaDon(), ctdvtt.getMaDichVu(), ctdvtt.getSoLuong(), currencyFormatVN.format(ctdvtt.getDonGiaDichVu()), currencyFormatVN.format(ctdvtt.getThanhTien()), ctdvtt.getGhichu()});
             }
         }
     }
