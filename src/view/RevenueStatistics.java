@@ -73,7 +73,8 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
         ArrayList<ChiTietBaoCao> ctbc = ChiTietBaoCaoDAO.getInstance().SelectByMonth(month, year);
         int i = 0;
         for (ChiTietBaoCao x : ctbc) {
-            defaultTableModel_RStatistics.addRow(new Object[]{++i, x.getNgay(), x.getSoLuongTiec(), String.valueOf(currencyFormatVN.format(x.getDoanhThu())) , String.valueOf(Math.round(x.getTiLe()*1000)/10.0) + "%"});
+            String[] arrDate = x.getNgay().split("-");
+            defaultTableModel_RStatistics.addRow(new Object[]{++i, arrDate[2], x.getSoLuongTiec(), String.valueOf(currencyFormatVN.format(x.getDoanhThu())) , String.valueOf(Math.round(x.getTiLe()*1000)/10.0) + "%"});
         }
     }
     
@@ -82,7 +83,9 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
         defaultTableModel_RStatistics = (DefaultTableModel) ThongKeDoanhThuTable.getModel();
         ArrayList<BaoCaoDoanhThu> bcdt = BaoCaoDoanhThuDAO.getInstance().SelectByYear(year);
         int i = 0;
+//        String[] arrDate;
         for (BaoCaoDoanhThu x : bcdt) {
+            
             defaultTableModel_RStatistics.addRow(new Object[]{++i, x.getThang(), String.valueOf(currencyFormatVN.format(x.getTongDoanhThu()))});
         }
     }
