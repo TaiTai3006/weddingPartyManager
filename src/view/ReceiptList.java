@@ -6,6 +6,8 @@ package view;
 
 import dao.ChiTiet_DV_ThanhToanDAO;
 import dao.HoaDonDAO;
+import java.awt.Color;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.text.NumberFormat;
@@ -33,6 +35,13 @@ public class ReceiptList extends javax.swing.JInternalFrame {
          this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
+        HoaDonTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
+        HoaDonTable.getTableHeader().setOpaque(false);
+        HoaDonTable.getTableHeader().setBackground(new Color(243,246,249));
+        
+        tblCTDVTT.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
+        tblCTDVTT.getTableHeader().setOpaque(false);
+        tblCTDVTT.getTableHeader().setBackground(new Color(243,246,249));
         CreateTableHD();
     }
 

@@ -7,6 +7,8 @@ package view;
 import dao.ChiTietDichVuDAO;
 import dao.ChiTietMonAnDAO;
 import dao.PhieuDatTiecCuoiDAO;
+import java.awt.Color;
+import java.awt.Font;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -39,7 +41,17 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
 
     public WeddingPartyList() {
         initComponents();
-
+        DatTiecTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
+        DatTiecTable.getTableHeader().setOpaque(false);
+        DatTiecTable.getTableHeader().setBackground(new Color(243,246,249));
+        
+        tblCTDV.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
+        tblCTDV.getTableHeader().setOpaque(false);
+        tblCTDV.getTableHeader().setBackground(new Color(243,246,249));
+        
+        tblCTMA.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
+        tblCTMA.getTableHeader().setOpaque(false);
+        tblCTMA.getTableHeader().setBackground(new Color(243,246,249));
         CreateTablePDTC();
         DatTiecTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         DatTiecTable.getColumnModel().getColumn(0).setPreferredWidth(50);
@@ -71,6 +83,7 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
             "SĐT", "Mã ca", "Mã sảnh", "Username"};
 
         defaulTablePDTC.setColumnIdentifiers(tieuDe);
+        
         int i = 0;
         for (PhieuDatTiecCuoi pd : lstPDTC) {
             defaulTablePDTC.addRow(new Object[]{++i, pd.getMaTiecCuoi(), pd.getNgayDat(), pd.getNgayDaiTiec(), pd.getSoLuongBan(), pd.getSoLuongBanDuTru(),
@@ -156,7 +169,7 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
         Page1.setBackground(new java.awt.Color(255, 255, 255));
         Page1.setPreferredSize(new java.awt.Dimension(1170, 730));
 
-        DatTiecTable.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
+        DatTiecTable.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         DatTiecTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -235,7 +248,7 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
             }
         });
 
-        tblCTMA.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
+        tblCTMA.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         tblCTMA.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -246,7 +259,7 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
         ));
         jScrollPane2.setViewportView(tblCTMA);
 
-        tblCTDV.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
+        tblCTDV.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         tblCTDV.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
