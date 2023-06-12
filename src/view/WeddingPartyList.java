@@ -35,15 +35,15 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
 
     public WeddingPartyList() {
         initComponents();
-//        CreateTablePDTC();
+        CreateTablePDTC();
     }
 
     public void CreateTablePDTC() {
+        defaulTablePDTC = (DefaultTableModel) DatTiecTable.getModel();
         String[] tieuDe = {"Mã tiệc cưới", "Ngày đặt", "Ngày đãi tiệc", "Số lượng bàn", "Số bàn dự trữ",
             "Đơn giá bàn", "Tổng tiền bàn", "Tổng tiền dịch vụ", "Tổng tiền đặt tiệc", "Tiền đặt cọc", "Còn lại", "Tên cô dâu", "Tên chú rể",
             "SĐT", "Mã ca", "Mã sảnh", "Username"};
         defaulTablePDTC.setColumnIdentifiers(tieuDe);
-        defaulTablePDTC = (DefaultTableModel) DatTiecTable.getModel();
         int i = 0;
         for (PhieuDatTiecCuoi pd : lstPDTC) {
             defaulTablePDTC.addRow(new Object[]{++i, pd.getMaTiecCuoi(), pd.getNgayDat(), pd.getNgayDaiTiec(), pd.getSoLuongBan(), pd.getSoLuongBanDuTru(),
@@ -61,6 +61,7 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
     public void CreateTableCTDV() {
         int row = DatTiecTable.getSelectedRow();
         String maPDTC = String.valueOf(DatTiecTable.getValueAt(row, 1));
+        defaultTableCTDV = (DefaultTableModel) tblCTDV.getModel();
         int i = 0;
         for (ChiTietDichVu ctdv : lstCTDV) {
             if (ctdv.getMaTiecCuoi().equals(maPDTC)) {
@@ -72,6 +73,7 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
     public void CreateTableCTMA() {
         int row = DatTiecTable.getSelectedRow();
         String maPDTC = String.valueOf(DatTiecTable.getValueAt(row, 1));
+        defaultTableCTMA = (DefaultTableModel) tblCTMA.getModel();
         int i = 0;
         for (ChiTietMonAn ctma : lstCTMA) {
             if (ctma.getMaTiecCuoi().equals(maPDTC)) {
@@ -79,8 +81,8 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
             }
         }
     }
-    
-      public void SearchTable() {
+
+    public void SearchTable() {
         defaulTablePDTC.setRowCount(0);
         defaulTablePDTC = (DefaultTableModel) DatTiecTable.getModel();
         int i = 0;
@@ -89,8 +91,8 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
             System.out.println();
             if (pd.getUserName().toLowerCase().contains(value.toLowerCase()) || pd.getTenChuRe().toLowerCase().contains(value.toLowerCase()) || pd.getTenCoDau().toLowerCase().contains(value.toLowerCase())) {
                 defaulTablePDTC.addRow(new Object[]{++i, pd.getMaTiecCuoi(), pd.getNgayDat(), pd.getNgayDaiTiec(), pd.getSoLuongBan(), pd.getSoLuongBanDuTru(),
-                pd.getDonGiaBan(), pd.getTongTienBan(), pd.getTongTienDichVu(), pd.getTongTienDatTiec(), pd.getTienDatCoc(), pd.getConLai(), pd.getTenCoDau(), pd.getTenChuRe(),
-                pd.getSdt(), pd.getMaCa(), pd.getMaSanh()});
+                    pd.getDonGiaBan(), pd.getTongTienBan(), pd.getTongTienDichVu(), pd.getTongTienDatTiec(), pd.getTienDatCoc(), pd.getConLai(), pd.getTenCoDau(), pd.getTenChuRe(),
+                    pd.getSdt(), pd.getMaCa(), pd.getMaSanh()});
             }
         }
     }
@@ -205,12 +207,10 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
             }
         });
 
+        tblCTMA.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
         tblCTMA.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "STT", "Mã món ăn ", "Đơn giá món ăn", "Số lượng ", "Ghi chú"
@@ -218,12 +218,10 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
         ));
         jScrollPane2.setViewportView(tblCTMA);
 
+        tblCTDV.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
         tblCTDV.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "STT", "Mã dịch vụ", "Số lượng ", "Đơn giá dịch vụ", "Thành tiền "
@@ -292,7 +290,7 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(Page1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Page1, javax.swing.GroupLayout.DEFAULT_SIZE, 763, Short.MAX_VALUE)
                     .addContainerGap()))
         );
 
@@ -301,6 +299,10 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
 
     private void DatTiecTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DatTiecTableMouseClicked
         // TODO add your handling code here:
+        defaultTableCTDV = (DefaultTableModel) tblCTDV.getModel();
+        defaultTableCTMA = (DefaultTableModel) tblCTMA.getModel();
+        defaultTableCTDV.setRowCount(0);
+        defaultTableCTMA.setRowCount(0);
         CreateTableCTDV();
         CreateTableCTMA();
 
@@ -401,14 +403,11 @@ public class WeddingPartyList extends javax.swing.JInternalFrame {
     private javax.swing.JPanel Page1;
     private javax.swing.JButton btnDelete;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel31;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextField search_service_field;
     private javax.swing.JTable tblCTDV;
     private javax.swing.JTable tblCTMA;
     private javax.swing.JTextField txtSearch;

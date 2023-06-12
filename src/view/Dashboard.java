@@ -35,33 +35,34 @@ public class Dashboard extends javax.swing.JFrame {
     private Login lg = new Login();
 
     public Dashboard() {
-        if(systemDAO.getInstance().getTinhTrang()){
+//        if (systemDAO.getInstance().getTinhTrang()) {
             initComponents();
 
-        setResizable(false);
-        setLocationRelativeTo(null);
+            setResizable(false);
+            setLocationRelativeTo(null);
 
-        DefaultColor = new Color(251, 247, 244);
-        ClickedColor = new Color(238, 230, 226);
+            DefaultColor = new Color(251, 247, 244);
+            ClickedColor = new Color(238, 230, 226);
 
-        TrangChu.setBackground(ClickedColor);
-        DatTiec.setBackground(DefaultColor);
-        TraCuu.setBackground(DefaultColor);
-        DanhMuc.setBackground(DefaultColor);
-        NhanVien.setBackground(DefaultColor);
-        TaiKhoan.setBackground(DefaultColor);
-        ThongKe.setBackground(DefaultColor);
+            TrangChu.setBackground(ClickedColor);
+            DatTiec.setBackground(DefaultColor);
+            TraCuu.setBackground(DefaultColor);
+            DanhMuc.setBackground(DefaultColor);
+            NhanVien.setBackground(DefaultColor);
+            TaiKhoan.setBackground(DefaultColor);
+            ThongKe.setBackground(DefaultColor);
 
-        jDesktopPane1.removeAll();
-        jDesktopPane1.add(new HomePage()).setVisible(true);
+            jDesktopPane1.removeAll();
+            jDesktopPane1.add(new HomePage()).setVisible(true);
 
-        txtfUsernameChange.setText(lg.getUsername());
-        }else{
-        Login login = new Login();
-        login.show();
-        dispose();
-        }
-    } 
+            txtfUsernameChange.setText(lg.getUsername());
+//        }
+//        else{
+//        Login login = new Login();
+//        login.show();
+//        dispose();
+//        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

@@ -4,13 +4,13 @@
  */
 package dao;
 
-import com.sun.jdi.connect.spi.Connection;
 import database.JDBCUtil;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import model.ChiTiet_DV_ThanhToan;
 import model.DichVu;
+import java.sql.Connection;
 
 /**
  *
@@ -75,7 +75,25 @@ public class ChiTiet_DV_ThanhToanDAO implements DAOInterface<ChiTiet_DV_ThanhToa
 
     @Override
     public ArrayList<ChiTiet_DV_ThanhToan> SelectAll() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        ArrayList<ChiTiet_DV_ThanhToan> lstCTDVTT = new ArrayList<ChiTiet_DV_ThanhToan>();
+        try {
+            Connection con = JDBCUtil.getConnection();
+
+            String sql = "SELECT * FROM chitiet_dv_thanhtoan";
+
+            PreparedStatement st = con.prepareStatement(sql);
+
+            ResultSet kq = st.executeQuery();
+
+            while (kq.next()) {
+                lstCTDVTT.add(new ChiTiet_DV_ThanhToan(kq.getString("maHoaDon"), kq.getString("maDichVu"), kq.getInt("soLuong"), kq.getInt("donGiaDichVu"), kq.getDouble("thanhTien"), kq.getString("ghiChu")));
+            }
+
+            JDBCUtil.closeConnection(con);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return lstCTDVTT;
     }
 
     @Override

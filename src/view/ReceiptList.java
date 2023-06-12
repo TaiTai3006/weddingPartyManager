@@ -27,6 +27,7 @@ public class ReceiptList extends javax.swing.JInternalFrame {
      */
     public ReceiptList() {
         initComponents();
+        CreateTableHD();
     }
 
     private DefaultTableModel defaultTableHD;
@@ -51,6 +52,7 @@ public class ReceiptList extends javax.swing.JInternalFrame {
     public void CreateTableCTDVTT() {
         int row = HoaDonTable.getSelectedRow();
         String maHD = String.valueOf(HoaDonTable.getValueAt(row, 1));
+        defaultTableCTDVTT = (DefaultTableModel) tblCTDVTT.getModel();
         int i = 0;
         for (ChiTiet_DV_ThanhToan ctdvtt : lstCTDVTT) {
             if (ctdvtt.getMaHoaDon().equals(maHD)) {
@@ -180,12 +182,10 @@ public class ReceiptList extends javax.swing.JInternalFrame {
             }
         });
 
+        tblCTDVTT.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
         tblCTDVTT.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "STT", "Mã hóa đơn ", "Mã dịch vụ", "Số lượng", "Đơn giá dịch vụ", "Thành tiền ", "Ghi chú"
@@ -260,6 +260,8 @@ public class ReceiptList extends javax.swing.JInternalFrame {
 
     private void HoaDonTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoaDonTableMouseClicked
         // TODO add your handling code here:
+        defaultTableCTDVTT = (DefaultTableModel) tblCTDVTT.getModel();
+        defaultTableCTDVTT.setRowCount(0);
         CreateTableCTDVTT();
     }//GEN-LAST:event_HoaDonTableMouseClicked
 

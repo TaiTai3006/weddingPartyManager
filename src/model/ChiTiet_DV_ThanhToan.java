@@ -19,6 +19,15 @@ public class ChiTiet_DV_ThanhToan extends DichVu{
     public ChiTiet_DV_ThanhToan() {
     }
 
+    public ChiTiet_DV_ThanhToan(String maHoaDon, String maDichVu, int soLuong, int donGiaDichVu, double thanhTien, String ghichu) {
+        this.maHoaDon = maHoaDon;
+        this.maDichVu = maDichVu;
+        this.soLuong = soLuong;
+        this.donGiaDichVu = donGiaDichVu;
+        this.thanhTien = thanhTien;
+        this.ghichu = ghichu;
+    }
+    
     public ChiTiet_DV_ThanhToan(String maHoaDon, String maDichVu, int soLuong, int donGiaDichVu, double thanhTien, String ghichu, String tenDichVu) {
         super(maDichVu, tenDichVu, donGiaDichVu);
         this.maHoaDon = maHoaDon;
