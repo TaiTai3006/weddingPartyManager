@@ -40,22 +40,24 @@ public class EmployeeList extends javax.swing.JInternalFrame {
         BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
         CreateTable();
-
+        
         for (CongViec cv : lstCongViec) {
             cbCongViec.addItem(cv.getTenCongViec());
             cbCongViecUD.addItem(cv.getTenCongViec());
             mapTenCongViec.put(cv.getTenCongViec(), cv.getMaCongViec());
         }
         cbGioiTinh.addItem("Nam");
-        cbGioiTinh.addItem("Nu");
+        cbGioiTinh.addItem("Nữ");
         cbGioiTinhUD.addItem("Nam");
-        cbGioiTinhUD.addItem("Nu");
+        cbGioiTinhUD.addItem("Nữ");
         cbLoaiNV.addItem("Thời vụ");
         cbLoaiNV.addItem("Toàn thời gian");
         cbLoaiNVUD.addItem("Thời vụ");
         cbLoaiNVUD.addItem("Toàn thời gian");
 
         CreateDataCV();
+//        cbMaDV.addItem("Null");
+//        cbMaDVUD.addItem("Null");
         for (DichVu dv : lstDichVu) {
             cbMaDV.addItem(dv.getMaDichVu());
             cbMaDVUD.addItem(dv.getMaDichVu());
@@ -196,13 +198,13 @@ public class EmployeeList extends javax.swing.JInternalFrame {
         jLabel3.setForeground(new java.awt.Color(69, 96, 134));
         jLabel3.setText("Thêm nhân viên ");
 
-        jLabel5.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jLabel5.setText("Tên nhân viên");
 
         txtTenNhanVien.setBackground(new java.awt.Color(242, 242, 242));
         txtTenNhanVien.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
 
-        jLabel7.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jLabel7.setText("Công việc ");
 
         btnCancelE.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
@@ -225,13 +227,13 @@ public class EmployeeList extends javax.swing.JInternalFrame {
 
         cbCongViec.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
 
-        jLabel9.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel9.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jLabel9.setText("Số điện thoại");
 
         txtSDT.setBackground(new java.awt.Color(242, 242, 242));
         txtSDT.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
 
-        jLabel11.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel11.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jLabel11.setText("Giới tính");
 
         cbGioiTinh.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
@@ -267,10 +269,10 @@ public class EmployeeList extends javax.swing.JInternalFrame {
                                         .addGap(0, 0, Short.MAX_VALUE)))
                                 .addGap(33, 33, 33)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(cbGioiTinh, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cbLoaiNV, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(cbLoaiNV, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -300,16 +302,17 @@ public class EmployeeList extends javax.swing.JInternalFrame {
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cbCongViec, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(cbGioiTinh, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(93, 93, 93))
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(cbLoaiNV, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(cbGioiTinh, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(93, 93, 93))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbLoaiNV, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelE, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -337,13 +340,13 @@ public class EmployeeList extends javax.swing.JInternalFrame {
         jLabel16.setForeground(new java.awt.Color(69, 96, 134));
         jLabel16.setText("Cập nhật thông tin");
 
-        jLabel17.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel17.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jLabel17.setText("Tên nhân viên");
 
         txtTenNVUD.setBackground(new java.awt.Color(242, 242, 242));
         txtTenNVUD.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
 
-        jLabel19.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel19.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jLabel19.setText("Công việc ");
 
         btnCancelUD.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
@@ -366,18 +369,18 @@ public class EmployeeList extends javax.swing.JInternalFrame {
 
         cbCongViecUD.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
 
-        jLabel21.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel21.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jLabel21.setText("Số điện thoại");
 
         txtSDTUD.setBackground(new java.awt.Color(242, 242, 242));
         txtSDTUD.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
 
-        jLabel23.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel23.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jLabel23.setText("Giới tính");
 
         cbGioiTinhUD.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
 
-        jLabel25.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel25.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jLabel25.setText("Loại");
 
         cbLoaiNVUD.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
@@ -401,10 +404,10 @@ public class EmployeeList extends javax.swing.JInternalFrame {
                                     .addComponent(jLabel19))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(cbGioiTinhUD, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cbLoaiNVUD, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(cbLoaiNVUD, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
                                 .addComponent(btnCancelUD, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -482,6 +485,12 @@ public class EmployeeList extends javax.swing.JInternalFrame {
         tblWork.setSelectionBackground(new java.awt.Color(69, 96, 134));
         tblWork.setShowGrid(false);
         jScrollPane5.setViewportView(tblWork);
+        if (tblWork.getColumnModel().getColumnCount() > 0) {
+            tblWork.getColumnModel().getColumn(0).setPreferredWidth(30);
+            tblWork.getColumnModel().getColumn(1).setPreferredWidth(50);
+            tblWork.getColumnModel().getColumn(2).setPreferredWidth(250);
+        }
+        tblWork.getTableHeader().setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 16));
 
         jPanel14.setBackground(new java.awt.Color(238, 230, 226));
 
@@ -674,13 +683,13 @@ public class EmployeeList extends javax.swing.JInternalFrame {
         jLabel29.setForeground(new java.awt.Color(69, 96, 134));
         jLabel29.setText("Thêm công việc");
 
-        jLabel32.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel32.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jLabel32.setText("Tên công việc");
 
         txtNameWork.setBackground(new java.awt.Color(242, 242, 242));
         txtNameWork.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
 
-        jLabel34.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel34.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jLabel34.setText("Mã dịch vụ");
 
         btnCancelNewCV.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
@@ -723,9 +732,9 @@ public class EmployeeList extends javax.swing.JInternalFrame {
                         .addGap(27, 27, 27))
                     .addGroup(jPanel17Layout.createSequentialGroup()
                         .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cbMaDV, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel32))
+                            .addComponent(jLabel32)
+                            .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel17Layout.setVerticalGroup(
@@ -768,13 +777,13 @@ public class EmployeeList extends javax.swing.JInternalFrame {
         jLabel36.setForeground(new java.awt.Color(69, 96, 134));
         jLabel36.setText("Cập nhật công việc");
 
-        jLabel37.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel37.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jLabel37.setText("Tên công việc");
 
         txtNameWorkUD.setBackground(new java.awt.Color(242, 242, 242));
         txtNameWorkUD.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
 
-        jLabel39.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel39.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jLabel39.setText("Mã dịch vụ");
 
         btnCancelCVUD.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
@@ -796,6 +805,11 @@ public class EmployeeList extends javax.swing.JInternalFrame {
         });
 
         cbMaDVUD.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        cbMaDVUD.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbMaDVUDActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
         jPanel18.setLayout(jPanel18Layout);
@@ -817,9 +831,9 @@ public class EmployeeList extends javax.swing.JInternalFrame {
                         .addGap(27, 27, 27))
                     .addGroup(jPanel18Layout.createSequentialGroup()
                         .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel39, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cbMaDVUD, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel37))
+                            .addComponent(jLabel39, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel37, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel18Layout.setVerticalGroup(
@@ -873,10 +887,10 @@ public class EmployeeList extends javax.swing.JInternalFrame {
         tblEmployee.setShowGrid(false);
         jScrollPane1.setViewportView(tblEmployee);
         if (tblEmployee.getColumnModel().getColumnCount() > 0) {
-            tblEmployee.getColumnModel().getColumn(4).setHeaderValue("SĐT ");
-            tblEmployee.getColumnModel().getColumn(5).setHeaderValue("Tên công việc");
-            tblEmployee.getColumnModel().getColumn(6).setHeaderValue("Loại ");
+            tblEmployee.getColumnModel().getColumn(0).setPreferredWidth(30);
+            tblEmployee.getColumnModel().getColumn(2).setPreferredWidth(150);
         }
+        tblEmployee.getTableHeader().setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 16));
 
         jPanel2.setBackground(new java.awt.Color(238, 230, 226));
 
@@ -1222,7 +1236,7 @@ public class EmployeeList extends javax.swing.JInternalFrame {
         String tenCongViec = cbCongViecUD.getSelectedItem().toString();
         String loai = cbLoaiNVUD.getSelectedItem().toString();
         String maCongViec = mapTenCongViec.get(tenCongViec);
-
+        System.out.println("adsfad" + maCongViec);
         int kq = 0;
 
         kq = EmployeeDAO.getInstance().Update(new Employee(maNV, maCongViec, tenNhanVien, gioiTinh, sdt, loai, tenCongViec));
@@ -1389,7 +1403,10 @@ public class EmployeeList extends javax.swing.JInternalFrame {
                     txtNameWork.setText("");
                     return;
                 } else {
-                    kq = CongViecDAO.getInstance().Insert(new CongViec(maCV, tenCV, maDV));
+//                    if(cbMaDV.getSelectedIndex() == 0)
+//                        kq = CongViecDAO.getInstance().Insert(new CongViec(maCV, tenCV, ""));
+//                    else
+                        kq = CongViecDAO.getInstance().Insert(new CongViec(maCV, tenCV, maDV));
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -1418,8 +1435,11 @@ public class EmployeeList extends javax.swing.JInternalFrame {
         String maDV = cbMaDVUD.getSelectedItem().toString();
 
         int kq = 0;
-
-        kq = CongViecDAO.getInstance().Update(new CongViec(maCV, tenCV, maDV));
+//        if(cbMaDVUD.getSelectedIndex() == 0)
+//            kq = CongViecDAO.getInstance().Update(new CongViec(maCV, tenCV, ""));
+//        else
+            
+            kq = CongViecDAO.getInstance().Update(new CongViec(maCV, tenCV, maDV));
 
         if (kq > 0) {
             FormUpdateCV.setVisible(false);
@@ -1434,6 +1454,10 @@ public class EmployeeList extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         FormCongViec.setVisible(false);
     }//GEN-LAST:event_BackPageCVActionPerformed
+
+    private void cbMaDVUDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbMaDVUDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbMaDVUDActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
