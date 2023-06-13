@@ -29,7 +29,6 @@ import dao.MonAnDAO;
 import dao.SanhDAO;
 import dao.PhieuDatTiecCuoiDAO;
 import dao.ThamSoDAO;
-import dao.systemDAO;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.NumberFormat;
@@ -104,6 +103,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
     private ArrayList<Ca> cacbb = CaDAO.getInstance().SelectAll();
     private Map<String, String> mapTenLoaiSanh = new HashMap<>();
     private Map<String, String> mapGio = new HashMap<>();
+    private Map<Integer, ChiTietDichVu> CTDV = new HashMap<>();
     private NumberFormat currencyFormatVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
     private int intKieuThanhToan;
     private double tongTienHD = 0;
@@ -145,6 +145,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 
         //
         CreateTable();
+        
         ReceptionDate.setDateFormatString("dd/MM/yyyy");
         DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
         renderer.setHorizontalAlignment(SwingConstants.RIGHT); // Set the desired horizontal alignment
@@ -329,15 +330,53 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         int selectRow = getSelectRow();
         String maPDTC = String.valueOf(DatTiecTable.getValueAt(selectRow, 1));
         defaultTableXNTTHD = (DefaultTableModel) DVHHTable.getModel();
-        int i = 0;
-        for (ChiTietDichVu ctdvtt : lstDetailServices) {
-            if (ctdvtt.getMaTiecCuoi().equals(maPDTC)) {
-                defaultTableXNTTHD.addRow(new Object[]{++i, ctdvtt.getMaDichVu(), ctdvtt.getTenDichVu(), ctdvtt.getSoLuong(),
-                    currencyFormatVN.format(ctdvtt.getDonGiaDichVu()), currencyFormatVN.format((long) ctdvtt.getThanhTien())});
+//        DefaultTableModel defaultTableXNTTHD = new DefaultTableModel();
+        int a = 0;
+
+//        for (ChiTietDichVu ctdvtt : lstDetailServices) {
+//            if (ctdvtt.getMaTiecCuoi().equals(maPDTC)) {
+//                defaultTableXNTTHD.addRow(new Object[]{++i, ctdvtt.getMaDichVu(), ctdvtt.getTenDichVu(), ctdvtt.getSoLuong(),
+//                    currencyFormatVN.format(ctdvtt.getDonGiaDichVu()), currencyFormatVN.format((long) ctdvtt.getThanhTien())});
+//            }
+//        }
+        int columnCount = defaultTableXNDV.getColumnCount();
+//        for (int i = 0; i < columnCount; i++) {
+//            defaultTableXNTTHD.addColumn(defaultTableXNDV.getColumnName(i));
+//        }
+
+        int rowCount = defaultTableXNDV.getRowCount();
+        for (int i = 0; i < rowCount; i++) {
+            Object[] rowData = new Object[columnCount+ 1];
+            for (int j = 0; j < columnCount; j++) {
+                rowData[j] = defaultTableXNDV.getValueAt(i, j);
             }
+            String numberring = "";
+            try {
+                Number number = currencyFormatVN.parse(String.valueOf( rowData[4]));
+                numberring = number.toString();
+            } catch (ParseException ex) {
+                Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.out.println("sdfsdf0" + rowData[3]);
+            System.out.println("row4" + numberring);
+//            
+            long soluong = Integer.parseInt(String.valueOf(rowData[3]));
+            long dongia = Integer.parseInt(String.valueOf(numberring));
+            long thanhtien = soluong*dongia;
+            System.out.println(currencyFormatVN.format(thanhtien));
+            rowData[defaultTableXNDV.getColumnCount()] = currencyFormatVN.format(thanhtien);
+            defaultTableXNTTHD.addRow(rowData);
         }
     }
-    
+    public void CreateTableXNTT(){
+        System.out.println("asjdbsahcjsbhc");
+        for(Map.Entry<Integer, ChiTietDichVu> entry : CTDV.entrySet()){
+            int index = entry.getKey();
+            ChiTietDichVu x = entry.getValue();
+            System.out.println("asjdbsahcjsbhc");
+            System.out.println("index" + index + "ctdv" + x.getMaDichVu() + x.getMaTiecCuoi() + x.getSoLuong() + x.getDonGia());
+        }
+    }
     public void SetTienDu(String a) {
         double t = Double.parseDouble(lblSoTienThanhToan.getText());
         double p = Double.parseDouble(a);
@@ -357,7 +396,18 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             }
         }
     }
-    
+    public void CreateTableCTDV() {
+        int selectRow = getSelectRow();
+        String maPDTC = String.valueOf(DatTiecTable.getValueAt(selectRow, 1));
+        defaultTableDVCT = (DefaultTableModel) DichVuTable.getModel();
+        int i = 0;
+        
+        for (ChiTietDichVu ct : lstDetailServices) {
+            if (ct.getMaTiecCuoi().equals(maPDTC)) {
+                defaultTableDVCT.addRow(new Object[]{++i, ct.getTenDichVu(), ct.getSoLuong(), currencyFormatVN.format(ct.getDonGiaDichVu()), currencyFormatVN.format(ct.getSoLuong()*ct.getDonGiaDichVu())});
+            }
+        }
+    }
     public void CreateTableMACT() {
         int selectRow = getSelectRow();
         String maPDTC = String.valueOf(DatTiecTable.getValueAt(selectRow, 1));
@@ -2236,7 +2286,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                         .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(lblSoTienThanhToan)
                             .addComponent(lblTienCoc)))
-                    .addContainerGap(712, Short.MAX_VALUE))
+                    .addContainerGap(703, Short.MAX_VALUE))
             );
             jPanel15Layout.setVerticalGroup(
                 jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2521,7 +2571,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                         .addComponent(btnDeleteXNDV, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGap(18, 18, 18)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
                     .addGroup(PageXNDVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(NextPageXNDV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(BackPageXNDV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -2910,6 +2960,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         }// </editor-fold>//GEN-END:initComponents
     private void btnThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThanhToanActionPerformed
         // TODO add your handling code here:
+        CreateTableXNTT();
         intKieuThanhToan = 1;
         int selectRow = getSelectRow();
         System.out.println("adfas: " + "");
@@ -3148,6 +3199,20 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         NumberFormat currencyFormatVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
         PageXNDV.setVisible(false);
         PageTTHDTT.setVisible(true);
+        
+//        int columnCount = defaultTableXNDV.getColumnCount();
+//        for (int i = 0; i < columnCount; i++) {
+//            DVHHTable.addColumn(defaultTableXNDV.getColumnName(i));
+//        }
+//
+//        int rowCount = defaultTableXNDV.getRowCount();
+//        for (int i = 0; i < rowCount; i++) {
+//            Object[] rowData = new Object[columnCount];
+//            for (int j = 0; j < columnCount; j++) {
+//                rowData[j] = defaultTableXNDV.getValueAt(i, j);
+//            }
+//            DVHHTable.addRow(rowData);
+//        }
         CreateTableXNTTHD();
         int row = getSelectRow();
         String maPDTC = String.valueOf(DatTiecTable.getValueAt(row, 1));
@@ -3184,13 +3249,29 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                 strNgayDaiTiec = pdtc.getNgayDaiTiec();
             }
         }
-        
+
+       System.out.println("Ngaauf vl" + defaultTableXNTTHD.getRowCount());
         double sumDV = 0;
-        for (ChiTietDichVu ctdv : lstDetailServices) {
-            if (ctdv.getMaTiecCuoi().equals(maPDTC)) {
-                sumDV += ctdv.getThanhTien();
+        for(int row1 = 0; row1 < defaultTableXNTTHD.getRowCount(); row1++){
+//                sum = sum +
+            
+            System.out.println(defaultTableXNTTHD.getValueAt(row1, 5));
+                Number number = 0;
+            try {
+                number = currencyFormatVN.parse(String.valueOf( defaultTableXNTTHD.getValueAt(row1, 5)));
+            } catch (ParseException ex) {
+                Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
             }
+                System.out.println("number" + number);
+                sumDV += Double.parseDouble(String.valueOf(number));
+                
         }
+
+//        for (ChiTietDichVu ctdv : lstDetailServices) {
+//            if (ctdv.getMaTiecCuoi().equals(maPDTC)) {
+//                sumDV += ctdv.getThanhTien();
+//            }
+//        }
                         
 
         lblTongTienDichVu.setText(currencyFormatVN.format((long) sumDV));
@@ -3341,11 +3422,18 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                 if (rows.length == 1) {
                     try {
                         String maDV = String.valueOf(DVSVTable.getValueAt(row, 1));
-                        for (ChiTietDichVu ctdv : lstDetailServices) {
-                            if (ctdv.getMaTiecCuoi().equals(maPDTC) && ctdv.getMaDichVu().equals(maDV)) {
-                                kq = ChiTietDichVuDAO.getInstance().Delete(ctdv);
+//                        for (ChiTietDichVu ctdv : lstDetailServices) {
+//                            if (ctdv.getMaTiecCuoi().equals(maPDTC) && ctdv.getMaDichVu().equals(maDV)) {
+//                                kq = ChiTietDichVuDAO.getInstance().Delete(ctdv);
+//                            }
+//                        }
+                    for(int i = 0; i < defaultTableXNDV.getRowCount(); i++){
+                        for(int j = 0; j <  defaultTableXNDV.getColumnCount(); j++){
+                            if(defaultTableXNDV.getValueAt(i, 1).equals(maDV)){
+                                defaultTableXNDV.removeRow(i);
                             }
                         }
+                    }
                         
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -3364,18 +3452,19 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        if (kq < 0) {
-                            Message("Xoá dữ liệu " + " thất bại!", JOptionPane.ERROR_MESSAGE);
-                        }
+//                        if (kq < 0) {
+//                            Message("Xoá dữ liệu " + " thất bại!", JOptionPane.ERROR_MESSAGE);
+//                        }
                         kq = 1;
                     }
                 }
                 if (kq > 0) {
                     ReloadDataXNDV();
                     ReloadTableXNDV_ADD();
-                } else {
-                    Message("Xoá dữ liệu thất bại!", JOptionPane.ERROR_MESSAGE);
-                }
+                } 
+//                else {
+//                    Message("Xoá dữ liệu thất bại!", JOptionPane.ERROR_MESSAGE);
+//                }
             }
         }
     }//GEN-LAST:event_btnDeleteXNDVActionPerformed
@@ -3409,6 +3498,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                 if (rows.length == 1) {
                     String maDV = String.valueOf(tblSelectService.getValueAt(row, 1));
                     String tenDV = String.valueOf(tblSelectService.getValueAt(row, 2));
+                   
                     int donGia = 0;
                     try {
                         donGia = currencyFormatVN.parse(String.valueOf(tblSelectService.getValueAt(row, 3))).intValue();
@@ -3416,23 +3506,30 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                         Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     boolean check = false;
+                    int  i = defaultTableXNDV.getRowCount() + 1;
+                    int soLuong = 1;
                     for (ChiTietDichVu ctdv : lstDetailServices) {
                         if (ctdv.getMaDichVu().equals(maDV) && ctdv.getMaTiecCuoi().equals(maPDTC)) {
-                            int soLuong = ctdv.getSoLuong();
+                            soLuong = ctdv.getSoLuong();
                             soLuong += 1;
                             double thanhTien = soLuong * ctdv.getDonGia();
-                            kq = ChiTietDichVuDAO.getInstance().Update(new ChiTietDichVu(maPDTC, maDV, soLuong, donGia, thanhTien, tenDV));
+//                            kq = ChiTietDichVuDAO.getInstance().Update(new ChiTietDichVu(maPDTC, maDV, soLuong, donGia, thanhTien, tenDV));
+                              defaultTableXNDV.addRow(new Object[]{ i,maDV,tenDV,soLuong,currencyFormatVN.format(thanhTien)});
+//                              defaultTableXNTTHD.addRow(new Object[]{ i,maDV,tenDV,soLuong,currencyFormatVN.format(thanhTien)});
+                                
                             check = true;
                         }
                     }
                     System.out.println(check);
-                    try {
+//                    try {
                         if (!check) {
-                            kq = ChiTietDichVuDAO.getInstance().Insert(new ChiTietDichVu(maPDTC, maDV, 1, donGia, donGia, tenDV));
+//                            kq = ChiTietDichVuDAO.getInstance().Insert(new ChiTietDichVu(maPDTC, maDV, 1, donGia, donGia, tenDV));
+                            defaultTableXNDV.addRow(new Object[]{ i,maDV,tenDV,soLuong,currencyFormatVN.format(donGia)});
+//                            defaultTableXNTTHD.addRow(new Object[]{ i,maDV,tenDV,soLuong,currencyFormatVN.format(donGia)});
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
                     System.out.println(kq);
                 } else {
                     for (int r : rows) {
@@ -3446,25 +3543,29 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                         }
 //                        currencyFormatVN.parse(String.valueOf(tblSelectService.getValueAt(r, 3)).intValue();
                         boolean check = false;
+                        int  i = defaultTableXNDV.getRowCount() + 1;
+                        int soLuong = 1;
                         for (ChiTietDichVu ctdv : lstDetailServices) {
                             if (ctdv.getMaDichVu().equals(maDV) && ctdv.getMaTiecCuoi().equals(maPDTC)) {
-                                int soLuong = ctdv.getSoLuong();
+                                soLuong = ctdv.getSoLuong();
                                 soLuong += 1;
                                 double thanhTien = soLuong * ctdv.getDonGia();
-                                kq = ChiTietDichVuDAO.getInstance().Update(new ChiTietDichVu(maPDTC, maDV, soLuong, donGia, thanhTien, tenDV));
-                                check = true;
+//                                kq = ChiTietDichVuDAO.getInstance().Update(new ChiTietDichVu(maPDTC, maDV, soLuong, donGia, thanhTien, tenDV));
+                                   defaultTableXNDV.addRow(new Object[]{ i,maDV,tenDV,soLuong,currencyFormatVN.format(thanhTien)});
+                                  check = true;
                             }
                         }
                         try {
                             if (!check) {
-                                kq = ChiTietDichVuDAO.getInstance().Insert(new ChiTietDichVu(maPDTC, maDV, 1, donGia, donGia, tenDV));
+//                                kq = ChiTietDichVuDAO.getInstance().Insert(new ChiTietDichVu(maPDTC, maDV, 1, donGia, donGia, tenDV));
+                                    defaultTableXNDV.addRow(new Object[]{ i,maDV,tenDV,soLuong,currencyFormatVN.format(donGia)});
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        if (kq == 0) {
-                            Message("Thêm dịch vụ " + maDV + " thất bại!", JOptionPane.ERROR_MESSAGE);
-                        }
+//                        if (kq == 0) {
+//                            Message("Thêm dịch vụ " + maDV + " thất bại!", JOptionPane.ERROR_MESSAGE);
+//                        }
                         kq = 1;
                     }
                 }
@@ -3472,9 +3573,10 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                     AddSelectServices.setVisible(false);
                     ReloadDataXNDV();
                     ReloadTableXNDV_ADD();
-                } else {
-                    Message("Thêm dịch vụ thất bại!", JOptionPane.ERROR_MESSAGE);
-                }
+                } 
+//                else {
+//                    Message("Thêm dịch vụ thất bại!", JOptionPane.ERROR_MESSAGE);
+//                }
             }
         }
     }//GEN-LAST:event_btnXacNhanDVActionPerformed
@@ -3855,7 +3957,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 
             if(Long.parseLong(inputSoTienDaNhan.getText()) >= conLai)
             {
-                String userName = systemDAO.getInstance().getUser();
+                String userName = "taitai";
                     String maPDTC = String.valueOf(DatTiecTable.getValueAt(getSelectRow(), 1));
                 int kq = 0;
 
@@ -3989,7 +4091,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 
             if(Long.parseLong(inputSoTienDaNhan.getText()) >= conLai)
             {
-                String userName = systemDAO.getInstance().getUser();
+                String userName = "taitai";
                     String maPDTC = String.valueOf(DatTiecTable.getValueAt(getSelectRow(), 1));
                 int kq = 0;
 
@@ -4155,7 +4257,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                 Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-                String userName = systemDAO.getInstance().getUser();
+                String userName = "taitai";
                     String maPDTC = String.valueOf(DatTiecTable.getValueAt(getSelectRow(), 1));
                 int kq = 0;
 
@@ -4220,7 +4322,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             }
 
             {
-                String userName = systemDAO.getInstance().getUser();
+                String userName = "taitai";
                     String maPDTC = String.valueOf(DatTiecTable.getValueAt(getSelectRow(), 1));
                 int kq = 0;
 
