@@ -3321,6 +3321,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         lblTienCoc.setText(currencyFormatVN.format((long) tienCoc));
         long temp1 = ((long) tongTienHD - (long) tienCoc);
         long temp2 = ((long) tongTienHD);
+        CONLAI = (long) tongTienHD - (long) tienCoc;
         if (String.valueOf(temp1).length() != String.valueOf(temp2).length()) {
             switch (String.valueOf(temp1).length()) {
                 case 9:
@@ -3793,7 +3794,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             }
         }
     }//GEN-LAST:event_NextPageXNTTActionPerformed
-
+    private  long CONLAI = 0;
     private void btnThanhToanTTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThanhToanTTActionPerformed
 //        // TODO add your handling code here
 //        LocalDate currentDate = LocalDate.now();
@@ -4050,7 +4051,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                             Connection con = JDBCUtil.getConnection();
                             map.put("maHD", maHoaDon);
                             map.put("tienKhachTra", Double.parseDouble(inputSoTienDaNhan.getText()));
-                            map.put("tienThua", Double.parseDouble(inputSoTienDaNhan.getText()) - conLai);
+                            map.put("tienThua", Double.parseDouble(inputSoTienDaNhan.getText()) - CONLAI);
 //                            map.put("tyLePhat", tyLePhat);
 //                            map.put("thoiGianPhat", thoiGianPhat);
                             System.out.println(maHoaDon);

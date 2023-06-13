@@ -2392,7 +2392,7 @@
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="jPanel7" alignment="0" max="32767" attributes="0"/>
                               <Component id="jPanel11" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jPanel15" alignment="0" pref="1072" max="32767" attributes="0"/>
+                              <Component id="jPanel15" alignment="0" pref="1079" max="32767" attributes="0"/>
                               <Component id="jPanel16" alignment="0" max="32767" attributes="0"/>
                               <Component id="jScrollPane4" alignment="1" max="32767" attributes="0"/>
                           </Group>

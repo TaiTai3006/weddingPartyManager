@@ -230,7 +230,7 @@ public class PhieuDatTiecCuoiDAO implements DAOInterface<PhieuDatTiecCuoi> {
         try {
             Connection con = JDBCUtil.getConnection();
 
-            String sql = "SELECT * FROM PhieuDatTiecCuoi WHERE maTiecCuoi not in (SELECT hoadon.maTiecCuoi FROM hoadon)";
+            String sql = "SELECT * FROM PhieuDatTiecCuoi WHERE maTiecCuoi not in (SELECT hoadon.maTiecCuoi FROM hoadon) ORDER BY ngayDaiTiec ASC";
 
             PreparedStatement st = con.prepareStatement(sql);
 

@@ -915,6 +915,11 @@ public class HomePage extends javax.swing.JInternalFrame {
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("Quay lại");
         jButton3.setPreferredSize(new java.awt.Dimension(100, 40));
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pageXemPhanCongLayout = new javax.swing.GroupLayout(pageXemPhanCong);
         pageXemPhanCong.setLayout(pageXemPhanCongLayout);
@@ -991,7 +996,7 @@ public class HomePage extends javax.swing.JInternalFrame {
                         .addComponent(jLabel8)
                         .addGap(18, 18, 18)
                         .addComponent(lbNgayDaiTiec)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
                         .addComponent(jLabel10)
                         .addGap(18, 18, 18)
                         .addComponent(lbCa)
@@ -1774,7 +1779,7 @@ public class HomePage extends javax.swing.JInternalFrame {
         String Day_MonDay = strMonDay.substring(strSunDay.length()-2);
         String Day_SunDay = strMonDay.substring(strMonDay.length()-2);
         SimpleDateFormat inputF = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat outputF = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat outputF = new SimpleDateFormat("dd-MM-yyyy");
         String formattedMon = "";
         String formattedSun = "";
         try {
@@ -1792,7 +1797,7 @@ public class HomePage extends javax.swing.JInternalFrame {
                 nameSheet = "Danh sách phân công nhân viên ngày " + strNgayCalendar;
             
         } else{
-            nameSheet = "Danh sách phân công nhân viên ngày " + formattedMon + " - " + formattedSun ; 
+            nameSheet = "Danh sách phân công nhân viên ngày " + formattedMon + " " + formattedSun ; 
         }
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet( strNgayCalendar);
@@ -1868,6 +1873,12 @@ public class HomePage extends javax.swing.JInternalFrame {
 
 
     }//GEN-LAST:event_exportMousePressed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        pageXemPhanCong.setVisible(false);
+        home.setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     public void CreateTablePC() {
         modelPCNV = (DefaultTableModel) TablePhanCongNV.getModel();
