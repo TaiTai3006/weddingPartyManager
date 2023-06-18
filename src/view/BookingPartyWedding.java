@@ -2477,7 +2477,9 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
             } catch (WriterException ex) {
                 Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
         }
+        cbxLoaiMonAn.removeAllItems();
     }//GEN-LAST:event_NextPage5ActionPerformed
 
     private void NextPage2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextPage2ActionPerformed
