@@ -1531,13 +1531,17 @@ public class HomePage extends javax.swing.JInternalFrame {
         String dateString = dateFormat.format(ngayKetThuc);
 
         long daysBetween = ChronoUnit.DAYS.between(LocalDate.now(), sunday);
-        if (daysBetween <= ngayDatTiec) {
-            ngayKT.setText(dateString);
-        } else {
-            Message("Lỗi!Thời gian chưa được phép phân công.", JOptionPane.WARNING_MESSAGE);
-            ngayKT.setText("");
-            ngayBD.setDate(null);
-        }
+        ngayKT.setText(dateString);
+
+//        if (daysBetween <= ngayDatTiec) {
+//            ngayKT.setText(dateString);
+//        } 
+//        else 
+//        {
+//            Message("Lỗi!Thời gian chưa được phép phân công.", JOptionPane.WARNING_MESSAGE);
+//            ngayKT.setText("");
+//            ngayBD.setDate(null);
+//        }
 
     }//GEN-LAST:event_ngayBDPropertyChange
 
