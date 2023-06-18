@@ -676,6 +676,8 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
             try {
                 String gioBatDau = ConvertFormatTime(timeBatDau.getSelectedTime());
                 String gioKetThuc = ConvertFormatTime(timeKetThuc.getSelectedTime());
+                                            System.out.println("go bd"+gioBatDau);
+                System.out.println("go kt"+gioKetThuc);
                 String hourBatDau = "";
                 String hoursKetThuc = "";
                 String minuteBatDau = "";
@@ -737,12 +739,48 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
         int row = tblCa.getSelectedRow();
         String maLoaiSanh = String.valueOf(tblCa.getValueAt(row, 1));
         int kq = 0;
+        String gioBatDau = ConvertFormatTime(timeBatDauUD.getSelectedTime());
+        String gioKetThuc = ConvertFormatTime(timeKetThucUD.getSelectedTime());
+                                    System.out.println("go bd"+gioBatDau);
+                System.out.println("go kt"+gioKetThuc);
         if (!txtTenCaUD.getText().equals(String.valueOf(tblCa.getValueAt(row, 2)))
                 || !timeBatDauUD.getSelectedTime().equals(String.valueOf(tblCa.getValueAt(row, 3)))
                 || !timeKetThucUD.getSelectedTime().equals(String.valueOf(tblCa.getValueAt(row, 4)))) {
-            String gioBatDau = ConvertFormatTime(timeBatDauUD.getSelectedTime());
-            String gioKetThuc = ConvertFormatTime(timeKetThucUD.getSelectedTime());
-            kq = CaDAO.getInstance().Update(new Ca(maLoaiSanh, txtTenCaUD.getText(), Time.valueOf(gioBatDau), Time.valueOf(gioKetThuc)));
+
+            String hourBatDau = "";
+            String hoursKetThuc = "";
+            String minuteBatDau = "";
+            String minuteKetThuc = "";
+            hourBatDau = hourBatDau + gioBatDau.charAt(0) + gioBatDau.charAt(1);
+            hoursKetThuc = hoursKetThuc + gioKetThuc.charAt(0) + gioKetThuc.charAt(1);
+            minuteBatDau = minuteBatDau + gioBatDau.charAt(3) + gioBatDau.charAt(4);
+            minuteKetThuc = minuteKetThuc + gioKetThuc.charAt(3) + gioKetThuc.charAt(4);
+            int hourBD = Integer.parseInt(hourBatDau);
+            int hourKT = Integer.parseInt(hoursKetThuc);
+            int minuteBD = Integer.parseInt(minuteBatDau);
+            int minuteKT = Integer.parseInt(minuteKetThuc);
+
+            if (hourBD > hourKT) {
+                System.out.println("go bd"+hourBD);
+                System.out.println("go kt"+hourKT);
+                Message("Thời gian bắt đầu và kết thúc không hợp lệ, vui lòng nhập lạiii!", JOptionPane.ERROR_MESSAGE);
+//                txtTenCaAdd.setText("");
+                timeBatDau.now();
+                timeKetThuc.now();
+                return;
+            } else if (hourBD == hourKT) {
+                if (minuteBD >= minuteKT) {
+                    Message("Thời gian bắt đầu và kết thúc không hợp lệ, vui lòng nhập lại!", JOptionPane.ERROR_MESSAGE);
+//                    txtTenCaAdd.setText("");
+                    timeBatDau.now();
+                    timeKetThuc.now();
+                    return;
+                } else {
+                    kq = CaDAO.getInstance().Update(new Ca(maLoaiSanh, txtTenCaUD.getText(), Time.valueOf(gioBatDau), Time.valueOf(gioKetThuc)));
+                }
+            } else {
+                kq = CaDAO.getInstance().Update(new Ca(maLoaiSanh, txtTenCaUD.getText(), Time.valueOf(gioBatDau), Time.valueOf(gioKetThuc)));
+            }
         }
         if (kq > 0) {
             Message("Chỉnh sửa dữ liệu thành công!", JOptionPane.INFORMATION_MESSAGE);
