@@ -168,10 +168,13 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         inputNgayDatTiec.setDateFormatString("dd/MM/yyyy");
         inputNgayDatTiec.setDate(new java.util.Date());
         inputNgayDaiTiec.setDateFormatString("dd/MM/yyyy");
-        for (Ca x : Cas) {
-            inputCa.addItem(x.getTenCa() + " (" + x.getGioBatDau() + " - " + x.getGioKetThuc() + ")");
-            mapMaCa.put(x.getTenCa(), x.getMaCa());
-        }
+        
+        if(checkcb == 0)
+            for (Ca x : Cas) {
+                inputCa.addItem(x.getTenCa() + " (" + x.getGioBatDau() + " - " + x.getGioKetThuc() + ")");
+                mapMaCa.put(x.getTenCa(), x.getMaCa());
+            }
+        checkcb++;
         for (LoaiMonAn x : loaiMonAns) {
             mapMaLoaiMA.put(x.getTenLoaiMonAn(), x.getMaLoaiMonAn());
             cbxLoaiMonAn.addItem(x.getTenLoaiMonAn());
@@ -309,6 +312,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         ConLai.setText(String.valueOf(currencyFormatVN.format(conLai)));
 
     }
+    private int checkcb = 0;
 
     public boolean validatePhoneNumber() {
         Pattern pattern = Pattern.compile(PHONE_NUMBER_REGEX);

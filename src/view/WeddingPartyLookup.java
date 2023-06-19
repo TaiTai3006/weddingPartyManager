@@ -335,6 +335,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
     }
     
     private int check = 0;
+    
 
     public void CreateTableXNDV() {
         int selectRow = getSelectRow();
