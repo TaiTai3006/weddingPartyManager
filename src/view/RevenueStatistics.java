@@ -815,27 +815,37 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
                 try {
                     int year = Integer.parseInt(text);
 //                    System.out.println("adsfadsfads" + year);
-                    if(year >= MinValueYear_BCDT && year <= currentYear)
+                    if(year >= MinValueYear_BCDT && year <= 2027)
                     {
-                        jpChart.setVisible(true);
-                        LineChart example = new LineChart(1, 0 , year, year); 
-                        jpChart.removeAll();
-                        jpChart.add(example).setVisible(true);
-                        CreateDataTableByMonth(year);
-                        jl_ThongBao_Thang.setText("");
+                        ArrayList<BaoCaoDoanhThu> bcdt = BaoCaoDoanhThuDAO.getInstance().SelectByYear(year);
+                        if(bcdt.size() == 0)
+                        {
+                            jl_ThongBao_Thang.setText("* Doanh thu của tháng này rỗng");
+                            jTextNam_Thang.setText("");
+                        }
+                        else
+                        {
+                            jpChart.setVisible(true);
+                            LineChart example = new LineChart(1, 0 , year, year); 
+                            jpChart.removeAll();
+                            jpChart.add(example).setVisible(true);
+                            CreateDataTableByMonth(year);
+                            jl_ThongBao_Thang.setText("");                           
+                        }
+
                     }
                     else
                     {
                         jpChart.setVisible(false);
                         if(year > currentYear)
                         {
-                            jl_ThongBao_Thang.setText("* Vui lòng nhập từ năm  "+  currentYear + " trở về trước!");
+                            jl_ThongBao_Thang.setText("* Vui lòng nhập từ năm "+ MinValueYear_BCDT +"  đến "+  2027 + " !");
                             jTextNam_Thang.setText("");
                         }
                             
                         else
                         {
-                            jl_ThongBao_Thang.setText("Vui lòng nhập từ năm " + MinValueYear_BCDT +"!");
+                            jl_ThongBao_Thang.setText("* Vui lòng nhập từ năm "+ MinValueYear_BCDT +"  đến "+  2027 + " !");
                             jTextNam_Thang.setText("");
                         }
                             

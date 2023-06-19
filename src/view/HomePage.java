@@ -623,6 +623,7 @@ public class HomePage extends javax.swing.JInternalFrame {
                         defaultTableModel_SLTiec.addRow(row);
                         //                System.out.println(kq.getString("CONCAT('full: ', GROUP_CONCAT(phieudattieccuoi.maCa SEPARATOR ', '))"));
                     }
+                    jScrollPane2.setVisible(true);
                     JDBCUtil.closeConnection(con);
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -654,6 +655,7 @@ public class HomePage extends javax.swing.JInternalFrame {
                         String[] row = {kq.getString("tenCa"), kq.getString("COUNT(*)")};
                         defaultTableModel_SLTiec.addRow(row);
                     }
+                    jScrollPane2.setVisible(true);
                     JDBCUtil.closeConnection(con);
 
                 } catch (Exception ex) {
@@ -996,7 +998,7 @@ public class HomePage extends javax.swing.JInternalFrame {
                         .addComponent(jLabel8)
                         .addGap(18, 18, 18)
                         .addComponent(lbNgayDaiTiec)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                         .addComponent(jLabel10)
                         .addGap(18, 18, 18)
                         .addComponent(lbCa)
@@ -1360,9 +1362,19 @@ public class HomePage extends javax.swing.JInternalFrame {
 
         jComboBox2.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ngày", "Tuần" }));
+        jComboBox2.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox2ItemStateChanged(evt);
+            }
+        });
         jComboBox2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox2ActionPerformed(evt);
+            }
+        });
+        jComboBox2.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jComboBox2PropertyChange(evt);
             }
         });
 
@@ -1724,16 +1736,28 @@ public class HomePage extends javax.swing.JInternalFrame {
 
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
         // TODO add your handling code here:
-        //        sfgsdfg
-        //        System.out.println("Ngay chon khi thay doi jcombobox: " + strNgayCalendar);
+        System.out.println("Dang chọn: " + jComboBox2.getSelectedIndex());
         CreateDataTable_SLTiec();
-        if (Table_SLTiec.getRowCount() == 0) {
-            jScrollPane2.setVisible(false);
-//            jLabel23.setText("NULL!");
-        } else {
+        System.out.println("Số hàng: " + Table_SLTiec.getRowCount());
+        if (Table_SLTiec.getRowCount() > 0) {
             jScrollPane2.setVisible(true);
+            jScrollPane2.setVisible(true);
+//            jLabel23.setText("NULL!");
+        }
+        else {
+            jScrollPane2.setVisible(false);
             jLabel23.setText("");
         }
+        //        sfgsdfg
+        //        System.out.println("Ngay chon khi thay doi jcombobox: " + strNgayCalendar);
+//        CreateDataTable_SLTiec();
+//        if (Table_SLTiec.getRowCount() == 0) {
+//            jScrollPane2.setVisible(false);
+////            jLabel23.setText("NULL!");
+//        } else {
+//            jScrollPane2.setVisible(true);
+//            jLabel23.setText("");
+//        }
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
     private void jLabel11MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MousePressed
@@ -1883,6 +1907,27 @@ public class HomePage extends javax.swing.JInternalFrame {
         pageXemPhanCong.setVisible(false);
         home.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jComboBox2PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jComboBox2PropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox2PropertyChange
+
+    private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
+        // TODO add your handling code here:
+        System.out.println("Dang chọn: " + jComboBox2.getSelectedIndex());
+        CreateDataTable_SLTiec();
+        System.out.println("Số hàng: " + Table_SLTiec.getRowCount());
+        if (Table_SLTiec.getRowCount() > 0) {
+            jScrollPane2.setVisible(true);
+            jScrollPane2.setVisible(true);
+//            jLabel23.setText("NULL!");
+        }
+        else {
+            jScrollPane2.setVisible(false);
+            jLabel23.setText("");
+        }
+        
+    }//GEN-LAST:event_jComboBox2ItemStateChanged
 
     public void CreateTablePC() {
         modelPCNV = (DefaultTableModel) TablePhanCongNV.getModel();
