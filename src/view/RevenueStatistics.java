@@ -8,6 +8,7 @@ import dao.ChiTietBaoCaoDAO;
 import dao.BaoCaoDoanhThuDAO;
 import java.awt.Color;
 import java.awt.Font;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -67,14 +68,24 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
 //    setContentPane(panel);
     }    
     
+    public String RoundDoubleExample(double number)
+    {
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        String roundedNumber = decimalFormat.format(number);
+        
+       
+        return roundedNumber;
+    }
+    
     public void CreateDataTableByDay(int month, int year) {
         NumberFormat currencyFormatVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
         defaultTableModel_RStatistics = (DefaultTableModel) ThongKeDoanhThuTable.getModel();
         ArrayList<ChiTietBaoCao> ctbc = ChiTietBaoCaoDAO.getInstance().SelectByMonth(month, year);
         int i = 0;
         for (ChiTietBaoCao x : ctbc) {
+           
             String[] arrDate = x.getNgay().split("-");
-            defaultTableModel_RStatistics.addRow(new Object[]{++i, arrDate[2], x.getSoLuongTiec(), String.valueOf(currencyFormatVN.format(x.getDoanhThu())) , String.valueOf(Math.round(x.getTiLe()*1000)/10.0) + "%"});
+            defaultTableModel_RStatistics.addRow(new Object[]{++i, arrDate[2], x.getSoLuongTiec(), String.valueOf(currencyFormatVN.format(x.getDoanhThu())) , RoundDoubleExample(x.getTiLe()*100) + "%"});
         }
     }
     
@@ -766,6 +777,7 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
                 // Số hợp lệ, xử lý tại đây
             } catch (NumberFormatException ex) {
                 // Không phải số, xử lý tại đây
+                System.out.print(ex);
                 jpChart.setVisible(false);
                 jLThongBao_Ngay.setText("* Vui lòng nhập tháng, năm hợp lệ!");
                 jTextNam_Ngay.setText("");
@@ -807,27 +819,37 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
                 try {
                     int year = Integer.parseInt(text);
 //                    System.out.println("adsfadsfads" + year);
-                    if(year >= MinValueYear_BCDT && year <= currentYear)
+                    if(year >= MinValueYear_BCDT && year <= 2027)
                     {
-                        jpChart.setVisible(true);
-                        LineChart example = new LineChart(1, 0 , year, year); 
-                        jpChart.removeAll();
-                        jpChart.add(example).setVisible(true);
-                        CreateDataTableByMonth(year);
-                        jl_ThongBao_Thang.setText("");
+                        ArrayList<BaoCaoDoanhThu> bcdt = BaoCaoDoanhThuDAO.getInstance().SelectByYear(year);
+                        if(bcdt.size() == 0)
+                        {
+                            jl_ThongBao_Thang.setText("* Doanh thu của tháng này rỗng");
+                            jTextNam_Thang.setText("");
+                        }
+                        else
+                        {
+                            jpChart.setVisible(true);
+                            LineChart example = new LineChart(1, 0 , year, year); 
+                            jpChart.removeAll();
+                            jpChart.add(example).setVisible(true);
+                            CreateDataTableByMonth(year);
+                            jl_ThongBao_Thang.setText("");                           
+                        }
+
                     }
                     else
                     {
                         jpChart.setVisible(false);
                         if(year > currentYear)
                         {
-                            jl_ThongBao_Thang.setText("* Vui lòng nhập từ năm  "+  currentYear + " trở về trước!");
+                            jl_ThongBao_Thang.setText("* Vui lòng nhập từ năm "+ MinValueYear_BCDT +"  đến "+  2027 + " !");
                             jTextNam_Thang.setText("");
                         }
                             
                         else
                         {
-                            jl_ThongBao_Thang.setText("Vui lòng nhập từ năm " + MinValueYear_BCDT +"!");
+                            jl_ThongBao_Thang.setText("* Vui lòng nhập từ năm "+ MinValueYear_BCDT +"  đến "+  2027 + " !");
                             jTextNam_Thang.setText("");
                         }
                             
@@ -890,7 +912,8 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
             }
 //                  
                     // Số hợp lệ, xử lý tại đây
-        } catch (NumberFormatException ex) {
+        } 
+        catch (NumberFormatException ex) {
             // Không phải số, xử lý tại đây
             jpChart.setVisible(false);
             jL_ThongBao_Nam.setText("* Vui lòng nhập năm hợp lệ!");

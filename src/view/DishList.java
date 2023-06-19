@@ -9,9 +9,12 @@ import dao.MonAnDAO;
 import java.awt.Color;
 import java.awt.Font;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -358,7 +361,7 @@ public int lastChars(String maMonAn, int numberID){
         jLabel2.setText("Loại món ăn");
 
         add_loaimonan_field.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        add_loaimonan_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ML01", "ML02", "ML03" }));
+        add_loaimonan_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Khai vị", "Món chính", "Tráng miệng" }));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -944,7 +947,8 @@ public int lastChars(String maMonAn, int numberID){
        if(tenmonan.equals("")){
            JOptionPane.showConfirmDialog(null, "Hãy điền tên món ăn","WARNING", JOptionPane.CLOSED_OPTION);
 
-       }else{
+       }else
+       {
             long dongia = 0;
              try {
                  dongia = Long.parseLong(dongia_monan_field.getText());
@@ -952,17 +956,25 @@ public int lastChars(String maMonAn, int numberID){
              } catch (NumberFormatException numberFormatException) {
                 
              }
-            if(check == 1){
+            if(dongia > 0)
+            {
+                if(check == 1){
                  // Create a new MonAn object with the generated MaMonAn and input values
                  MonAn monan = new MonAn(mamonan, tenmonan, dongia, loaimonan);
                  // Insert the new MonAn into the database
                  MonAnDAO.getInstance().Insert(monan);
                  notification(check);
-             }else{
-                 JOptionPane.showConfirmDialog(null, "Đơn giá không được chứa kí tự hoặc để trống","WARNING", JOptionPane.CLOSED_OPTION);
+                }else{
+                    JOptionPane.showConfirmDialog(null, "Đơn giá không được chứa kí tự hoặc để trống","WARNING", JOptionPane.CLOSED_OPTION);
+               }
+                   // Update the table model of the JTable
+                   ReloadDataTable();
             }
-                // Update the table model of the JTable
-                ReloadDataTable();
+            else
+            {
+                Message("Vui lòng cập nhật đơn giá lớn hơn 0",-1);
+            }
+            
                 // Close the dialog and reset the input fields
        }
     }//GEN-LAST:event_add_dialog_btnActionPerformed
@@ -1055,7 +1067,14 @@ public int lastChars(String maMonAn, int numberID){
             System.out.println(index);
             Update_monan_field.setText(String.valueOf(tenValue));
             Update_loaimonan_field.setSelectedIndex(index - 1);
-            Update_dongia_field.setText(String.valueOf(giaValue));
+            int dongia = 0;
+            
+            try {
+                dongia = currencyFormatVN.parse(String.valueOf(giaValue)).intValue();
+            } catch (ParseException ex) {
+                Logger.getLogger(DishList.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            Update_dongia_field.setText(String.valueOf(dongia));
         }
 
     }//GEN-LAST:event_edit_dish_btnActionPerformed
@@ -1083,18 +1102,28 @@ public int lastChars(String maMonAn, int numberID){
         String tenmonan = Update_monan_field.getText();
         String loaimonan = LoaiMonAnDAO.getInstance().SelectByName((String) add_loaimonan_field.getSelectedItem()).getMaLoaiMonAn();
         long dongia = Long.parseLong(Update_dongia_field.getText());
-        if(!tenmonan.equals(String.valueOf(table_dish_list.getValueAt(selectedRow, 2))) 
+        if(dongia > 0)
+        {
+            if(!tenmonan.equals(String.valueOf(table_dish_list.getValueAt(selectedRow, 2))) 
                 || !loaimonan.equals(String.valueOf(table_dish_list.getValueAt(selectedRow, 3)))
-                || !Update_dongia_field.getText().equals(String.valueOf(table_dish_list.getValueAt(selectedRow, 4)))){
-                    MonAn monAnCapNhat = new MonAn(String.valueOf(maValue),tenmonan,dongia,loaimonan);
-                    MonAnDAO.getInstance().Update(monAnCapNhat);
-        
-        dish_listUpdate_dialog.setVisible(false);
-        ReloadDataTable();
-        Message("Cập nhật dữ liệu mang mã "+table_dish_list.getValueAt(selectedRow, 1)+" thành công",-1);
-        }else{
-            Message("Cập nhật dữ liệu mang mã "+table_dish_list.getValueAt(selectedRow, 1)+" thất bại",-1);
-            dish_listUpdate_dialog.setVisible(false);
+                || !Update_dongia_field.getText().equals(String.valueOf(table_dish_list.getValueAt(selectedRow, 4))))
+            {
+                MonAn monAnCapNhat = new MonAn(String.valueOf(maValue),tenmonan,dongia,loaimonan);
+                MonAnDAO.getInstance().Update(monAnCapNhat);
+
+                dish_listUpdate_dialog.setVisible(false);
+                ReloadDataTable();
+                Message("Cập nhật dữ liệu mang mã "+table_dish_list.getValueAt(selectedRow, 1)+" thành công",-1);
+            }
+            else
+            {
+                Message("Cập nhật dữ liệu mang mã "+table_dish_list.getValueAt(selectedRow, 1)+" thất bại",-1);
+                dish_listUpdate_dialog.setVisible(false);
+            }
+        }
+        else
+        {
+             Message("Vui lòng cập nhật đơn giá lớn hơn 0",-1);
         }
 
 //        int row = table_dish_list.getSelectedRow();
