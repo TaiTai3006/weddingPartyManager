@@ -9,9 +9,12 @@ import dao.MonAnDAO;
 import java.awt.Color;
 import java.awt.Font;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -1055,7 +1058,14 @@ public int lastChars(String maMonAn, int numberID){
             System.out.println(index);
             Update_monan_field.setText(String.valueOf(tenValue));
             Update_loaimonan_field.setSelectedIndex(index - 1);
-            Update_dongia_field.setText(String.valueOf(giaValue));
+            int dongia = 0;
+            
+            try {
+                dongia = currencyFormatVN.parse(String.valueOf(giaValue)).intValue();
+            } catch (ParseException ex) {
+                Logger.getLogger(DishList.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            Update_dongia_field.setText(String.valueOf(dongia));
         }
 
     }//GEN-LAST:event_edit_dish_btnActionPerformed
