@@ -13,7 +13,10 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
 import dao.DichVuDAO;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
@@ -813,43 +816,53 @@ public class ServiceList extends javax.swing.JInternalFrame {
 
     private void add_dich_dialog_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_dich_dialog_btnActionPerformed
         // TODO add your handling code here:
+        
+            
         if(add_dichvu_field.getText().equals("") || add_dongia_field.getText().equals("")){
             Message("Vui lòng nhập dữ liệu!", JOptionPane.WARNING_MESSAGE);
         } else{
-            String maDV =  String.valueOf(Integer.parseInt(String.valueOf(defaultTableModelServiceList.getValueAt(defaultTableModelServiceList.getRowCount() - 1, 1)).substring(2)) + 1);
-            switch(maDV.length()){
-                case 1: 
-                    maDV = "DV000" + maDV;
+            int donGia = Integer.parseInt(add_dongia_field.getText());
+            if(donGia > 0)
+            {
+                String maDV =  String.valueOf(Integer.parseInt(String.valueOf(defaultTableModelServiceList.getValueAt(defaultTableModelServiceList.getRowCount() - 1, 1)).substring(2)) + 1);
+                switch(maDV.length()){
+                    case 1: 
+                        maDV = "DV000" + maDV;
+                        break;
+                    case 2:
+                        maDV = "DV00" + maDV;
+                        break;
+                    case 3:
+                        maDV = "DV0" + maDV;
+                        break;
+                    case 4:
+                        maDV = "DV" + maDV;
                     break;
-                case 2:
-                    maDV = "DV00" + maDV;
-                    break;
-                case 3:
-                    maDV = "DV0" + maDV;
-                    break;
-                case 4:
-                    maDV = "DV" + maDV;
-                break;
+                }
+                int kq = 0;
+                try{
+                    kq = DichVuDAO.getInstance().Insert(new DichVu(maDV, add_dichvu_field.getText(), donGia));
+                } 
+                catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                if(kq != 0){
+                    ReloadDataTable();
+                    service_list_dialog.setVisible(false);
+                    Message("Thêm dữ liệu thành công.", JOptionPane.CLOSED_OPTION);
+                    add_dichvu_field.setText("");
+                    add_dongia_field.setText("");
+                }else{
+                    Message("Lỗi! Thêm dữ liệu thất bại. Vui lòng nhập lại dữ liệu.", JOptionPane.ERROR_MESSAGE);
+                    add_dichvu_field.setText("");
+                    add_dongia_field.setText("");
+                }
             }
-            int kq = 0;
-            try{
-                kq = DichVuDAO.getInstance().Insert(new DichVu(maDV, add_dichvu_field.getText(),
-                    Integer.parseInt(add_dongia_field.getText())));
-            } 
-            catch (Exception ex) {
-                ex.printStackTrace();
+            else
+            {
+                Message("Lỗi! Đơn giá phải lớn hơn 0!", JOptionPane.ERROR_MESSAGE);
             }
-            if(kq != 0){
-                ReloadDataTable();
-                service_list_dialog.setVisible(false);
-                Message("Thêm dữ liệu thành công.", JOptionPane.CLOSED_OPTION);
-                add_dichvu_field.setText("");
-                add_dongia_field.setText("");
-            }else{
-                Message("Lỗi! Thêm dữ liệu thất bại. Vui lòng nhập lại dữ liệu.", JOptionPane.ERROR_MESSAGE);
-                add_dichvu_field.setText("");
-                add_dongia_field.setText("");
-            }
+            
         }
     }//GEN-LAST:event_add_dich_dialog_btnActionPerformed
 
@@ -880,7 +893,13 @@ public class ServiceList extends javax.swing.JInternalFrame {
                 if(rows.length == 1){
                     String maDichVu = String.valueOf(table_service_list.getValueAt(row, 1));
                     String tenDichVu = String.valueOf(table_service_list.getValueAt(row, 2));
-                    int donGia = Integer.parseInt(String.valueOf(table_service_list.getValueAt(row, 3)));    
+                    int donGia = 0;
+            
+                    try {  
+                        donGia = currencyFormatVN.parse( String.valueOf(table_service_list.getValueAt(row, 3))).intValue();
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ServiceList.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     try{
                         kq = DichVuDAO.getInstance().Delete(new DichVu(maDichVu, tenDichVu, donGia));
                     
@@ -892,7 +911,14 @@ public class ServiceList extends javax.swing.JInternalFrame {
                     for(int r : rows){
                         String maDichVu = String.valueOf(table_service_list.getValueAt(r, 1));
                         String tenDichVu = String.valueOf(table_service_list.getValueAt(r, 2));
-                        int donGia = Integer.parseInt(String.valueOf(table_service_list.getValueAt(r, 3)));
+//                        int donGia = Integer.parseInt(String.valueOf(table_service_list.getValueAt(r, 3)));
+                        int donGia = 0;
+            
+                        try {
+                            donGia = currencyFormatVN.parse(String.valueOf(table_service_list.getValueAt(r, 3))).intValue();
+                        } catch (ParseException ex) {
+                            Logger.getLogger(DishList.class.getName()).log(Level.SEVERE, null, ex);
+                        }
 
                         try{
                             kq = DichVuDAO.getInstance().Delete(new DichVu(maDichVu, tenDichVu, donGia));  
@@ -934,7 +960,14 @@ public class ServiceList extends javax.swing.JInternalFrame {
             Message("Vui lòng chọn dữ liệu muốn chỉnh sửa!", JOptionPane.INFORMATION_MESSAGE);
         }else{
             update_dichvu_field1.setText(String.valueOf(table_service_list.getValueAt(row, 2)));
-            update_dongia_field1.setText(String.valueOf(table_service_list.getValueAt(row, 3)));
+            int donGia = 0;
+            
+            try {
+                donGia = currencyFormatVN.parse(String.valueOf(table_service_list.getValueAt(row, 3))).intValue();
+            } catch (ParseException ex) {
+                Logger.getLogger(ServiceList.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            update_dongia_field1.setText(String.valueOf(donGia));
             service_list_dialog_update.setSize(400,400);
             service_list_dialog_update.setLocationRelativeTo(null);
             service_list_dialog_update.setVisible(true);
@@ -952,25 +985,36 @@ public class ServiceList extends javax.swing.JInternalFrame {
         int kq = 0;
         if(!update_dichvu_field1.getText().equals("") && !update_dongia_field1.getText().equals(""))
         {
-            if(!update_dichvu_field1.getText().equals(String.valueOf(table_service_list.getValueAt(row, 2))) || 
-                !update_dongia_field1.getText().equals(String.valueOf(table_service_list.getValueAt(row, 3))))
+            int donGia = 0;
+            donGia = Integer.parseInt(update_dongia_field1.getText());
+            if(donGia > 0)
             {
-                kq = DichVuDAO.getInstance().Update(new DichVu(maDichVu, update_dichvu_field1.getText(), Integer.parseInt(update_dongia_field1.getText())));
-            }
-        }
-        if(kq!=0)
-        {
-            ReloadDataTable();
-            service_list_dialog_update.setVisible(false);
-            Message("Chỉnh sửa dữ liệu thành công!", JOptionPane.CLOSED_OPTION);
-            update_dichvu_field1.setText("");
-            update_dongia_field1.setText("");
-        }
-        else{
-            service_list_dialog_update.setVisible(false);
-            Message("Chỉnh sửa dữ liệu thất bại!", JOptionPane.ERROR_MESSAGE);
+                if(!update_dichvu_field1.getText().equals(String.valueOf(table_service_list.getValueAt(row, 2))) || 
+                    !update_dongia_field1.getText().equals(String.valueOf(table_service_list.getValueAt(row, 3))))
+                {
+                    kq = DichVuDAO.getInstance().Update(new DichVu(maDichVu, update_dichvu_field1.getText(),  donGia));
+                }
+                if(kq!=0)
+                {
+                    ReloadDataTable();
+                    service_list_dialog_update.setVisible(false);
+                    Message("Chỉnh sửa dữ liệu thành công!", JOptionPane.CLOSED_OPTION);
+                    update_dichvu_field1.setText("");
+                    update_dongia_field1.setText("");
+                }
+                else{
+                    service_list_dialog_update.setVisible(false);
+                    Message("Chỉnh sửa dữ liệu thất bại!", JOptionPane.ERROR_MESSAGE);
 
+                }
+            }
+            else
+            {
+                Message("Vui lòng nhập đơn giá lớn hơn 0", JOptionPane.ERROR_MESSAGE);
+            }
+                                   
         }
+        
     }//GEN-LAST:event_add_dich_dialog_btn1ActionPerformed
 
     private void update_dongia_field1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_update_dongia_field1ActionPerformed
