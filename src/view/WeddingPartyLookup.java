@@ -1990,7 +1990,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                                             .addGap(57, 57, 57)
                                             .addComponent(lblngayDatTiec))
                                         .addComponent(lblsoLuongBan, javax.swing.GroupLayout.PREFERRED_SIZE, 1026, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(0, 0, Short.MAX_VALUE)))
+                                    .addGap(0, 10, Short.MAX_VALUE)))
                             .addGap(78, 78, 78))
                         .addGroup(PageThongTinDTLayout.createSequentialGroup()
                             .addComponent(jLabel12)
@@ -2450,7 +2450,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                             .addGroup(PageTTHDTTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, 1083, Short.MAX_VALUE)
+                                .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, 1090, Short.MAX_VALUE)
                                 .addComponent(jPanel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING))
                             .addGap(0, 0, Short.MAX_VALUE)))
@@ -2644,7 +2644,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                         .addComponent(btnDeleteXNDV, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGap(18, 18, 18)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
                     .addGroup(PageXNDVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(NextPageXNDV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(BackPageXNDV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -3141,8 +3141,10 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                     for (ThamSo ts : lstThamSo) {
                         tgPhat = ts.getTgPhatHuyTiec();
                     }
+                    
                     if (ChronoUnit.DAYS.between(dateNgayHuy, dateNgayDai) >= tgPhat) {
                         //Thong Tin tien Thanh Toan
+                        CONLAI = 0;
                         TongTenHHValueH.setText(String.valueOf(currencyFormatVN.format(tienCoc)));
                         TienCocValueH.setText(String.valueOf(currencyFormatVN.format(tienCoc)));
                         ConLaiValueH.setText(String.valueOf(currencyFormatVN.format(0)));
@@ -3262,7 +3264,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         NumberFormat currencyFormatVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
         PageXNDV.setVisible(false);
         PageTTHDTT.setVisible(true);
-
+        defaultTableXNTTHD.setRowCount(0);
 //        int columnCount = defaultTableXNDV.getColumnCount();
 //        for (int i = 0; i < columnCount; i++) {
 //            DVHHTable.addColumn(defaultTableXNDV.getColumnName(i));
