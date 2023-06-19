@@ -2085,7 +2085,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             TenCDValueTT.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
 
             jLabel26.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-            jLabel26.setText("Số lượng bàn");
+            jLabel26.setText("Số lượng bàn:");
 
             jLabel28.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
             jLabel28.setText("Ngày đãi tiêc:");
@@ -2098,7 +2098,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             NgayTTValueTT.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
 
             jLabel36.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-            jLabel36.setText("Số lượng bàn:");
+            jLabel36.setText("Tên cô dâu:");
 
             SoLuongBanValueTT.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
 
@@ -2242,9 +2242,21 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             DVHHTable.setSelectionBackground(new java.awt.Color(69, 96, 134));
             jScrollPane4.setViewportView(DVHHTable);
             if (DVHHTable.getColumnModel().getColumnCount() > 0) {
-                DVHHTable.getColumnModel().getColumn(0).setMinWidth(100);
-                DVHHTable.getColumnModel().getColumn(0).setPreferredWidth(100);
-                DVHHTable.getColumnModel().getColumn(0).setMaxWidth(20);
+                DVHHTable.getColumnModel().getColumn(0).setMinWidth(60);
+                DVHHTable.getColumnModel().getColumn(0).setPreferredWidth(60);
+                DVHHTable.getColumnModel().getColumn(0).setMaxWidth(60);
+                DVHHTable.getColumnModel().getColumn(1).setMinWidth(170);
+                DVHHTable.getColumnModel().getColumn(1).setPreferredWidth(170);
+                DVHHTable.getColumnModel().getColumn(1).setMaxWidth(170);
+                DVHHTable.getColumnModel().getColumn(3).setMinWidth(80);
+                DVHHTable.getColumnModel().getColumn(3).setPreferredWidth(80);
+                DVHHTable.getColumnModel().getColumn(3).setMaxWidth(80);
+                DVHHTable.getColumnModel().getColumn(4).setMinWidth(170);
+                DVHHTable.getColumnModel().getColumn(4).setPreferredWidth(170);
+                DVHHTable.getColumnModel().getColumn(4).setMaxWidth(170);
+                DVHHTable.getColumnModel().getColumn(5).setMinWidth(170);
+                DVHHTable.getColumnModel().getColumn(5).setPreferredWidth(170);
+                DVHHTable.getColumnModel().getColumn(5).setMaxWidth(170);
             }
             DVHHTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
             DVHHTable.getTableHeader().setOpaque(false);
@@ -2334,7 +2346,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                         .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(lblSoTienThanhToan)
                             .addComponent(lblTienCoc)))
-                    .addContainerGap(713, Short.MAX_VALUE))
+                    .addContainerGap(723, Short.MAX_VALUE))
             );
             jPanel15Layout.setVerticalGroup(
                 jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2437,7 +2449,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                             .addGroup(PageTTHDTTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, 1079, Short.MAX_VALUE)
+                                .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, 1083, Short.MAX_VALUE)
                                 .addComponent(jPanel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING))
                             .addGap(0, 0, Short.MAX_VALUE)))
