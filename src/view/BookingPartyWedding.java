@@ -32,6 +32,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -65,6 +66,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import model.Ca;
@@ -88,7 +90,7 @@ import net.sf.jasperreports.view.JasperViewer;
  *
  */
 public class BookingPartyWedding extends javax.swing.JInternalFrame {
-
+    private NumberFormat currencyFormatVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
     private DefaultTableModel defaultTableModelMA;
     private DefaultTableModel defaultTableModelDV;
     private DefaultTableModel modelDV;
@@ -178,6 +180,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         defaultTableModelMA = (DefaultTableModel) ThucDonTable.getModel();
 
         for (MonAn x : monAns) {
+            System.out.println(currencyFormatVN.format(x.getDonGia()));
             DTMonAn Temp = new DTMonAn(x.getMaMonAn(), x.getTenMonAn(), x.getDonGia(), x.getMaLoaiMonAn());
             dTMonAns.add(Temp);
         }
@@ -228,31 +231,47 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                             if (soLuong.equals("")) {
                                 defaultTableModelDV.setValueAt(1, row, 3);
                             }
+                            if(Integer.parseInt(soLuong) < 0){
+                                defaultTableModelDV.setValueAt(1, row, 3);
+                            }
                             for (DTDichVu X : dTDichVus) {
                                 if (X.getMaDichVu().equals(DichVuTable.getValueAt(row, 1).toString())) {
-                                    if(Integer.parseInt(DichVuTable.getValueAt(row, 3).toString()) < 0){
-                                        Message("Số lượng phải là số dương", JOptionPane.WARNING_MESSAGE);
-                                        X.setSoLuong(-1*Integer.parseInt(DichVuTable.getValueAt(row, 3).toString()));  
-                                        System.out.println("number"+ -1*Integer.parseInt(DichVuTable.getValueAt(row, 3).toString()));
-                                    }else{
-                                                                       
-                                    }
+                                        X.setSoLuong(Integer.parseInt(DichVuTable.getValueAt(row, 3).toString()));  
                                 }
                             }
                         } else {
-
+                            String soLuong = DichVuTable.getValueAt(row, column).toString();
+                            if (soLuong.equals("")) {
+                                defaultTableModelDV.setValueAt(0, row, 3);
+                            }
+                            if(Integer.parseInt(soLuong) < 0){
+                                defaultTableModelDV.setValueAt(0, row, 3);
+                            }
+                            for (DTDichVu X : dTDichVus) {
+                                if (X.getMaDichVu().equals(DichVuTable.getValueAt(row, 1).toString())) {
+                                        X.setSoLuong(Integer.parseInt(DichVuTable.getValueAt(row, 3).toString()));  
+                                }
+                            }
                         }
                     }
 
                 }
             }
         });
+        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+        renderer.setHorizontalAlignment(SwingConstants.RIGHT); // Set the desired horizontal alignment
 
+        // Set the custom cell renderer to the desired column
+        DichVuDatTiecTable.getColumnModel().getColumn(5).setCellRenderer(renderer); // Column index 
+        DichVuDatTiecTable.getColumnModel().getColumn(4).setCellRenderer(renderer);
+        DichVuTable.getColumnModel().getColumn(3).setCellRenderer(renderer);
+        DichVuTable.getColumnModel().getColumn(4).setCellRenderer(renderer);
+        ThucDonTable.getColumnModel().getColumn(3).setCellRenderer(renderer);
     }
 
     public void Page2() {
-        DonBanToiThieu.setText(String.valueOf(donGiaBanToiThieu));
-        TongDonBanHT.setText(String.valueOf(tongDonBanHienTai));
+        DonBanToiThieu.setText(String.valueOf(currencyFormatVN.format(donGiaBanToiThieu)));
+        TongDonBanHT.setText(String.valueOf(currencyFormatVN.format(tongDonBanHienTai)));
     }
 
     public void Page4() {
@@ -273,10 +292,11 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         modelDV = (DefaultTableModel) DichVuDatTiecTable.getModel();
         modelDV.setRowCount(0);
         int i = 0;
+        tongTienDV = 0;
         for (DTDichVu x : CTDichVus) {
             int temp = x.getSoLuong() * x.getDonGia();
             tongTienDV += temp;
-            modelDV.addRow(new Object[]{++i, x.getMaDichVu(), x.getTenDichVu(), x.getSoLuong(), x.getDonGia(), currencyFormatVN.format(temp)});
+            modelDV.addRow(new Object[]{++i, x.getMaDichVu(), x.getTenDichVu(), x.getSoLuong(), currencyFormatVN.format(x.getDonGia()), currencyFormatVN.format(temp)});
         }
 
         TongTienDV.setText(String.valueOf(currencyFormatVN.format(tongTienDV)));
@@ -308,7 +328,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         int i = 0;
         for (DTMonAn x : dTMonAns) {
             if (x.getMaLoaiMonAn().equals(mapMaLoaiMA.get(cbxLoaiMonAn.getSelectedItem()))) {
-                defaultTableModelMA.addRow(new Object[]{++i, x.getMaMonAn(), x.getTenMonAn(), x.getDonGia(), x.getGhiChu(), x.getChon()});
+                defaultTableModelMA.addRow(new Object[]{++i, x.getMaMonAn(), x.getTenMonAn(), currencyFormatVN.format(x.getDonGia()), x.getGhiChu(), x.getChon()});
             }
         }
     }
@@ -317,7 +337,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         defaultTableModelDV.setRowCount(0);
         int i = 0;
         for (DTDichVu x : dTDichVus) {
-            defaultTableModelDV.addRow(new Object[]{++i, x.getMaDichVu(), x.getTenDichVu(), x.getSoLuong(), x.getDonGia(), x.isChon()});
+            defaultTableModelDV.addRow(new Object[]{++i, x.getMaDichVu(), x.getTenDichVu(), x.getSoLuong(), currencyFormatVN.format(x.getDonGia()), x.isChon()});
         }
     }
 
@@ -1415,6 +1435,9 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
             ThucDonTable.getColumnModel().getColumn(1).setMinWidth(100);
             ThucDonTable.getColumnModel().getColumn(1).setPreferredWidth(100);
             ThucDonTable.getColumnModel().getColumn(1).setMaxWidth(20);
+            ThucDonTable.getColumnModel().getColumn(3).setMinWidth(150);
+            ThucDonTable.getColumnModel().getColumn(3).setPreferredWidth(150);
+            ThucDonTable.getColumnModel().getColumn(3).setMaxWidth(150);
             ThucDonTable.getColumnModel().getColumn(5).setMinWidth(100);
             ThucDonTable.getColumnModel().getColumn(5).setPreferredWidth(100);
             ThucDonTable.getColumnModel().getColumn(5).setMaxWidth(20);
@@ -2322,9 +2345,20 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
 
     private void NextPage3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextPage3ActionPerformed
         // TODO add your handling code here:
-        for (int i = 0; i < DichVuTable.getRowCount(); i++) {
-            if (Integer.parseInt(String.valueOf(DichVuTable.getValueAt(i, 3))) < 0) {
-                Message("Số lượng không được là số âm.", JOptionPane.WARNING_MESSAGE);
+        CTDichVus = new ArrayList<>();
+        for(int row = 0; row < DichVuTable.getRowCount(); row++){
+            boolean isCheck = (boolean) DichVuTable.getValueAt(row, 5);
+            String maDichVu = String.valueOf(DichVuTable.getValueAt(row, 1));
+            String tenDichVu = String.valueOf(DichVuTable.getValueAt(row, 2));
+            int donGia = 0;
+            try {
+                donGia = Integer.parseInt(String.valueOf(currencyFormatVN.parse(String.valueOf(DichVuTable.getValueAt(row, 4)))));
+            } catch (ParseException ex) {
+                Logger.getLogger(BookingPartyWedding.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.out.println(maDichVu);
+            if(isCheck){
+                 CTDichVus.add(new DTDichVu(Integer.parseInt(DichVuTable.getValueAt(row, 3).toString()), isCheck, maDichVu, tenDichVu, donGia));
             }
         }
         Page4.setVisible(true);
@@ -2651,7 +2685,12 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
             boolean chon = (boolean) ThucDonTable.getValueAt(row, col);
             String maMonAn = (String) ThucDonTable.getValueAt(row, 1);
             String tenMonAn = (String) ThucDonTable.getValueAt(row, 2);
-            int donGia = Integer.parseInt(ThucDonTable.getValueAt(row, 3).toString());
+            long donGia = 0;
+            try {
+                donGia = Integer.parseInt(String.valueOf(currencyFormatVN.parse(String.valueOf(ThucDonTable.getValueAt(row, 3)))));
+            } catch (ParseException ex) {
+                Logger.getLogger(BookingPartyWedding.class.getName()).log(Level.SEVERE, null, ex);
+            }
             String maLoaiMonAn = mapMaLoaiMA.get(cbxLoaiMonAn.getSelectedItem());
             String ghiChu = (String) ThucDonTable.getValueAt(row, 4);
             UpdateChon(chon, ghiChu, row);
@@ -2659,7 +2698,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
 
                 CTMonAns.add(new DTMonAn(maMonAn, tenMonAn, donGia, maLoaiMonAn, ghiChu));
                 tongDonBanHienTai += donGia;
-                TongDonBanHT.setText(String.valueOf(tongDonBanHienTai));
+                TongDonBanHT.setText(currencyFormatVN.format(tongDonBanHienTai));
                 if (tongDonBanHienTai < donGiaBanToiThieu) {
                     TongDonBanHT.setForeground(Color.red);
                 } else {
@@ -2693,29 +2732,25 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         int row = DichVuTable.getSelectedRow();
         int col = DichVuTable.getSelectedColumn();
         if (col == 5) {
-            String maDichVu = DichVuTable.getValueAt(row, 1).toString();
-            String tenDichVu = DichVuTable.getValueAt(row, 2).toString();
-            int donGia = Integer.parseInt(DichVuTable.getValueAt(row, 4).toString());
             boolean chon = (boolean) DichVuTable.getValueAt(row, 5);
-
             if (chon) {
                 if (Integer.parseInt(DichVuTable.getValueAt(row, 3).toString()) == 0) {
                     defaultTableModelDV.setValueAt(1, row, 3);
                 }
-                CTDichVus.add(new DTDichVu(Integer.parseInt(DichVuTable.getValueAt(row, 3).toString()), chon, maDichVu, tenDichVu, donGia));
-
-            } else {
-                defaultTableModelDV.setValueAt(0, row, 3);
-                for (DTDichVu x : CTDichVus) {
-                    if (x.getMaDichVu().equals(maDichVu)) {
-                        CTDichVus.remove(x);
-                        break;
-                    }
-                }
+//                CTDichVus.add(new DTDichVu(Integer.parseInt(DichVuTable.getValueAt(row, 3).toString()), chon, maDichVu, tenDichVu, donGia));
             }
-
-            int soLuong = Integer.parseInt(DichVuTable.getValueAt(row, 3).toString());
-            UpdateChonDV(chon, soLuong, row);
+//            } else {
+//                defaultTableModelDV.setValueAt(0, row, 3);
+//                for (DTDichVu x : CTDichVus) {
+//                    if (x.getMaDichVu().equals(maDichVu)) {
+//                        CTDichVus.remove(x);
+//                        break;
+//                    }
+//                }
+//            }
+//
+//            int soLuong = Integer.parseInt(DichVuTable.getValueAt(row, 3).toString());
+//            UpdateChonDV(chon, soLuong, row);
 
         }
 
