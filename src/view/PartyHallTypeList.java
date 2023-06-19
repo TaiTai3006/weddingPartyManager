@@ -8,7 +8,9 @@ import dao.LoaiSanhDAO;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.TrayIcon;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 import javax.swing.JDesktopPane;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -30,6 +32,8 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
 
     private DefaultTableModel defaultTableModelHallType;
     private ArrayList<LoaiSanh> loaiSanhs = LoaiSanhDAO.getInstance().SelectAll();
+    private NumberFormat currencyFormatVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+
 
     /**
      * Creates new form WorkingTimeList
@@ -47,7 +51,7 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
         defaultTableModelHallType = (DefaultTableModel) Table_Hall_Type.getModel();
         int i = 0;
         for (LoaiSanh x : loaiSanhs) {
-            defaultTableModelHallType.addRow(new Object[]{++i, x.getMaLoaiSanh(), x.getTenLoaiSanh(), x.getDonGiaBanToiThieu()});
+            defaultTableModelHallType.addRow(new Object[]{++i, x.getMaLoaiSanh(), x.getTenLoaiSanh(), currencyFormatVN.format(x.getDonGiaBanToiThieu())});
         }
     }
 
@@ -59,7 +63,7 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
         for (LoaiSanh x : loaiSanhs) {
             System.out.println();
             if (x.getMaLoaiSanh().toLowerCase().contains(value.toLowerCase()) || x.getTenLoaiSanh().toLowerCase().contains(value.toLowerCase())) {
-                defaultTableModelHallType.addRow(new Object[]{++i, x.getMaLoaiSanh(), x.getTenLoaiSanh(), x.getDonGiaBanToiThieu()});
+                defaultTableModelHallType.addRow(new Object[]{++i, x.getMaLoaiSanh(), x.getTenLoaiSanh(), currencyFormatVN.format(x.getDonGiaBanToiThieu())});
             }
         }
     }

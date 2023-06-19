@@ -230,7 +230,13 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                             }
                             for (DTDichVu X : dTDichVus) {
                                 if (X.getMaDichVu().equals(DichVuTable.getValueAt(row, 1).toString())) {
-                                    X.setSoLuong(Integer.parseInt(DichVuTable.getValueAt(row, 3).toString()));
+                                    if(Integer.parseInt(DichVuTable.getValueAt(row, 3).toString()) < 0){
+                                        Message("Số lượng phải là số dương", JOptionPane.WARNING_MESSAGE);
+                                        X.setSoLuong(-1*Integer.parseInt(DichVuTable.getValueAt(row, 3).toString()));  
+                                        System.out.println("number"+ -1*Integer.parseInt(DichVuTable.getValueAt(row, 3).toString()));
+                                    }else{
+                                                                       
+                                    }
                                 }
                             }
                         } else {
@@ -2316,6 +2322,11 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
 
     private void NextPage3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextPage3ActionPerformed
         // TODO add your handling code here:
+        for (int i = 0; i < DichVuTable.getRowCount(); i++) {
+            if (Integer.parseInt(String.valueOf(DichVuTable.getValueAt(i, 3))) < 0) {
+                Message("Số lượng không được là số âm.", JOptionPane.WARNING_MESSAGE);
+            }
+        }
         Page4.setVisible(true);
         Page3.setVisible(false);
         Page4();

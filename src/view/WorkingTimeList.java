@@ -741,8 +741,6 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
         int kq = 0;
         String gioBatDau = ConvertFormatTime(timeBatDauUD.getSelectedTime());
         String gioKetThuc = ConvertFormatTime(timeKetThucUD.getSelectedTime());
-                                    System.out.println("go bd"+gioBatDau);
-                System.out.println("go kt"+gioKetThuc);
         if (!txtTenCaUD.getText().equals(String.valueOf(tblCa.getValueAt(row, 2)))
                 || !timeBatDauUD.getSelectedTime().equals(String.valueOf(tblCa.getValueAt(row, 3)))
                 || !timeKetThucUD.getSelectedTime().equals(String.valueOf(tblCa.getValueAt(row, 4)))) {
@@ -761,8 +759,8 @@ public class WorkingTimeList extends javax.swing.JInternalFrame {
             int minuteKT = Integer.parseInt(minuteKetThuc);
 
             if (hourBD > hourKT) {
-                System.out.println("go bd"+hourBD);
-                System.out.println("go kt"+hourKT);
+                System.out.println("go bd" + hourBD);
+                System.out.println("go kt" + hourKT);
                 Message("Thời gian bắt đầu và kết thúc không hợp lệ, vui lòng nhập lạiii!", JOptionPane.ERROR_MESSAGE);
 //                txtTenCaAdd.setText("");
                 timeBatDau.now();

@@ -12,8 +12,12 @@ import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
 import dao.DichVuDAO;
+import java.text.NumberFormat;
+import java.util.Locale;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import model.DichVu;
 
 /**
@@ -23,6 +27,8 @@ import model.DichVu;
 public class ServiceList extends javax.swing.JInternalFrame {
     private DefaultTableModel defaultTableModelServiceList;
     private ArrayList<DichVu> dichVus = DichVuDAO.getInstance().SelectAll();
+    private NumberFormat currencyFormatVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+
     /**
      * Creates new form ServiceList
      */
@@ -32,6 +38,11 @@ public class ServiceList extends javax.swing.JInternalFrame {
         BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
         ui.setNorthPane(null);
         CreateTable();
+        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+        renderer.setHorizontalAlignment(SwingConstants.RIGHT); // Set the desired horizontal alignment
+
+        // Set the custom cell renderer to the desired column
+        table_service_list.getColumnModel().getColumn(3).setCellRenderer(renderer); // Column index 
     }
     
     public void CreateTable()
@@ -39,7 +50,7 @@ public class ServiceList extends javax.swing.JInternalFrame {
         defaultTableModelServiceList = (DefaultTableModel)table_service_list.getModel();
         int i = 0;
         for(DichVu x: dichVus){
-            defaultTableModelServiceList.addRow(new Object[]{++i, x.getMaDichVu(), x.getTenDichVu(),x.getDonGia()});
+            defaultTableModelServiceList.addRow(new Object[]{++i, x.getMaDichVu(), x.getTenDichVu(),currencyFormatVN.format(x.getDonGia())});
         }
     }
     public void SearchTable(){
@@ -50,7 +61,7 @@ public class ServiceList extends javax.swing.JInternalFrame {
         for(DichVu x: dichVus){
             System.out.println();
             if(x.getMaDichVu().toLowerCase().contains(value.toLowerCase()) || x.getTenDichVu().toLowerCase().contains(value.toLowerCase()))
-            defaultTableModelServiceList.addRow(new Object[]{++i, x.getMaDichVu(), x.getTenDichVu(),x.getDonGia()});
+            defaultTableModelServiceList.addRow(new Object[]{++i, x.getMaDichVu(), x.getTenDichVu(),currencyFormatVN.format(x.getDonGia())});
         }
     }
      

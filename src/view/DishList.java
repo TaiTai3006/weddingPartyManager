@@ -8,15 +8,19 @@ import dao.LoaiMonAnDAO;
 import dao.MonAnDAO;
 import java.awt.Color;
 import java.awt.Font;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.YES_OPTION;
+import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import model.LoaiMonAn;
 import model.MonAn;
@@ -31,10 +35,12 @@ public class DishList extends javax.swing.JInternalFrame {
 int count = 0;
 int i = 0;
 int macount = 0;
-DefaultTableModel defaulttable = new DefaultTableModel();
-ArrayList<String> dynamicArray = new ArrayList<>();
-ArrayList<MonAn> items = new ArrayList<>(MonAnDAO.getInstance().SelectAll());
-ArrayList<LoaiMonAn> loaimon = new ArrayList<>(LoaiMonAnDAO.getInstance().SelectAll());
+private DefaultTableModel defaulttable = new DefaultTableModel();
+private ArrayList<String> dynamicArray = new ArrayList<>();
+private ArrayList<MonAn> items = new ArrayList<>(MonAnDAO.getInstance().SelectAll());
+private ArrayList<LoaiMonAn> loaimon = new ArrayList<>(LoaiMonAnDAO.getInstance().SelectAll());
+private NumberFormat currencyFormatVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+
     public void Message(String message, int messageType) {
         JOptionPane jOptionPane = new JOptionPane(message, messageType);
         JDialog dialog = jOptionPane.createDialog(null, "Message");
@@ -62,7 +68,8 @@ public int lastChars(String maMonAn, int numberID){
         defaulttable = (DefaultTableModel) table_dish_list.getModel();
         int i = 0;
         for (MonAn x : items) {
-            defaulttable.addRow(new Object[]{++i, x.getMaMonAn(), x.getTenMonAn(),MonAnDAO.getInstance().SelectedNameByID(x.getMaLoaiMonAn()).getTenLoaiMonAn(), x.getDonGia()});
+            defaulttable.addRow(new Object[]{++i, x.getMaMonAn(), x.getTenMonAn(),
+                MonAnDAO.getInstance().SelectedNameByID(x.getMaLoaiMonAn()).getTenLoaiMonAn(), currencyFormatVN.format(x.getDonGia())});
         }
     }
     public void ReloadDataTable() {
@@ -70,47 +77,48 @@ public int lastChars(String maMonAn, int numberID){
         defaulttable.setRowCount(0);
         CreateDataTable();
     }
-public void notification(int check){
-    if(check == 1){
-        int ret = JOptionPane.showConfirmDialog(null, "Thêm dữ liệu thành công","NOTIFICATION", JOptionPane.CLOSED_OPTION);
-        dish_list_dialog.setVisible(false);
-        add_monan_field.setText("");
+    public void notification(int check) {
+        if (check == 1) {
+            int ret = JOptionPane.showConfirmDialog(null, "Thêm dữ liệu thành công", "NOTIFICATION", JOptionPane.CLOSED_OPTION);
+            dish_list_dialog.setVisible(false);
+            add_monan_field.setText("");
 //        add_loaimonan_field.setText("");
-        dongia_monan_field.setText("");
+            dongia_monan_field.setText("");
 //        if(ret == JOptionPane.YES_OPTION){
 //            dish_list_dialog.setVisible(false);
 //        }else{
 //            dish_list_dialog.setVisible(true);
 //        }
-    }else{
-        JOptionPane.showConfirmDialog(null, "Thêm dữ liệu thất bại","NOTIFICATION", JOptionPane.CLOSED_OPTION);
+        } else {
+            JOptionPane.showConfirmDialog(null, "Thêm dữ liệu thất bại", "NOTIFICATION", JOptionPane.CLOSED_OPTION);
+        }
     }
-}
-public void loaiMonAnElement(){
-        for(LoaiMonAn x : loaimon){
-            if(x.getTenLoaiMonAn().equals("")){
+    public void loaiMonAnElement() {
+        for (LoaiMonAn x : loaimon) {
+            if (x.getTenLoaiMonAn().equals("")) {
                 return;
-            }else{
+            } else {
                 dynamicArray.add(x.getTenLoaiMonAn());
             }
         }
-}
-public void filter(ArrayList<MonAn> filteredItems){
-                String filterText = search_field.getText().toLowerCase();
-                filteredItems.clear();
-                ArrayList<MonAn> listMonAn = new ArrayList<>(MonAnDAO.getInstance().SelectAll());
-                for (MonAn item : listMonAn) {
-                    if (item.getMaMonAn().toLowerCase().contains(filterText) || item.getTenMonAn().toLowerCase().contains(filterText)) {
-                        filteredItems.add(item);
-                    }
-                }
-                DefaultTableModel model = (DefaultTableModel) table_dish_list.getModel();
-                model.setRowCount(0);
-                for (MonAn row : filteredItems) {
-                count = defaulttable.getRowCount() + 1;
-                    model.addRow(new Object[]{count, row.getMaMonAn(), row.getTenMonAn(), MonAnDAO.getInstance().SelectedNameByID(row.getMaLoaiMonAn()).getTenLoaiMonAn(), row.getDonGia()});
-                } 
-}
+    }
+    public void filter(ArrayList<MonAn> filteredItems) {
+        String filterText = search_field.getText().toLowerCase();
+        filteredItems.clear();
+        ArrayList<MonAn> listMonAn = new ArrayList<>(MonAnDAO.getInstance().SelectAll());
+        for (MonAn item : listMonAn) {
+            if (item.getMaMonAn().toLowerCase().contains(filterText) || item.getTenMonAn().toLowerCase().contains(filterText)) {
+                filteredItems.add(item);
+            }
+        }
+        DefaultTableModel model = (DefaultTableModel) table_dish_list.getModel();
+        model.setRowCount(0);
+        for (MonAn row : filteredItems) {
+            count = defaulttable.getRowCount() + 1;
+            model.addRow(new Object[]{count, row.getMaMonAn(), row.getTenMonAn(), 
+                MonAnDAO.getInstance().SelectedNameByID(row.getMaLoaiMonAn()).getTenLoaiMonAn(), currencyFormatVN.format(row.getDonGia())});
+        }
+    }
     /**
      * Creates new form DishList
      */
@@ -120,17 +128,7 @@ public void filter(ArrayList<MonAn> filteredItems){
         BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
         ui.setNorthPane(null);
         ArrayList<MonAn> filteredItems = new ArrayList<>();
-
-        table_dish_list.setModel(defaulttable);
-        defaulttable.addColumn("STT");
-        defaulttable.addColumn("Mã món ăn");
-        defaulttable.addColumn("Tên món ăn");
-        defaulttable.addColumn("Loại món ăn");
-        defaulttable.addColumn("Đơn giá");
-
-        for(MonAn row : items){
-            defaulttable.addRow(new Object[]{defaulttable.getRowCount() + 1, row.getMaMonAn(), row.getTenMonAn(),MonAnDAO.getInstance().SelectedNameByID(row.getMaLoaiMonAn()).getTenLoaiMonAn() , row.getDonGia()});
-        }
+        CreateDataTable();
         loaiMonAnElement();
         DefaultComboBoxModel<String> newModel = new DefaultComboBoxModel<>(dynamicArray.toArray(new String[0]));
         add_loaimonan_field.setModel(newModel);
@@ -152,6 +150,11 @@ public void filter(ArrayList<MonAn> filteredItems){
                 filter(filteredItems);
             }
         });
+        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+        renderer.setHorizontalAlignment(SwingConstants.RIGHT); // Set the desired horizontal alignment
+
+        // Set the custom cell renderer to the desired column
+        table_dish_list.getColumnModel().getColumn(4).setCellRenderer(renderer); // Column index 
     }
 
     /**
@@ -715,16 +718,7 @@ public void filter(ArrayList<MonAn> filteredItems){
         table_dish_list.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         table_dish_list.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "STT", "Mã món ăn", "Tên món ăn", "Loại món ăn", "Đơn giá"
@@ -742,6 +736,9 @@ public void filter(ArrayList<MonAn> filteredItems){
             table_dish_list.getColumnModel().getColumn(1).setMinWidth(100);
             table_dish_list.getColumnModel().getColumn(1).setPreferredWidth(100);
             table_dish_list.getColumnModel().getColumn(1).setMaxWidth(20);
+            table_dish_list.getColumnModel().getColumn(4).setMinWidth(200);
+            table_dish_list.getColumnModel().getColumn(4).setPreferredWidth(200);
+            table_dish_list.getColumnModel().getColumn(4).setMaxWidth(200);
         }
         table_dish_list.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
         table_dish_list.getTableHeader().setOpaque(false);

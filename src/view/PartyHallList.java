@@ -8,18 +8,25 @@ import dao.LoaiSanhDAO;
 import dao.SanhDAO;
 import java.awt.Color;
 import java.awt.Font;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
+import javax.swing.table.DefaultTableCellRenderer;
 import model.LoaiSanh;
 import model.Sanh;
 
@@ -34,6 +41,8 @@ public class PartyHallList extends javax.swing.JInternalFrame {
     private Map<String, String> mapMaLoaiSanh = new HashMap<>();
     private Map<String, String> mapDonGiaBanToiThieu = new HashMap<>();
     private ArrayList<LoaiSanh> loaiSanhs = LoaiSanhDAO.getInstance().SelectAll();
+    private NumberFormat currencyFormatVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+
 
     /**
      * Creates new form WorkingTimeList
@@ -51,6 +60,9 @@ public class PartyHallList extends javax.swing.JInternalFrame {
             cbxLoaiSanh.addItem(x.getTenLoaiSanh());
             cbxLoaiSanhValue.addItem(x.getTenLoaiSanh());
         }
+        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+        renderer.setHorizontalAlignment(SwingConstants.CENTER); // Set the desired horizontal alignment
+        Table_Hall.getColumnModel().getColumn(0).setCellRenderer(renderer);
 
     }
 
@@ -59,7 +71,7 @@ public class PartyHallList extends javax.swing.JInternalFrame {
         int i = 0;
         for (Sanh x : sanhs) {
             defaultTableModelHall.addRow(new Object[]{++i, x.getMaSanh(), x.getTenSanh(), x.getTenLoaiSanh(),
-                x.getSoLuongBanToiDa(), x.getDonGiaBanToiThieu(), x.getGhiChu()});
+                x.getSoLuongBanToiDa(), currencyFormatVN.format(x.getDonGiaBanToiThieu()), x.getGhiChu()});
         }
     }
 
@@ -73,7 +85,7 @@ public class PartyHallList extends javax.swing.JInternalFrame {
             if (x.getMaSanh().toLowerCase().contains(value.toLowerCase()) || x.getTenLoaiSanh().toLowerCase().contains(value.toLowerCase())
                     || x.getTenSanh().toLowerCase().contains(value.toLowerCase())) {
                 defaultTableModelHall.addRow(new Object[]{++i, x.getMaSanh(), x.getTenSanh(), x.getTenLoaiSanh(),
-                    x.getSoLuongBanToiDa(), x.getDonGiaBanToiThieu(), x.getGhiChu()});
+                    x.getSoLuongBanToiDa(), currencyFormatVN.format(x.getDonGiaBanToiThieu()), x.getGhiChu()});
             }
         }
     }
@@ -198,6 +210,11 @@ public class PartyHallList extends javax.swing.JInternalFrame {
         txfSoLuongBanToiDa.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txfSoLuongBanToiDa.setText("0");
         txfSoLuongBanToiDa.setToolTipText("");
+        txfSoLuongBanToiDa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txfSoLuongBanToiDaActionPerformed(evt);
+            }
+        });
 
         jLabel25.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel25.setText("Ghi chú");
@@ -225,10 +242,10 @@ public class PartyHallList extends javax.swing.JInternalFrame {
                             .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txfSoLuongBanToiDa, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel7)
-                            .addComponent(cbxLoaiSanh, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(cbxLoaiSanh, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
@@ -281,7 +298,6 @@ public class PartyHallList extends javax.swing.JInternalFrame {
 
         Edit_Hall_List_Dialog.setMinimumSize(new java.awt.Dimension(531, 490));
         Edit_Hall_List_Dialog.setModal(true);
-        Edit_Hall_List_Dialog.setPreferredSize(new java.awt.Dimension(850, 500));
         Edit_Hall_List_Dialog.setSize(new java.awt.Dimension(850, 500));
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
@@ -466,9 +482,10 @@ public class PartyHallList extends javax.swing.JInternalFrame {
         Table_Hall.setSelectionBackground(new java.awt.Color(69, 96, 134));
         jScrollPane1.setViewportView(Table_Hall);
         if (Table_Hall.getColumnModel().getColumnCount() > 0) {
-            Table_Hall.getColumnModel().getColumn(0).setMinWidth(100);
-            Table_Hall.getColumnModel().getColumn(0).setPreferredWidth(100);
-            Table_Hall.getColumnModel().getColumn(0).setMaxWidth(20);
+            Table_Hall.getColumnModel().getColumn(0).setMinWidth(50);
+            Table_Hall.getColumnModel().getColumn(0).setPreferredWidth(50);
+            Table_Hall.getColumnModel().getColumn(0).setMaxWidth(50);
+            Table_Hall.getColumnModel().getColumn(0).setCellRenderer(null);
             Table_Hall.getColumnModel().getColumn(1).setMinWidth(100);
             Table_Hall.getColumnModel().getColumn(1).setPreferredWidth(100);
             Table_Hall.getColumnModel().getColumn(1).setMaxWidth(20);
@@ -764,52 +781,56 @@ public class PartyHallList extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         if (txfTenSanh.getText().equals("")) {
             Message("Vui lòng nhập dữ liệu!", JOptionPane.WARNING_MESSAGE);
-        } else {
-            String maSanh = String.valueOf(SanhDAO.getInstance().GetID() + 1);
-            switch (maSanh.length()) {
-                case 1:
-                    maSanh = "SN000" + maSanh;
-                    break;
-                case 2:
-                    maSanh = "SN00" + maSanh;
-                    break;
-                case 3:
-                    maSanh = "SN0" + maSanh;
-                    break;
-                case 4:
-                    maSanh = "SN" + maSanh;
-                    break;
-            }
-            int kq = 0;
-            try {
-                String tenSanh = txfTenSanh.getText();
-                String tenLoaiSanh = cbxLoaiSanh.getSelectedItem().toString();
-                String maLoaiSanh = mapMaLoaiSanh.get(tenLoaiSanh);
-                System.out.println(tenLoaiSanh + " " + maLoaiSanh);
-                int soLuongBanToiDa = Integer.parseInt(txfSoLuongBanToiDa.getText());
-                int donGiaBanToiThieu = Integer.parseInt(txfDonGiaToiThieu.getText());
-                String ghiChu = txaGhiChu.getText();
-                System.out.println(ghiChu);
-                kq = SanhDAO.getInstance().Insert(new Sanh(maSanh, maLoaiSanh, tenSanh, soLuongBanToiDa, tenLoaiSanh, donGiaBanToiThieu, ghiChu));
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-            if (kq != 0) {
-                Add_Hall_List_Dialog.setVisible(false);
-                ReloadDataTable();
-                txfTenSanh.setText("");
-                txfDonGiaToiThieu.setText("0");
-                txfSoLuongBanToiDa.setText("0");
-                txaGhiChu.setText("");
-
+        }else if (Integer.parseInt(txfSoLuongBanToiDa.getText()) <= 0) {
+                System.out.println("abc");
+                Message("Số lượng bàn tối đa phải lớn hơn 0", JOptionPane.WARNING_MESSAGE);
             } else {
-                Message("Lỗi! Thêm dữ liệu thất bại. Vui lòng nhập lại dữ liệu.", JOptionPane.ERROR_MESSAGE);
-                txfTenSanh.setText("");
-                txfDonGiaToiThieu.setText("0");
-                txfSoLuongBanToiDa.setText("0");
-                txaGhiChu.setText("");
+                String maSanh = String.valueOf(SanhDAO.getInstance().GetID() + 1);
+                switch (maSanh.length()) {
+                    case 1:
+                        maSanh = "SN000" + maSanh;
+                        break;
+                    case 2:
+                        maSanh = "SN00" + maSanh;
+                        break;
+                    case 3:
+                        maSanh = "SN0" + maSanh;
+                        break;
+                    case 4:
+                        maSanh = "SN" + maSanh;
+                        break;
+                }
+                int kq = 0;
+                try {
+                    String tenSanh = txfTenSanh.getText();
+                    String tenLoaiSanh = cbxLoaiSanh.getSelectedItem().toString();
+                    String maLoaiSanh = mapMaLoaiSanh.get(tenLoaiSanh);
+                    System.out.println(tenLoaiSanh + " " + maLoaiSanh);
+                    int soLuongBanToiDa = Integer.parseInt(txfSoLuongBanToiDa.getText());
+                    int donGiaBanToiThieu = Integer.parseInt(txfDonGiaToiThieu.getText());
+                    String ghiChu = txaGhiChu.getText();
+                    System.out.println(ghiChu);
+                    kq = SanhDAO.getInstance().Insert(new Sanh(maSanh, maLoaiSanh, tenSanh, soLuongBanToiDa, tenLoaiSanh, donGiaBanToiThieu, ghiChu));
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                if (kq != 0) {
+                    Add_Hall_List_Dialog.setVisible(false);
+                    ReloadDataTable();
+                    txfTenSanh.setText("");
+                    txfDonGiaToiThieu.setText(mapDonGiaBanToiThieu.get(cbxLoaiSanh.getSelectedItem()));
+                    txfSoLuongBanToiDa.setText("0");
+                    txaGhiChu.setText("");
+                    Message("Thêm dữ liệu thành công", JOptionPane.WARNING_MESSAGE);
+
+                } else {
+                    Message("Lỗi! Thêm dữ liệu thất bại. Vui lòng nhập lại dữ liệu.", JOptionPane.ERROR_MESSAGE);
+                    txfTenSanh.setText("");
+                    txfDonGiaToiThieu.setText(mapDonGiaBanToiThieu.get(cbxLoaiSanh.getSelectedItem()));
+                    txfSoLuongBanToiDa.setText("0");
+                    txaGhiChu.setText("");
+                }
             }
-        }
     }//GEN-LAST:event_ThemAdd_Hall_List_DialogActionPerformed
 
     private void HuyEdit_Hall_List_DialogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HuyEdit_Hall_List_DialogActionPerformed
@@ -849,6 +870,10 @@ public class PartyHallList extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         txfDonGiaToiThieuValue.setText(mapDonGiaBanToiThieu.get(cbxLoaiSanhValue.getSelectedItem()));
     }//GEN-LAST:event_cbxLoaiSanhValueActionPerformed
+
+    private void txfSoLuongBanToiDaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txfSoLuongBanToiDaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txfSoLuongBanToiDaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
