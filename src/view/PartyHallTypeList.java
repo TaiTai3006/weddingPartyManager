@@ -9,8 +9,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.TrayIcon;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -563,7 +566,12 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
                 if (rows.length == 1) {
                     String maLoaiSanh = String.valueOf(Table_Hall_Type.getValueAt(row, 1));
                     String tenLoaiSanh = String.valueOf(Table_Hall_Type.getValueAt(row, 2));
-                    int donGiaToiThieu = Integer.parseInt(String.valueOf(Table_Hall_Type.getValueAt(row, 3)));
+                    int donGiaToiThieu = 0;
+                    try {
+                        donGiaToiThieu = Integer.parseInt(String.valueOf(currencyFormatVN.parse(String.valueOf(Table_Hall_Type.getValueAt(row, 3)))));
+                    } catch (ParseException ex) {
+                        Logger.getLogger(PartyHallTypeList.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 
                     try {
                         kq = LoaiSanhDAO.getInstance().Delete(new LoaiSanh(maLoaiSanh, tenLoaiSanh, donGiaToiThieu));
@@ -576,8 +584,12 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
                     for (int r : rows) {
                         String maLoaiSanh = String.valueOf(Table_Hall_Type.getValueAt(r, 1));
                         String tenLoaiSanh = String.valueOf(Table_Hall_Type.getValueAt(r, 2));
-                        int donGiaToiThieu = Integer.parseInt(String.valueOf(Table_Hall_Type.getValueAt(r, 3)));
-
+                        int donGiaToiThieu = 0;
+                        try {
+                            donGiaToiThieu = Integer.parseInt(String.valueOf(currencyFormatVN.parse(String.valueOf(Table_Hall_Type.getValueAt(row, 3)))));
+                        } catch (ParseException ex) {
+                            Logger.getLogger(PartyHallTypeList.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         try {
                             kq = LoaiSanhDAO.getInstance().Delete(new LoaiSanh(maLoaiSanh, tenLoaiSanh, donGiaToiThieu));
 
@@ -603,7 +615,11 @@ public class PartyHallTypeList extends javax.swing.JInternalFrame {
             Message("Vui lòng chọn dữ liệu muốn chỉnh sửa!", JOptionPane.INFORMATION_MESSAGE);
         } else {
             tenLoaiSanhValue.setText(String.valueOf(Table_Hall_Type.getValueAt(row, 2)));
-            donGiaToiThieuValue.setText(String.valueOf(Table_Hall_Type.getValueAt(row, 3)));
+            try {
+                donGiaToiThieuValue.setText(String.valueOf(currencyFormatVN.parse(String.valueOf(Table_Hall_Type.getValueAt(row, 3)))));
+            } catch (ParseException ex) {
+                Logger.getLogger(PartyHallTypeList.class.getName()).log(Level.SEVERE, null, ex);
+            }
             Edit_HallType_List_Dialog.setLocationRelativeTo(null);
             Edit_HallType_List_Dialog.setVisible(true);
         }

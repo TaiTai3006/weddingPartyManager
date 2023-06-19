@@ -665,7 +665,7 @@
                     <Column maxWidth="50" minWidth="50" prefWidth="50" resizable="true">
                       <Title/>
                       <Editor/>
-                      <Renderer editor="org.netbeans.modules.form.RADConnectionPropertyEditor"/>
+                      <Renderer/>
                     </Column>
                     <Column maxWidth="20" minWidth="100" prefWidth="100" resizable="true">
                       <Title/>

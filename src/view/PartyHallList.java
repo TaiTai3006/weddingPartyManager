@@ -702,7 +702,12 @@ public class PartyHallList extends javax.swing.JInternalFrame {
                     String tenLoaiSanh = String.valueOf(Table_Hall.getValueAt(row, 3));
                     String maLoaiSanh = mapMaLoaiSanh.get(tenLoaiSanh);
                     int soLuongBanToiDa = Integer.parseInt(String.valueOf(Table_Hall.getValueAt(row, 4)));
-                    int donGiaBanToiThieu = Integer.parseInt(String.valueOf(Table_Hall.getValueAt(row, 5)));
+                    int donGiaBanToiThieu = 0;
+                    try {
+                        donGiaBanToiThieu = Integer.parseInt(String.valueOf(currencyFormatVN.parse(String.valueOf(Table_Hall.getValueAt(row, 5)))));
+                    } catch (ParseException ex) {
+                        Logger.getLogger(PartyHallList.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     String ghiChu = String.valueOf(Table_Hall.getValueAt(row, 6));
 
                     try {
@@ -720,7 +725,12 @@ public class PartyHallList extends javax.swing.JInternalFrame {
                         String tenLoaiSanh = String.valueOf(Table_Hall.getValueAt(r, 3));
                         String maLoaiSanh = mapMaLoaiSanh.get(tenLoaiSanh);
                         int soLuongBanToiDa = Integer.parseInt(String.valueOf(Table_Hall.getValueAt(r, 4)));
-                        int donGiaBanToiThieu = Integer.parseInt(String.valueOf(Table_Hall.getValueAt(r, 5)));
+                        int donGiaBanToiThieu = 0;
+                        try {
+                            donGiaBanToiThieu = Integer.parseInt(String.valueOf(currencyFormatVN.parse(String.valueOf(Table_Hall.getValueAt(row, 5)))));
+                        } catch (ParseException ex) {
+                            Logger.getLogger(PartyHallList.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         String ghiChu = String.valueOf(Table_Hall.getValueAt(r, 6));
 
                         try {
@@ -849,15 +859,18 @@ public class PartyHallList extends javax.swing.JInternalFrame {
         int soLuongBanToiDa = Integer.parseInt(txfSoLuongBanToiDaValue.getText());
         int donGiaBanToiThieu = Integer.parseInt(txfDonGiaToiThieuValue.getText());
         String ghiChu = txaGhiChu.getText();
-        kq = SanhDAO.getInstance().Update(new Sanh(maSanh, maLoaiSanh, tenSanh, soLuongBanToiDa, tenLoaiSanh, donGiaBanToiThieu, ghiChu));
-
+        if(Integer.parseInt(txfSoLuongBanToiDaValue.getText()) > 0){
+            kq = SanhDAO.getInstance().Update(new Sanh(maSanh, maLoaiSanh, tenSanh, soLuongBanToiDa, tenLoaiSanh, donGiaBanToiThieu, ghiChu));
+        }else{
+            Message("Số lượng bàn tối đa phải lớn hơn 0", JOptionPane.WARNING_MESSAGE);
+        }
         if (kq > 0) {
+            Message("Cập nhật dữ liệu thành công", JOptionPane.WARNING_MESSAGE);
             Edit_Hall_List_Dialog.setVisible(false);
             ReloadDataTable();
         } else {
-            Edit_Hall_List_Dialog.setVisible(false);
+            Edit_Hall_List_Dialog.setVisible(true);
             Message("Chỉnh sửa dữ liệu thất bại!", JOptionPane.ERROR_MESSAGE);
-
         }
     }//GEN-LAST:event_ThemEdit_Edit_List_DialogActionPerformed
 
