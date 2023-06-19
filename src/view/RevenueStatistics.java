@@ -908,7 +908,8 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
             }
 //                  
                     // Số hợp lệ, xử lý tại đây
-        } catch (NumberFormatException ex) {
+        } 
+        catch (NumberFormatException ex) {
             // Không phải số, xử lý tại đây
             jpChart.setVisible(false);
             jL_ThongBao_Nam.setText("* Vui lòng nhập năm hợp lệ!");
