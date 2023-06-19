@@ -90,6 +90,7 @@ import net.sf.jasperreports.view.JasperViewer;
  *
  */
 public class BookingPartyWedding extends javax.swing.JInternalFrame {
+
     private NumberFormat currencyFormatVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
     private DefaultTableModel defaultTableModelMA;
     private DefaultTableModel defaultTableModelDV;
@@ -154,7 +155,6 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         TiLeCoc = ThamSoDAO.getInstance().GetTyLeCoc();
         mapMaSanh = new HashMap<>();
         mapMaLoaiMA = new HashMap<>();
-        mapMaCa = new HashMap<>();
         monAns = MonAnDAO.getInstance().SelectAll();
         dTMonAns = new ArrayList<>();
         dichVus = DichVuDAO.getInstance().SelectAll();
@@ -168,12 +168,13 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         inputNgayDatTiec.setDateFormatString("dd/MM/yyyy");
         inputNgayDatTiec.setDate(new java.util.Date());
         inputNgayDaiTiec.setDateFormatString("dd/MM/yyyy");
-        
-        if(checkcb == 0)
+
+        if (checkcb == 0) {
             for (Ca x : Cas) {
                 inputCa.addItem(x.getTenCa() + " (" + x.getGioBatDau() + " - " + x.getGioKetThuc() + ")");
                 mapMaCa.put(x.getTenCa(), x.getMaCa());
             }
+        }
         checkcb++;
         for (LoaiMonAn x : loaiMonAns) {
             mapMaLoaiMA.put(x.getTenLoaiMonAn(), x.getMaLoaiMonAn());
@@ -234,12 +235,12 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                             if (soLuong.equals("")) {
                                 defaultTableModelDV.setValueAt(1, row, 3);
                             }
-                            if(Integer.parseInt(soLuong) < 0){
+                            if (Integer.parseInt(soLuong) < 0) {
                                 defaultTableModelDV.setValueAt(1, row, 3);
                             }
                             for (DTDichVu X : dTDichVus) {
                                 if (X.getMaDichVu().equals(DichVuTable.getValueAt(row, 1).toString())) {
-                                        X.setSoLuong(Integer.parseInt(DichVuTable.getValueAt(row, 3).toString()));  
+                                    X.setSoLuong(Integer.parseInt(DichVuTable.getValueAt(row, 3).toString()));
                                 }
                             }
                         } else {
@@ -247,12 +248,12 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                             if (soLuong.equals("")) {
                                 defaultTableModelDV.setValueAt(0, row, 3);
                             }
-                            if(Integer.parseInt(soLuong) < 0){
+                            if (Integer.parseInt(soLuong) < 0) {
                                 defaultTableModelDV.setValueAt(0, row, 3);
                             }
                             for (DTDichVu X : dTDichVus) {
                                 if (X.getMaDichVu().equals(DichVuTable.getValueAt(row, 1).toString())) {
-                                        X.setSoLuong(Integer.parseInt(DichVuTable.getValueAt(row, 3).toString()));  
+                                    X.setSoLuong(Integer.parseInt(DichVuTable.getValueAt(row, 3).toString()));
                                 }
                             }
                         }
@@ -2350,7 +2351,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     private void NextPage3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextPage3ActionPerformed
         // TODO add your handling code here:
         CTDichVus = new ArrayList<>();
-        for(int row = 0; row < DichVuTable.getRowCount(); row++){
+        for (int row = 0; row < DichVuTable.getRowCount(); row++) {
             boolean isCheck = (boolean) DichVuTable.getValueAt(row, 5);
             String maDichVu = String.valueOf(DichVuTable.getValueAt(row, 1));
             String tenDichVu = String.valueOf(DichVuTable.getValueAt(row, 2));
@@ -2361,8 +2362,8 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                 Logger.getLogger(BookingPartyWedding.class.getName()).log(Level.SEVERE, null, ex);
             }
             System.out.println(maDichVu);
-            if(isCheck){
-                 CTDichVus.add(new DTDichVu(Integer.parseInt(DichVuTable.getValueAt(row, 3).toString()), isCheck, maDichVu, tenDichVu, donGia));
+            if (isCheck) {
+                CTDichVus.add(new DTDichVu(Integer.parseInt(DichVuTable.getValueAt(row, 3).toString()), isCheck, maDichVu, tenDichVu, donGia));
             }
         }
         Page4.setVisible(true);
@@ -2487,59 +2488,55 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     }
     private void NextPage5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextPage5ActionPerformed
         // TODO add your handling code here:
-        if (cbxPTTT.getSelectedItem().equals("Tiền mặt")) 
-        {
+        if (cbxPTTT.getSelectedItem().equals("Tiền mặt")) {
             ThanhToanTienMat.setLocationRelativeTo(null);
             ThanhToanTienMat.setVisible(true);
             inputSoTienDaNhan.setText(String.valueOf((int) tienCoc));
-        } 
-        else 
-            if (cbxPTTT.getSelectedItem().equals("Chuyển khoản")) 
-            {
+        } else if (cbxPTTT.getSelectedItem().equals("Chuyển khoản")) {
+            try {
+                JPanel pane = new JPanel();
+                String qrdata = "";
                 try {
-                    JPanel pane = new JPanel();
-                    String qrdata = "";
-                    try {
-                        String paymentUrl = generatePaymentUrl("", websiteCode, getCurrentDateTime(), String.valueOf(((long) tienCoc) * 100), "Thanh toan tiec cuoi", "https://courses.uit.edu.vn/course/view.php?id=10493#section-3");
-                        System.out.println(paymentUrl);
-                        qrdata = paymentUrl;
-                    } catch (NoSuchAlgorithmException ex) {
-                        Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (InvalidKeyException ex) {
-                        Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (UnsupportedEncodingException ex) {
-                        Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                    System.out.println(qrdata);
-                    ImageIcon qrIcon = new ImageIcon(generateQRCode(qrdata));
-                    System.out.println(qrIcon);
-                    JLabel qrLabel = new JLabel(qrIcon);
-                    ChuyenKhoanForm.setSize(400, 400);
-                    qrLabel.setHorizontalAlignment(SwingConstants.CENTER); // Set horizontal alignment to center
-                    pane.add(qrLabel, BorderLayout.CENTER); // Add the label to the center of the panel
-                    pane.add(qrLabel);
-
-                    pane.setSize(400, 400);
-                    pane.setBackground(Color.WHITE);
-                    pane.setVisible(true);
-                    ChuyenKhoanForm.add(pane);
-                    ChuyenKhoanForm.setModal(true);
-                    ChuyenKhoanForm.setLocationRelativeTo(null);
-                    ChuyenKhoanForm.setVisible(true);
-                } catch (WriterException ex) {
+                    String paymentUrl = generatePaymentUrl("", websiteCode, getCurrentDateTime(), String.valueOf(((long) tienCoc) * 100), "Thanh toan tiec cuoi", "https://courses.uit.edu.vn/course/view.php?id=10493#section-3");
+                    System.out.println(paymentUrl);
+                    qrdata = paymentUrl;
+                } catch (NoSuchAlgorithmException ex) {
+                    Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (InvalidKeyException ex) {
+                    Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (UnsupportedEncodingException ex) {
                     Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            
+
+                System.out.println(qrdata);
+                ImageIcon qrIcon = new ImageIcon(generateQRCode(qrdata));
+                System.out.println(qrIcon);
+                JLabel qrLabel = new JLabel(qrIcon);
+                ChuyenKhoanForm.setSize(400, 400);
+                qrLabel.setHorizontalAlignment(SwingConstants.CENTER); // Set horizontal alignment to center
+                pane.add(qrLabel, BorderLayout.CENTER); // Add the label to the center of the panel
+                pane.add(qrLabel);
+
+                pane.setSize(400, 400);
+                pane.setBackground(Color.WHITE);
+                pane.setVisible(true);
+                ChuyenKhoanForm.add(pane);
+                ChuyenKhoanForm.setModal(true);
+                ChuyenKhoanForm.setLocationRelativeTo(null);
+                ChuyenKhoanForm.setVisible(true);
+            } catch (WriterException ex) {
+                Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
             }
+
+        }
         cbxLoaiMonAn.removeAllItems();
     }//GEN-LAST:event_NextPage5ActionPerformed
 
     private void NextPage2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextPage2ActionPerformed
 
         if (tongDonBanHienTai >= donGiaBanToiThieu) {
-        Page2.setVisible(false);
-        Page3.setVisible(true);
+            Page2.setVisible(false);
+            Page3.setVisible(true);
         } else {
             Message("Lỗi! Tổng đơn bàn hiện tại phải lớn hơn hoặc bằng đơn bàn tối thiểu.", JOptionPane.WARNING_MESSAGE);
         }
@@ -2745,12 +2742,11 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                 if (Integer.parseInt(DichVuTable.getValueAt(row, 3).toString()) == 0) {
                     defaultTableModelDV.setValueAt(1, row, 3);
                 }
-                if (Integer.parseInt(DichVuTable.getValueAt(row, 3).toString()) < 0)
+                if (Integer.parseInt(DichVuTable.getValueAt(row, 3).toString()) < 0) {
                     defaultTableModelDV.setValueAt(0, row, 3);
+                }
 //                CTDichVus.add(new DTDichVu(Integer.parseInt(DichVuTable.getValueAt(row, 3).toString()), chon, maDichVu, tenDichVu, donGia));
-            }
-            else
-            {
+            } else {
                 defaultTableModelDV.setValueAt(0, row, 3);
             }
 //            } else {
@@ -2864,10 +2860,9 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         String maSanh = mapMaSanh.get(inputSanh.getSelectedItem().toString());
 
         String userName = systemDAO.getInstance().getUser();
-        if (Long.parseLong(inputSoTienDaNhan.getText()) >= tienCoc)
-        {
+        if (Long.parseLong(inputSoTienDaNhan.getText()) >= tienCoc) {
             int kq1 = PhieuDatTiecCuoiDAO.getInstance().Insert(new PhieuDatTiecCuoi(maTiecCuoi, ngayDat, ngayDaiTiec, soLuongBan, soLuongBanDuTru, tongDonBanHienTai, tongtienban,
-                tongTienDV, tongtienHD, (int) tienCoc, conLai, tenCoDau, tenChuRe, sdt, maCa, maSanh, userName));
+                    tongTienDV, tongtienHD, (int) tienCoc, conLai, tenCoDau, tenChuRe, sdt, maCa, maSanh, userName));
             int flag = 1;
             if (kq1 > 0) {
                 int kq2 = 0;
@@ -2929,12 +2924,9 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
             inputSLDT.setValue(0);
             inputNgayDaiTiec.setDate(null);
             ThanhToanTienMat.setVisible(false);
-        }
-        else
-        {
+        } else {
             Message("Quy khách không đủ tiền để thanh toán!", JOptionPane.INFORMATION_MESSAGE);
         }
-        
 
 
     }//GEN-LAST:event_btnXacNhanActionPerformed
@@ -2990,7 +2982,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         if (kq1 > 0) {
             int kq2 = 0;
             for (DTMonAn x : CTMonAns) {
-                kq2 = ChiTietMonAnDAO.getInstance().Insert(new ChiTietMonAn( maTiecCuoi, x.getMaMonAn(), x.getDonGia(), tongSLB, x.getGhiChu()));
+                kq2 = ChiTietMonAnDAO.getInstance().Insert(new ChiTietMonAn(maTiecCuoi, x.getMaMonAn(), x.getDonGia(), tongSLB, x.getGhiChu()));
                 if (kq2 == 0) {
                     flag = 0;
                     break;
@@ -3027,7 +3019,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                 map.put("tienThua", (double) 0.0);
                 map.put("tyLePhat", tyLePhat);
                 map.put("thoiGianPhat", thoiGianPhat);
-                
+
                 JasperPrint p = JasperFillManager.fillReport(absolutePath, map, con);
                 JasperViewer v = new JasperViewer(p, false);
                 v.setVisible(true);
@@ -3051,10 +3043,10 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
 
     private void inputSLDTStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_inputSLDTStateChanged
         // TODO add your handling code here:
-           if (SoLuongBanToiDa != 0) {
-               int limit = SoLuongBanToiDa - Integer.parseInt(inputSoLuongBan.getValue().toString());
-            if (Integer.parseInt( inputSLDT.getValue().toString()) > limit) {
-               inputSLDT.setValue(limit);
+        if (SoLuongBanToiDa != 0) {
+            int limit = SoLuongBanToiDa - Integer.parseInt(inputSoLuongBan.getValue().toString());
+            if (Integer.parseInt(inputSLDT.getValue().toString()) > limit) {
+                inputSLDT.setValue(limit);
             }
         } else {
             inputSLDT.setValue(0);
