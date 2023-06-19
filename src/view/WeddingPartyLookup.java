@@ -144,7 +144,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         //
         CreateTable();
 
-        ReceptionDate.setDateFormatString("dd/MM/yyyy");
+        ReceptionDate.setDateFormatString("dd-MM-yyyy");
         DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
         renderer.setHorizontalAlignment(SwingConstants.RIGHT); // Set the desired horizontal alignment
 
@@ -162,6 +162,13 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 //        DVSVTable.setCellSelectionEnabled(true);
         DVSVTable.setEditingColumn(3);
     }
+    
+    public String setTypeDay_DD_MM_YYYY(String date)
+    {
+        String[]arr  = date.split("-");
+        String newDate = arr[2] + "-" + arr[1] + "-" + arr[0];
+        return newDate;
+    }
 
     public void CreateTable() {
         defaultTableModelSearch = (DefaultTableModel) DatTiecTable.getModel();
@@ -169,7 +176,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         for (PhieuDatTiecCuoi x : pdtcs) {
 //            Sanh sanh0 = SanhDAO.getInstance().SelectBy_Id(x.getMaSanh());
 //            Ca ca0 = CaDAO.getInstance().SelectBy_Id(x.getMaCa());
-            defaultTableModelSearch.addRow(new Object[]{++i, x.getMaTiecCuoi(), x.getTenChuRe(), x.getTenCoDau(), mapTenLoaiSanh.get(x.getMaSanh()), x.getNgayDaiTiec(), mapGio.get(x.getMaCa()), x.getSoLuongBan(), x.getUserName()});
+            defaultTableModelSearch.addRow(new Object[]{++i, x.getMaTiecCuoi(), x.getTenChuRe(), x.getTenCoDau(), mapTenLoaiSanh.get(x.getMaSanh()),setTypeDay_DD_MM_YYYY(x.getNgayDaiTiec()), mapGio.get(x.getMaCa()), x.getSoLuongBan(), x.getUserName()});
         }
     }
 
@@ -190,7 +197,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                     System.out.println(x.getMaCa());
                     if (mapTenLoaiSanh.get(x.getMaSanh()).toLowerCase().contains(hallName.toLowerCase())
                             && mapGio.get(x.getMaCa()).toLowerCase().contains(time.toLowerCase())) {
-                        defaultTableModelSearch.addRow(new Object[]{++i, x.getMaTiecCuoi(), x.getTenChuRe(), x.getTenCoDau(), mapTenLoaiSanh.get(x.getMaSanh()), x.getNgayDaiTiec(), mapGio.get(x.getMaCa()), x.getSoLuongBan(), x.getUserName()});
+                        defaultTableModelSearch.addRow(new Object[]{++i, x.getMaTiecCuoi(), x.getTenChuRe(), x.getTenCoDau(), mapTenLoaiSanh.get(x.getMaSanh()), setTypeDay_DD_MM_YYYY(x.getNgayDaiTiec()), mapGio.get(x.getMaCa()), x.getSoLuongBan(), x.getUserName()});
                     }
                 }
             }
@@ -204,7 +211,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 //                    Ca ca0 = CaDAO.getInstance().SelectBy_Id(x.getMaCa());
                     if (mapTenLoaiSanh.get(x.getMaSanh()).toLowerCase().contains(hallName.toLowerCase())
                             && mapGio.get(x.getMaCa()).toLowerCase().contains(time.toLowerCase())) {
-                        defaultTableModelSearch.addRow(new Object[]{++i, x.getMaTiecCuoi(), x.getTenChuRe(), x.getTenCoDau(), mapTenLoaiSanh.get(x.getMaSanh()), x.getNgayDaiTiec(), mapGio.get(x.getMaCa()), x.getSoLuongBan(), x.getUserName()});
+                        defaultTableModelSearch.addRow(new Object[]{++i, x.getMaTiecCuoi(), x.getTenChuRe(), x.getTenCoDau(), mapTenLoaiSanh.get(x.getMaSanh()), setTypeDay_DD_MM_YYYY(x.getNgayDaiTiec()), mapGio.get(x.getMaCa()), x.getSoLuongBan(), x.getUserName()});
                     }
                 }
             }
@@ -217,7 +224,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 //                    Ca ca0 = CaDAO.getInstance().SelectBy_Id(x.getMaCa());
                     if (mapTenLoaiSanh.get(x.getMaSanh()).toLowerCase().contains(hallName.toLowerCase())
                             && mapGio.get(x.getMaCa()).toLowerCase().contains(time.toLowerCase())) {
-                        defaultTableModelSearch.addRow(new Object[]{++i, x.getMaTiecCuoi(), x.getTenChuRe(), x.getTenCoDau(), mapTenLoaiSanh.get(x.getMaSanh()), x.getNgayDaiTiec(), mapGio.get(x.getMaCa()), x.getSoLuongBan(), x.getUserName()});
+                        defaultTableModelSearch.addRow(new Object[]{++i, x.getMaTiecCuoi(), x.getTenChuRe(), x.getTenCoDau(), mapTenLoaiSanh.get(x.getMaSanh()), setTypeDay_DD_MM_YYYY(x.getNgayDaiTiec()), mapGio.get(x.getMaCa()), x.getSoLuongBan(), x.getUserName()});
                     }
                 }
             }
