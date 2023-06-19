@@ -678,16 +678,16 @@ public void notification(int check){
                  if (missingNumber != -1){
                      // Use the missing number
                      if(missingNumber < 10){
-                          maloaimonan = "ML0" + String.valueOf(missingNumber);
+                          maloaimonan = "ML000" + String.valueOf(missingNumber);
                      }else if(missingNumber < 100){
-                          maloaimonan = "ML" + String.valueOf(missingNumber);
+                          maloaimonan = "ML00" + String.valueOf(missingNumber);
                      }
                  }else{
                      // Use the current count
                      if(macount < 10){
-                          maloaimonan = "ML0" + String.valueOf(macount);
+                          maloaimonan = "ML000" + String.valueOf(macount);
                      }else if(macount < 100){
-                          maloaimonan = "ML" + String.valueOf(macount);
+                          maloaimonan = "ML00" + String.valueOf(macount);
                      }
                  }
                  LoaiMonAn lm = new LoaiMonAn(maloaimonan,tenloaimonan);
