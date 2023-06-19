@@ -2487,47 +2487,51 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
     }
     private void NextPage5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextPage5ActionPerformed
         // TODO add your handling code here:
-        if (cbxPTTT.getSelectedItem().equals("Tiền mặt")) {
+        if (cbxPTTT.getSelectedItem().equals("Tiền mặt")) 
+        {
             ThanhToanTienMat.setLocationRelativeTo(null);
             ThanhToanTienMat.setVisible(true);
             inputSoTienDaNhan.setText(String.valueOf((int) tienCoc));
-        } else if (cbxPTTT.getSelectedItem().equals("Chuyển khoản")) {
-            try {
-                JPanel pane = new JPanel();
-                String qrdata = "";
+        } 
+        else 
+            if (cbxPTTT.getSelectedItem().equals("Chuyển khoản")) 
+            {
                 try {
-                    String paymentUrl = generatePaymentUrl("", websiteCode, getCurrentDateTime(), String.valueOf(((long) tienCoc) * 100), "Thanh toan tiec cuoi", "https://courses.uit.edu.vn/course/view.php?id=10493#section-3");
-                    System.out.println(paymentUrl);
-                    qrdata = paymentUrl;
-                } catch (NoSuchAlgorithmException ex) {
-                    Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (InvalidKeyException ex) {
-                    Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (UnsupportedEncodingException ex) {
+                    JPanel pane = new JPanel();
+                    String qrdata = "";
+                    try {
+                        String paymentUrl = generatePaymentUrl("", websiteCode, getCurrentDateTime(), String.valueOf(((long) tienCoc) * 100), "Thanh toan tiec cuoi", "https://courses.uit.edu.vn/course/view.php?id=10493#section-3");
+                        System.out.println(paymentUrl);
+                        qrdata = paymentUrl;
+                    } catch (NoSuchAlgorithmException ex) {
+                        Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (InvalidKeyException ex) {
+                        Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (UnsupportedEncodingException ex) {
+                        Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    System.out.println(qrdata);
+                    ImageIcon qrIcon = new ImageIcon(generateQRCode(qrdata));
+                    System.out.println(qrIcon);
+                    JLabel qrLabel = new JLabel(qrIcon);
+                    ChuyenKhoanForm.setSize(400, 400);
+                    qrLabel.setHorizontalAlignment(SwingConstants.CENTER); // Set horizontal alignment to center
+                    pane.add(qrLabel, BorderLayout.CENTER); // Add the label to the center of the panel
+                    pane.add(qrLabel);
+
+                    pane.setSize(400, 400);
+                    pane.setBackground(Color.WHITE);
+                    pane.setVisible(true);
+                    ChuyenKhoanForm.add(pane);
+                    ChuyenKhoanForm.setModal(true);
+                    ChuyenKhoanForm.setLocationRelativeTo(null);
+                    ChuyenKhoanForm.setVisible(true);
+                } catch (WriterException ex) {
                     Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
-                System.out.println(qrdata);
-                ImageIcon qrIcon = new ImageIcon(generateQRCode(qrdata));
-                System.out.println(qrIcon);
-                JLabel qrLabel = new JLabel(qrIcon);
-                ChuyenKhoanForm.setSize(400, 400);
-                qrLabel.setHorizontalAlignment(SwingConstants.CENTER); // Set horizontal alignment to center
-                pane.add(qrLabel, BorderLayout.CENTER); // Add the label to the center of the panel
-                pane.add(qrLabel);
-
-                pane.setSize(400, 400);
-                pane.setBackground(Color.WHITE);
-                pane.setVisible(true);
-                ChuyenKhoanForm.add(pane);
-                ChuyenKhoanForm.setModal(true);
-                ChuyenKhoanForm.setLocationRelativeTo(null);
-                ChuyenKhoanForm.setVisible(true);
-            } catch (WriterException ex) {
-                Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
-            }
             
-        }
+            }
         cbxLoaiMonAn.removeAllItems();
     }//GEN-LAST:event_NextPage5ActionPerformed
 
@@ -2854,70 +2858,77 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         String maSanh = mapMaSanh.get(inputSanh.getSelectedItem().toString());
 
         String userName = systemDAO.getInstance().getUser();
-
-        int kq1 = PhieuDatTiecCuoiDAO.getInstance().Insert(new PhieuDatTiecCuoi(maTiecCuoi, ngayDat, ngayDaiTiec, soLuongBan, soLuongBanDuTru, tongDonBanHienTai, tongtienban,
+        if (Long.parseLong(inputSoTienDaNhan.getText()) >= tienCoc)
+        {
+            int kq1 = PhieuDatTiecCuoiDAO.getInstance().Insert(new PhieuDatTiecCuoi(maTiecCuoi, ngayDat, ngayDaiTiec, soLuongBan, soLuongBanDuTru, tongDonBanHienTai, tongtienban,
                 tongTienDV, tongtienHD, (int) tienCoc, conLai, tenCoDau, tenChuRe, sdt, maCa, maSanh, userName));
-        int flag = 1;
-        if (kq1 > 0) {
-            int kq2 = 0;
-            for (DTMonAn x : CTMonAns) {
-                kq2 = ChiTietMonAnDAO.getInstance().Insert(new ChiTietMonAn(maTiecCuoi, x.getMaMonAn(), x.getDonGia(), tongSLB, x.getGhiChu()));
-                if (kq2 == 0) {
-                    flag = 0;
-                    break;
-                }
-            }
-            if (kq2 > 0) {
-                int kq3 = 0;
-                for (DTDichVu x : CTDichVus) {
-                    int temp = x.getSoLuong() * x.getDonGia();
-                    kq3 = ChiTietDichVuDAO.getInstance().Insert(new ChiTietDichVu(maTiecCuoi, x.getMaDichVu(), x.getSoLuong(), x.getDonGia(), temp));
-                    if (kq3 == 0) {
+            int flag = 1;
+            if (kq1 > 0) {
+                int kq2 = 0;
+                for (DTMonAn x : CTMonAns) {
+                    kq2 = ChiTietMonAnDAO.getInstance().Insert(new ChiTietMonAn(maTiecCuoi, x.getMaMonAn(), x.getDonGia(), tongSLB, x.getGhiChu()));
+                    if (kq2 == 0) {
                         flag = 0;
                         break;
                     }
                 }
+                if (kq2 > 0) {
+                    int kq3 = 0;
+                    for (DTDichVu x : CTDichVus) {
+                        int temp = x.getSoLuong() * x.getDonGia();
+                        kq3 = ChiTietDichVuDAO.getInstance().Insert(new ChiTietDichVu(maTiecCuoi, x.getMaDichVu(), x.getSoLuong(), x.getDonGia(), temp));
+                        if (kq3 == 0) {
+                            flag = 0;
+                            break;
+                        }
+                    }
+
+                }
 
             }
 
-        }
+            if (flag > 0) {
+                File file = new File("src/report/rptPhieuDatTiec.jasper");
+                String absolutePath = file.getAbsolutePath();
+                try {
+                    HashMap<String, Object> map = new HashMap<>();
+                    Connection con = JDBCUtil.getConnection();
+                    map.put("maTiecCuoi", maTiecCuoi);
+                    map.put("tienKhachTra", Double.parseDouble(inputSoTienDaNhan.getText()));
+                    map.put("tienThua", Double.parseDouble(inputSoTienDaNhan.getText()) - tienCoc);
+                    map.put("tyLePhat", tyLePhat);
+                    map.put("thoiGianPhat", thoiGianPhat);
+                    System.out.println(maTiecCuoi);
+                    System.out.println(Double.parseDouble(inputSoTienDaNhan.getText()));
+                    System.out.println(Double.parseDouble(inputSoTienDaNhan.getText()) - tienCoc);
+                    System.out.println(tyLePhat);
+                    System.out.println(thoiGianPhat);
+                    JasperPrint p = JasperFillManager.fillReport(absolutePath, map, con);
+                    JasperViewer v = new JasperViewer(p, false);
+                    v.setVisible(true);
 
-        if (flag > 0) {
-            File file = new File("src/report/rptPhieuDatTiec.jasper");
-            String absolutePath = file.getAbsolutePath();
-            try {
-                HashMap<String, Object> map = new HashMap<>();
-                Connection con = JDBCUtil.getConnection();
-                map.put("maTiecCuoi", maTiecCuoi);
-                map.put("tienKhachTra", Double.parseDouble(inputSoTienDaNhan.getText()));
-                map.put("tienThua", Double.parseDouble(inputSoTienDaNhan.getText()) - tienCoc);
-                map.put("tyLePhat", tyLePhat);
-                map.put("thoiGianPhat", thoiGianPhat);
-                System.out.println(maTiecCuoi);
-                System.out.println(Double.parseDouble(inputSoTienDaNhan.getText()));
-                System.out.println(Double.parseDouble(inputSoTienDaNhan.getText()) - tienCoc);
-                System.out.println(tyLePhat);
-                System.out.println(thoiGianPhat);
-                JasperPrint p = JasperFillManager.fillReport(absolutePath, map, con);
-                JasperViewer v = new JasperViewer(p, false);
-                v.setVisible(true);
+                } catch (JRException ex) {
+                    System.out.println(ex);
 
-            } catch (JRException ex) {
-                System.out.println(ex);
-
+                }
             }
-        }
 
-        Page1.setVisible(true);
-        Page4.setVisible(false);
-        Page1();
-        inputTenChuRe.setText("");
-        inputTenCoDau.setText("");
-        inputSDT.setText("");
-        inputSoLuongBan.setValue(0);
-        inputSLDT.setValue(0);
-        inputNgayDaiTiec.setDate(null);
-        ThanhToanTienMat.setVisible(false);
+            Page1.setVisible(true);
+            Page4.setVisible(false);
+            Page1();
+            inputTenChuRe.setText("");
+            inputTenCoDau.setText("");
+            inputSDT.setText("");
+            inputSoLuongBan.setValue(0);
+            inputSLDT.setValue(0);
+            inputNgayDaiTiec.setDate(null);
+            ThanhToanTienMat.setVisible(false);
+        }
+        else
+        {
+            Message("Quy khách không đủ tiền để thanh toán!", JOptionPane.INFORMATION_MESSAGE);
+        }
+        
 
 
     }//GEN-LAST:event_btnXacNhanActionPerformed
@@ -2964,7 +2975,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
 
         String maSanh = mapMaSanh.get(inputSanh.getSelectedItem().toString());
 
-        String userName = "taitai";
+        String userName = systemDAO.getInstance().getUser();
 
         int kq1 = PhieuDatTiecCuoiDAO.getInstance().Insert(new PhieuDatTiecCuoi(maTiecCuoi, ngayDat, ngayDaiTiec, soLuongBan, soLuongBanDuTru, tongDonBanHienTai, tongtienban,
                 tongTienDV, tongtienHD, (int) tienCoc, conLai, tenCoDau, tenChuRe, sdt, maCa, maSanh, userName));
@@ -2973,7 +2984,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         if (kq1 > 0) {
             int kq2 = 0;
             for (DTMonAn x : CTMonAns) {
-                kq2 = ChiTietMonAnDAO.getInstance().Insert(new ChiTietMonAn(maTiecCuoi, x.getMaMonAn(), x.getDonGia(), tongSLB, x.getGhiChu()));
+                kq2 = ChiTietMonAnDAO.getInstance().Insert(new ChiTietMonAn( maTiecCuoi, x.getMaMonAn(), x.getDonGia(), tongSLB, x.getGhiChu()));
                 if (kq2 == 0) {
                     flag = 0;
                     break;
@@ -3000,16 +3011,17 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
             try {
                 HashMap<String, Object> map = new HashMap<>();
                 Connection con = JDBCUtil.getConnection();
-                map.put("maTiecCuoi", maTiecCuoi);
-                map.put("tienKhachTra", Double.parseDouble(inputSoTienDaNhan.getText()));
-                map.put("tienThua", Double.parseDouble(inputSoTienDaNhan.getText()) - tienCoc);
-                map.put("tyLePhat", tyLePhat);
-                map.put("thoiGianPhat", thoiGianPhat);
                 System.out.println(maTiecCuoi);
                 System.out.println(Double.parseDouble(inputSoTienDaNhan.getText()));
                 System.out.println(Double.parseDouble(inputSoTienDaNhan.getText()) - tienCoc);
                 System.out.println(tyLePhat);
                 System.out.println(thoiGianPhat);
+                map.put("maTiecCuoi", maTiecCuoi);
+                map.put("tienKhachTra", (double) tienCoc);
+                map.put("tienThua", (double) 0.0);
+                map.put("tyLePhat", tyLePhat);
+                map.put("thoiGianPhat", thoiGianPhat);
+                
                 JasperPrint p = JasperFillManager.fillReport(absolutePath, map, con);
                 JasperViewer v = new JasperViewer(p, false);
                 v.setVisible(true);
