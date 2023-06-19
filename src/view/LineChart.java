@@ -13,23 +13,26 @@ import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import model.ChiTietBaoCao;
 import model.BaoCaoDoanhThu;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.data.category.DefaultCategoryDataset;
+
+
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.CategoryAxis;
-import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.labels.ItemLabelAnchor;
-import org.jfree.chart.labels.ItemLabelPosition;
-import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
-import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PiePlot;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.renderer.category.BarRenderer;
-import org.jfree.chart.ui.TextAnchor;
-import org.jfree.data.category.CategoryDataset;
-import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 /**
  *
@@ -56,12 +59,15 @@ public class LineChart extends javax.swing.JInternalFrame {
                     DefaultPieDataset dataset = new DefaultPieDataset();
                     for(ChiTietBaoCao a0 : ctbc)
                     {   
-                        dataset.setValue("Ngày " + a0.getNgay().substring(a0.getNgay().length()-2), new Double(a0.getTiLe()*100));
+                        dataset.setValue("Ngày " + a0.getNgay().substring(a0.getNgay().length()-2), (double) (a0.getTiLe()*100));
                     }
                     JFreeChart chart = ChartFactory.createPieChart(
                             "", dataset, true, true, false);
                     PiePlot plot = (PiePlot) chart.getPlot();
-                    plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0}: ({2})"));
+                    DecimalFormat df = new DecimalFormat("0.00%");
+                    NumberFormat nf = NumberFormat.getPercentInstance(Locale.FRANCE);
+                    df.setMaximumFractionDigits(2);
+                    plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0}: {2}",df, df));
                     plot.setLabelBackgroundPaint(Color.PINK);
                     ChartPanel panel = new ChartPanel(chart);  
                     setContentPane(panel);

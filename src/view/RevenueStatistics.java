@@ -8,6 +8,7 @@ import dao.ChiTietBaoCaoDAO;
 import dao.BaoCaoDoanhThuDAO;
 import java.awt.Color;
 import java.awt.Font;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -67,6 +68,13 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
 //    setContentPane(panel);
     }    
     
+    public double RoundDoubleExample(double number)
+    {
+        DecimalFormat df = new DecimalFormat("#.##");
+        double roundedNumber = Double.parseDouble(df.format(number));
+        return roundedNumber;
+    }
+    
     public void CreateDataTableByDay(int month, int year) {
         NumberFormat currencyFormatVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
         defaultTableModel_RStatistics = (DefaultTableModel) ThongKeDoanhThuTable.getModel();
@@ -74,7 +82,7 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
         int i = 0;
         for (ChiTietBaoCao x : ctbc) {
             String[] arrDate = x.getNgay().split("-");
-            defaultTableModel_RStatistics.addRow(new Object[]{++i, arrDate[2], x.getSoLuongTiec(), String.valueOf(currencyFormatVN.format(x.getDoanhThu())) , String.valueOf(Math.round(x.getTiLe()*1000)/10.0) + "%"});
+            defaultTableModel_RStatistics.addRow(new Object[]{++i, arrDate[2], x.getSoLuongTiec(), String.valueOf(currencyFormatVN.format(x.getDoanhThu())) , String.valueOf(RoundDoubleExample(x.getTiLe()*100)) + "%"});
         }
     }
     
