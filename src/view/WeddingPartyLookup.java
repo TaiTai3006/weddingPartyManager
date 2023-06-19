@@ -27,6 +27,7 @@ import dao.MonAnDAO;
 import dao.SanhDAO;
 import dao.PhieuDatTiecCuoiDAO;
 import dao.ThamSoDAO;
+import dao.systemDAO;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.NumberFormat;
@@ -325,6 +326,8 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         defaultTableDV.setRowCount(0);
         CreateTableXNDV_ADD();
     }
+    
+    private int check = 0;
 
     public void CreateTableXNDV() {
         int selectRow = getSelectRow();
@@ -337,6 +340,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                 defaultTableXNDV.addRow(new Object[]{++i, ct.getMaDichVu(), ct.getTenDichVu(), ct.getSoLuong(), currencyFormatVN.format(ct.getDonGiaDichVu())});
             }
         }
+        check++;
     }
 
     public void ReloadDataXNDV() {
@@ -1184,19 +1188,27 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             DatTiecTable.setSelectionBackground(new java.awt.Color(69, 96, 134));
             jScrollPane1.setViewportView(DatTiecTable);
             if (DatTiecTable.getColumnModel().getColumnCount() > 0) {
-                DatTiecTable.getColumnModel().getColumn(0).setPreferredWidth(18);
+                DatTiecTable.getColumnModel().getColumn(0).setMinWidth(45);
+                DatTiecTable.getColumnModel().getColumn(0).setPreferredWidth(45);
+                DatTiecTable.getColumnModel().getColumn(0).setMaxWidth(45);
                 DatTiecTable.getColumnModel().getColumn(1).setMinWidth(100);
                 DatTiecTable.getColumnModel().getColumn(1).setPreferredWidth(100);
                 DatTiecTable.getColumnModel().getColumn(1).setMaxWidth(100);
-                DatTiecTable.getColumnModel().getColumn(4).setPreferredWidth(50);
+                DatTiecTable.getColumnModel().getColumn(4).setMinWidth(170);
+                DatTiecTable.getColumnModel().getColumn(4).setPreferredWidth(170);
+                DatTiecTable.getColumnModel().getColumn(4).setMaxWidth(170);
                 DatTiecTable.getColumnModel().getColumn(5).setMinWidth(100);
                 DatTiecTable.getColumnModel().getColumn(5).setPreferredWidth(100);
                 DatTiecTable.getColumnModel().getColumn(5).setMaxWidth(100);
-                DatTiecTable.getColumnModel().getColumn(6).setPreferredWidth(70);
+                DatTiecTable.getColumnModel().getColumn(6).setMinWidth(80);
+                DatTiecTable.getColumnModel().getColumn(6).setPreferredWidth(80);
+                DatTiecTable.getColumnModel().getColumn(6).setMaxWidth(80);
                 DatTiecTable.getColumnModel().getColumn(7).setMinWidth(110);
                 DatTiecTable.getColumnModel().getColumn(7).setPreferredWidth(110);
                 DatTiecTable.getColumnModel().getColumn(7).setMaxWidth(110);
-                DatTiecTable.getColumnModel().getColumn(8).setPreferredWidth(60);
+                DatTiecTable.getColumnModel().getColumn(8).setMinWidth(100);
+                DatTiecTable.getColumnModel().getColumn(8).setPreferredWidth(100);
+                DatTiecTable.getColumnModel().getColumn(8).setMaxWidth(100);
             }
             DatTiecTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
             DatTiecTable.getTableHeader().setOpaque(false);
@@ -1672,14 +1684,17 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             lblSanh.setFont(new java.awt.Font("Arial", 2, 16)); // NOI18N
             lblSanh.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
             lblSanh.setText("Sảnh:");
+            lblSanh.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 
             lbldonGiaBan.setFont(new java.awt.Font("Arial", 2, 16)); // NOI18N
             lbldonGiaBan.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
             lbldonGiaBan.setText("Sảnh:");
+            lbldonGiaBan.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 
             lbltienCoc.setFont(new java.awt.Font("Arial", 2, 16)); // NOI18N
             lbltienCoc.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
             lbltienCoc.setText("Sảnh:");
+            lbltienCoc.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 
             javax.swing.GroupLayout lblsoLuongBanLayout = new javax.swing.GroupLayout(lblsoLuongBan);
             lblsoLuongBan.setLayout(lblsoLuongBanLayout);
@@ -1710,13 +1725,13 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lblsoLuongBanLayout.createSequentialGroup()
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(lblngayDaiTiec, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGap(18, 18, 18)
                     .addGroup(lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(TongTienHDValue)
                         .addComponent(TongTienBanValue)
                         .addComponent(jLabel22)
                         .addComponent(NgayDaiTiecValue))
-                    .addGap(118, 118, 118)
+                    .addGap(108, 108, 108)
                     .addGroup(lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(SoLuongBanDTValue)
                         .addComponent(jLabel29)
@@ -1725,35 +1740,37 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                     .addGap(29, 29, 29)
                     .addGroup(lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(lblCa, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
-                        .addComponent(lbltienConLai, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
+                        .addComponent(lbltienConLai, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lbltongTienDichVu, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblSoLuongBanDuTru, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGap(128, 128, 128)
+                    .addGap(111, 111, 111)
                     .addGroup(lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(ConLaiValue, javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(TongTienDVValue, javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(jLabel25, javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(CaValue, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(lblsoLuongBanLayout.createSequentialGroup()
+                            .addComponent(jLabel31)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lbltienCoc, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(lblsoLuongBanLayout.createSequentialGroup()
+                            .addComponent(jLabel15)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(lblSanh, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(lblsoLuongBanLayout.createSequentialGroup()
+                            .addComponent(jLabel21)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(lbldonGiaBan, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel31)
                         .addGroup(lblsoLuongBanLayout.createSequentialGroup()
+                            .addGap(108, 108, 108)
                             .addGroup(lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel21)
-                                .addComponent(jLabel15))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addGroup(lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(lblSanh, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
-                                .addComponent(lbldonGiaBan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lbltienCoc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGap(2, 2, 2)
-                            .addGroup(lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(lblsoLuongBanLayout.createSequentialGroup()
-                                    .addGap(108, 108, 108)
-                                    .addGroup(lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(SanhValue)
-                                        .addComponent(DonGiaBanValue)))
-                                .addComponent(TienCocValue, javax.swing.GroupLayout.Alignment.TRAILING))))
+                                .addComponent(SanhValue)
+                                .addComponent(DonGiaBanValue)))
+                        .addComponent(TienCocValue, javax.swing.GroupLayout.Alignment.TRAILING))
                     .addContainerGap())
             );
             lblsoLuongBanLayout.setVerticalGroup(
@@ -1764,10 +1781,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                             .addContainerGap()
                             .addGroup(lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel15)
-                                    .addComponent(lblSanh)
-                                    .addComponent(lblCa)))
+                                .addComponent(lblCa, javax.swing.GroupLayout.Alignment.TRAILING))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(lblsoLuongBanLayout.createSequentialGroup()
@@ -1780,21 +1794,13 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                                         .addComponent(TongTienHDValue)
                                         .addComponent(ConLaiValue)))
                                 .addGroup(lblsoLuongBanLayout.createSequentialGroup()
-                                    .addGroup(lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(SoLuongBanDTValue)
-                                            .addComponent(lblSoLuongBanDuTru))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(jLabel21)
-                                            .addComponent(lbldonGiaBan)))
+                                    .addGroup(lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(SoLuongBanDTValue)
+                                        .addComponent(lblSoLuongBanDuTru))
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addGroup(lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(jLabel29)
-                                            .addComponent(lbltongTienDichVu))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(jLabel31)
-                                            .addComponent(lbltienCoc)))
+                                    .addGroup(lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel29)
+                                        .addComponent(lbltongTienDichVu))
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addGroup(lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel35)
@@ -1831,7 +1837,19 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                                 .addGroup(lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(NgayDaiTiecValue)
                                     .addComponent(CaValue))
-                                .addComponent(SanhValue))))
+                                .addComponent(SanhValue)
+                                .addGroup(lblsoLuongBanLayout.createSequentialGroup()
+                                    .addGroup(lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel15)
+                                        .addComponent(lblSanh))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel21)
+                                        .addComponent(lbldonGiaBan))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(lblsoLuongBanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel31)
+                                        .addComponent(lbltienCoc))))))
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             );
 
@@ -1933,11 +1951,11 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             );
 
             lblmaPDTC.setFont(new java.awt.Font("Arial", 2, 16)); // NOI18N
-            lblmaPDTC.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+            lblmaPDTC.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             lblmaPDTC.setText("Mã phiếu đặt tiệc:");
 
             lblngayDatTiec.setFont(new java.awt.Font("Arial", 2, 16)); // NOI18N
-            lblngayDatTiec.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+            lblngayDatTiec.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             lblngayDatTiec.setText("Mã phiếu đặt tiệc:");
 
             javax.swing.GroupLayout PageThongTinDTLayout = new javax.swing.GroupLayout(PageThongTinDT);
@@ -1951,7 +1969,6 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                             .addGroup(PageThongTinDTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblsoLuongBan, javax.swing.GroupLayout.DEFAULT_SIZE, 1036, Short.MAX_VALUE)
                                 .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(PageThongTinDTLayout.createSequentialGroup()
                                     .addGroup(PageThongTinDTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1963,7 +1980,8 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                                             .addGap(136, 136, 136)
                                             .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGap(57, 57, 57)
-                                            .addComponent(lblngayDatTiec)))
+                                            .addComponent(lblngayDatTiec))
+                                        .addComponent(lblsoLuongBan, javax.swing.GroupLayout.PREFERRED_SIZE, 1026, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGap(0, 0, Short.MAX_VALUE)))
                             .addGap(78, 78, 78))
                         .addGroup(PageThongTinDTLayout.createSequentialGroup()
@@ -2154,7 +2172,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(lblTongTienBan, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addComponent(DonGiaBanValueTT))))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                     .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(NgayDTValueTT)
                         .addComponent(TongTienBanValueTT, javax.swing.GroupLayout.Alignment.TRAILING))
@@ -2245,7 +2263,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             jLabel46.setText("Số tiền cần thanh toán:");
 
             jLabel44.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-            jLabel44.setText("Tiền cọc (50%):");
+            jLabel44.setText("Tiền cọc:");
 
             jl_TienPhat.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
             jl_TienPhat.setText("Tiền phạt (1%):");
@@ -2309,7 +2327,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                         .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(lblSoTienThanhToan)
                             .addComponent(lblTienCoc)))
-                    .addContainerGap(703, Short.MAX_VALUE))
+                    .addContainerGap(713, Short.MAX_VALUE))
             );
             jPanel15Layout.setVerticalGroup(
                 jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2412,7 +2430,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                             .addGroup(PageTTHDTTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, 1072, Short.MAX_VALUE)
+                                .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, 1079, Short.MAX_VALUE)
                                 .addComponent(jPanel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING))
                             .addGap(0, 0, Short.MAX_VALUE)))
@@ -2532,6 +2550,11 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             DVSVTable.setFocusable(false);
             DVSVTable.setRowHeight(25);
             DVSVTable.setSelectionBackground(new java.awt.Color(69, 96, 134));
+            DVSVTable.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+                public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                    DVSVTablePropertyChange(evt);
+                }
+            });
             jScrollPane5.setViewportView(DVSVTable);
             if (DVSVTable.getColumnModel().getColumnCount() > 0) {
                 DVSVTable.getColumnModel().getColumn(0).setMinWidth(100);
@@ -2601,7 +2624,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                         .addComponent(btnDeleteXNDV, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGap(18, 18, 18)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
                     .addGroup(PageXNDVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(NextPageXNDV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(BackPageXNDV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -3105,6 +3128,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                     } else {
                         TongTenHHValueH.setText(String.valueOf(currencyFormatVN.format(tongTienBan0)));
                         TienCocValueH.setText(String.valueOf(currencyFormatVN.format(tienCoc)));
+                        CONLAI = tongTienBan0 - tienCoc;
                         ConLaiValueH.setText(String.valueOf(currencyFormatVN.format(tongTienBan0 - tienCoc)));
                     }
                     if (ChronoUnit.DAYS.between(dateNgayHuy, dateNgayDai) >= tgPhat) {
@@ -3292,10 +3316,13 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 
         double tiLePhat = 0;
         double tiLeDatCoc = 0;
+        lstThamSo = ThamSoDAO.getInstance().SelectAll();
         for (ThamSo ts : lstThamSo) {
             if (ts.getKiemTraPhat() == 1) {
                 tiLePhat = ts.getTiLePhat();
             }
+            else
+                tiLePhat = 0;
             tiLeDatCoc = ts.getTienDatCoc();
         }
         System.out.println(tiLePhat);
@@ -3303,15 +3330,15 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 
         LocalDate dateNgayThanhToan = LocalDate.parse(ngayHienTai);
         LocalDate dateNgayDaiTiec = LocalDate.parse(strNgayDaiTiec);
-
+        double tongPhat = 0;
         long ngayTre = ChronoUnit.DAYS.between(dateNgayDaiTiec, dateNgayThanhToan);
         if (ngayTre > 0) {
-            tiLePhat = ngayTre;
+            tongPhat = ngayTre*tiLePhat;
         } else {
-            tiLePhat = 0;
+            tongPhat = 0;
         }
-        jl_TienPhat.setText("Tiền phạt: (" + (long) tiLePhat + "%):");
-        double tienPhat = (tiLePhat * sumDV) / 100;
+        jl_TienPhat.setText("Tiền phạt: (" + (long) tongPhat + "%):");
+        double tienPhat = (tongPhat * (sumDV+tongTienBan)) / 100;
         tongTienHD = sumDV + tongTienBan + tienPhat;
         tienCoc = tongTienBan * tiLeDatCoc / 100;
 
@@ -3999,12 +4026,13 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             }
 
             if (Long.parseLong(inputSoTienDaNhan.getText()) >= conLai) {
-                String userName = "taitai";
+                String userName = systemDAO.getInstance().getUser();
+               
                 String maPDTC = String.valueOf(DatTiecTable.getValueAt(getSelectRow(), 1));
                 int kq = 0;
 
                 try {
-                    kq = HoaDonDAO.getInstance().Insert(new HoaDon(maHoaDon, maPDTC, ngayTT, tongTienDV, tienPhat, tongTienHoaDon, conLai, userName));
+                    kq = HoaDonDAO.getInstance().Insert(new HoaDon(maHoaDon, maPDTC, ngayTT, tongTienDV, tienPhat, tongTienHoaDon, CONLAI, userName));
                     if (kq != 0) {
                         Message("Thanh toán thành công!", JOptionPane.INFORMATION_MESSAGE);
                         ThanhToanTienMat.setVisible(false);
@@ -4045,20 +4073,15 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                         }
 
                         File file = new File("src/report/rptThanhToanHD.jasper");
-                        String absolutePath = file.getAbsolutePath();
+//                        String absolutePath = file.getAbsolutePath();
+                       String absolutePath = file.getAbsolutePath();
                         try {
                             HashMap<String, Object> map = new HashMap<>();
                             Connection con = JDBCUtil.getConnection();
                             map.put("maHD", maHoaDon);
-                            map.put("tienKhachTra", Double.parseDouble(inputSoTienDaNhan.getText()));
-                            map.put("tienThua", Double.parseDouble(inputSoTienDaNhan.getText()) - CONLAI);
-//                            map.put("tyLePhat", tyLePhat);
-//                            map.put("thoiGianPhat", thoiGianPhat);
-                            System.out.println(maHoaDon);
-                            System.out.println(Long.parseLong(inputSoTienDaNhan.getText()));
-                            System.out.println(Long.parseLong(inputSoTienDaNhan.getText()) - conLai);
-//                            System.out.println(tyLePhat);
-//                            System.out.println(thoiGianPhat);
+                            map.put("tienKhachTra", (double) CONLAI);
+                            map.put("tienThua", 0.0);
+
                             JasperPrint p = JasperFillManager.fillReport(absolutePath, map, con);
                             JasperViewer v = new JasperViewer(p, false);
                             v.setVisible(true);
@@ -4115,12 +4138,13 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             }
 
             if (Long.parseLong(inputSoTienDaNhan.getText()) >= conLai) {
-                String userName = "taitai";
+                String userName = systemDAO.getInstance().getUser();
+                
                 String maPDTC = String.valueOf(DatTiecTable.getValueAt(getSelectRow(), 1));
                 int kq = 0;
 
                 try {
-                    kq = HoaDonDAO.getInstance().Insert(new HoaDon(maHoaDon, maPDTC, ngayTT, tongTienDV, tienPhat, tongTienHoaDon, conLai, userName));
+                    kq = HoaDonDAO.getInstance().Insert(new HoaDon(maHoaDon, maPDTC, ngayTT, tongTienDV, tienPhat, tongTienHoaDon, CONLAI, userName));
                     if (kq != 0) {
                         Message("Thanh toán thành công!", JOptionPane.INFORMATION_MESSAGE);
 
@@ -4139,7 +4163,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                             Connection con = JDBCUtil.getConnection();
                             map.put("maHD", maHoaDon);
                             map.put("tienKhachTra", Double.parseDouble(inputSoTienDaNhan.getText()));
-                            map.put("tienThua", Double.parseDouble(inputSoTienDaNhan.getText()) - conLai);
+                            map.put("tienThua", Double.parseDouble(inputSoTienDaNhan.getText()) - CONLAI);
 
                             JasperPrint p = JasperFillManager.fillReport(absolutePath, map, con);
                             JasperViewer v = new JasperViewer(p, false);
@@ -4272,12 +4296,12 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                 Logger.getLogger(WeddingPartyLookup.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            String userName = "taitai";
+            String userName = systemDAO.getInstance().getUser();
             String maPDTC = String.valueOf(DatTiecTable.getValueAt(getSelectRow(), 1));
             int kq = 0;
 
             try {
-                kq = HoaDonDAO.getInstance().Insert(new HoaDon(maHoaDon, maPDTC, ngayTT, tongTienDV, tienPhat, tongTienHoaDon, conLai, userName));
+                kq = HoaDonDAO.getInstance().Insert(new HoaDon(maHoaDon, maPDTC, ngayTT, tongTienDV, tienPhat, tongTienHoaDon, CONLAI, userName));
                 if (kq != 0) {
                     Message("Thanh toán thành công!", JOptionPane.INFORMATION_MESSAGE);
                     ThanhToanTienMat.setVisible(false);
@@ -4287,6 +4311,66 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                     PageThongTinDT.setVisible(false);
                     ChuyenKhoanForm.setVisible(false);
                     ReloadDataTable();
+                    
+                    ArrDichVuSuDung = getDataFromTableDVHD();
+
+                        // Chuyển đổi chuỗi thành số
+                        int check = 0;
+                        try {
+                            for (int i = 0; i < ArrDichVuSuDung.size(); i++) {
+                                long donGia = 0;
+                                String currencyString = ArrDichVuSuDung.get(i)[4];
+                                // Loại bỏ các ký tự không cần thiết khỏi chuỗi số tiền
+                                String cleanedString = currencyString.replaceAll("[^0-9]", "");
+                                try {
+                                    donGia = Long.parseLong(cleanedString);
+//                                    System.out.println("Số: " + value);
+                                } catch (NumberFormatException e) {
+                                    System.out.println("Không thể chuyển đổi chuỗi thành số.");
+                                }
+                                System.out.println(maHoaDon + "     " + ArrDichVuSuDung.get(i)[1] + "     " + ArrDichVuSuDung.get(i)[3] + "     " + donGia);
+                                check = ChiTiet_DV_ThanhToanDAO.getInstance().InsertData(maHoaDon, ArrDichVuSuDung.get(i)[1], ArrDichVuSuDung.get(i)[3], donGia);
+                            }
+
+                            if (check != 0) {
+
+                            } else {
+                                System.out.println("không thêm dv thanh toán được");
+                            }
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                            System.out.println("Cũng là lỗi! Thêm hóa đơn lỗi");
+                            Message("Thanh toán không thành công nha!", JOptionPane.ERROR_MESSAGE);
+                        }
+                    
+                    
+                    
+                    File file = new File("src/report/rptThanhToanHD.jasper");
+                        String absolutePath = file.getAbsolutePath();
+                        try {
+                            HashMap<String, Object> map = new HashMap<>();
+                            Connection con = JDBCUtil.getConnection();
+                            map.put("maHD", maHoaDon);
+                            map.put("tienKhachTra", (double) CONLAI);
+                            map.put("tienThua", 0.0);
+//                            map.put("tyLePhat", tyLePhat);
+//                            map.put("thoiGianPhat", thoiGianPhat);
+                            System.out.println(maHoaDon);
+                            System.out.println(CONLAI);
+                            System.out.println(0.0);
+//                            System.out.println(tyLePhat);
+//                            System.out.println(thoiGianPhat);
+                            JasperPrint p = JasperFillManager.fillReport(absolutePath, map, con);
+                            JasperViewer v = new JasperViewer(p, false);
+                            v.setVisible(true);
+
+                        } catch (JRException ex) {
+                            System.out.println(ex);
+
+                    }
+                    
+                    
+                    
                 } else {
                     System.out.println("Thêm hóa đơn lỗi");
                     Message("Thanh toán không thành công!", JOptionPane.ERROR_MESSAGE);
@@ -4296,6 +4380,12 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                 System.out.println("Cũng là lỗi! Thêm hóa đơn lỗi");
                 Message("Thanh toán không thành công nha!", JOptionPane.ERROR_MESSAGE);
             }
+            
+            
+            
+            
+            
+            
 
         } else {
             //loại hủy tiệc cưới
@@ -4332,12 +4422,12 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             }
 
             {
-                String userName = "taitai";
+                String userName = systemDAO.getInstance().getUser();
                 String maPDTC = String.valueOf(DatTiecTable.getValueAt(getSelectRow(), 1));
                 int kq = 0;
 
                 try {
-                    kq = HoaDonDAO.getInstance().Insert(new HoaDon(maHoaDon, maPDTC, ngayTT, tongTienDV, tienPhat, tongTienHoaDon, conLai, userName));
+                    kq = HoaDonDAO.getInstance().Insert(new HoaDon(maHoaDon, maPDTC, ngayTT, tongTienDV, tienPhat, tongTienHoaDon, CONLAI, userName));
                     if (kq != 0) {
                         Message("Thanh toán thành công!", JOptionPane.INFORMATION_MESSAGE);
                         ThanhToanTienMat.setVisible(false);
@@ -4347,6 +4437,30 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                         PageThongTinDT.setVisible(false);
                         ChuyenKhoanForm.setVisible(false);
                         ReloadDataTable();
+                        
+                        File file = new File("src/report/rptThanhToanHDH.jasper");
+                        String absolutePath = file.getAbsolutePath();
+                        try {
+                            HashMap<String, Object> map = new HashMap<>();
+                            Connection con = JDBCUtil.getConnection();
+                            map.put("maHD", maHoaDon);
+                            map.put("tienKhachTra", (double) CONLAI);
+                            map.put("tienThua", 0.0);
+//                            map.put("tyLePhat", tyLePhat);
+//                            map.put("thoiGianPhat", thoiGianPhat);
+                            System.out.println(maHoaDon);
+                            System.out.println(Long.parseLong(inputSoTienDaNhan.getText()));
+                            System.out.println(Long.parseLong(inputSoTienDaNhan.getText()) - conLai);
+//                            System.out.println(tyLePhat);
+//                            System.out.println(thoiGianPhat);
+                            JasperPrint p = JasperFillManager.fillReport(absolutePath, map, con);
+                            JasperViewer v = new JasperViewer(p, false);
+                            v.setVisible(true);
+
+                        } catch (JRException ex) {
+                            System.out.println(ex);
+
+                        }
 
 //                        adsfadfa
                     } else {
@@ -4372,6 +4486,16 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
     private void inputSoTienDaNhanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputSoTienDaNhanActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_inputSoTienDaNhanActionPerformed
+
+    private void DVSVTablePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_DVSVTablePropertyChange
+        // TODO add your handling code here:
+//        Object[] data = new Object[defaultTableDVXN.getRowCount()];
+        if(check > 0)
+            for (int row = 0; row < defaultTableXNDV.getRowCount(); row++) {           
+                if(Integer.parseInt(String.valueOf(defaultTableXNDV.getValueAt(row, 3)) ) <= 0)
+                    defaultTableXNDV.setValueAt(1, row, 3);
+            }
+    }//GEN-LAST:event_DVSVTablePropertyChange
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
