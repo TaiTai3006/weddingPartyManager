@@ -3033,6 +3033,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         }// </editor-fold>//GEN-END:initComponents
     private void btnThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThanhToanActionPerformed
         // TODO add your handling code here:
+       
         CreateTableXNTT();
         intKieuThanhToan = 1;
         int selectRow = getSelectRow();
@@ -3145,6 +3146,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                         TongTenHHValueH.setText(String.valueOf(currencyFormatVN.format(tienCoc)));
                         TienCocValueH.setText(String.valueOf(currencyFormatVN.format(tienCoc)));
                         ConLaiValueH.setText(String.valueOf(currencyFormatVN.format(0)));
+                        CONLAI = 0;
                     } else {
                         TongTenHHValueH.setText(String.valueOf(currencyFormatVN.format(tongTienBan0)));
                         TienCocValueH.setText(String.valueOf(currencyFormatVN.format(tienCoc)));
@@ -4110,6 +4112,8 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                             System.out.println(ex);
 
                         }
+                        defaultTableXNTTHD.setRowCount(0);
+                        defaultTableXNDV.setRowCount(0);
                     } else {
                         System.out.println("Thêm hóa đơn lỗi");
                         Message("Thanh toán không thành công!", JOptionPane.ERROR_MESSAGE);
