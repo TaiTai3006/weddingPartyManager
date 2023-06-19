@@ -2280,7 +2280,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
             if (x.getMaLoaiMonAn().equals(mapMaLoaiMA.get(cbxLoaiMonAn.getSelectedItem())) && (x.getMaMonAn().toLowerCase().contains(value.toLowerCase())
                     || x.getTenMonAn().toLowerCase().contains(value.toLowerCase()))) {
                 System.out.println(x.getMaLoaiMonAn().equals(mapMaLoaiMA.get(cbxLoaiMonAn.getSelectedItem())));
-                defaultTableModelMA.addRow(new Object[]{++i, x.getMaMonAn(), x.getTenMonAn(), x.getDonGia(), x.getGhiChu(), x.getChon()});
+                defaultTableModelMA.addRow(new Object[]{++i, x.getMaMonAn(), x.getTenMonAn(), currencyFormatVN.format(x.getDonGia()), x.getGhiChu(), x.getChon()});
             }
         }
     }
@@ -2293,7 +2293,7 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
         for (DTDichVu x : dTDichVus) {
             if (x.getMaDichVu().toLowerCase().contains(value.toLowerCase())
                     || x.getTenDichVu().toLowerCase().contains(value.toLowerCase())) {
-                defaultTableModelDV.addRow(new Object[]{++i, x.getMaDichVu(), x.getTenDichVu(), x.getSoLuong(), x.getDonGia(), x.isChon()});
+                defaultTableModelDV.addRow(new Object[]{++i, x.getMaDichVu(), x.getTenDichVu(), x.getSoLuong(), currencyFormatVN.format(x.getDonGia()), x.isChon()});
             }
         }
     }
