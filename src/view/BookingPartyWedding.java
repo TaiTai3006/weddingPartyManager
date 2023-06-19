@@ -2745,7 +2745,13 @@ public class BookingPartyWedding extends javax.swing.JInternalFrame {
                 if (Integer.parseInt(DichVuTable.getValueAt(row, 3).toString()) == 0) {
                     defaultTableModelDV.setValueAt(1, row, 3);
                 }
+                if (Integer.parseInt(DichVuTable.getValueAt(row, 3).toString()) < 0)
+                    defaultTableModelDV.setValueAt(0, row, 3);
 //                CTDichVus.add(new DTDichVu(Integer.parseInt(DichVuTable.getValueAt(row, 3).toString()), chon, maDichVu, tenDichVu, donGia));
+            }
+            else
+            {
+                defaultTableModelDV.setValueAt(0, row, 3);
             }
 //            } else {
 //                defaultTableModelDV.setValueAt(0, row, 3);
