@@ -68,10 +68,12 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
 //    setContentPane(panel);
     }    
     
-    public double RoundDoubleExample(double number)
+    public String RoundDoubleExample(double number)
     {
-        DecimalFormat df = new DecimalFormat("#.##");
-        double roundedNumber = Double.parseDouble(df.format(number));
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        String roundedNumber = decimalFormat.format(number);
+        
+       
         return roundedNumber;
     }
     
@@ -81,8 +83,9 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
         ArrayList<ChiTietBaoCao> ctbc = ChiTietBaoCaoDAO.getInstance().SelectByMonth(month, year);
         int i = 0;
         for (ChiTietBaoCao x : ctbc) {
+           
             String[] arrDate = x.getNgay().split("-");
-            defaultTableModel_RStatistics.addRow(new Object[]{++i, arrDate[2], x.getSoLuongTiec(), String.valueOf(currencyFormatVN.format(x.getDoanhThu())) , String.valueOf(RoundDoubleExample(x.getTiLe()*100)) + "%"});
+            defaultTableModel_RStatistics.addRow(new Object[]{++i, arrDate[2], x.getSoLuongTiec(), String.valueOf(currencyFormatVN.format(x.getDoanhThu())) , RoundDoubleExample(x.getTiLe()*100) + "%"});
         }
     }
     
@@ -774,6 +777,7 @@ public class RevenueStatistics extends javax.swing.JInternalFrame {
                 // Số hợp lệ, xử lý tại đây
             } catch (NumberFormatException ex) {
                 // Không phải số, xử lý tại đây
+                System.out.print(ex);
                 jpChart.setVisible(false);
                 jLThongBao_Ngay.setText("* Vui lòng nhập tháng, năm hợp lệ!");
                 jTextNam_Ngay.setText("");
