@@ -2247,10 +2247,10 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                 DVHHTable.getColumnModel().getColumn(0).setPreferredWidth(60);
                 DVHHTable.getColumnModel().getColumn(0).setMaxWidth(60);
                 DVHHTable.getColumnModel().getColumn(1).setMinWidth(170);
-                DVHHTable.getColumnModel().getColumn(1).setPreferredWidth(170);
+                DVHHTable.getColumnModel().getColumn(1).setPreferredWidth(100);
                 DVHHTable.getColumnModel().getColumn(1).setMaxWidth(170);
-                DVHHTable.getColumnModel().getColumn(3).setMinWidth(80);
-                DVHHTable.getColumnModel().getColumn(3).setPreferredWidth(80);
+                DVHHTable.getColumnModel().getColumn(3).setMinWidth(150);
+                DVHHTable.getColumnModel().getColumn(3).setPreferredWidth(150);
                 DVHHTable.getColumnModel().getColumn(3).setMaxWidth(80);
                 DVHHTable.getColumnModel().getColumn(4).setMinWidth(170);
                 DVHHTable.getColumnModel().getColumn(4).setPreferredWidth(170);
@@ -2450,7 +2450,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                             .addGroup(PageTTHDTTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, 1090, Short.MAX_VALUE)
+                                .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, 1097, Short.MAX_VALUE)
                                 .addComponent(jPanel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING))
                             .addGap(0, 0, Short.MAX_VALUE)))

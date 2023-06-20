@@ -2397,7 +2397,7 @@
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="jPanel7" alignment="0" max="32767" attributes="0"/>
                               <Component id="jPanel11" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jPanel15" alignment="0" pref="1090" max="32767" attributes="0"/>
+                              <Component id="jPanel15" alignment="0" pref="1097" max="32767" attributes="0"/>
                               <Component id="jPanel16" alignment="0" max="32767" attributes="0"/>
                               <Component id="jScrollPane4" alignment="1" max="32767" attributes="0"/>
                           </Group>
@@ -2836,7 +2836,7 @@
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="170" minWidth="170" prefWidth="170" resizable="true">
+                    <Column maxWidth="170" minWidth="170" prefWidth="100" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>
@@ -2846,7 +2846,7 @@
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="80" minWidth="80" prefWidth="80" resizable="true">
+                    <Column maxWidth="80" minWidth="150" prefWidth="150" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>
