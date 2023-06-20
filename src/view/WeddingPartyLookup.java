@@ -770,9 +770,9 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel45.setFont(new java.awt.Font("Segoe UI", 1, 32)); // NOI18N
+        jLabel45.setFont(new java.awt.Font("Arial", 1, 32)); // NOI18N
         jLabel45.setForeground(new java.awt.Color(69, 96, 134));
-        jLabel45.setText("Danh sách lựa chọn dịch vụ ");
+        jLabel45.setText("DANH SÁCH DỊCH VỤ");
 
         javax.swing.GroupLayout jPanel28Layout = new javax.swing.GroupLayout(jPanel28);
         jPanel28.setLayout(jPanel28Layout);
@@ -784,10 +784,10 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addComponent(btnXacNhanDV, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(49, 49, 49))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel28Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel45, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(224, 224, 224))
+            .addGroup(jPanel28Layout.createSequentialGroup()
+                .addGap(239, 239, 239)
+                .addComponent(jLabel45)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel28Layout.setVerticalGroup(
             jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
