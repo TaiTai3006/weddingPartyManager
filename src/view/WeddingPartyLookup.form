@@ -2585,7 +2585,7 @@
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace pref="24" max="32767" attributes="0"/>
+                      <EmptySpace pref="31" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="NgayDTValueTT" min="-2" max="-2" attributes="0"/>
                           <Component id="TongTienBanValueTT" alignment="1" min="-2" max="-2" attributes="0"/>

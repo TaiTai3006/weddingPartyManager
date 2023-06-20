@@ -295,12 +295,12 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         defaultTableDV = (DefaultTableModel) tblSelectService.getModel();
         int row = getSelectRow();
         String maPDTC = String.valueOf(DatTiecTable.getValueAt(row, 1));
-        ArrayList<String> tmp = new ArrayList<String>();
-        for (ChiTietDichVu ct : lstDetailServices) {
-            if (ct.getMaTiecCuoi().equals(maPDTC)) {
-                tmp.add(ct.getMaDichVu());
-            }
-        }
+//        ArrayList<String> tmp = new ArrayList<String>();
+//        for (ChiTietDichVu ct : lstDetailServices) {
+//            if (ct.getMaTiecCuoi().equals(maPDTC)) {
+//                tmp.add(ct.getMaDichVu());
+//            }
+//        }
 //        ArrayList<String> maTC = new ArrayList
 //        for(int i = 0; i < defaultTableXNDV.getRowCount(); i++){
 //            
@@ -323,9 +323,9 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 //        }
         int i = 0;
         for (DichVu dv : lstDichVu) {
-            if (!tmp.contains(dv.getMaDichVu())) {
+//            if (!tmp.contains(dv.getMaDichVu())) {
                 defaultTableDV.addRow(new Object[]{++i, dv.getMaDichVu(), dv.getTenDichVu(), currencyFormatVN.format(dv.getDonGia())});
-            }
+//            }
         }
     }
 
@@ -2180,7 +2180,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(lblTongTienBan, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addComponent(DonGiaBanValueTT))))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                     .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(NgayDTValueTT)
                         .addComponent(TongTienBanValueTT, javax.swing.GroupLayout.Alignment.TRAILING))
@@ -3264,7 +3264,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
         NumberFormat currencyFormatVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
         PageXNDV.setVisible(false);
         PageTTHDTT.setVisible(true);
-        defaultTableXNTTHD.setRowCount(0);
+//        defaultTableXNTTHD.setRowCount(0);
 //        int columnCount = defaultTableXNDV.getColumnCount();
 //        for (int i = 0; i < columnCount; i++) {
 //            DVHHTable.addColumn(defaultTableXNDV.getColumnName(i));
@@ -3567,6 +3567,7 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
             int x = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn thêm " + mess + "hay không?");
 
             if (x == JOptionPane.YES_OPTION) {
+                AddSelectServices.setVisible(false);
                 int kq = 0;
                 if (rows.length == 1) {
                     String maDV = String.valueOf(tblSelectService.getValueAt(row, 1));
@@ -3638,23 +3639,23 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 //                                check = true;
 //                            }
 //                        }
-                    for (int tmp = 0; tmp < DVSVTable.getRowCount(); tmp++) {
-                        Object cellValue = DVSVTable.getValueAt(tmp, 1);
-                        if (cellValue != null && cellValue.equals(maDV)) {
-                            int sl = Integer.parseInt(String.valueOf(DVSVTable.getValueAt(tmp, 3)));
-                            sl += 1;
-                            defaultTableXNDV.setValueAt(sl, tmp, 3);
-                            check = true;
-                        }
-                    }
-                        try {
-                            if (!check) {
-//                                kq = ChiTietDichVuDAO.getInstance().Insert(new ChiTietDichVu(maPDTC, maDV, 1, donGia, donGia, tenDV));
-                                defaultTableXNDV.addRow(new Object[]{i, maDV, tenDV, soLuong, currencyFormatVN.format(donGia)});
+                        for (int tmp = 0; tmp < DVSVTable.getRowCount(); tmp++) {
+                            Object cellValue = DVSVTable.getValueAt(tmp, 1);
+                            if (cellValue != null && cellValue.equals(maDV)) {
+                                int sl = Integer.parseInt(String.valueOf(DVSVTable.getValueAt(tmp, 3)));
+                                sl += 1;
+                                defaultTableXNDV.setValueAt(sl, tmp, 3);
+                                check = true;
                             }
-                        } catch (Exception e) {
-                            e.printStackTrace();
                         }
+//                        try {
+                        if (!check) {
+//                                kq = ChiTietDichVuDAO.getInstance().Insert(new ChiTietDichVu(maPDTC, maDV, 1, donGia, donGia, tenDV));
+                            defaultTableXNDV.addRow(new Object[]{i, maDV, tenDV, soLuong, currencyFormatVN.format(donGia)});
+                        }
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
 //                        if (kq == 0) {
 //                            Message("Thêm dịch vụ " + maDV + " thất bại!", JOptionPane.ERROR_MESSAGE);
 //                        }
@@ -3670,7 +3671,9 @@ public class WeddingPartyLookup extends javax.swing.JInternalFrame {
 //                    Message("Thêm dịch vụ thất bại!", JOptionPane.ERROR_MESSAGE);
 //                }
             }
+            
         }
+        
     }//GEN-LAST:event_btnXacNhanDVActionPerformed
     public BufferedImage generateQRCode(String qrData) throws WriterException {
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
